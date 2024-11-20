@@ -1,0 +1,50 @@
+<p>tabel crud division</p>
+
+<!-- <ul>
+    <li *ngFor="let post of posts">
+        <p>{{post.division_name}}</p>
+    </li>
+</ul> -->
+
+<div class="card">
+    <p-table 
+    #dt2 
+    [value]="posts" 
+    [tableStyle]="{ 'min-width': '50rem' }" 
+    [globalFilterFields]="['post.id', 'post.division_name', 'post.created_at', 'post.created_by', 'post.updated_at', 'post.updated_by']">
+        <ng-template pTemplate="caption">
+            <div class="flex">
+                <p-iconField iconPosition="left" class="ml-auto">
+                    <p-inputIcon>
+                        <i class="pi pi-search"></i>
+                    </p-inputIcon>
+                    <input 
+                        pInputText 
+                        type="text" 
+                        placeholder="Search keyword" 
+                        />
+                </p-iconField>  
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Id</th>
+                <th>Division Name</th>
+                <th>Created at</th>
+                <th>Created By</th>
+                <th>Updated at</th>
+                <th>Updated By</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-post>
+            <tr>
+                <td>{{ post.id }}</td>
+                <td>{{ post.division_name }}</td>
+                <td>{{ post.created_at }}</td>
+                <td>{{ post.created_by }}</td>
+                <td>{{ post.updated_at }}</td>
+                <td>{{ post.updated_by }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
