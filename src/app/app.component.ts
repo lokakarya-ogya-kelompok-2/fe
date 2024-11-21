@@ -5,6 +5,7 @@ import { IndexPageComponent } from './pages/index-page/index-page.component';
 import { MainPageComponent } from './pages/main-page/main-page.component';
 import { MenuPageComponent } from './pages/menu-page/menu-page.component';
 import { ManageDivisionComponent } from './pages/manage-division/manage-division.component';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-root',
