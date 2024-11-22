@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { noAuthGuard } from './core/guards/no-auth.guard';
+import { AttitudeSkillComponent } from './features/attitude-skill/components/attitude-skill.component';
 import { LoginComponent } from './features/auth/login/components/login.component';
 import { ManageDivisionComponent } from './features/divisions/components/manage-division.component';
 import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-skill/components/manage-group-attitude-skill.component';
