@@ -7,10 +7,9 @@ import { DialogModule } from 'primeng/dialog';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { TableModule } from 'primeng/table';
+import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
-import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { ManageDivisionService } from '../services/manage-division.service';
 
 @Component({
@@ -27,7 +26,6 @@ import { ManageDivisionService } from '../services/manage-division.service';
     DialogModule,
     ConfirmDialogModule,
     ToastModule,
-    NavbarComponent,
   ],
   providers: [ManageDivisionService, ConfirmationService, MessageService],
   templateUrl: './manage-division.component.html',
@@ -98,5 +96,9 @@ export class ManageDivisionComponent implements OnInit {
         });
       },
     });
+  }
+
+  onGlobalFilter(table: Table, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }
