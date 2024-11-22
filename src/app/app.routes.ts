@@ -5,15 +5,15 @@ import { LoginComponent } from './features/auth/login/components/login.component
 import { ManageDivisionComponent } from './features/divisions/components/manage-division.component';
 import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-skill/components/manage-group-attitude-skill.component';
 import { IndexPageComponent } from './features/index/components/index-page.component';
-import { ManageComponent } from './features/manage/components/manage-page.component';
 import { MainPageComponent as MenuComponent } from './features/menu/components/main-page.component';
+import { NotFoundComponent } from './shared/pages/not-found/not-found.component';
 export const routes: Routes = [
   { path: '', component: IndexPageComponent },
   { path: 'login', component: LoginComponent },
   { path: 'menu', component: MenuComponent },
   {
     path: 'manage',
-    component: ManageComponent,
+    // component: ManageComponent,
     children: [
       { path: 'divisions', component: ManageDivisionComponent },
       {
@@ -21,6 +21,10 @@ export const routes: Routes = [
         component: ManageGroupAttitudeSkillComponent,
       },
     ],
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
   },
 ];
 
