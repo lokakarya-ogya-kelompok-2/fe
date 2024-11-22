@@ -1,26 +1,23 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { IndexPageComponent } from './pages/index-page/index-page.component';
-import { LoginPageComponent } from './pages/login-page/login-page.component';
-import { MainPageComponent } from './pages/main-page/main-page.component';
-// import { AuthGuard } from './guards/auth-guard.guard';
 import { BrowserModule } from '@angular/platform-browser';
-import { HrPageComponent } from './pages/hr-page/hr-page.component';
-import { ManageDivisionComponent } from './pages/manage-division/manage-division.component';
-import { ManageGroupAttitudeSkillComponent } from './pages/manage-group-attitude-skill/manage-group-attitude-skill.component';
-import { MenuPageComponent } from './pages/menu-page/menu-page.component';
+import { RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from './features/auth/login/components/login.component';
+import { ManageDivisionComponent } from './features/divisions/components/manage-division.component';
+import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-skill/components/manage-group-attitude-skill.component';
+import { IndexPageComponent } from './features/index/components/index-page.component';
+import { ManageComponent } from './features/manage/components/manage-page.component';
+import { MainPageComponent as MenuComponent } from './features/menu/components/main-page.component';
 export const routes: Routes = [
   { path: '', component: IndexPageComponent },
-  { path: 'login', component: LoginPageComponent },
-  { path: 'main', component: MainPageComponent },
-  { path: 'menu', component: MenuPageComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'menu', component: MenuComponent },
   {
-    path: 'hr',
-    component: HrPageComponent,
+    path: 'manage',
+    component: ManageComponent,
     children: [
-      { path: 'manage-divisions', component: ManageDivisionComponent },
+      { path: 'divisions', component: ManageDivisionComponent },
       {
-        path: 'manage-group-attitude-skills',
+        path: 'group-attitude-skills',
         component: ManageGroupAttitudeSkillComponent,
       },
     ],

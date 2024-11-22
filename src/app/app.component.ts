@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { IndexPageComponent } from './pages/index-page/index-page.component';
-import { LoginPageComponent } from './pages/login-page/login-page.component';
-import { MainPageComponent } from './pages/main-page/main-page.component';
-import { ManageDivisionComponent } from './pages/manage-division/manage-division.component';
-import { ManageGroupAttitudeSkillComponent } from './pages/manage-group-attitude-skill/manage-group-attitude-skill.component';
-import { MenuPageComponent } from './pages/menu-page/menu-page.component';
+import { LoginComponent } from './features/auth/login/components/login.component';
+import { ManageDivisionComponent } from './features/divisions/components/manage-division.component';
+import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-skill/components/manage-group-attitude-skill.component';
+import { IndexPageComponent } from './features/index/components/index-page.component';
+import { MainPageComponent } from './features/menu/components/main-page.component';
 
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -14,12 +13,12 @@ import { MenuPageComponent } from './pages/menu-page/menu-page.component';
   standalone: true,
   imports: [
     RouterOutlet,
-    LoginPageComponent,
+    LoginComponent,
     IndexPageComponent,
     MainPageComponent,
     ManageDivisionComponent,
     ManageGroupAttitudeSkillComponent,
-    MenuPageComponent,
+    MainPageComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

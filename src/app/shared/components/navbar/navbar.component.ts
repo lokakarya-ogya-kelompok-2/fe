@@ -23,7 +23,7 @@ export class NavbarComponent {
       {
         label: 'Division',
         // icon: 'pi pi-home',
-        routerLink: 'manage-divisions',
+        routerLink: '/manage/divisions',
       },
       {
         label: 'Role-menu',
@@ -36,7 +36,7 @@ export class NavbarComponent {
           {
             label: 'Group Attitude skill',
             // icon: 'pi pi-home',
-            routerLink: 'manage-group-attitude-skills',
+            routerLink: '/manage/group-attitude-skills',
           },
           {
             label: 'Attitude skill',

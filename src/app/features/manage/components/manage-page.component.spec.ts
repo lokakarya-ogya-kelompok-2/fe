@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HrPageComponent } from './hr-page.component';
+import { ManageComponent } from './manage-page.component';
 
 describe('HrPageComponent', () => {
-  let component: HrPageComponent;
-  let fixture: ComponentFixture<HrPageComponent>;
+  let component: ManageComponent;
+  let fixture: ComponentFixture<ManageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HrPageComponent]
-    })
-    .compileComponents();
+      imports: [ManageComponent],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(HrPageComponent);
+    fixture = TestBed.createComponent(ManageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

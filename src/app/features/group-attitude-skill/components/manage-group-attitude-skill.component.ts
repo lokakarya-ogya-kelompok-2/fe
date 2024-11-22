@@ -10,8 +10,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
-import { NavbarComponent } from '../../components/navbar/navbar.component';
-import { ManageGroupAttitudeSkillService } from '../../manage-group-attitude-skill.service';
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
+import { ManageGroupAttitudeSkillService } from '../services/manage-group-attitude-skill.service';
 
 @Component({
   selector: 'app-manage-group-attitude-skill',
