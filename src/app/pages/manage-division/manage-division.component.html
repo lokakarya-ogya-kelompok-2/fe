@@ -1,5 +1,4 @@
-<p>tabel crud division</p>
-
+<!-- <app-navbar></app-navbar> -->
 <!-- <ul>
     <li *ngFor="let post of posts">
         <p>{{post.division_name}}</p>
@@ -7,85 +6,110 @@
 </ul> -->
 
 <div class="card">
-    <p-table 
-    #dt2 
-    [value]="posts" 
+  <p-table
+    #dt2
+    [value]="posts"
     dataKey="id"
     [rows]="10"
     [loading]="loading"
     [paginator]="true"
     [rowsPerPageOptions]="[10, 25, 50]"
-    [tableStyle]="{ 'min-width': '50rem', 'text-align': 'center', 'font-size': '12px', 'margin': '0' }" 
-    [globalFilterFields]="['post.id', 'post.division_name']">
-        <ng-template pTemplate="caption">
-            <div class="flex" >
-                <p-iconField iconPosition="left" class="ml-auto">
-                    <p-inputIcon>
-                        <i class="pi pi-search"></i>
-                    </p-inputIcon>
-                    <!-- (input)="dt2.filterGlobal($event.target.value, 'contains')"  -->
-                    <input 
-                    pInputText 
-                    type="text" 
-                    placeholder="Search keyword" 
-                    />
-                </p-iconField>  
-                <p-button id="btn-modal" (onClick)="showDialog()" label="Add" />
-            </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th>Id</th>
-                <th>Division Name</th>
-                <th>Created at</th>
-                <th>Created By</th>
-                <th>Updated at</th>
-                <th>Updated By</th>
-                <th>Action</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-post >
-            <tr>
-                <td>{{ post.id }}</td>
-                <td>{{ post.division_name }}</td>
-                <td>{{ post.created_at }}</td>
-                <td>{{ post.created_by }}</td>
-                <td>{{ post.updated_at }}</td>
-                <td>{{ post.updated_by }}</td>
-                <td>
-                    <p-button (onClick)="showEditDialog()" severity="success"><i class="pi pi-pen-to-square"></i></p-button> 
-                    
-                    <p-button (onClick)="confirm2($event)" [outlined]="true" severity="danger"><i class="pi pi-trash"></i></p-button>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+    [tableStyle]="{
+      'min-width': '50rem',
+      'text-align': 'center',
+      'font-size': '12px',
+      margin: '0'
+    }"
+    [globalFilterFields]="['post.id', 'post.division_name']"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex">
+        <p-iconField iconPosition="left" class="ml-auto">
+          <p-inputIcon>
+            <i class="pi pi-search"></i>
+          </p-inputIcon>
+          <!-- (input)="dt2.filterGlobal($event.target.value, 'contains')"  -->
+          <input pInputText type="text" placeholder="Search keyword" />
+        </p-iconField>
+        <p-button id="btn-modal" (onClick)="showDialog()" label="Add" />
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Id</th>
+        <th>Division Name</th>
+        <th>Created at</th>
+        <th>Created By</th>
+        <th>Updated at</th>
+        <th>Updated By</th>
+        <th>Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-post>
+      <tr>
+        <td>{{ post.id }}</td>
+        <td>{{ post.division_name }}</td>
+        <td>{{ post.created_at }}</td>
+        <td>{{ post.created_by?.full_name }}</td>
+        <td>{{ post.updated_at }}</td>
+        <td>{{ post.updated_by }}</td>
+        <td style="justify-content: space-between; display: flex">
+          <p-button (onClick)="showEditDialog()" severity="success"
+            ><i class="pi pi-pen-to-square"></i
+          ></p-button>
+          <p-confirmDialog key="{{ post.id }}" />
+          <p-button
+            (onClick)="confirm2($event, post.id)"
+            [outlined]="true"
+            severity="danger"
+            ><i class="pi pi-trash"></i
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>
 
 <div class="card flex justify-content-center">
-    <p-dialog header="Add Division" [(visible)]="visible" [style]="{ width: '25rem' }">
-        <span class="p-text-secondary block mb-5">Add division.</span>
-        <div class="flex align-items-center gap-3 mb-3">
-            <label for="username" class="font-semibold w-6rem">Division Name</label>
-            <input pInputText id="username" class="flex-auto" autocomplete="off" />
-        </div>
-        <div class="flex justify-content-end gap-2">
-            <p-button label="Cancel" severity="secondary" (onClick)="visible = false" />
-            <p-button label="Save" (onClick)="visible = false" />
-        </div>
-    </p-dialog>
+  <p-dialog
+    header="Add Division"
+    [(visible)]="visible"
+    [style]="{ width: '25rem' }"
+  >
+    <span class="p-text-secondary block mb-5">Add division.</span>
+    <div class="flex align-items-center gap-3 mb-3">
+      <label for="username" class="font-semibold w-6rem">Division Name</label>
+      <input pInputText id="username" class="flex-auto" autocomplete="off" />
+    </div>
+    <div class="flex justify-content-end gap-2">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        (onClick)="visible = false"
+      />
+      <p-button label="Save" (onClick)="visible = false" />
+    </div>
+  </p-dialog>
 </div>
 
 <div class="card flex justify-content-center">
-    <p-dialog header="Edit Division" [(visible)]="editVisible" [style]="{ width: '25rem' }">
-        <span class="p-text-secondary block mb-5">Edit division.</span>
-        <div class="flex align-items-center gap-3 mb-3">
-            <label for="username" class="font-semibold w-6rem">Division Name</label>
-            <input pInputText id="username" class="flex-auto" autocomplete="off" />
-        </div>
-        <div class="flex justify-content-end gap-2">
-            <p-button label="Cancel" severity="secondary" (onClick)="visible = false" />
-            <p-button label="Save" (onClick)="visible = false" />
-        </div>
-    </p-dialog>
+  <p-dialog
+    header="Edit Division"
+    [(visible)]="editVisible"
+    [style]="{ width: '25rem' }"
+  >
+    <span class="p-text-secondary block mb-5">Edit division.</span>
+    <div class="flex align-items-center gap-3 mb-3">
+      <label for="username" class="font-semibold w-6rem">Division Name</label>
+      <input pInputText id="username" class="flex-auto" autocomplete="off" />
+    </div>
+    <div class="flex justify-content-end gap-2">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        (onClick)="visible = false"
+      />
+      <p-button label="Save" (onClick)="visible = false" />
+    </div>
+  </p-dialog>
 </div>

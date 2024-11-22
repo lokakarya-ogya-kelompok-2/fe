@@ -1,30 +1,52 @@
-import { Component } from '@angular/core';
-import { ManageGroupAttitudeSkillService } from '../../manage-group-attitude-skill.service';
 import { CommonModule } from '@angular/common';
-import { TableModule } from 'primeng/table';
+import { Component } from '@angular/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
+import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
+import { ManageGroupAttitudeSkillService } from '../../manage-group-attitude-skill.service';
 
 @Component({
   selector: 'app-manage-group-attitude-skill',
   standalone: true,
-  imports: [CommonModule, TableModule, IconFieldModule, InputIconModule, InputTextModule, TagModule, ButtonModule, DialogModule,ConfirmDialogModule, ToastModule],
-  providers: [ManageGroupAttitudeSkillService],
+  imports: [
+    CommonModule,
+    TableModule,
+    IconFieldModule,
+    InputIconModule,
+    InputTextModule,
+    TagModule,
+    ButtonModule,
+    DialogModule,
+    ConfirmDialogModule,
+    ToastModule,
+    NavbarComponent,
+  ],
+  providers: [
+    ManageGroupAttitudeSkillService,
+    ConfirmationService,
+    MessageService,
+  ],
   templateUrl: './manage-group-attitude-skill.component.html',
-  styleUrl: './manage-group-attitude-skill.component.scss'
+  styleUrl: './manage-group-attitude-skill.component.scss',
 })
 export class ManageGroupAttitudeSkillComponent {
-  datas:any[]=[]
+  datas: any[] = [];
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
-  constructor(private manageGroupAttitudeSkillService: ManageGroupAttitudeSkillService) {}
+  constructor(
+    private manageGroupAttitudeSkillService: ManageGroupAttitudeSkillService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.getAllData();
@@ -46,7 +68,38 @@ export class ManageGroupAttitudeSkillComponent {
   showDialog() {
     this.visible = true;
   }
-  showEditDialog(){
+  showEditDialog() {
     this.editVisible = true;
+  }
+
+  confirm2(event: Event, key: string) {
+    console.log('masuk');
+    console.log(event.target);
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      rejectButtonStyleClass: 'p-button-text p-button-text',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+      key: key,
+
+      accept: () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Confirmed',
+          detail: 'Record deleted',
+        });
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+        });
+      },
+    });
   }
 }
