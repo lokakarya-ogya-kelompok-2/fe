@@ -7,7 +7,7 @@ import { DialogModule } from 'primeng/dialog';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { TableModule } from 'primeng/table';
+import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
@@ -47,6 +47,10 @@ export class ManageGroupAttitudeSkillComponent {
     private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {}
+
+  onGlobalFilter(table: Table, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
 
   ngOnInit(): void {
     this.getAllData();
