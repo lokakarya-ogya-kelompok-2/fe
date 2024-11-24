@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { IconFieldModule } from 'primeng/iconfield';
@@ -10,7 +12,12 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
+import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
+import {
+  GroupAttitudeSkill,
+  GroupAttitudeSkillRequest,
+} from '../models/group-attitude-skill';
 import { ManageGroupAttitudeSkillService } from '../services/manage-group-attitude-skill.service';
 
 @Component({
@@ -28,6 +35,8 @@ import { ManageGroupAttitudeSkillService } from '../services/manage-group-attitu
     ConfirmDialogModule,
     ToastModule,
     NavbarComponent,
+    CheckboxModule,
+    FormsModule,
   ],
   providers: [
     ManageGroupAttitudeSkillService,
@@ -42,6 +51,22 @@ export class ManageGroupAttitudeSkillComponent {
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
+  newGroupAttitudeSkill: GroupAttitudeSkillRequest =
+    {} as GroupAttitudeSkillRequest;
+  editGroupAttitudeSkill: GroupAttitudeSkillRequest =
+    {} as GroupAttitudeSkillRequest;
+  checked: boolean = false;
+  editData: GroupAttitudeSkill = {} as GroupAttitudeSkill;
+  resetForm(): void {
+    this.newGroupAttitudeSkill.group_name = '';
+    this.newGroupAttitudeSkill.percentage = 0;
+    this.newGroupAttitudeSkill.enabled = false;
+  }
+  resetEditForm(): void {
+    this.editData.group_name = '';
+    this.editData.percentage = 0;
+    this.editData.enabled = false;
+  }
   constructor(
     private manageGroupAttitudeSkillService: ManageGroupAttitudeSkillService,
     private confirmationService: ConfirmationService,
@@ -69,15 +94,44 @@ export class ManageGroupAttitudeSkillComponent {
     });
   }
 
-  showDialog() {
-    this.visible = true;
+  createGroupAttitudeSkill(): void {
+    console.log(JSON.stringify(this.newGroupAttitudeSkill) + ' INIIIII');
+    this.manageGroupAttitudeSkillService
+      .createGroupAttitudeSkills(this.newGroupAttitudeSkill)
+      .subscribe({
+        next: (data) => {
+          console.log('Data created:', data);
+          Swal.fire({
+            title: 'Group attitude skill created!',
+            icon: 'success',
+          });
+          this.resetForm();
+          this.getAllData();
+        },
+        error: (err) => {
+          console.error('Error creating data:', err);
+        },
+      });
   }
-  showEditDialog() {
-    this.editVisible = true;
+  updateGroupAttitudeSkill(): void {
+    this.manageGroupAttitudeSkillService
+      .updateGroupAttitudeSkills(this.editData)
+      .subscribe({
+        next: (data) => {
+          console.log('Data updated:', data);
+          Swal.fire({
+            title: 'Group attitude skill updated!',
+            icon: 'success',
+          });
+          this.getAllData();
+          this.resetEditForm();
+        },
+        error: (err) => {
+          console.error('Error updating data:', err);
+        },
+      });
   }
-
-  confirm2(event: Event, key: string) {
-    console.log('masuk');
+  confirmDelete(event: Event, key: string) {
     console.log(event.target);
     this.confirmationService.confirm({
       target: event.target as EventTarget,
@@ -91,11 +145,19 @@ export class ManageGroupAttitudeSkillComponent {
       key: key,
 
       accept: () => {
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Confirmed',
-          detail: 'Record deleted',
-        });
+        this.manageGroupAttitudeSkillService
+          .deleteGroupAttitudeSkills(key)
+          .subscribe({
+            next: (data) => {
+              console.log(data);
+              Swal.fire({
+                title: 'Division deleted!',
+                icon: 'success',
+                text: data.message,
+              });
+              this.getAllData();
+            },
+          });
       },
       reject: () => {
         this.messageService.add({
@@ -105,5 +167,13 @@ export class ManageGroupAttitudeSkillComponent {
         });
       },
     });
+  }
+  showDialog() {
+    this.visible = true;
+  }
+  showEditDialog(data: GroupAttitudeSkill) {
+    this.editVisible = true;
+    this.editData = data;
+    console.log(this.editData);
   }
 }

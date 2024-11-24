@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -10,8 +11,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
+import Swal from 'sweetalert2';
+import { Division, DivisionRequest } from '../models/division';
 import { ManageDivisionService } from '../services/manage-division.service';
-
 @Component({
   selector: 'app-manage-division',
   standalone: true,
@@ -26,8 +28,14 @@ import { ManageDivisionService } from '../services/manage-division.service';
     DialogModule,
     ConfirmDialogModule,
     ToastModule,
+    FormsModule,
   ],
-  providers: [ManageDivisionService, ConfirmationService, MessageService],
+  providers: [
+    ManageDivisionService,
+    ConfirmationService,
+    MessageService,
+    FormsModule,
+  ],
   templateUrl: './manage-division.component.html',
   styleUrl: './manage-division.component.scss',
 })
@@ -36,6 +44,16 @@ export class ManageDivisionComponent implements OnInit {
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
+  newDivision: DivisionRequest = {} as DivisionRequest;
+  editDivision: Division = {} as Division;
+  editData: Division = {} as Division;
+
+  resetForm(): void {
+    this.newDivision.division_name = '';
+  }
+  resetEditForm(): void {
+    this.editData.division_name = '';
+  }
   constructor(
     private manageDivisionService: ManageDivisionService,
     private confirmationService: ConfirmationService,
@@ -58,18 +76,65 @@ export class ManageDivisionComponent implements OnInit {
       },
     });
   }
+  createDivision(): void {
+    // console.log(this.newDivision);
+    this.manageDivisionService.createDivision(this.newDivision).subscribe({
+      next: (data) => {
+        console.log(data);
+        Swal.fire({
+          title: 'Division created!',
+          icon: 'success',
+        });
+        this.resetForm();
+        this.fetchPosts();
+      },
+      error: (err) => {
+        console.error('Error creating division:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'create division failed!',
+        });
+      },
+    });
+  }
+  updateDivision(): void {
+    console.log('editt');
+    this.manageDivisionService.updateDivision(this.editData).subscribe({
+      next: (data) => {
+        console.log(data);
+        this.resetEditForm();
+        Swal.fire({
+          title: 'Division updated!',
+          icon: 'success',
+        });
+        this.fetchPosts();
+      },
+      error: (err) => {
+        console.error('Error updating division:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'update division failed!',
+        });
+      },
+    });
+  }
 
   // modal
   showDialog() {
     this.visible = true;
   }
-  showEditDialog() {
+  showEditDialog(data: any) {
     this.editVisible = true;
+    this.editData = { ...data };
+    console.log(this.editData, 'from dialog button');
   }
 
   confirm2(event: Event, key: string) {
     console.log('masuk');
     console.log(event.target);
+    console.log(key);
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Do you want to delete this record?',
@@ -80,12 +145,33 @@ export class ManageDivisionComponent implements OnInit {
       acceptIcon: 'none',
       rejectIcon: 'none',
       key: key,
-
       accept: () => {
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Confirmed',
-          detail: 'Record deleted',
+        console.log('delete data');
+
+        this.manageDivisionService.deleteDivision(key).subscribe({
+          next: (data) => {
+            console.log(data);
+            Swal.fire({
+              title: 'Division deleted!',
+              icon: 'success',
+              text: data.message,
+            });
+            // this.messageService.add({
+            //   severity: 'success',
+            //   summary: 'success',
+            //   detail: 'Division deleted successfully',
+            // });
+            console.log('Data deleted successfully');
+            this.fetchPosts();
+          },
+          error: (err) => {
+            console.error('Error deleting division:', err);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'error',
+              detail: 'Failed to delete division',
+            });
+          },
         });
       },
       reject: () => {
