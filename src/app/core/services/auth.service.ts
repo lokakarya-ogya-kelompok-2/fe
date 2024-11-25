@@ -1,35 +1,38 @@
 import { Injectable } from '@angular/core';
+import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly tokenKey: string = 'token';
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(
-    this.isAuthenticated()
-  );
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
   isAuthenticated$: Observable<boolean> =
     this.isAuthenticatedSubject.asObservable();
 
-  constructor() {}
+  constructor(private readonly tokenService: TokenService) {
+    console.log('TOKEN IS = ', this.isAuthenticated());
+    this.isAuthenticatedSubject.next(this.isAuthenticated());
+  }
 
   isAuthenticated(): boolean {
-    return localStorage.getItem(this.tokenKey) != null;
+    const token = this.tokenService.getToken();
+    if (token) {
+      const jwtPayload = jwtDecode(token);
+      console.log('TOKEN TOKEN TOKEN' + jwtPayload.exp);
+      return jwtPayload.exp! > Date.now() / 1000;
+    }
+    return false;
   }
 
-  getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
-  }
-
-  setToken(token: string) {
-    localStorage.setItem(this.tokenKey, token);
-    this.isAuthenticatedSubject.next(true);
+  login(token: string) {
+    this.tokenService.setToken(token);
   }
 
   logout() {
-    localStorage.removeItem(this.tokenKey);
+    this.tokenService.removeToken();
     this.isAuthenticatedSubject.next(false);
   }
 }
