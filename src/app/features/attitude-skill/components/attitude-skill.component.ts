@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { IconFieldModule } from 'primeng/iconfield';
@@ -12,10 +13,10 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
-import { Division, DivisionRequest } from '../models/division';
-import { ManageDivisionService } from '../services/manage-division.service';
+import { AttitudeSkill, AttitudeSkillRequest } from '../models/attitude-skill';
+import { AttitudeSkillService } from '../services/attitude-skill.service';
 @Component({
-  selector: 'app-manage-division',
+  selector: 'app-attitude-skill',
   standalone: true,
   imports: [
     CommonModule,
@@ -29,107 +30,94 @@ import { ManageDivisionService } from '../services/manage-division.service';
     ConfirmDialogModule,
     ToastModule,
     FormsModule,
+    CheckboxModule,
   ],
+  templateUrl: './attitude-skill.component.html',
+  styleUrl: './attitude-skill.component.scss',
   providers: [
-    ManageDivisionService,
+    AttitudeSkillService,
     ConfirmationService,
     MessageService,
     FormsModule,
   ],
-  templateUrl: './manage-division.component.html',
-  styleUrl: './manage-division.component.scss',
 })
-export class ManageDivisionComponent implements OnInit {
-  posts: any[] = [];
+export class AttitudeSkillComponent implements OnInit {
+  Datas: AttitudeSkill[] = [];
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
-  newDivision: DivisionRequest = {} as DivisionRequest;
-  editDivision: Division = {} as Division;
-  editData: Division = {} as Division;
-
+  editData: AttitudeSkill = {} as AttitudeSkill;
+  newAttitudeSkill: AttitudeSkillRequest = {} as AttitudeSkillRequest;
+  checked: boolean = false;
   resetForm(): void {
-    this.newDivision.division_name = '';
-  }
-  resetEditForm(): void {
-    this.editData.division_name = '';
+    this.newAttitudeSkill.attitude_skill = '';
+    this.newAttitudeSkill.enabled = false;
+    this.newAttitudeSkill.group_id = '';
   }
   constructor(
-    private manageDivisionService: ManageDivisionService,
+    private attitudeSkillService: AttitudeSkillService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
-    this.fetchPosts();
+    this.getAttitudeSkill();
   }
 
-  fetchPosts(): void {
-    this.manageDivisionService.getPosts().subscribe({
+  getAttitudeSkill(): void {
+    this.attitudeSkillService.getAttitudeSkills().subscribe({
       next: (data) => {
-        this.posts = data.content;
+        this.Datas = data.content;
+        console.log(this.Datas);
         this.loading = false;
-        console.log('Data fetched:', data);
-      },
-      error: (err) => {
-        console.error('Error fetching data:', err);
       },
     });
   }
-  createDivision(): void {
-    // console.log(this.newDivision);
-    this.manageDivisionService.createDivision(this.newDivision).subscribe({
+  createAttitudeSkill(): void {
+    this.attitudeSkillService
+      .createAttitudeSkill(this.newAttitudeSkill)
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          Swal.fire({
+            title: 'Division created!',
+            icon: 'success',
+          });
+          this.resetForm();
+          this.getAttitudeSkill();
+        },
+        error: (err) => {
+          console.error('Error creating division:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'error',
+            detail: 'Failed to create division',
+          });
+        },
+      });
+  }
+  updateAttitudeSkill(): void {
+    // console.log(this.editData);
+    this.attitudeSkillService.updateAttitudeSkill(this.editData).subscribe({
       next: (data) => {
         console.log(data);
         Swal.fire({
-          title: 'Division created!',
+          title: 'Attitude skill updated!',
           icon: 'success',
         });
-        this.resetForm();
-        this.fetchPosts();
+        this.getAttitudeSkill();
       },
       error: (err) => {
-        console.error('Error creating division:', err);
+        console.error('Error updating attitude skill: ', err);
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'create division failed!',
+          text: 'update attitude skill failed!',
         });
       },
     });
   }
-  updateDivision(): void {
-    console.log('editt');
-    this.manageDivisionService.updateDivision(this.editData).subscribe({
-      next: (data) => {
-        console.log(data);
-        this.resetEditForm();
-        Swal.fire({
-          title: 'Division updated!',
-          icon: 'success',
-        });
-        this.fetchPosts();
-      },
-      error: (err) => {
-        console.error('Error updating division:', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'update division failed!',
-        });
-      },
-    });
-  }
-
-  // modal
-  showDialog() {
-    this.visible = true;
-  }
-  showEditDialog(data: any) {
-    this.editVisible = true;
-    this.editData = { ...data };
-    console.log(this.editData, 'from dialog button');
-  }
+  deleteAttitudeSkill(): void {}
 
   confirm2(event: Event, key: string) {
     console.log('masuk');
@@ -148,11 +136,11 @@ export class ManageDivisionComponent implements OnInit {
       accept: () => {
         console.log('delete data');
 
-        this.manageDivisionService.deleteDivision(key).subscribe({
+        this.attitudeSkillService.deleteAttitudeSkill(key).subscribe({
           next: (data) => {
             console.log(data);
             Swal.fire({
-              title: 'Division deleted!',
+              title: 'Attitude skill deleted!',
               icon: 'success',
               text: data.message,
             });
@@ -162,14 +150,14 @@ export class ManageDivisionComponent implements OnInit {
             //   detail: 'Division deleted successfully',
             // });
             console.log('Data deleted successfully');
-            this.fetchPosts();
+            this.getAttitudeSkill();
           },
           error: (err) => {
-            console.error('Error deleting division:', err);
+            console.error('Error deleting attitude skill:', err);
             this.messageService.add({
               severity: 'error',
               summary: 'error',
-              detail: 'Failed to delete division',
+              detail: 'Failed to delete attitude skill',
             });
           },
         });
@@ -182,6 +170,16 @@ export class ManageDivisionComponent implements OnInit {
         });
       },
     });
+  }
+
+  showDialog() {
+    this.visible = true;
+  }
+  showEditDialog(data: any) {
+    this.editVisible = true;
+    this.editData = { ...data };
+    this.editData.group_id = data.group_id.id;
+    console.log(data, 'from dialog button');
   }
 
   onGlobalFilter(table: Table, event: Event) {
