@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
+import { AttitudeSkillComponent } from './features/attitude-skill/components/attitude-skill.component';
 import { LoginComponent } from './features/auth/login/components/login.component';
 import { ManageDivisionComponent } from './features/divisions/components/manage-division.component';
 import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-skill/components/manage-group-attitude-skill.component';
@@ -16,10 +17,14 @@ export const routes: Routes = [
     path: 'manage',
     component: ManageComponent,
     children: [
-      { path: 'divisions', component: ManageDivisionComponent },
+      { path: '', component: ManageDivisionComponent },
       {
         path: 'group-attitude-skills',
         component: ManageGroupAttitudeSkillComponent,
+      },
+      {
+        path: 'attitude-skills',
+        component: AttitudeSkillComponent,
       },
     ],
   },

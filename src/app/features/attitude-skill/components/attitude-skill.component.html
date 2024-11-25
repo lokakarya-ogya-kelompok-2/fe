@@ -1,0 +1,180 @@
+<div class="card">
+  <p-table
+    #attitudeSkillTable
+    [value]="Datas"
+    dataKey="id"
+    [rows]="10"
+    [loading]="loading"
+    [paginator]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [tableStyle]="{
+      'min-width': '50rem',
+      'text-align': 'center',
+      'font-size': '12px',
+      margin: '0'
+    }"
+    [globalFilterFields]="['id', 'attitude_skill']"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex">
+        <p-button
+          id="btn-modal"
+          (onClick)="showDialog()"
+          label="Add Attitude Skill"
+          icon=""
+        />
+        <p-iconField iconPosition="left" class="ml-auto">
+          <p-inputIcon>
+            <i class="pi pi-search"></i>
+          </p-inputIcon>
+          <input
+            pInputText
+            type="text"
+            placeholder="Search keyword"
+            (input)="onGlobalFilter(attitudeSkillTable, $event)"
+          />
+        </p-iconField>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Id</th>
+        <th>Attitude Skill</th>
+        <th>Group Name</th>
+        <th>Percentage</th>
+        <th>Enabled</th>
+        <th>Created at</th>
+        <th>Created By</th>
+        <th>Updated at</th>
+        <th>Updated By</th>
+        <th>Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-data>
+      <tr>
+        <td>{{ data.id }}</td>
+        <td>{{ data.attitude_skill }}</td>
+        <td>{{ data.group_id.group_name }}</td>
+        <td>{{ data.group_id.percentage }}</td>
+        <td>{{ data.enabled }}</td>
+        <td>{{ data.created_at }}</td>
+        <td>{{ data.created_by }}</td>
+        <td>{{ data.updated_at }}</td>
+        <td>{{ data.updated_by }}</td>
+        <td style="justify-content: space-between; display: flex">
+          <p-button (onClick)="showEditDialog(data)" severity="success"
+            ><i class="pi pi-pen-to-square"></i
+          ></p-button>
+          <p-confirmDialog key="{{ data.id }}" />
+          <p-button
+            (onClick)="confirm2($event, data.id)"
+            [outlined]="true"
+            severity="danger"
+          >
+            <i class="pi pi-trash"></i>
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<div class="card flex justify-content-center">
+  <p-dialog
+    header="Add Attitude Skill"
+    [(visible)]="visible"
+    [style]="{ width: '25rem' }"
+  >
+    <div class="flex align-items-center gap-3 mb-3">
+      <label for="attitude skill" class="font-semibold w-6rem"
+        >Attitude Skill</label
+      >
+      <input
+        pInputText
+        id="attitude skill"
+        class="flex-auto"
+        autocomplete="off"
+        [(ngModel)]="newAttitudeSkill.attitude_skill"
+      />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+      <label for="group id" class="font-semibold w-6rem">Group id</label>
+      <input
+        pInputText
+        id="attitude skill"
+        class="flex-auto"
+        autocomplete="off"
+        [(ngModel)]="newAttitudeSkill.group_id"
+      />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+      <label for="enabled" class="font-semibold w-6rem">Enabled</label>
+      <p-checkbox
+        [(ngModel)]="newAttitudeSkill.enabled"
+        [binary]="true"
+        inputId="binary"
+      />
+    </div>
+    <div class="flex justify-content-end gap-2">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        (onClick)="visible = false"
+      />
+      <p-button
+        label="Save"
+        (onClick)="visible = false; createAttitudeSkill()"
+      />
+    </div>
+  </p-dialog>
+</div>
+
+<div class="card flex justify-content-center">
+  <p-dialog
+    header="Edit Division"
+    [(visible)]="editVisible"
+    [style]="{ width: '25rem' }"
+  >
+    <div class="flex align-items-center gap-3 mb-3">
+      <label for="Attitude Skill" class="font-semibold w-6rem"
+        >Attitude Skill</label
+      >
+      <input
+        [(ngModel)]="editData.attitude_skill"
+        pInputText
+        id="Attitude Skill"
+        class="flex-auto"
+        autocomplete="off"
+      />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+      <label for="Group id" class="font-semibold w-6rem">Group id</label>
+      <input
+        [(ngModel)]="editData.group_id"
+        pInputText
+        id="Attitude Skill"
+        class="flex-auto"
+        autocomplete="off"
+      />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+      <label for="Enabled" class="font-semibold w-6rem">Enabled</label>
+      <p-checkbox
+        [(ngModel)]="editData.enabled"
+        [binary]="true"
+        inputId="binary"
+      />
+    </div>
+    <div class="flex justify-content-end gap-2">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        (onClick)="editVisible = false"
+      />
+      <p-button
+        label="Save"
+        (onClick)="editVisible = false; updateAttitudeSkill()"
+      />
+    </div>
+  </p-dialog>
+</div>
