@@ -40,6 +40,7 @@ export class NavbarComponent {
           },
           {
             label: 'Attitude skill',
+            routerLink: '/manage/attitude-skills',
             // icon: 'pi pi-home',
           },
         ],

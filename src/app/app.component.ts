@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AttitudeSkillComponent } from './features/attitude-skill/components/attitude-skill.component';
 import { LoginComponent } from './features/auth/login/components/login.component';
 import { ManageDivisionComponent } from './features/divisions/components/manage-division.component';
 import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-skill/components/manage-group-attitude-skill.component';
@@ -19,6 +20,7 @@ import { MainPageComponent } from './features/menu/components/main-page.componen
     ManageDivisionComponent,
     ManageGroupAttitudeSkillComponent,
     MainPageComponent,
+    AttitudeSkillComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
