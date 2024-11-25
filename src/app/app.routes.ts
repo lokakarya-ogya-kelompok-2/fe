@@ -15,6 +15,7 @@ export const routes: Routes = [
   { path: 'menu', component: MenuComponent, canActivate: [authGuard] },
   {
     path: 'manage',
+    component: ManageComponent,
     children: [
       { path: 'divisions', component: ManageDivisionComponent },
       {
