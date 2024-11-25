@@ -1,23 +1,43 @@
 <div class="card flex">
-    <div class="surface-card ">
-        <h1>Login</h1>
-        <form>
-            <div class="field">
-                <span class="p-float-label">
-                    <input id="username" type="text" pInputText />
-                    <label for="username">Username or Email</label>
-                </span>
-            </div>
-            <div class="field">
-
-                <span class="p-float-label">
-                    <input id="password" type="password" pInputText />
-                    <label for="password">Password</label>
-                </span>
-            </div>
-            <div class="button-login">
-                <p-button label="Login" severity="primary" [routerLink]="['/main']"/>
-            </div>
-        </form>
-    </div>
+  <div class="surface-card">
+    <h1>Login</h1>
+    <form #loginForm="ngForm" (submit)="onSubmit()">
+      <div class="field">
+        <span class="p-float-label">
+          <input
+            id="email_or_username"
+            type="text"
+            pInputText
+            name="email_or_username"
+            [(ngModel)]="loginData.email_or_username"
+            required
+          />
+          <label for="username">Username or Email</label>
+        </span>
+      </div>
+      <div class="field">
+        <span class="p-float-label">
+          <input
+            id="password"
+            type="password"
+            name="password"
+            pInputText
+            [(ngModel)]="loginData.password"
+            required
+            minlength="8"
+            maxlength="32"
+          />
+          <label for="password">Password</label>
+        </span>
+      </div>
+      <div class="button-login">
+        <p-button
+          type="submit"
+          label="Login"
+          severity="primary"
+          [disabled]="loginForm.invalid"
+        />
+      </div>
+    </form>
+  </div>
 </div>
