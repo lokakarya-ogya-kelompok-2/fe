@@ -29,6 +29,7 @@ export class LoginComponent {
       next: (res) => {
         this.authSvc.login(res.content.token);
         this.router.navigate(['/']);
+        console.log('AAAAAAAAAAAAAAAAAAAAAaa');
       },
       error: (err) => {
         console.log('ADA ERROR', err);
