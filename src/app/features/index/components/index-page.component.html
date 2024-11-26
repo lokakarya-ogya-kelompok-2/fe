@@ -1,1 +1,12 @@
-<p>Nothing here to see, please move to /login</p>
+<!-- <p>Welcome {{ username }}</p> -->
+
+@if (username) {
+<div class="center">
+  <H1>Welcome, {{ username }}</H1>
+</div>
+} @else {
+<div class="center">
+  <H1 style="margin-right: 24px">Please log in ==> </H1>
+  <p-button label="Login" routerLink="/login" severity="primary" />
+</div>
+}

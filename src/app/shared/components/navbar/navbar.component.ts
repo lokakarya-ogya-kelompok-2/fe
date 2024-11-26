@@ -24,7 +24,7 @@ export class NavbarComponent {
       {
         label: 'Division',
         // icon: 'pi pi-home',
-        routerLink: '/manage/divisions',
+        routerLink: '/manage',
       },
       {
         label: 'Role-menu',
@@ -57,12 +57,14 @@ export class NavbarComponent {
           {
             label: 'Technical skill',
             // icon: 'pi pi-home',
+            routerLink: '/manage/technical-skills',
           },
         ],
       },
       {
         label: 'Dev-plan',
         // icon: 'pi pi-star',
+        routerLink: '/manage/dev-plans',
       },
       {
         label: 'Achievements',
@@ -71,20 +73,24 @@ export class NavbarComponent {
           {
             label: 'Group achievement',
             // icon: 'pi pi-bolt',
+            routerLink: '/manage/group-achievements',
           },
           {
             label: 'Achievement',
             // icon: 'pi pi-server',
+            routerLink: '/manage/achievements',
           },
           {
             label: 'Emp achievement',
             // icon: 'pi pi-pencil',
+            routerLink: '/manage/emp-achievements',
           },
         ],
       },
       {
         label: 'Summary',
         // icon: 'pi pi-envelope',
+        routerLink: '/manage/summaries',
       },
     ];
   }

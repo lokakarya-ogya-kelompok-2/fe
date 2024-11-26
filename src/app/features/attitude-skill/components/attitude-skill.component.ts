@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
@@ -31,6 +32,7 @@ import { AttitudeSkillService } from '../services/attitude-skill.service';
     ToastModule,
     FormsModule,
     CheckboxModule,
+    DropdownModule,
   ],
   templateUrl: './attitude-skill.component.html',
   styleUrl: './attitude-skill.component.scss',
@@ -46,9 +48,12 @@ export class AttitudeSkillComponent implements OnInit {
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
+  detailVisible: boolean = false;
   editData: AttitudeSkill = {} as AttitudeSkill;
   newAttitudeSkill: AttitudeSkillRequest = {} as AttitudeSkillRequest;
   checked: boolean = false;
+  groupAttitudeSkillDropdown: any = [];
+  dataDetail: AttitudeSkill = {} as AttitudeSkill;
   resetForm(): void {
     this.newAttitudeSkill.attitude_skill = '';
     this.newAttitudeSkill.enabled = false;
@@ -68,6 +73,13 @@ export class AttitudeSkillComponent implements OnInit {
     this.attitudeSkillService.getAttitudeSkills().subscribe({
       next: (data) => {
         this.Datas = data.content;
+        data.content.map((item: any) =>
+          this.groupAttitudeSkillDropdown.push({
+            id: item.group_id.id,
+            name: item.group_id.group_name,
+          })
+        );
+        console.log(this.groupAttitudeSkillDropdown);
         console.log(this.Datas);
         this.loading = false;
       },
@@ -97,7 +109,7 @@ export class AttitudeSkillComponent implements OnInit {
       });
   }
   updateAttitudeSkill(): void {
-    // console.log(this.editData);
+    console.log(this.editData + ' INI');
     this.attitudeSkillService.updateAttitudeSkill(this.editData).subscribe({
       next: (data) => {
         console.log(data);
@@ -144,11 +156,6 @@ export class AttitudeSkillComponent implements OnInit {
               icon: 'success',
               text: data.message,
             });
-            // this.messageService.add({
-            //   severity: 'success',
-            //   summary: 'success',
-            //   detail: 'Division deleted successfully',
-            // });
             console.log('Data deleted successfully');
             this.getAttitudeSkill();
           },
@@ -180,6 +187,11 @@ export class AttitudeSkillComponent implements OnInit {
     this.editData = { ...data };
     this.editData.group_id = data.group_id.id;
     console.log(data, 'from dialog button');
+  }
+  showDialogDetail(data: any) {
+    this.visible = true;
+    this.dataDetail = data;
+    console.log(this.dataDetail);
   }
 
   onGlobalFilter(table: Table, event: Event) {

@@ -3,8 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
@@ -12,10 +14,11 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
-import { Division, DivisionRequest } from '../models/division';
-import { ManageDivisionService } from '../services/manage-division.service';
+import { Achievement, AchievementRequest } from '../../model/achievement';
+import { AchievementService } from '../../services/achievement.service';
+
 @Component({
-  selector: 'app-manage-division',
+  selector: 'app-achievement',
   standalone: true,
   imports: [
     CommonModule,
@@ -29,58 +32,64 @@ import { ManageDivisionService } from '../services/manage-division.service';
     ConfirmDialogModule,
     ToastModule,
     FormsModule,
+    CheckboxModule,
+    DropdownModule,
   ],
+  templateUrl: './achievement.component.html',
+  styleUrl: './achievement.component.scss',
   providers: [
-    ManageDivisionService,
+    AchievementService,
     ConfirmationService,
     MessageService,
     FormsModule,
   ],
-  templateUrl: './manage-division.component.html',
-  styleUrl: './manage-division.component.scss',
 })
-export class ManageDivisionComponent implements OnInit {
-  datas: any[] = [];
+export class AchievementComponent implements OnInit {
+  Datas: Achievement[] = [];
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
   detailVisible: boolean = false;
-  newDivision: DivisionRequest = {} as DivisionRequest;
-  editDivision: Division = {} as Division;
-  editData: Division = {} as Division;
-  dataDetail: Division = {} as Division;
-
+  editData: Achievement = {} as Achievement;
+  newAchievement: AchievementRequest = {} as AchievementRequest;
+  checked: boolean = false;
+  groupAttitudeSkillDropdown: any = [];
+  dataDetail: Achievement = {} as Achievement;
+  groupAchievementDropdown: any = [];
   resetForm(): void {
-    this.newDivision.division_name = '';
-  }
-  resetEditForm(): void {
-    this.editData.division_name = '';
+    this.newAchievement.achievement = '';
+    this.newAchievement.enabled = false;
+    this.newAchievement.group_id = '';
   }
   constructor(
-    private manageDivisionService: ManageDivisionService,
+    private achievementService: AchievementService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
-    this.getAllDivisions();
+    this.getAchievement();
   }
 
-  getAllDivisions(): void {
-    this.manageDivisionService.getAllDivisions().subscribe({
+  getAchievement(): void {
+    this.achievementService.getAchievements().subscribe({
       next: (data) => {
-        this.datas = data.content;
+        this.Datas = data.content;
+        data.content.map((item: any) => {
+          this.groupAchievementDropdown.push({
+            id: item.group_id?.id,
+            name: item.group_id?.group_name,
+          });
+        });
+        console.log(this.Datas);
+        console.log(this.groupAchievementDropdown);
+
         this.loading = false;
-        console.log('Data fetched:', data);
-      },
-      error: (err) => {
-        console.error('Error fetching data:', err);
       },
     });
   }
-  createDivision(): void {
-    // console.log(this.newDivision);
-    this.manageDivisionService.createDivision(this.newDivision).subscribe({
+  createAchievement(): void {
+    this.achievementService.createAchievement(this.newAchievement).subscribe({
       next: (data) => {
         console.log(data);
         Swal.fire({
@@ -88,57 +97,24 @@ export class ManageDivisionComponent implements OnInit {
           icon: 'success',
         });
         this.resetForm();
-        this.getAllDivisions();
-      },
-      error: (err) => {
-        console.error('Error creating division:', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'create division failed!',
-        });
+        this.getAchievement();
       },
     });
   }
-  updateDivision(): void {
-    console.log('editt');
-    this.manageDivisionService.updateDivision(this.editData).subscribe({
+  updateAchievement(): void {
+    this.achievementService.updateAchievement(this.editData).subscribe({
       next: (data) => {
         console.log(data);
-        this.resetEditForm();
         Swal.fire({
           title: 'Division updated!',
           icon: 'success',
         });
-        this.getAllDivisions();
-      },
-      error: (err) => {
-        console.error('Error updating division:', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'update division failed!',
-        });
+        this.getAchievement();
       },
     });
   }
 
-  // modal
-  showDialog() {
-    this.visible = true;
-  }
-  showEditDialog(data: any) {
-    this.editVisible = true;
-    this.editData = { ...data };
-    console.log(this.editData, 'from dialog button');
-  }
-  showDialogDetail(data: any) {
-    this.detailVisible = true;
-    this.dataDetail = data;
-    console.log(this.dataDetail);
-  }
-
-  confirm2(event: Event, key: string) {
+  confirmDelete(event: Event, key: string) {
     console.log('masuk');
     console.log(event.target);
     console.log(key);
@@ -154,24 +130,23 @@ export class ManageDivisionComponent implements OnInit {
       key: key,
       accept: () => {
         console.log('delete data');
-
-        this.manageDivisionService.deleteDivision(key).subscribe({
+        this.achievementService.deleteAchievement(key).subscribe({
           next: (data) => {
             console.log(data);
             Swal.fire({
-              title: 'Division deleted!',
+              title: 'Achievement deleted!',
               icon: 'success',
               text: data.message,
             });
             console.log('Data deleted successfully');
-            this.getAllDivisions();
+            this.getAchievement();
           },
           error: (err) => {
-            console.error('Error deleting division:', err);
+            console.error('Error deleting achievement:', err);
             this.messageService.add({
               severity: 'error',
               summary: 'error',
-              detail: 'Failed to delete division',
+              detail: 'Failed to delete achievement',
             });
           },
         });
@@ -184,6 +159,21 @@ export class ManageDivisionComponent implements OnInit {
         });
       },
     });
+  }
+
+  showDialog() {
+    this.visible = true;
+  }
+  showEditDialog(data: any) {
+    this.editVisible = true;
+    this.editData = { ...data };
+    this.editData.group_id = data.group_id.id;
+    console.log(data, 'from dialog button');
+  }
+  showDialogDetail(data: any) {
+    this.detailVisible = true;
+    this.dataDetail = data;
+    console.log(this.dataDetail);
   }
 
   onGlobalFilter(table: Table, event: Event) {

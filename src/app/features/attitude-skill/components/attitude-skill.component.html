@@ -43,10 +43,6 @@
         <th>Group Name</th>
         <th>Percentage</th>
         <th>Enabled</th>
-        <th>Created at</th>
-        <th>Created By</th>
-        <th>Updated at</th>
-        <th>Updated By</th>
         <th>Action</th>
       </tr>
     </ng-template>
@@ -57,22 +53,25 @@
         <td>{{ data.group_id.group_name }}</td>
         <td>{{ data.group_id.percentage }}</td>
         <td>{{ data.enabled }}</td>
-        <td>{{ data.created_at }}</td>
-        <td>{{ data.created_by }}</td>
-        <td>{{ data.updated_at }}</td>
-        <td>{{ data.updated_by }}</td>
         <td style="justify-content: space-between; display: flex">
-          <p-button (onClick)="showEditDialog(data)" severity="success"
-            ><i class="pi pi-pen-to-square"></i
+          <p-button
+            (onClick)="showDialogDetail(data)"
+            label=""
+            icon="pi pi-info-circle"
+          />
+          <p-button
+            (onClick)="showEditDialog(data)"
+            severity="success"
+            icon="pi pi-pen-to-square"
           ></p-button>
-          <p-confirmDialog key="{{ data.id }}" />
           <p-button
             (onClick)="confirm2($event, data.id)"
             [outlined]="true"
             severity="danger"
+            icon="pi pi-trash"
           >
-            <i class="pi pi-trash"></i>
           </p-button>
+          <p-confirmDialog key="{{ data.id }}" />
         </td>
       </tr>
     </ng-template>
@@ -86,9 +85,9 @@
     [style]="{ width: '25rem' }"
   >
     <div class="flex align-items-center gap-3 mb-3">
-      <label for="attitude skill" class="font-semibold w-6rem"
-        >Attitude Skill</label
-      >
+      <label for="attitude skill" class="font-semibold w-6rem">
+        Attitude Skill
+      </label>
       <input
         pInputText
         id="attitude skill"
@@ -98,13 +97,13 @@
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
-      <label for="group id" class="font-semibold w-6rem">Group id</label>
-      <input
-        pInputText
-        id="attitude skill"
-        class="flex-auto"
-        autocomplete="off"
+      <label for="Group name" class="font-semibold w-6rem">Group name</label>
+      <p-dropdown
+        [options]="groupAttitudeSkillDropdown"
         [(ngModel)]="newAttitudeSkill.group_id"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Select a group name"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -136,9 +135,9 @@
     [style]="{ width: '25rem' }"
   >
     <div class="flex align-items-center gap-3 mb-3">
-      <label for="Attitude Skill" class="font-semibold w-6rem"
-        >Attitude Skill</label
-      >
+      <label for="Attitude Skill" class="font-semibold w-6rem">
+        Attitude Skill
+      </label>
       <input
         [(ngModel)]="editData.attitude_skill"
         pInputText
@@ -148,13 +147,13 @@
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
-      <label for="Group id" class="font-semibold w-6rem">Group id</label>
-      <input
+      <label for="Group id" class="font-semibold w-6rem">Group name</label>
+      <p-dropdown
+        [options]="groupAttitudeSkillDropdown"
         [(ngModel)]="editData.group_id"
-        pInputText
-        id="Attitude Skill"
-        class="flex-auto"
-        autocomplete="off"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Select a group name"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -175,6 +174,80 @@
         label="Save"
         (onClick)="editVisible = false; updateAttitudeSkill()"
       />
+    </div>
+  </p-dialog>
+</div>
+<div class="card flex justify-content-center">
+  <p-dialog
+    header="Attitude Skill Detail"
+    [modal]="true"
+    [(visible)]="detailVisible"
+    [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  >
+    <div class="card">
+      <p-table
+        #divisionTable
+        [value]="[dataDetail]"
+        dataKey="id"
+        [loading]="loading"
+        [tableStyle]="{
+          'min-width': '40rem',
+          'text-align': 'center',
+          'font-size': '12px',
+          margin: '0'
+        }"
+        [globalFilterFields]="['id', 'division_name', 'created_by.full_name']"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Field</th>
+            <th>Data</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data>
+          <tr>
+            <td>Id</td>
+            <td>{{ data.id }}</td>
+          </tr>
+          <tr>
+            <td>Attitude Skill</td>
+            <td>{{ data.attitude_skill }}</td>
+          </tr>
+          <tr>
+            <td>Group Id</td>
+            <td>{{ data.group_id?.id }}</td>
+          </tr>
+          <tr>
+            <td>Group Name</td>
+            <td>{{ data.group_id?.group_name }}</td>
+          </tr>
+          <tr>
+            <td>Percentage</td>
+            <td>{{ data.group_id?.percentage }}</td>
+          </tr>
+          <tr>
+            <td>Enabled</td>
+            <td>{{ data.enabled }}</td>
+          </tr>
+          <tr>
+            <td>Created At</td>
+            <td>{{ data.created_at }}</td>
+          </tr>
+          <tr>
+            <td>Created By</td>
+            <td>{{ data.created_by }}</td>
+          </tr>
+          <tr>
+            <td>Updated At</td>
+            <td>{{ data.updated_at }}</td>
+          </tr>
+          <tr>
+            <td>Updated By</td>
+            <td>{{ data.updated_by }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
   </p-dialog>
 </div>

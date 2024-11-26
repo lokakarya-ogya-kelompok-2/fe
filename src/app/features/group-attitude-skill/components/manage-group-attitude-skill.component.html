@@ -42,10 +42,6 @@
         <th>group Name</th>
         <th>Percentage</th>
         <th>Enabled</th>
-        <th>Created at</th>
-        <th>Created By</th>
-        <th>Updated at</th>
-        <th>Updated By</th>
         <th>Action</th>
       </tr>
     </ng-template>
@@ -55,21 +51,24 @@
         <td>{{ data.group_name }}</td>
         <td>{{ data.percentage }}</td>
         <td>{{ data.enabled }}</td>
-        <td>{{ data.created_at }}</td>
-        <td>{{ data.created_by }}</td>
-        <td>{{ data.updated_at }}</td>
-        <td>{{ data.updated_by }}</td>
-        <td tyle="justify-content: space-between; display: flex">
-          <p-button (onClick)="showEditDialog(data)" severity="success"
-            ><i class="pi pi-pen-to-square"></i
+        <td style="justify-content: space-between; display: flex">
+          <p-button
+            (onClick)="showDialogDetail(data)"
+            label=""
+            icon="pi pi-info-circle"
+          />
+          <p-button
+            (onClick)="showEditDialog(data)"
+            severity="success"
+            icon="pi pi-pen-to-square"
           ></p-button>
-          <p-confirmDialog key="{{ data.id }}" />
           <p-button
             (onClick)="confirmDelete($event, data.id)"
             [outlined]="true"
             severity="danger"
-            ><i class="pi pi-trash"></i
+            icon="pi pi-trash"
           ></p-button>
+          <p-confirmDialog key="{{ data.id }}" />
         </td>
       </tr>
     </ng-template>
@@ -132,27 +131,27 @@
   >
     <span class="p-text-secondary block mb-5">Edit group attitude skill.</span>
     <div class="flex align-items-center gap-3 mb-3">
-      <label for="username" class="font-semibold w-6rem">Group Name</label>
+      <label for="Group Name" class="font-semibold w-6rem">Group Name</label>
       <input
         [(ngModel)]="editData.group_name"
         pInputText
-        id="username"
+        id="Group Name"
         class="flex-auto"
         autocomplete="off"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
-      <label for="username" class="font-semibold w-6rem">Percentage</label>
+      <label for="Percentage" class="font-semibold w-6rem">Percentage</label>
       <input
         [(ngModel)]="editData.percentage"
         pInputText
-        id="username"
+        id="Percentage"
         class="flex-auto"
         autocomplete="off"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
-      <label for="username" class="font-semibold w-6rem">Enabled</label>
+      <label for="Enabled" class="font-semibold w-6rem">Enabled</label>
       <p-checkbox
         [(ngModel)]="editData.enabled"
         [binary]="true"
@@ -170,6 +169,65 @@
         label="Save"
         (onClick)="editVisible = false; updateGroupAttitudeSkill()"
       />
+    </div>
+  </p-dialog>
+</div>
+
+<div class="card flex justify-content-center">
+  <p-dialog
+    header="Group Attitude Skill Detail"
+    [modal]="true"
+    [(visible)]="detailVisible"
+    [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  >
+    <!-- <p class="mb-5">ini detail</p> -->
+    <div class="card">
+      <p-table
+        #divisionTable
+        [value]="[dataDetail]"
+        dataKey="id"
+        [loading]="loading"
+        [tableStyle]="{
+          'min-width': '40rem',
+          'text-align': 'center',
+          'font-size': '12px',
+          margin: '0'
+        }"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Field</th>
+            <th>Data</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data>
+          <tr>
+            <td>Id</td>
+            <td>{{ data.id }}</td>
+          </tr>
+          <tr>
+            <td>Group Name</td>
+            <td>{{ data.group_name }}</td>
+          </tr>
+          <tr>
+            <td>Created At</td>
+            <td>{{ data.created_at }}</td>
+          </tr>
+          <tr>
+            <td>Created By</td>
+            <td>{{ data.created_by }}</td>
+          </tr>
+          <tr>
+            <td>Updated At</td>
+            <td>{{ data.updated_at }}</td>
+          </tr>
+          <tr>
+            <td>Updated By</td>
+            <td>{{ data.updated_by }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
   </p-dialog>
 </div>
