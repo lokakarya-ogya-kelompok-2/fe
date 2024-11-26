@@ -57,6 +57,7 @@ export class ManageGroupAttitudeSkillComponent {
     {} as GroupAttitudeSkillRequest;
   checked: boolean = false;
   editData: GroupAttitudeSkill = {} as GroupAttitudeSkill;
+  dataDetail: GroupAttitudeSkill = {} as GroupAttitudeSkill;
   resetForm(): void {
     this.newGroupAttitudeSkill.group_name = '';
     this.newGroupAttitudeSkill.percentage = 0;
@@ -175,5 +176,10 @@ export class ManageGroupAttitudeSkillComponent {
     this.editVisible = true;
     this.editData = data;
     console.log(this.editData);
+  }
+  showDialogDetail(data: any) {
+    this.visible = true;
+    this.dataDetail = data;
+    console.log(this.dataDetail);
   }
 }

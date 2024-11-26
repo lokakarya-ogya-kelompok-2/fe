@@ -47,10 +47,6 @@
       <tr>
         <th>Id</th>
         <th>Division Name</th>
-        <th>Created at</th>
-        <th>Created By</th>
-        <th>Updated at</th>
-        <th>Updated By</th>
         <th>Action</th>
       </tr>
     </ng-template>
@@ -58,21 +54,24 @@
       <tr>
         <td>{{ post.id }}</td>
         <td>{{ post.division_name }}</td>
-        <td>{{ post.created_at }}</td>
-        <td>{{ post.created_by?.full_name }}</td>
-        <td>{{ post.updated_at }}</td>
-        <td>{{ post.updated_by }}</td>
-        <td style="justify-content: space-between; display: flex">
-          <p-button (onClick)="showEditDialog(post)" severity="success"
-            ><i class="pi pi-pen-to-square"></i
+        <td style="justify-content: space-evenly; display: flex">
+          <p-button
+            (onClick)="showDialogDetail(post)"
+            label=""
+            icon="pi pi-info-circle"
+          />
+          <p-button
+            (onClick)="showEditDialog(post)"
+            severity="success"
+            icon="pi pi-pen-to-square"
           ></p-button>
-          <p-confirmDialog key="{{ post.id }}" />
           <p-button
             (onClick)="confirm2($event, post.id)"
             [outlined]="true"
             severity="danger"
-            ><i class="pi pi-trash"></i
+            icon="pi pi-trash"
           ></p-button>
+          <p-confirmDialog key="{{ post.id }}" />
         </td>
       </tr>
     </ng-template>
@@ -135,6 +134,66 @@
         label="Save"
         (onClick)="editVisible = false; updateDivision()"
       />
+    </div>
+  </p-dialog>
+</div>
+
+<div class="card flex justify-content-center">
+  <p-dialog
+    header="Division Detail"
+    [modal]="true"
+    [(visible)]="visible"
+    [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  >
+    <!-- <p class="mb-5">ini detail</p> -->
+    <div class="card">
+      <p-table
+        #divisionTable
+        [value]="[dataDetail]"
+        dataKey="id"
+        [loading]="loading"
+        [tableStyle]="{
+          'min-width': '50rem',
+          'text-align': 'center',
+          'font-size': '12px',
+          margin: '0'
+        }"
+        [globalFilterFields]="['id', 'division_name', 'created_by.full_name']"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Field</th>
+            <th>Data</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data>
+          <tr>
+            <td>Id</td>
+            <td>{{ data.id }}</td>
+          </tr>
+          <tr>
+            <td>Division Name</td>
+            <td>{{ data.division_name }}</td>
+          </tr>
+          <tr>
+            <td>Created At</td>
+            <td>{{ data.created_at }}</td>
+          </tr>
+          <tr>
+            <td>Created By</td>
+            <td>{{ data.created_by }}</td>
+          </tr>
+          <tr>
+            <td>Updated At</td>
+            <td>{{ data.updated_at }}</td>
+          </tr>
+          <tr>
+            <td>Updated By</td>
+            <td>{{ data.updated_by }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
   </p-dialog>
 </div>

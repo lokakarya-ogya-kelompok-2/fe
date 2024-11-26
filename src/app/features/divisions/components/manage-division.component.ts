@@ -47,6 +47,7 @@ export class ManageDivisionComponent implements OnInit {
   newDivision: DivisionRequest = {} as DivisionRequest;
   editDivision: Division = {} as Division;
   editData: Division = {} as Division;
+  dataDetail: Division = {} as Division;
 
   resetForm(): void {
     this.newDivision.division_name = '';
@@ -129,6 +130,11 @@ export class ManageDivisionComponent implements OnInit {
     this.editVisible = true;
     this.editData = { ...data };
     console.log(this.editData, 'from dialog button');
+  }
+  showDialogDetail(data: any) {
+    this.visible = true;
+    this.dataDetail = data;
+    console.log(this.dataDetail);
   }
 
   confirm2(event: Event, key: string) {

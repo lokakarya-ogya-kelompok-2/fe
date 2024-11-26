@@ -23,7 +23,7 @@ export class NavbarComponent {
       {
         label: 'Division',
         // icon: 'pi pi-home',
-        routerLink: '/manage/divisions',
+        routerLink: '/manage',
       },
       {
         label: 'Role-menu',
