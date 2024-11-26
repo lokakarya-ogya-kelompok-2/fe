@@ -12,9 +12,9 @@ import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-ski
 import { IndexPageComponent } from './features/index/components/index-page.component';
 import { ManageComponent } from './features/manage/components/manage-page.component';
 import { MainPageComponent as MenuComponent } from './features/menu/components/main-page.component';
-import { UserListComponent } from './features/users/components/user-list/user-list.component';
 import { SummaryComponent } from './features/summary/components/summary/summary.component';
 import { TechnicalSkillComponent } from './features/technical-skill/components/technical-skill/technical-skill.component';
+import { UserListComponent } from './features/users/components/user-list/user-list.component';
 import { NotFoundComponent } from './shared/pages/not-found/not-found.component';
 
 export const routes: Routes = [
@@ -38,6 +38,8 @@ export const routes: Routes = [
       {
         path: 'divisions',
         component: ManageDivisionComponent,
+      },
+      {
         path: 'achievements',
         component: AchievementComponent,
       },

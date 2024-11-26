@@ -68,7 +68,7 @@ export class UserFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.isDivisionLoading = true;
-    this.divisionSvc.getPosts().subscribe({
+    this.divisionSvc.getAllDivisions().subscribe({
       next: (data) => {
         this.divisions = data.content;
       },
