@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -17,22 +17,31 @@ import { LoginRequest } from '../models/login';
 })
 export class LoginComponent {
   loginData: LoginRequest = {} as LoginRequest;
-
+  private router = inject(Router);
   constructor(
     private readonly loginSvc: LoginService,
-    private readonly authSvc: AuthService,
-    private readonly router: Router
+    private readonly authSvc: AuthService
   ) {}
 
   onSubmit() {
     this.loginSvc.login(this.loginData).subscribe({
       next: (res) => {
         this.authSvc.login(res.content.token);
-        this.router.navigate(['/']);
-        console.log('AAAAAAAAAAAAAAAAAAAAAaa');
+        this.router
+          .navigate(['/'])
+          .then((navigated) => {
+            if (navigated) {
+              console.log('Navigation to /manage successful');
+            } else {
+              console.error('Navigation to /manage failed');
+            }
+          })
+          .catch((err) => {
+            console.error('Navigation error:', err);
+          });
       },
       error: (err) => {
-        console.log('ADA ERROR', err);
+        console.error('Login error:', err);
       },
     });
   }

@@ -13,7 +13,6 @@ export class AuthService {
     this.isAuthenticatedSubject.asObservable();
 
   constructor(private readonly tokenService: TokenService) {
-    console.log('TOKEN IS = ', this.isAuthenticated());
     this.isAuthenticatedSubject.next(this.isAuthenticated());
   }
 
@@ -21,7 +20,6 @@ export class AuthService {
     const token = this.tokenService.getToken();
     if (token) {
       const jwtPayload = jwtDecode(token);
-      console.log('TOKEN TOKEN TOKEN' + jwtPayload.exp);
       return jwtPayload.exp! > Date.now() / 1000;
     }
     return false;
