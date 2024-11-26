@@ -9,7 +9,7 @@ import { Division, DivisionRequest } from '../models/division';
 export class ManageDivisionService {
   private Api = 'http://localhost:8080/divisions';
   constructor(private http: HttpClient) {}
-  getPosts(): Observable<any> {
+  getAllDivisions(): Observable<any> {
     return this.http.get<any>(this.Api);
   }
   createDivision(division: DivisionRequest): Observable<Division> {
