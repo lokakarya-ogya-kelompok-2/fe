@@ -27,18 +27,7 @@ export class LoginComponent {
     this.loginSvc.login(this.loginData).subscribe({
       next: (res) => {
         this.authSvc.login(res.content.token);
-        this.router
-          .navigate(['/'])
-          .then((navigated) => {
-            if (navigated) {
-              console.log('Navigation to /manage successful');
-            } else {
-              console.error('Navigation to /manage failed');
-            }
-          })
-          .catch((err) => {
-            console.error('Navigation error:', err);
-          });
+        this.router.navigate(['/']);
       },
       error: (err) => {
         console.error('Login error:', err);
