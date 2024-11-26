@@ -19,12 +19,12 @@ export class NavbarComponent {
         label: 'User',
         // icon: 'pi pi-home',
         // style: { padding: '0.5rem 0,5rem' },
-        routerLink: '/manage',
+        routerLink: '/manage/',
       },
       {
         label: 'Division',
         // icon: 'pi pi-home',
-        routerLink: '/manage',
+        routerLink: 'divisions',
       },
       {
         label: 'Role-menu',
