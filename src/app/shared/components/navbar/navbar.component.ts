@@ -19,6 +19,7 @@ export class NavbarComponent {
         label: 'User',
         // icon: 'pi pi-home',
         // style: { padding: '0.5rem 0,5rem' },
+        routerLink: '/manage',
       },
       {
         label: 'Division',

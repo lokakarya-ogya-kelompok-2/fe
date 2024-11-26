@@ -1,0 +1,172 @@
+<div class="flex justify-content-center">
+  <div style="max-width: 600px; width: 100%">
+    <form #userForm="ngForm" (submit)="onSubmit()">
+      <div class="grid pt-4">
+        <!-- Full Name -->
+        <div class="col-12 mb-4">
+          <p-floatLabel>
+            <input
+              pInputText
+              type="text"
+              name="fullName"
+              id="fullName"
+              [(ngModel)]="userData.full_name"
+              required
+              class="w-full"
+            />
+            <label for="fullName">Full Name</label>
+          </p-floatLabel>
+        </div>
+
+        <!-- Position -->
+        <div class="col-12 mb-4">
+          <p-floatLabel>
+            <input
+              pInputText
+              type="text"
+              name="position"
+              id="position"
+              [(ngModel)]="userData.position"
+              required
+              class="w-full"
+            />
+            <label for="position">Position</label>
+          </p-floatLabel>
+        </div>
+
+        <!-- Username -->
+        <div class="col-12 mb-4">
+          <p-floatLabel>
+            <input
+              pInputText
+              type="text"
+              name="username"
+              id="username"
+              [(ngModel)]="userData.username"
+              required
+              class="w-full"
+            />
+            <label for="username">Username</label>
+          </p-floatLabel>
+        </div>
+
+        <!-- Email -->
+        <div class="col-12 mb-4">
+          <p-floatLabel>
+            <input
+              pInputText
+              type="email"
+              name="email"
+              id="email"
+              [(ngModel)]="userData.email"
+              required
+              class="w-full"
+            />
+            <label for="email">Email</label>
+          </p-floatLabel>
+        </div>
+
+        <!-- Password -->
+        <div class="col-12 mb-4">
+          <p-floatLabel>
+            <p-password
+              [(ngModel)]="userData.password"
+              minlength="8"
+              maxlength="32"
+              name="password"
+              id="password"
+              styleClass="w-full"
+              inputStyleClass="w-full"
+            />
+            <label for="password">Password</label>
+          </p-floatLabel>
+        </div>
+
+        <!-- Division -->
+        <div class="col-12 mb-4">
+          <p-floatLabel>
+            <p-dropdown
+              name="division"
+              [options]="divisions"
+              [(ngModel)]="userData.division_id"
+              optionLabel="division_name"
+              optionValue="id"
+              placeholder="Select a division"
+              [loading]="isDivisionLoading"
+              required
+              styleClass="w-full"
+            />
+            <label for="division">Division</label>
+          </p-floatLabel>
+        </div>
+
+        <!-- Roles -->
+        <div class="col-12 mb-4">
+          <p-floatLabel>
+            <p-multiSelect
+              [options]="roles"
+              [(ngModel)]="userData.roles"
+              optionLabel="role_name"
+              optionValue="id"
+              placeholder="Select Roles"
+              name="roles"
+              id="roles"
+              styleClass="w-full"
+            />
+            <label for="role">Roles</label>
+          </p-floatLabel>
+        </div>
+
+        <!-- Join Date -->
+        <div class="col-12 mb-4">
+          <label for="joinDate">Join Date</label>
+          <p-calendar
+            inline="true"
+            [(ngModel)]="userData.join_date"
+            inputId="joinDate"
+            name="joinDate"
+            styleClass="w-full"
+            [maxDate]="maxDate"
+          />
+        </div>
+
+        <!-- Combined Employment Status and Enabled Toggle -->
+        <div class="col-12 mb-4">
+          <div class="flex justify-content-between align-items-center">
+            <div>
+              <label class="block mb-2">Employment Status</label>
+              <p-selectButton
+                [options]="statusOptions"
+                [(ngModel)]="userData.employee_status"
+                name="status"
+                optionLabel="label"
+                optionValue="value"
+              ></p-selectButton>
+            </div>
+            <div class="flex align-items-center">
+              <label for="enabled" class="mr-3">Enabled</label>
+              <p-toggleButton
+                [(ngModel)]="userData.enabled"
+                onLabel="Enabled"
+                offLabel="Disabled"
+                name="enabled"
+                id="enabled"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-content-end mt-4">
+        <p-button
+          label="Save"
+          icon="pi pi-save"
+          [loading]="submitBtnLoading"
+          [disabled]="userForm.invalid"
+          type="submit"
+        />
+      </div>
+    </form>
+  </div>
+</div>

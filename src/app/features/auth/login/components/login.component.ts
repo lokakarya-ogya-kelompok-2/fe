@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -17,11 +17,10 @@ import { LoginRequest } from '../models/login';
 })
 export class LoginComponent {
   loginData: LoginRequest = {} as LoginRequest;
-
+  private router = inject(Router);
   constructor(
     private readonly loginSvc: LoginService,
-    private readonly authSvc: AuthService,
-    private readonly router: Router
+    private readonly authSvc: AuthService
   ) {}
 
   onSubmit() {
@@ -31,7 +30,7 @@ export class LoginComponent {
         this.router.navigate(['/']);
       },
       error: (err) => {
-        console.log('ADA ERROR', err);
+        console.error('Login error:', err);
       },
     });
   }
