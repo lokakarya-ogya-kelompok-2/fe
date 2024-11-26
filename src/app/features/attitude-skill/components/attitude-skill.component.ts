@@ -48,6 +48,7 @@ export class AttitudeSkillComponent implements OnInit {
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
+  detailVisible: boolean = false;
   editData: AttitudeSkill = {} as AttitudeSkill;
   newAttitudeSkill: AttitudeSkillRequest = {} as AttitudeSkillRequest;
   checked: boolean = false;
@@ -155,11 +156,6 @@ export class AttitudeSkillComponent implements OnInit {
               icon: 'success',
               text: data.message,
             });
-            // this.messageService.add({
-            //   severity: 'success',
-            //   summary: 'success',
-            //   detail: 'Division deleted successfully',
-            // });
             console.log('Data deleted successfully');
             this.getAttitudeSkill();
           },
