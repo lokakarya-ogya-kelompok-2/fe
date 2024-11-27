@@ -175,7 +175,7 @@ export class ManageGroupAttitudeSkillComponent {
   }
   showEditDialog(data: GroupAttitudeSkill) {
     this.editVisible = true;
-    this.editData = data;
+    this.editData = { ...data };
     console.log(this.editData);
   }
   showDialogDetail(data: any) {

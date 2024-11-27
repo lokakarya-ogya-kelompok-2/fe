@@ -189,7 +189,7 @@ export class AttitudeSkillComponent implements OnInit {
     console.log(data, 'from dialog button');
   }
   showDialogDetail(data: any) {
-    this.visible = true;
+    this.detailVisible = true;
     this.dataDetail = data;
     console.log(this.dataDetail);
   }

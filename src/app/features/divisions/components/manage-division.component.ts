@@ -46,7 +46,6 @@ export class ManageDivisionComponent implements OnInit {
   editVisible: boolean = false;
   detailVisible: boolean = false;
   newDivision: DivisionRequest = {} as DivisionRequest;
-  editDivision: Division = {} as Division;
   editData: Division = {} as Division;
   dataDetail: Division = {} as Division;
 
