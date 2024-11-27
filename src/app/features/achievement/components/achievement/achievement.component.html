@@ -1,6 +1,8 @@
 <div class="card">
   <p-table
-    #attitudeSkillTable
+    #achievementTable
+    [scrollable]="true"
+    scrollHeight="380px"
     [value]="Datas"
     dataKey="id"
     [rows]="10"
@@ -31,7 +33,7 @@
             pInputText
             type="text"
             placeholder="Search keyword"
-            (input)="onGlobalFilter(attitudeSkillTable, $event)"
+            (input)="onGlobalFilter(achievementTable, $event)"
           />
         </p-iconField>
       </div>
