@@ -1,7 +1,9 @@
 <!-- <app-navbar></app-navbar> -->
 <div class="card">
   <p-table
-    #dt2
+    #groupAttitudeSkillTable
+    [scrollable]="true"
+    scrollHeight="380px"
     [value]="datas"
     dataKey="id"
     [rows]="10"
@@ -31,7 +33,7 @@
             pInputText
             type="text"
             placeholder="Search keyword"
-            (input)="onGlobalFilter(dt2, $event)"
+            (input)="onGlobalFilter(groupAttitudeSkillTable, $event)"
           />
         </p-iconField>
       </div>

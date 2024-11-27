@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -29,6 +29,7 @@ import { ManageDivisionService } from '../services/manage-division.service';
     ConfirmDialogModule,
     ToastModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     ManageDivisionService,
