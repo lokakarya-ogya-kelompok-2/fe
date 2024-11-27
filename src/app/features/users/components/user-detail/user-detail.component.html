@@ -1,0 +1,56 @@
+<div class="card">
+  <p-table [value]="[userData]" styleClass="datatable-sm vertical-table">
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <th class="text-left"><strong>Full Name</strong></th>
+        <td>{{ user.full_name }}</td>
+      </tr>
+      <tr>
+        <th class="text-left"><strong>Username</strong></th>
+        <td>{{ user.username }}</td>
+      </tr>
+      <tr>
+        <th class="text-left"><strong>Email</strong></th>
+        <td>{{ user.email_address }}</td>
+      </tr>
+      <tr>
+        <th class="text-left"><strong>Position</strong></th>
+        <td>{{ user.position }}</td>
+      </tr>
+      <tr>
+        <th class="text-left"><strong>Employee Status</strong></th>
+        <td>
+          <p-tag [severity]="user.employee_status === 1 ? 'info' : 'warning'">
+            {{ user.employee_status === 1 ? "Permanent" : "Contract" }}
+          </p-tag>
+        </td>
+      </tr>
+      <tr>
+        <th class="text-left"><strong>Division</strong></th>
+        <td>{{ user.division?.division_name }}</td>
+      </tr>
+      <tr>
+        <th class="text-left"><strong>Join Date</strong></th>
+        <td>{{ user.join_date | date : "mediumDate" }}</td>
+      </tr>
+      <tr>
+        <th class="text-left"><strong>Status</strong></th>
+        <td>
+          <p-tag [severity]="user.enabled ? 'success' : 'danger'">
+            {{ user.enabled ? "Active" : "Inactive" }}
+          </p-tag>
+        </td>
+      </tr>
+      <tr>
+        <th class="text-left"><strong>Roles</strong></th>
+        <td>
+          <div class="flex gap-2">
+            @for (role of user.roles; track role.id) {
+            <p-chip [label]="role.role_name" />
+            }
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

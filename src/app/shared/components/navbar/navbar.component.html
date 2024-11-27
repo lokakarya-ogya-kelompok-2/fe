@@ -5,7 +5,12 @@
   <div class="navbar-center">
     <p-menubar id="menu-bar" [model]="items" class="custom-menubar">
       <!-- <h5 style="display: inline">logout</h5> -->
-      <p-button id="logout" label="Logout" severity="danger" />
+      <p-button
+        id="logout"
+        label="Logout"
+        severity="danger"
+        (onClick)="authService.logout()"
+      />
       <!-- edit margin left -->
     </p-menubar>
   </div>
