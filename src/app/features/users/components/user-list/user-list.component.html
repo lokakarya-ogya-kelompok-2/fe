@@ -27,15 +27,23 @@
           id="btn-add"
           label="Add User"
           icon="pi pi-users"
-          (onClick)="showDialog()"
+          (onClick)="showDialog(dialogType.ADD)"
         />
         <p-dialog
-          header="Add User"
+          [header]="dialogHeader"
           [modal]="true"
           [(visible)]="visible"
           [maximizable]="true"
         >
-          <app-user-form [userData]="selectedUser" (submit)="onSubmit()" />
+          @if (currentDialogType === dialogType.DETAIL) {
+          <app-user-detail [userData]="selectedUser" />
+          } @else {
+          <app-user-form
+            [userData]="selectedUser"
+            (submit)="onSubmit()"
+            (onCancel)="this.visible = false"
+          />
+          }
         </p-dialog>
       </div>
       <p-iconField iconPosition="left" class="ml-auto">
@@ -53,7 +61,7 @@
   </ng-template>
   <ng-template pTemplate="header">
     <tr>
-      <th>ID</th>
+      <!-- <th>ID</th> -->
       <th>Full Name</th>
       <th>Username</th>
       <th>Position</th>
@@ -62,7 +70,7 @@
   </ng-template>
   <ng-template pTemplate="body" let-user>
     <tr>
-      <td>{{ user.id }}</td>
+      <!-- <td>{{ user.id }}</td> -->
       <td>{{ user.full_name }}</td>
       <td>{{ user.username }}</td>
       <td>{{ user.position }}</td>
@@ -75,7 +83,12 @@
         <p-button
           label="Edit"
           severity="success"
-          (onClick)="showDialog(user)"
+          (onClick)="showDialog(dialogType.UPDATE, user)"
+        />
+        <p-button
+          label="Detail"
+          severity="primary"
+          (onClick)="showDialog(dialogType.DETAIL, user)"
         />
       </td>
     </tr>

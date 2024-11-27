@@ -10,9 +10,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
+import { UserDialog } from '../../../../shared/types';
 import { userToReq } from '../../../../shared/utils/mapper';
 import { User, UserReq } from '../../models/user';
 import { UserService } from '../../services/user.service';
+import { UserDetailComponent } from '../user-detail/user-detail.component';
 import { UserFormComponent } from '../user-form/user-form.component';
 
 @Component({
@@ -31,6 +33,7 @@ import { UserFormComponent } from '../user-form/user-form.component';
     ToastModule,
     FormsModule,
     UserFormComponent,
+    UserDetailComponent,
   ],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss',
@@ -39,7 +42,13 @@ export class UserListComponent implements OnInit {
   users: User[] = [];
   isLoading: boolean = true;
   visible: boolean = false;
-  selectedUser: UserReq = {} as UserReq;
+  dialogHeader: string = '';
+  selectedUser: User = {
+    enabled: true,
+    employee_status: 1,
+  } as User;
+  dialogType = UserDialog;
+  currentDialogType: UserDialog = UserDialog.ADD;
   constructor(private readonly userSvc: UserService) {}
 
   loadUsers() {
@@ -63,9 +72,26 @@ export class UserListComponent implements OnInit {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 
-  showDialog(userData: User = {} as User) {
-    this.selectedUser = userToReq(userData);
+  showDialog(dialogType: UserDialog, userData: User = {} as User) {
     this.visible = true;
+    this.currentDialogType = dialogType;
+    switch (dialogType) {
+      case UserDialog.ADD:
+        this.selectedUser = {} as User;
+        this.dialogHeader = 'Add User';
+        break;
+      case UserDialog.UPDATE:
+        this.selectedUser = userData;
+        this.dialogHeader = 'Update User';
+        break;
+      case UserDialog.DETAIL:
+        this.selectedUser = userData;
+        this.dialogHeader = 'Detail User';
+    }
+  }
+
+  userReqData(): UserReq {
+    return userToReq(this.selectedUser);
   }
 
   onSubmit() {

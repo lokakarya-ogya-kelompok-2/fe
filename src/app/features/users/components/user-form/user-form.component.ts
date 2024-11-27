@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -10,11 +18,12 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { PasswordModule } from 'primeng/password';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { userToReq } from '../../../../shared/utils/mapper';
 import { Division } from '../../../divisions/models/division';
 import { ManageDivisionService } from '../../../divisions/services/manage-division.service';
 import { Role } from '../../../roles/models/role';
 import { RoleService } from '../../../roles/services/role.service';
-import { UserReq } from '../../models/user';
+import { User, UserReq } from '../../models/user';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -36,18 +45,17 @@ import { UserService } from '../../services/user.service';
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.scss',
 })
-export class UserFormComponent implements OnInit {
-  @Input() userData: UserReq = {
-    enabled: true,
-    employee_status: 1,
-  } as UserReq;
+export class UserFormComponent implements OnInit, OnChanges {
+  @Input() userData = {} as User;
   @Output() submit = new EventEmitter<void>();
+  @Output() onCancel = new EventEmitter<void>();
 
   divisions: Division[] = [];
   isDivisionLoading: boolean = true;
   roles: Role[] = [];
   maxDate: Date = new Date();
   submitBtnLoading: boolean = false;
+  formData: UserReq = {} as UserReq;
 
   statusOptions = [
     {
@@ -65,6 +73,14 @@ export class UserFormComponent implements OnInit {
     private readonly roleSvc: RoleService,
     private readonly userSvc: UserService
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['userData']) {
+      this.formData = userToReq(this.userData);
+    } else {
+      this.formData = {} as UserReq;
+    }
+  }
 
   ngOnInit(): void {
     this.isDivisionLoading = true;
@@ -93,7 +109,7 @@ export class UserFormComponent implements OnInit {
   onSubmit() {
     this.submitBtnLoading = true;
     if (this.userData.id) {
-      this.userSvc.update(this.userData).subscribe({
+      this.userSvc.update(this.formData).subscribe({
         next: (_) => {
           this.submit.emit();
           this.submitBtnLoading = false;
@@ -105,7 +121,7 @@ export class UserFormComponent implements OnInit {
         complete: () => {},
       });
     } else {
-      this.userSvc.add(this.userData).subscribe({
+      this.userSvc.add(this.formData).subscribe({
         next: (_) => {
           this.submit.emit();
           this.submitBtnLoading = false;

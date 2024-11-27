@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { TokenService } from './token.service';
@@ -12,7 +13,10 @@ export class AuthService {
   isAuthenticated$: Observable<boolean> =
     this.isAuthenticatedSubject.asObservable();
 
-  constructor(private readonly tokenService: TokenService) {
+  constructor(
+    private readonly tokenService: TokenService,
+    private readonly router: Router
+  ) {
     this.isAuthenticatedSubject.next(this.isAuthenticated());
   }
 
@@ -32,5 +36,6 @@ export class AuthService {
   logout() {
     this.tokenService.removeToken();
     this.isAuthenticatedSubject.next(false);
+    this.router.navigate(['/']);
   }
 }
