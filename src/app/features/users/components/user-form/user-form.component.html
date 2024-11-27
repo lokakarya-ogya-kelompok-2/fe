@@ -10,7 +10,7 @@
               type="text"
               name="fullName"
               id="fullName"
-              [(ngModel)]="userData.full_name"
+              [(ngModel)]="formData.full_name"
               required
               class="w-full"
             />
@@ -26,7 +26,7 @@
               type="text"
               name="position"
               id="position"
-              [(ngModel)]="userData.position"
+              [(ngModel)]="formData.position"
               required
               class="w-full"
             />
@@ -42,7 +42,7 @@
               type="text"
               name="username"
               id="username"
-              [(ngModel)]="userData.username"
+              [(ngModel)]="formData.username"
               required
               class="w-full"
             />
@@ -58,19 +58,21 @@
               type="email"
               name="email"
               id="email"
-              [(ngModel)]="userData.email"
+              [(ngModel)]="formData.email"
               required
               class="w-full"
+              email
             />
             <label for="email">Email</label>
           </p-floatLabel>
         </div>
 
+        @if (formData.id === null) {
         <!-- Password -->
         <div class="col-12 mb-4">
           <p-floatLabel>
             <p-password
-              [(ngModel)]="userData.password"
+              [(ngModel)]="formData.password"
               minlength="8"
               maxlength="32"
               name="password"
@@ -81,6 +83,7 @@
             <label for="password">Password</label>
           </p-floatLabel>
         </div>
+        }
 
         <!-- Division -->
         <div class="col-12 mb-4">
@@ -88,7 +91,7 @@
             <p-dropdown
               name="division"
               [options]="divisions"
-              [(ngModel)]="userData.division_id"
+              [(ngModel)]="formData.division_id"
               optionLabel="division_name"
               optionValue="id"
               placeholder="Select a division"
@@ -105,13 +108,14 @@
           <p-floatLabel>
             <p-multiSelect
               [options]="roles"
-              [(ngModel)]="userData.roles"
+              [(ngModel)]="formData.roles"
               optionLabel="role_name"
               optionValue="id"
               placeholder="Select Roles"
               name="roles"
               id="roles"
               styleClass="w-full"
+              required
             />
             <label for="role">Roles</label>
           </p-floatLabel>
@@ -122,11 +126,12 @@
           <label for="joinDate">Join Date</label>
           <p-calendar
             inline="true"
-            [(ngModel)]="userData.join_date"
+            [(ngModel)]="formData.join_date"
             inputId="joinDate"
             name="joinDate"
             styleClass="w-full"
             [maxDate]="maxDate"
+            required
           />
         </div>
 
@@ -137,28 +142,36 @@
               <label class="block mb-2">Employment Status</label>
               <p-selectButton
                 [options]="statusOptions"
-                [(ngModel)]="userData.employee_status"
+                [(ngModel)]="formData.employee_status"
                 name="status"
                 optionLabel="label"
                 optionValue="value"
+                required
               ></p-selectButton>
             </div>
             <div class="flex align-items-center">
               <label for="enabled" class="mr-3">Enabled</label>
               <p-toggleButton
-                [(ngModel)]="userData.enabled"
+                [(ngModel)]="formData.enabled"
                 onLabel="Enabled"
                 offLabel="Disabled"
                 name="enabled"
                 id="enabled"
+                required
               />
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Submit Button -->
-      <div class="flex justify-content-end mt-4">
+      <!-- Submit and Cancel Buttons -->
+      <div class="flex justify-content-center gap-2 mt-4">
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          severity="secondary"
+          (onClick)="onCancel.emit()"
+        />
         <p-button
           label="Save"
           icon="pi pi-save"

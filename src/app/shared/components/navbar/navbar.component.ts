@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,6 +13,8 @@ import { MenubarModule } from 'primeng/menubar';
 })
 export class NavbarComponent {
   items: MenuItem[] | undefined;
+
+  constructor(readonly authService: AuthService) {}
 
   ngOnInit() {
     this.items = [
