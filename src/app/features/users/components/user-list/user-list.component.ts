@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
@@ -16,7 +17,6 @@ import { User, UserReq } from '../../models/user';
 import { UserService } from '../../services/user.service';
 import { UserDetailComponent } from '../user-detail/user-detail.component';
 import { UserFormComponent } from '../user-form/user-form.component';
-
 @Component({
   selector: 'app-user-list',
   standalone: true,
@@ -35,6 +35,7 @@ import { UserFormComponent } from '../user-form/user-form.component';
     UserFormComponent,
     UserDetailComponent,
   ],
+  providers: [ConfirmationService, MessageService],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss',
 })
@@ -49,7 +50,11 @@ export class UserListComponent implements OnInit {
   } as User;
   dialogType = UserDialog;
   currentDialogType: UserDialog = UserDialog.ADD;
-  constructor(private readonly userSvc: UserService) {}
+  constructor(
+    private readonly userSvc: UserService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
+  ) {}
 
   loadUsers() {
     this.isLoading = true;
@@ -99,17 +104,38 @@ export class UserListComponent implements OnInit {
     this.visible = false;
   }
 
-  onDelete(id: string) {
-    if (window.confirm('U sure?')) {
-      this.userSvc.delete(id).subscribe({
-        next: (data) => {
-          console.log(`User with id ${id} deleted!`);
-          this.loadUsers();
-        },
-        error: (err) => {
-          console.log('Error occurs: ' + err);
-        },
-      });
-    }
+  onDelete(event: Event, key: string) {
+    console.log(event.target);
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      rejectButtonStyleClass: 'p-button-text p-button-text',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+      key: key,
+      accept: () => {
+        // this.userSvc.delete(key).subscribe({
+        //   next: (data) => {
+        //     console.log(data);
+        //     Swal.fire({
+        //       title: 'Division deleted!',
+        //       icon: 'success',
+        //       text: data.message,
+        //     });
+        //     this.loadUsers();
+        //   },
+        // });
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+        });
+      },
+    });
   }
 }

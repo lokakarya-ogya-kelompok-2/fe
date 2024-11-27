@@ -76,22 +76,23 @@
       <td>{{ user.full_name }}</td>
       <td>{{ user.username }}</td>
       <td>{{ user.position }}</td>
-      <td>
+      <td style="justify-content: space-between; display: flex">
         <p-button
-          label="Delete"
-          severity="danger"
-          (onClick)="onDelete(user.id)"
+          severity="primary"
+          icon="pi pi-info-circle"
+          (onClick)="showDialog(dialogType.DETAIL, user)"
         />
         <p-button
-          label="Edit"
           severity="success"
+          icon="pi pi-pen-to-square"
           (onClick)="showDialog(dialogType.UPDATE, user)"
         />
         <p-button
-          label="Detail"
-          severity="primary"
-          (onClick)="showDialog(dialogType.DETAIL, user)"
+          severity="danger"
+          icon="pi pi-trash"
+          (onClick)="onDelete($event, user.id)"
         />
+        <p-confirmDialog key="{{ user.id }}" />
       </td>
     </tr>
   </ng-template>
