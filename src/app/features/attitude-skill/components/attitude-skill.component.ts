@@ -7,7 +7,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
-import { FloatLabelModule } from 'primeng/floatlabel';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
@@ -39,13 +38,7 @@ import { AttitudeSkillService } from '../services/attitude-skill.service';
   ],
   templateUrl: './attitude-skill.component.html',
   styleUrl: './attitude-skill.component.scss',
-  providers: [
-    AttitudeSkillService,
-    ConfirmationService,
-    MessageService,
-    FormsModule,
-    FloatLabelModule,
-  ],
+  providers: [AttitudeSkillService, ConfirmationService, MessageService],
 })
 export class AttitudeSkillComponent implements OnInit {
   Datas: AttitudeSkill[] = [];
@@ -67,16 +60,23 @@ export class AttitudeSkillComponent implements OnInit {
     private attitudeSkillService: AttitudeSkillService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private readonly groupAttitudeSkillSvc: ManageGroupAttitudeSkillService
+    private readonly groupAttitudeSkillService: ManageGroupAttitudeSkillService
   ) {}
 
   ngOnInit(): void {
-    this.groupAttitudeSkillSvc.getGroupAttitudeSkillss().subscribe({
+    this.getGroupAttitudeSkill();
+    this.getAttitudeSkill();
+  }
+  getGroupAttitudeSkill(): void {
+    this.groupAttitudeSkillService.getGroupAttitudeSkillss().subscribe({
       next: (data) => {
         this.groupAttitudeSkillDropdown = data.content;
+        console.log(this.groupAttitudeSkillDropdown);
+      },
+      error: (err) => {
+        console.error('Error fetching group attitude skill:', err);
       },
     });
-    this.getAttitudeSkill();
   }
 
   getAttitudeSkill(): void {
@@ -84,6 +84,10 @@ export class AttitudeSkillComponent implements OnInit {
     this.attitudeSkillService.getAttitudeSkills().subscribe({
       next: (data) => {
         this.Datas = data.content;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching attitude skill:', err);
         this.loading = false;
       },
     });
