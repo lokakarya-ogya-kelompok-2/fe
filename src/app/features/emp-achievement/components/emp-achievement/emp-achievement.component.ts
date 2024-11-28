@@ -12,6 +12,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
+import Swal from 'sweetalert2';
+import { Achievement } from '../../../achievement/model/achievement';
+import { AchievementService } from '../../../achievement/services/achievement.service';
+import { User } from '../../../users/models/user';
+import { UserService } from '../../../users/services/user.service';
 import {
   EmpAchievement,
   EmpAchievementRequest,
@@ -56,43 +61,104 @@ export class EmpAchievementComponent implements OnInit {
   dataDetail: EmpAchievement = {} as EmpAchievement;
   userIdDropdown: any = [];
   achievementIdDropdown: any = [];
+  userDropdown: User[] = [];
+  achievementDropdown: Achievement[] = [];
+
   resetForm(): void {
     // this.newEmpAchievement.user_id = '';
   }
   constructor(
     private empAchievementService: EmpAchievementService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private userService: UserService,
+    private achievementService: AchievementService
   ) {}
   ngOnInit(): void {
     this.getAllEmpAchievement();
+    this.getAllUser();
+    this.getAllAchievement();
+  }
+
+  getAllAchievement(): void {
+    this.achievementService.getAchievements().subscribe({
+      next: (data) => {
+        this.achievementDropdown = data.content;
+        console.log(this.achievementDropdown);
+      },
+      error: (err) => {
+        console.error('Error fetching achievement:', err);
+      },
+    });
+  }
+  getAllUser(): void {
+    this.userService.list().subscribe({
+      next: (data) => {
+        this.userDropdown = data.content;
+        console.log(this.userDropdown);
+      },
+      error: (err) => {
+        console.error('Error fetching user:', err);
+      },
+    });
   }
   getAllEmpAchievement() {
     this.empAchievementService.getAllEmpAchievements().subscribe({
       next: (data) => {
         this.datas = data.content;
         this.loading = false;
-        data.content.map((item: any) =>
-          this.userIdDropdown.push({
-            id: item.user_id?.id,
-            name: item.user_id?.username,
-          })
-        );
-        data.content.map((item: any) =>
-          this.achievementIdDropdown.push({
-            id: item.achievement_id.id,
-            name: item.achievement_id.achievement,
-          })
-        );
-        console.log(this.userIdDropdown);
-        console.log(this.achievementIdDropdown);
         console.log('Data fetched:', this.datas);
       },
-      error: (err) => {},
+      error: (err) => {
+        console.error('Error fetching emp achievement:', err);
+        this.loading = false;
+      },
     });
   }
-  createEmpAchievement() {}
-  updateEmpAchievement() {}
+  createEmpAchievement() {
+    this.empAchievementService
+      .createEmpAchievement(this.newEmpAchievement)
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          Swal.fire({
+            title: 'emp achievement created!',
+            icon: 'success',
+          });
+          this.getAllEmpAchievement();
+          this.visible = false;
+        },
+        error: (err) => {
+          console.error('Error creating emp achievement:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: err.error.message,
+          });
+        },
+      });
+  }
+  updateEmpAchievement() {
+    this.empAchievementService.updateEmpAchievement(this.editData).subscribe({
+      next: (data) => {
+        console.log(data);
+        Swal.fire({
+          title: 'emp achievement updated!',
+          icon: 'success',
+        });
+        this.getAllEmpAchievement();
+        this.editVisible = false;
+      },
+      error: (err) => {
+        console.error('Error updating emp achievement:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error.message,
+        });
+      },
+    });
+  }
   confirm2(event: Event, key: string) {
     console.log('masuk');
     console.log(event.target);
@@ -109,27 +175,26 @@ export class EmpAchievementComponent implements OnInit {
       key: key,
       accept: () => {
         console.log('delete data');
-
-        // this.manageDivisionService.deleteDivision(key).subscribe({
-        //   next: (data) => {
-        //     console.log(data);
-        //     Swal.fire({
-        //       title: 'Division deleted!',
-        //       icon: 'success',
-        //       text: data.message,
-        //     });
-        //     console.log('Data deleted successfully');
-        //     this.getAllDivisions();
-        //   },
-        //   error: (err) => {
-        //     console.error('Error deleting division:', err);
-        //     this.messageService.add({
-        //       severity: 'error',
-        //       summary: 'error',
-        //       detail: 'Failed to delete division',
-        //     });
-        //   },
-        // });
+        this.empAchievementService.deleteEmpAchievement(key).subscribe({
+          next: (data) => {
+            console.log(data);
+            Swal.fire({
+              title: 'Emp Achievement deleted!',
+              icon: 'success',
+              text: data.message,
+            });
+            console.log('Data deleted successfully');
+            this.getAllEmpAchievement();
+          },
+          error: (err) => {
+            console.error('Error deleting division:', err);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'error',
+              detail: 'Failed to delete division',
+            });
+          },
+        });
       },
       reject: () => {
         this.messageService.add({
@@ -147,6 +212,8 @@ export class EmpAchievementComponent implements OnInit {
   showEditDialog(data: any) {
     this.editVisible = true;
     this.editData = { ...data };
+    this.editData.achievement_id = data.achievement_id.id;
+    this.editData.user_id = data.user_id.id;
     console.log(this.editData, 'from dialog button');
   }
   showDialogDetail(data: any) {

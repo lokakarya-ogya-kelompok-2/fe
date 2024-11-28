@@ -42,6 +42,7 @@
     <ng-template pTemplate="header">
       <tr>
         <!-- <th>Id</th> -->
+        <th>Username</th>
         <th>Achievement</th>
         <th>Notes</th>
         <th>Score</th>
@@ -52,6 +53,7 @@
     <ng-template pTemplate="body" let-data>
       <tr>
         <!-- <td>{{ data.id }}</td> -->
+        <td>{{ data.user_id?.username }}</td>
         <td>{{ data.achievement_id.achievement }}</td>
         <td>{{ data.notes }}</td>
         <td>{{ data.score }}</td>
@@ -99,9 +101,9 @@
     <div class="flex align-items-center gap-3 mb-3">
       <label for="User Id" class="font-semibold w-6rem"> User Id </label>
       <p-dropdown
-        [options]="userIdDropdown"
+        [options]="userDropdown"
         [(ngModel)]="newEmpAchievement.user_id"
-        optionLabel="name"
+        optionLabel="username"
         optionValue="id"
         placeholder="Select a username"
       />
@@ -111,9 +113,9 @@
         Achievement Name
       </label>
       <p-dropdown
-        [options]="achievementIdDropdown"
+        [options]="achievementDropdown"
         [(ngModel)]="newEmpAchievement.achievement_id"
-        optionLabel="name"
+        optionLabel="achievement"
         optionValue="id"
         placeholder=" Achievement Name "
       />
@@ -174,9 +176,9 @@
     <div class="flex align-items-center gap-3 mb-3">
       <label for="User Id" class="font-semibold w-6rem"> User Id </label>
       <p-dropdown
-        [options]="userIdDropdown"
+        [options]="userDropdown"
         [(ngModel)]="editData.user_id"
-        optionLabel="name"
+        optionLabel="username"
         optionValue="id"
         placeholder="Select an username"
       />
@@ -186,9 +188,9 @@
         Achievement Name
       </label>
       <p-dropdown
-        [options]="achievementIdDropdown"
+        [options]="achievementDropdown"
         [(ngModel)]="editData.achievement_id"
-        optionLabel="name"
+        optionLabel="achievement"
         optionValue="id"
         placeholder=" Achievement Name "
       />
