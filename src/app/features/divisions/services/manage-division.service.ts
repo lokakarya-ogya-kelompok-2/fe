@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Response } from '../../../shared/models/response';
 import { Division, DivisionRequest } from '../models/division';
 @Injectable({
   providedIn: 'root',

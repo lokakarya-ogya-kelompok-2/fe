@@ -36,12 +36,7 @@ import { AttitudeSkillService } from '../services/attitude-skill.service';
   ],
   templateUrl: './attitude-skill.component.html',
   styleUrl: './attitude-skill.component.scss',
-  providers: [
-    AttitudeSkillService,
-    ConfirmationService,
-    MessageService,
-    FormsModule,
-  ],
+  providers: [AttitudeSkillService, ConfirmationService, MessageService],
 })
 export class AttitudeSkillComponent implements OnInit {
   Datas: AttitudeSkill[] = [];

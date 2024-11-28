@@ -53,9 +53,6 @@ export class ManageDivisionComponent implements OnInit {
   resetForm(): void {
     this.newDivision.division_name = '';
   }
-  resetEditForm(): void {
-    this.editData.division_name = '';
-  }
   constructor(
     private manageDivisionService: ManageDivisionService,
     private confirmationService: ConfirmationService,
@@ -105,7 +102,6 @@ export class ManageDivisionComponent implements OnInit {
     this.manageDivisionService.updateDivision(this.editData).subscribe({
       next: (data) => {
         console.log(data);
-        this.resetEditForm();
         Swal.fire({
           title: 'Division updated!',
           icon: 'success',
@@ -122,22 +118,6 @@ export class ManageDivisionComponent implements OnInit {
       },
     });
   }
-
-  // modal
-  showDialog() {
-    this.visible = true;
-  }
-  showEditDialog(data: any) {
-    this.editVisible = true;
-    this.editData = { ...data };
-    console.log(this.editData, 'from dialog button');
-  }
-  showDialogDetail(data: any) {
-    this.detailVisible = true;
-    this.dataDetail = data;
-    console.log(this.dataDetail);
-  }
-
   confirm2(event: Event, key: string) {
     console.log('masuk');
     console.log(event.target);
@@ -185,7 +165,20 @@ export class ManageDivisionComponent implements OnInit {
       },
     });
   }
-
+  // modal
+  showDialog() {
+    this.visible = true;
+  }
+  showEditDialog(data: any) {
+    this.editVisible = true;
+    this.editData = { ...data };
+    console.log(this.editData, 'from dialog button');
+  }
+  showDialogDetail(data: any) {
+    this.detailVisible = true;
+    this.dataDetail = data;
+    console.log(this.dataDetail);
+  }
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
