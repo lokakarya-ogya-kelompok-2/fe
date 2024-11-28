@@ -29,3 +29,9 @@ export interface UserReq {
   enabled: boolean;
   division_id: string;
 }
+
+export interface ChangePasswordReq {
+  current_password: string;
+  new_password: string;
+  confirm_new_password: string;
+}

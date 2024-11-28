@@ -13,7 +13,6 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
-import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import {
   GroupAttitudeSkill,
   GroupAttitudeSkillRequest,
@@ -34,7 +33,6 @@ import { ManageGroupAttitudeSkillService } from '../services/manage-group-attitu
     DialogModule,
     ConfirmDialogModule,
     ToastModule,
-    NavbarComponent,
     CheckboxModule,
     FormsModule,
   ],
