@@ -7,6 +7,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
@@ -14,6 +15,8 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
+import { GroupAttitudeSkill } from '../../group-attitude-skill/models/group-attitude-skill';
+import { ManageGroupAttitudeSkillService } from '../../group-attitude-skill/services/manage-group-attitude-skill.service';
 import { AttitudeSkill, AttitudeSkillRequest } from '../models/attitude-skill';
 import { AttitudeSkillService } from '../services/attitude-skill.service';
 @Component({
@@ -41,18 +44,19 @@ import { AttitudeSkillService } from '../services/attitude-skill.service';
     ConfirmationService,
     MessageService,
     FormsModule,
+    FloatLabelModule,
   ],
 })
 export class AttitudeSkillComponent implements OnInit {
   Datas: AttitudeSkill[] = [];
-  loading: boolean = true;
+  loading: boolean = false;
   visible: boolean = false;
   editVisible: boolean = false;
   detailVisible: boolean = false;
   editData: AttitudeSkill = {} as AttitudeSkill;
   newAttitudeSkill: AttitudeSkillRequest = {} as AttitudeSkillRequest;
   checked: boolean = false;
-  groupAttitudeSkillDropdown: any = [];
+  groupAttitudeSkillDropdown: GroupAttitudeSkill[] = [];
   dataDetail: AttitudeSkill = {} as AttitudeSkill;
   resetForm(): void {
     this.newAttitudeSkill.attitude_skill = '';
@@ -62,29 +66,24 @@ export class AttitudeSkillComponent implements OnInit {
   constructor(
     private attitudeSkillService: AttitudeSkillService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private readonly groupAttitudeSkillSvc: ManageGroupAttitudeSkillService
   ) {}
 
   ngOnInit(): void {
+    this.groupAttitudeSkillSvc.getGroupAttitudeSkillss().subscribe({
+      next: (data) => {
+        this.groupAttitudeSkillDropdown = data.content;
+      },
+    });
     this.getAttitudeSkill();
   }
 
   getAttitudeSkill(): void {
+    this.loading = true;
     this.attitudeSkillService.getAttitudeSkills().subscribe({
       next: (data) => {
         this.Datas = data.content;
-        data.content.map((item: any) =>
-          this.groupAttitudeSkillDropdown.push({
-            id: item.group_id.id,
-            name: item.group_id.group_name,
-          })
-        );
-        console.log(data, 'THIS IS RESPONSEEEEE');
-        console.log(
-          this.groupAttitudeSkillDropdown +
-            ' THIS IS GROUP ATTITUDE SKILL ( this.groupAttitudeSkillDropdown)'
-        );
-        console.log(this.Datas);
         this.loading = false;
       },
     });
