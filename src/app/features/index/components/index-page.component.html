@@ -2,8 +2,121 @@
 
 @if (username) {
 <div class="center">
-  <H1>Welcome, {{ username }}</H1>
+  <div
+    style="
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    "
+  >
+    <h1>Welcome, {{ username }}</h1>
+    <p-button label="Change Password" (onClick)="dialogVisible = true" />
+    <p-button
+      label="Logout"
+      severity="danger"
+      (onClick)="authService.logout()"
+    />
+  </div>
 </div>
+<p-dialog
+  [visible]="dialogVisible"
+  header="Change Password"
+  styleClass="w-full sm:w-8 md:w-6 lg:w-4"
+>
+  <form
+    (submit)="onChangePasswordSubmit()"
+    #changePasswordForm="ngForm"
+    class="p-fluid"
+  >
+    <div class="flex flex-column gap-4 mt-4">
+      <!-- Current password - full width -->
+      <div class="field w-full">
+        <p-floatLabel>
+          <p-password
+            id="current_password"
+            class="w-full"
+            placeholder="Enter your current password"
+            feedback="false"
+            name="current_password"
+            minlength="8"
+            maxlength="32"
+            required
+            [(ngModel)]="formData.current_password"
+          />
+          <label for="current_password">Current Password</label>
+        </p-floatLabel>
+      </div>
+
+      <!-- New passwords container - side by side -->
+      <div class="flex gap-3">
+        <div class="field w-6">
+          <p-floatLabel>
+            <p-password
+              id="new_password"
+              class="w-full"
+              placeholder="Enter your new password"
+              name="new_password"
+              minlength="8"
+              maxlength="32"
+              required
+              [(ngModel)]="formData.new_password"
+            />
+            <label for="new_password">New Password</label>
+          </p-floatLabel>
+        </div>
+
+        <div class="field w-6">
+          <p-floatLabel>
+            <p-password
+              id="confirm_password"
+              class="w-full"
+              placeholder="Re-enter your new password"
+              feedback="false"
+              name="confirm_password"
+              minlength="8"
+              maxlength="32"
+              required
+              [(ngModel)]="formData.confirm_new_password"
+            />
+            <label for="confirm_password">Confirm New Password</label>
+          </p-floatLabel>
+        </div>
+      </div>
+      @if(newPasswordAndConfirmMissmatch() ||
+      newPasswordAndCurrentPasswordIsTheSame()) {
+      <p-message
+        severity="error"
+        [text]="
+          newPasswordAndConfirmMissmatch()
+            ? 'New password and confirmation password do not match'
+            : newPasswordAndCurrentPasswordIsTheSame()
+            ? 'New password and current password is the same'
+            : ''
+        "
+        styleClass="w-full"
+      ></p-message>
+      }
+      <div class="flex justify-content-end gap-2 mt-4">
+        <p-button
+          label="Cancel"
+          (click)="dialogVisible = false; resetFormData()"
+          styleClass="p-button-text"
+        ></p-button>
+        <p-button
+          type="submit"
+          label="Change Password"
+          [disabled]="
+            changePasswordForm.invalid ||
+            newPasswordAndConfirmMissmatch() ||
+            newPasswordAndCurrentPasswordIsTheSame()
+          "
+          [loading]="isChangePasswordBtnLoading"
+        />
+      </div>
+    </div>
+  </form>
+</p-dialog>
 } @else {
 <div class="center">
   <H1 style="margin-right: 24px">Please log in ==> </H1>

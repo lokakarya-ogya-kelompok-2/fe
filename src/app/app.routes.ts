@@ -18,7 +18,7 @@ import { UserListComponent } from './features/users/components/user-list/user-li
 import { NotFoundComponent } from './shared/pages/not-found/not-found.component';
 
 export const routes: Routes = [
-  { path: '', component: IndexPageComponent },
+  { path: '', component: IndexPageComponent, runGuardsAndResolvers: 'always' },
   { path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
   { path: 'menu', component: MenuComponent, canActivate: [authGuard] },
   {
