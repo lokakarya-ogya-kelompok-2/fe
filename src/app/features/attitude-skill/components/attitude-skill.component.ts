@@ -74,7 +74,11 @@ export class AttitudeSkillComponent implements OnInit {
             name: item.group_id.group_name,
           })
         );
-        console.log(this.groupAttitudeSkillDropdown);
+        console.log(data, 'THIS IS RESPONSEEEEE');
+        console.log(
+          this.groupAttitudeSkillDropdown +
+            ' THIS IS GROUP ATTITUDE SKILL ( this.groupAttitudeSkillDropdown)'
+        );
         console.log(this.Datas);
         this.loading = false;
       },

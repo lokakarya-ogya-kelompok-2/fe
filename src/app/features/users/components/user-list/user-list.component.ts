@@ -11,7 +11,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
-import { UserDialog } from '../../../../shared/types';
+import { DialogType } from '../../../../shared/types';
 import { userToReq } from '../../../../shared/utils/mapper';
 import { User, UserReq } from '../../models/user';
 import { UserService } from '../../services/user.service';
@@ -48,8 +48,8 @@ export class UserListComponent implements OnInit {
     enabled: true,
     employee_status: 1,
   } as User;
-  dialogType = UserDialog;
-  currentDialogType: UserDialog = UserDialog.ADD;
+  dialogType = DialogType;
+  currentDialogType: DialogType = DialogType.ADD;
   constructor(
     private readonly userSvc: UserService,
     private confirmationService: ConfirmationService,
@@ -77,19 +77,19 @@ export class UserListComponent implements OnInit {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 
-  showDialog(dialogType: UserDialog, userData: User = {} as User) {
+  showDialog(dialogType: DialogType, userData: User = {} as User) {
     this.visible = true;
     this.currentDialogType = dialogType;
     switch (dialogType) {
-      case UserDialog.ADD:
+      case DialogType.ADD:
         this.selectedUser = {} as User;
         this.dialogHeader = 'Add User';
         break;
-      case UserDialog.UPDATE:
+      case DialogType.UPDATE:
         this.selectedUser = userData;
         this.dialogHeader = 'Update User';
         break;
-      case UserDialog.DETAIL:
+      case DialogType.DETAIL:
         this.selectedUser = userData;
         this.dialogHeader = 'Detail User';
     }
