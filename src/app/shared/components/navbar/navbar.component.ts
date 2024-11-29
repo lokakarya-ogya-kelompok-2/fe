@@ -1,20 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
 import { AuthService } from '../../../core/services/auth.service';
-
+import { TokenService } from '../../../core/services/token.service';
+import { UserService } from '../../../features/users/services/user.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [MenubarModule, ButtonModule],
+  imports: [MenubarModule, ButtonModule, AvatarModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit {
   items: MenuItem[] | undefined;
+  username: string | undefined = '';
 
-  constructor(readonly authService: AuthService) {}
+  constructor(
+    readonly authService: AuthService,
+    private tokenService: TokenService,
+    private readonly userSvc: UserService
+  ) {}
 
   ngOnInit() {
     this.items = [
@@ -30,6 +37,7 @@ export class NavbarComponent implements OnInit {
       },
       {
         label: 'Role Menu',
+        routerLink: '/manage/role-menu',
         routerLinkActiveOptions: { exact: true },
       },
       {
@@ -96,5 +104,15 @@ export class NavbarComponent implements OnInit {
         routerLinkActiveOptions: { exact: true },
       },
     ];
+    this.getToken();
+  }
+
+  getToken(): void {
+    const token = this.tokenService.getToken();
+    if (token && this.authService.isAuthenticated()) {
+      const jwtPayload = this.tokenService.decodeToken(token);
+      this.username = jwtPayload.sub;
+      console.log(this.username, 'ini username');
+    }
   }
 }

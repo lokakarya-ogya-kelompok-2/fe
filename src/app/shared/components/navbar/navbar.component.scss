@@ -1,5 +1,5 @@
 #logout {
-  margin-right: 30px;
+  margin-right: 20px;
 }
 
 #menu-bar a {
@@ -8,4 +8,7 @@
 .custom-menubar .p-menuitem-link.router-link-active {
   background-color: #dff0d8;
   color: #3c763d;
+}
+.p-menubar-start {
+  margin-right: 10px;
 }

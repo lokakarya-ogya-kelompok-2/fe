@@ -82,16 +82,23 @@
         <p-button
           severity="primary"
           icon="pi pi-info-circle"
+          [rounded]="true"
+          [raised]="true"
           (onClick)="showDialog(dialogType.DETAIL, user)"
         />
         <p-button
           severity="success"
           icon="pi pi-pen-to-square"
+          [rounded]="true"
+          [raised]="true"
           (onClick)="showDialog(dialogType.UPDATE, user)"
         />
         <p-button
           severity="danger"
           icon="pi pi-trash"
+          [outlined]="true"
+          [rounded]="true"
+          [raised]="true"
           (onClick)="onDelete($event, user.id)"
         />
         <p-confirmDialog key="{{ user.id }}" />
