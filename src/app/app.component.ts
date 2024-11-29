@@ -5,10 +5,14 @@ import { AttitudeSkillComponent } from './features/attitude-skill/components/att
 import { LoginComponent } from './features/auth/login/components/login.component';
 import { DevPlanComponent } from './features/dev-plan/components/dev-plan/dev-plan.component';
 import { ManageDivisionComponent } from './features/divisions/components/manage-division.component';
+import { EmpAchievementComponent } from './features/emp-achievement/components/emp-achievement/emp-achievement.component';
 import { GroupAchievementComponent } from './features/group-achievement/components/group-achievement/group-achievement.component';
 import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-skill/components/manage-group-attitude-skill.component';
 import { IndexPageComponent } from './features/index/components/index-page.component';
 import { MainPageComponent } from './features/menu/components/main-page.component';
+import { RoleMenuComponent } from './features/role-menu/components/role-menu/role-menu.component';
+import { SummaryComponent } from './features/summary/components/summary/summary.component';
+import { TechnicalSkillComponent } from './features/technical-skill/components/technical-skill/technical-skill.component';
 
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -27,6 +31,10 @@ import { MainPageComponent } from './features/menu/components/main-page.componen
     AchievementComponent,
     GroupAchievementComponent,
     DevPlanComponent,
+    TechnicalSkillComponent,
+    EmpAchievementComponent,
+    SummaryComponent,
+    RoleMenuComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

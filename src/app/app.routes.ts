@@ -13,6 +13,7 @@ import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-ski
 import { IndexPageComponent } from './features/index/components/index-page.component';
 import { ManageComponent } from './features/manage/components/manage-page.component';
 import { MainPageComponent as MenuComponent } from './features/menu/components/main-page.component';
+import { RoleMenuComponent } from './features/role-menu/components/role-menu/role-menu.component';
 import { SummaryComponent } from './features/summary/components/summary/summary.component';
 import { TechnicalSkillComponent } from './features/technical-skill/components/technical-skill/technical-skill.component';
 import { UserListComponent } from './features/users/components/user-list/user-list.component';
@@ -64,6 +65,10 @@ export const routes: Routes = [
       {
         path: 'summaries',
         component: SummaryComponent,
+      },
+      {
+        path: 'role-menu',
+        component: RoleMenuComponent,
       },
     ],
   },

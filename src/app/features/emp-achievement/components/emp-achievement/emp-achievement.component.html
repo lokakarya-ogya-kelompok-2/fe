@@ -63,17 +63,23 @@
             (onClick)="showDialogDetail(data)"
             label=""
             icon="pi pi-info-circle"
+            [rounded]="true"
+            [raised]="true"
           />
           <p-button
             (onClick)="showEditDialog(data)"
             severity="success"
             icon="pi pi-pen-to-square"
+            [rounded]="true"
+            [raised]="true"
           ></p-button>
           <p-button
             (onClick)="confirm2($event, data.id)"
             [outlined]="true"
             severity="danger"
             icon="pi pi-trash"
+            [rounded]="true"
+            [raised]="true"
           ></p-button>
           <p-confirmDialog key="{{ data.id }}" />
         </td>
