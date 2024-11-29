@@ -31,6 +31,7 @@ export class AuthService {
 
   login(token: string) {
     this.tokenService.setToken(token);
+    this.isAuthenticatedSubject.next(true);
   }
 
   logout() {
