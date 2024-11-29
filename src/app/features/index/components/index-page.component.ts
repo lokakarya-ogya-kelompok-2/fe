@@ -45,8 +45,7 @@ export class IndexPageComponent implements OnInit {
     const token = this.tokenService.getToken();
     if (token && this.authService.isAuthenticated()) {
       const jwtPayload = this.tokenService.decodeToken(token);
-      this.username = jwtPayload.sub;
-      console.log(this.username, 'ini username');
+      this.username = jwtPayload.full_name;
     }
   }
 
