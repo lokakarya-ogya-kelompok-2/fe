@@ -101,7 +101,7 @@ export class NavbarComponent implements OnInit {
     const token = this.tokenService.getToken();
     if (token && this.authService.isAuthenticated()) {
       const jwtPayload = this.tokenService.decodeToken(token);
-      this.username = jwtPayload.sub;
+      this.username = jwtPayload.username;
       console.log(this.username, 'ini username');
     }
   }

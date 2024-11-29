@@ -11,6 +11,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
+import Swal from 'sweetalert2';
 import { DialogType } from '../../../../shared/types';
 import { userToReq } from '../../../../shared/utils/mapper';
 import { User, UserReq } from '../../models/user';
@@ -117,17 +118,16 @@ export class UserListComponent implements OnInit {
       rejectIcon: 'none',
       key: key,
       accept: () => {
-        // this.userSvc.delete(key).subscribe({
-        //   next: (data) => {
-        //     console.log(data);
-        //     Swal.fire({
-        //       title: 'Division deleted!',
-        //       icon: 'success',
-        //       text: data.message,
-        //     });
-        //     this.loadUsers();
-        //   },
-        // });
+        this.userSvc.delete(key).subscribe({
+          next: (data) => {
+            Swal.fire({
+              title: 'User deleted!',
+              icon: 'success',
+              text: data.message,
+            });
+            this.loadUsers();
+          },
+        });
       },
       reject: () => {
         this.messageService.add({
