@@ -117,7 +117,7 @@ export class GroupAchievementComponent implements OnInit {
         },
       });
   }
-  confirm2(event: Event, key: string) {
+  confirmDelete(event: Event, key: string) {
     console.log('masuk');
     console.log(event.target);
     console.log(key);
@@ -137,7 +137,7 @@ export class GroupAchievementComponent implements OnInit {
           next: (data) => {
             console.log(data);
             Swal.fire({
-              title: 'Division deleted!',
+              title: 'Group deleted!',
               icon: 'success',
               text: data.message,
             });
@@ -145,11 +145,11 @@ export class GroupAchievementComponent implements OnInit {
             this.getGroupAchievements();
           },
           error: (err) => {
-            console.error('Error deleting division:', err);
+            console.error('Error deleting group achievement:', err);
             this.messageService.add({
               severity: 'error',
               summary: 'error',
-              detail: 'Failed to delete division',
+              detail: 'Failed to delete group achievement',
             });
           },
         });

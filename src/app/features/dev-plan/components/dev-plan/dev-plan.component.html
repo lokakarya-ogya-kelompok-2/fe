@@ -15,14 +15,14 @@
       'font-size': '12px',
       margin: '0'
     }"
-    [globalFilterFields]="['id', 'plan']"
+    [globalFilterFields]="['id', 'plan', 'enabled']"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
         <p-button
           id="btn-modal"
           (onClick)="showDialog()"
-          label="Add Division"
+          label="Add Dev Plan"
           icon="pi pi-users"
         />
         <p-iconField iconPosition="left" class="ml-auto">
@@ -33,7 +33,7 @@
             pInputText
             type="text"
             placeholder="Search keyword"
-            (input)="onGlobalFilter(divisionTable, $event)"
+            (input)="onGlobalFilter(devPlanTable, $event)"
           />
         </p-iconField>
       </div>
@@ -66,7 +66,7 @@
             [raised]="true"
           ></p-button>
           <p-button
-            (onClick)="confirm2($event, data.id)"
+            (onClick)="confirmDelete($event, data.id)"
             [outlined]="true"
             severity="danger"
             icon="pi pi-trash"
@@ -82,7 +82,7 @@
 
 <div class="card flex justify-content-center">
   <p-dialog
-    header="Add Division"
+    header="Add Dev Plan"
     [(visible)]="visible"
     [style]="{ width: '25rem' }"
   >
@@ -94,6 +94,8 @@
         class="flex-auto"
         autocomplete="off"
         [(ngModel)]="newDevPlan.plan"
+        required
+        maxlength="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -102,6 +104,7 @@
         [(ngModel)]="newDevPlan.enabled"
         [binary]="true"
         inputId="binary"
+        required
       />
     </div>
     <div class="flex justify-content-end gap-2">
@@ -117,21 +120,20 @@
 
 <div class="card flex justify-content-center">
   <p-dialog
-    header="Edit Division"
+    header="Edit Dev Plan"
     [(visible)]="editVisible"
     [style]="{ width: '25rem' }"
   >
-    <span class="p-text-secondary block mb-5">Edit division.</span>
     <div class="flex align-items-center gap-3 mb-3">
-      <label for="Division name" class="font-semibold w-6rem"
-        >Division Name</label
-      >
+      <label for="Dev Plan" class="font-semibold w-6rem">Dev Plan</label>
       <input
         [(ngModel)]="editData.plan"
         pInputText
-        id="Division Name"
+        id="Dev Plan"
         class="flex-auto"
         autocomplete="off"
+        required
+        maxlength="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -140,6 +142,7 @@
         [(ngModel)]="editData.enabled"
         [binary]="true"
         inputId="binary"
+        required
       />
     </div>
     <div class="flex justify-content-end gap-2">
@@ -155,7 +158,7 @@
 
 <div class="card flex justify-content-center">
   <p-dialog
-    header="Division Detail"
+    header="Dev Plan Detail"
     [modal]="true"
     [(visible)]="detailVisible"
     [style]="{ width: '50rem' }"
@@ -163,7 +166,7 @@
   >
     <div class="card">
       <p-table
-        #divisionTable
+        #devPlanTable
         [value]="[dataDetail]"
         dataKey="id"
         [loading]="loading"

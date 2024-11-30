@@ -1,12 +1,18 @@
 <div class="navbar">
   <div class="navbar-start"></div>
   <div class="navbar-center">
-    <p-menubar id="menu-bar" [model]="items" class="custom-menubar">
+    <p-menubar
+      id="menu-bar"
+      [model]="items"
+      class="custom-menubar"
+      [style]="{ 'font-size': '14px' }"
+    >
       <ng-template pTemplate="start">
         <button
           pRipple
           class="relative overflow-hidden w-full p-link flex align-items-center p-2 pl-3 text-color hover:surface-200 border-noround"
           routerLink="/"
+          id="profil"
         >
           <p-avatar
             image="https://primefaces.org/cdn/primeng/images/demo/avatar/walter.jpg"
@@ -27,5 +33,4 @@
       />
     </p-menubar>
   </div>
-  <div class="navbar-end"></div>
 </div>

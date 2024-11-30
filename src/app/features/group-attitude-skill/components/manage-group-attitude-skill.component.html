@@ -16,7 +16,7 @@
       'font-size': '12px',
       margin: '0'
     }"
-    [globalFilterFields]="['id', 'group_name', 'created_by.full_name']"
+    [globalFilterFields]="['id', 'group_name', 'enabled', 'percentage']"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -97,6 +97,8 @@
         id="Group name"
         class="flex-auto"
         autocomplete="off"
+        required
+        maxlength="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -107,6 +109,8 @@
         id="Percentage"
         class="flex-auto"
         autocomplete="off"
+        required
+        max="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -115,6 +119,7 @@
         [(ngModel)]="newGroupAttitudeSkill.enabled"
         [binary]="true"
         inputId="binary"
+        requied
       />
     </div>
     <div class="flex justify-content-end gap-2">
@@ -146,6 +151,8 @@
         id="Group Name"
         class="flex-auto"
         autocomplete="off"
+        required
+        maxlength="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -156,6 +163,8 @@
         id="Percentage"
         class="flex-auto"
         autocomplete="off"
+        required
+        max="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -164,6 +173,7 @@
         [(ngModel)]="editData.enabled"
         [binary]="true"
         inputId="binary"
+        required
       />
     </div>
 
@@ -189,10 +199,9 @@
     [style]="{ width: '50rem' }"
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
   >
-    <!-- <p class="mb-5">ini detail</p> -->
     <div class="card">
       <p-table
-        #divisionTable
+        #GroupAttitudeSkillTable
         [value]="[dataDetail]"
         dataKey="id"
         [loading]="loading"

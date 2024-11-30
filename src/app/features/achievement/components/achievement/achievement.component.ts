@@ -93,7 +93,7 @@ export class AchievementComponent implements OnInit {
       next: (data) => {
         console.log(data);
         Swal.fire({
-          title: 'Division created!',
+          title: 'Achievement created!',
           icon: 'success',
         });
         this.resetForm();
@@ -106,10 +106,17 @@ export class AchievementComponent implements OnInit {
       next: (data) => {
         console.log(data);
         Swal.fire({
-          title: 'Division updated!',
+          title: 'Achievement updated!',
           icon: 'success',
         });
         this.getAchievement();
+      },
+      error: (err) => {
+        console.error('Error updating achievement:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed Updating Achievement',
+        });
       },
     });
   }

@@ -1,6 +1,7 @@
 <!-- <p>Welcome {{ username }}</p> -->
 
-@if (username) {
+<!-- @if (username) { -->
+
 <div class="center">
   <div
     style="
@@ -10,20 +11,50 @@
       gap: 1rem;
     "
   >
-    <h1>Welcome, {{ username }}</h1>
-    <p-button label="Change Password" (onClick)="dialogVisible = true" />
+    <h1>Welcome, {{ fullName }}</h1>
+    <ng-template pTemplate="end" style="display: inline"> </ng-template>
+    <div class="card">
+      <p-megaMenu
+        [model]="items"
+        [style]="{ 'border-radius': '1rem', display: 'flex', }"
+        styleClass="p-4 surface-0"
+      >
+        <ng-template pTemplate="item" let-item>
+          <a
+            *ngIf="item.root"
+            pRipple
+            class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
+            style="border-radius: 2rem; border: 3px"
+          >
+            <i [ngClass]="item.icon"></i>
+            <span class="ml-2">{{ item.label }}</span>
+          </a>
+        </ng-template>
+        <!-- <ng-template pTemplate="start" style="display: flex">
+          <p-avatar
+            image="https://primefaces.org/cdn/primeng/images/demo/avatar/walter.jpg"
+            shape="circle"
+          />
+        </ng-template> -->
+      </p-megaMenu>
+    </div>
+
+    <!-- <p-button label="Change Password" (onClick)="dialogVisible = true" />
     <p-button label="Main menu" severity="success" [routerLink]="'/manage'" />
     <p-button
       label="Logout"
       severity="danger"
       (onClick)="authService.logout()"
-    />
+    /> -->
   </div>
 </div>
+
 <p-dialog
-  [visible]="dialogVisible"
+  [(visible)]="dialogVisible"
+  [modal]="true"
   header="Change Password"
-  styleClass="w-full sm:w-8 md:w-6 lg:w-4"
+  styleClass="w-full sm:w-10 md:w-8 lg:w-6"
+  [style]="{ width: '500px' }"
 >
   <form
     (submit)="onChangePasswordSubmit()"
@@ -51,7 +82,7 @@
 
       <!-- New passwords container - side by side -->
       <div class="flex gap-3">
-        <div class="field w-6">
+        <div class="field w-8">
           <p-floatLabel>
             <p-password
               id="new_password"
@@ -67,7 +98,7 @@
           </p-floatLabel>
         </div>
 
-        <div class="field w-6">
+        <div class="field w-8">
           <p-floatLabel>
             <p-password
               id="confirm_password"
@@ -118,9 +149,9 @@
     </div>
   </form>
 </p-dialog>
-} @else {
-<div class="center">
+<!-- } @else { -->
+<!-- <div class="center">
   <H1 style="margin-right: 24px">Please log in ==> </H1>
   <p-button label="Login" routerLink="/login" severity="primary" />
-</div>
-}
+</div> -->
+<!-- } -->

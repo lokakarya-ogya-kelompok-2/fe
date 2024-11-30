@@ -69,6 +69,13 @@ export class DevPlanComponent implements OnInit {
         this.loading = false;
         console.log(this.datas);
       },
+      error: (err) => {
+        console.error('Error fetch dev plan:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed Fetching Dev Plan',
+        });
+      },
     });
   }
   createDevPlan(): void {
@@ -83,6 +90,13 @@ export class DevPlanComponent implements OnInit {
         this.resetForm();
         this.visible = false;
       },
+      error: (err) => {
+        console.error('Error creating dev plan:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed Creating Dev Plan',
+        });
+      },
     });
   }
   updateDevPlan(): void {
@@ -96,11 +110,17 @@ export class DevPlanComponent implements OnInit {
         this.getAllDevPlan();
         this.editVisible = false;
       },
+      error: (err) => {
+        console.error('Error updating dev plan:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed Updating Dev Plan',
+        });
+      },
     });
   }
-  deleteDevPlan(): void {}
 
-  confirm2(event: Event, key: string) {
+  confirmDelete(event: Event, key: string) {
     console.log('masuk');
     console.log(event.target);
     console.log(key);
@@ -121,7 +141,7 @@ export class DevPlanComponent implements OnInit {
           next: (data) => {
             console.log(data);
             Swal.fire({
-              title: 'Division deleted!',
+              title: 'Dev Plan deleted!',
               icon: 'success',
               text: data.message,
             });
@@ -129,11 +149,11 @@ export class DevPlanComponent implements OnInit {
             this.getAllDevPlan();
           },
           error: (err) => {
-            console.error('Error deleting division:', err);
+            console.error('Error deleting dev plan:', err);
             this.messageService.add({
               severity: 'error',
               summary: 'error',
-              detail: 'Failed to delete division',
+              detail: 'Failed to delete dev plan',
             });
           },
         });

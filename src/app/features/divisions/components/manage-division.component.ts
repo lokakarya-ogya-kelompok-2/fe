@@ -118,7 +118,7 @@ export class ManageDivisionComponent implements OnInit {
       },
     });
   }
-  confirm2(event: Event, key: string) {
+  confirmDelete(event: Event, key: string) {
     console.log('masuk');
     console.log(event.target);
     console.log(key);

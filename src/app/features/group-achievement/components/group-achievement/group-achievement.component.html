@@ -15,7 +15,7 @@
       'font-size': '12px',
       margin: '0'
     }"
-    [globalFilterFields]="['id', 'group_name']"
+    [globalFilterFields]="['id', 'group_name', 'percentage', 'enabled']"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -40,7 +40,6 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <!-- <th>Id</th> -->
         <th>Group Name</th>
         <th>Percentage</th>
         <th>Enabled</th>
@@ -49,7 +48,6 @@
     </ng-template>
     <ng-template pTemplate="body" let-data>
       <tr>
-        <!-- <td>{{ data.id }}</td> -->
         <td>{{ data.group_name }}</td>
         <td>{{ data.percentage }}</td>
         <td>{{ data.enabled }}</td>
@@ -69,7 +67,7 @@
             [raised]="true"
           ></p-button>
           <p-button
-            (onClick)="confirm2($event, data.id)"
+            (onClick)="confirmDelete($event, data.id)"
             [outlined]="true"
             severity="danger"
             icon="pi pi-trash"
@@ -97,6 +95,8 @@
         class="flex-auto"
         autocomplete="off"
         [(ngModel)]="newGroupAchievement.group_name"
+        required
+        maxlength="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -107,6 +107,8 @@
         id="Percentage"
         class="flex-auto"
         autocomplete="off"
+        required
+        max="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -115,6 +117,7 @@
         [(ngModel)]="newGroupAchievement.enabled"
         [binary]="true"
         inputId="binary"
+        required
       />
     </div>
 
@@ -134,18 +137,20 @@
 
 <div class="card flex justify-content-center">
   <p-dialog
-    header="Edit Division"
+    header="Edit Group Achievement"
     [(visible)]="editVisible"
     [style]="{ width: '25rem' }"
   >
     <div class="flex align-items-center gap-3 mb-3">
-      <label for="Division name" class="font-semibold w-6rem">Group Name</label>
+      <label for="Group name" class="font-semibold w-6rem">Group Name</label>
       <input
         [(ngModel)]="editData.group_name"
         pInputText
         id="username"
         class="flex-auto"
         autocomplete="off"
+        required
+        maxlength="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -156,6 +161,8 @@
         id="username"
         class="flex-auto"
         autocomplete="off"
+        required
+        max="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -164,6 +171,7 @@
         [(ngModel)]="editData.enabled"
         [binary]="true"
         inputId="binary"
+        required
       />
     </div>
     <div class="flex justify-content-end gap-2">
@@ -182,7 +190,7 @@
 
 <div class="card flex justify-content-center">
   <p-dialog
-    header="Division Detail"
+    header="Group Achievement Detail"
     [modal]="true"
     [(visible)]="detailVisible"
     [style]="{ width: '50rem' }"
@@ -190,7 +198,7 @@
   >
     <div class="card">
       <p-table
-        #divisionTable
+        #groupAchievementTable
         [value]="[dataDetail]"
         dataKey="id"
         [loading]="loading"
@@ -200,7 +208,6 @@
           'font-size': '12px',
           margin: '0'
         }"
-        [globalFilterFields]="['id', 'division_name', 'created_by.full_name']"
       >
         <ng-template pTemplate="header">
           <tr>

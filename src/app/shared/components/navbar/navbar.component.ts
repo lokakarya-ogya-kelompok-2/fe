@@ -57,19 +57,9 @@ export class NavbarComponent implements OnInit {
         ],
       },
       {
-        label: 'Technical skills',
+        label: 'Technical skill',
+        routerLink: '/manage/technical-skills',
         routerLinkActiveOptions: { exact: true },
-        items: [
-          {
-            label: 'Group technical skill',
-            routerLinkActiveOptions: { exact: true },
-          },
-          {
-            label: 'Technical skill',
-            routerLink: '/manage/technical-skills',
-            routerLinkActiveOptions: { exact: true },
-          },
-        ],
       },
       {
         label: 'Dev-plan',

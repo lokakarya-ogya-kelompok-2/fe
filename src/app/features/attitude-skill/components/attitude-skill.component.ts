@@ -7,7 +7,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
-import { FloatLabelModule } from 'primeng/floatlabel';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
@@ -100,18 +99,17 @@ export class AttitudeSkillComponent implements OnInit {
         next: (data) => {
           console.log(data);
           Swal.fire({
-            title: 'Division created!',
+            title: 'Attitude SKill created!',
             icon: 'success',
           });
           this.resetForm();
           this.getAttitudeSkill();
         },
         error: (err) => {
-          console.error('Error creating division:', err);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'error',
-            detail: 'Failed to create division',
+          console.error('Error updating attitude skill:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed Updating Attitude Skill',
           });
         },
       });
@@ -128,18 +126,15 @@ export class AttitudeSkillComponent implements OnInit {
         this.getAttitudeSkill();
       },
       error: (err) => {
-        console.error('Error updating attitude skill: ', err);
+        console.error('Error updating attitude skill:', err);
         Swal.fire({
           icon: 'error',
-          title: 'Oops...',
-          text: 'update attitude skill failed!',
+          title: 'Failed Updating Attitude Skill',
         });
       },
     });
   }
-  deleteAttitudeSkill(): void {}
-
-  confirm2(event: Event, key: string) {
+  confirmDelete(event: Event, key: string) {
     console.log('masuk');
     console.log(event.target);
     console.log(key);

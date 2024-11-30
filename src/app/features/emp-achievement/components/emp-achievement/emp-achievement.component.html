@@ -1,7 +1,7 @@
 <!-- <app-navbar></app-navbar> -->
 <div class="card">
   <p-table
-    #divisionTable
+    #empAchievementTable
     [scrollable]="true"
     scrollHeight="380px"
     [value]="datas"
@@ -16,7 +16,13 @@
       'font-size': '12px',
       margin: '0'
     }"
-    [globalFilterFields]="['id', 'notes', 'achievement_id.achievement']"
+    [globalFilterFields]="[
+      'id',
+      'notes',
+      'achievement_id.achievement',
+      'score',
+      'assessment_year'
+    ]"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -34,14 +40,13 @@
             pInputText
             type="text"
             placeholder="Search keyword"
-            (input)="onGlobalFilter(divisionTable, $event)"
+            (input)="onGlobalFilter(empAchievementTable, $event)"
           />
         </p-iconField>
       </div>
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <!-- <th>Id</th> -->
         <th>Username</th>
         <th>Achievement</th>
         <th>Notes</th>
@@ -52,7 +57,6 @@
     </ng-template>
     <ng-template pTemplate="body" let-data>
       <tr>
-        <!-- <td>{{ data.id }}</td> -->
         <td>{{ data.user_id?.username }}</td>
         <td>{{ data.achievement_id.achievement }}</td>
         <td>{{ data.notes }}</td>
@@ -74,7 +78,7 @@
             [raised]="true"
           ></p-button>
           <p-button
-            (onClick)="confirm2($event, data.id)"
+            (onClick)="confirmDelete($event, data.id)"
             [outlined]="true"
             severity="danger"
             icon="pi pi-trash"
@@ -90,7 +94,7 @@
 
 <div class="card flex justify-content-center">
   <p-dialog
-    header="Add Division"
+    header="Add Emp Achievement"
     [(visible)]="visible"
     [style]="{ width: '25rem' }"
   >
@@ -102,6 +106,8 @@
         class="flex-auto"
         autocomplete="off"
         [(ngModel)]="newEmpAchievement.notes"
+        required
+        maxlength="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -112,6 +118,7 @@
         optionLabel="username"
         optionValue="id"
         placeholder="Select a username"
+        required
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -124,6 +131,7 @@
         optionLabel="achievement"
         optionValue="id"
         placeholder=" Achievement Name "
+        required
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -134,6 +142,8 @@
         class="flex-auto"
         autocomplete="off"
         [(ngModel)]="newEmpAchievement.score"
+        required
+        max="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -146,6 +156,9 @@
         class="flex-auto"
         autocomplete="off"
         [(ngModel)]="newEmpAchievement.assessment_year"
+        required
+        min="2000"
+        max="2100"
       />
     </div>
 
@@ -165,7 +178,7 @@
 
 <div class="card flex justify-content-center">
   <p-dialog
-    header="Edit Division"
+    header="Edit Emp Achievement"
     [(visible)]="editVisible"
     [style]="{ width: '25rem' }"
   >
@@ -177,6 +190,8 @@
         id="Notes"
         class="flex-auto"
         autocomplete="off"
+        required
+        maxlength="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -187,6 +202,7 @@
         optionLabel="username"
         optionValue="id"
         placeholder="Select an username"
+        required
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -199,6 +215,7 @@
         optionLabel="achievement"
         optionValue="id"
         placeholder=" Achievement Name "
+        required
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -209,6 +226,8 @@
         class="flex-auto"
         autocomplete="off"
         [(ngModel)]="editData.score"
+        required
+        max="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -221,6 +240,8 @@
         class="flex-auto"
         autocomplete="off"
         [(ngModel)]="editData.assessment_year"
+        min="2000"
+        max="2100"
       />
     </div>
     <div class="flex justify-content-end gap-2">
@@ -239,16 +260,15 @@
 
 <div class="card flex justify-content-center">
   <p-dialog
-    header="Division Detail"
+    header="Emp Achievement Detail"
     [modal]="true"
     [(visible)]="detailVisible"
     [style]="{ width: '50rem' }"
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
   >
-    <!-- <p class="mb-5">ini detail</p> -->
     <div class="card">
       <p-table
-        #divisionTable
+        #EmpAchievementTable
         [value]="[dataDetail]"
         dataKey="id"
         [loading]="loading"
@@ -258,7 +278,6 @@
           'font-size': '12px',
           margin: '0'
         }"
-        [globalFilterFields]="['id', 'division_name', 'created_by.full_name']"
       >
         <ng-template pTemplate="header">
           <tr>

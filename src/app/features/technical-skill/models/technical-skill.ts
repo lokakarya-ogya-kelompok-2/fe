@@ -1,6 +1,6 @@
 import { ResponseContentMeta } from '../../../shared/models/response-content-meta';
 
-export interface TechnicalSKill extends ResponseContentMeta {
+export interface TechnicalSkill extends ResponseContentMeta {
   id: string;
   technical_skill: string;
   enabled: boolean;

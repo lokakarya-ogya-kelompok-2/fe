@@ -15,7 +15,13 @@
       'font-size': '12px',
       margin: '0'
     }"
-    [globalFilterFields]="['id', 'attitude_skill']"
+    [globalFilterFields]="[
+      'id',
+      'attitude_skill',
+      'group_id.group_name',
+      'percentage',
+      'enabled'
+    ]"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -71,7 +77,7 @@
             [raised]="true"
           ></p-button>
           <p-button
-            (onClick)="confirm2($event, data.id)"
+            (onClick)="confirmDelete($event, data.id)"
             [outlined]="true"
             severity="danger"
             icon="pi pi-trash"
@@ -102,6 +108,8 @@
         class="flex-auto"
         autocomplete="off"
         [(ngModel)]="newAttitudeSkill.attitude_skill"
+        required
+        maxlength="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -112,6 +120,8 @@
         optionLabel="group_name"
         optionValue="id"
         placeholder="Select a group name"
+        required
+        max="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -120,6 +130,7 @@
         [(ngModel)]="newAttitudeSkill.enabled"
         [binary]="true"
         inputId="binary"
+        required
       />
     </div>
     <div class="flex justify-content-end gap-2">
@@ -138,7 +149,7 @@
 
 <div class="card flex justify-content-center">
   <p-dialog
-    header="Edit Division"
+    header="Edit Attitude Skill"
     [(visible)]="editVisible"
     [style]="{ width: '25rem' }"
   >
@@ -152,6 +163,8 @@
         id="Attitude Skill"
         class="flex-auto"
         autocomplete="off"
+        required
+        maxlength="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -162,6 +175,8 @@
         optionLabel="group_name"
         optionValue="id"
         placeholder="Select a group name"
+        required
+        maxlength="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -170,6 +185,7 @@
         [(ngModel)]="editData.enabled"
         [binary]="true"
         inputId="binary"
+        required
       />
     </div>
     <div class="flex justify-content-end gap-2">
@@ -195,7 +211,7 @@
   >
     <div class="card">
       <p-table
-        #divisionTable
+        #attitudeSkillTable
         [value]="[dataDetail]"
         dataKey="id"
         [loading]="loading"
@@ -205,7 +221,6 @@
           'font-size': '12px',
           margin: '0'
         }"
-        [globalFilterFields]="['id', 'division_name', 'created_by.full_name']"
       >
         <ng-template pTemplate="header">
           <tr>
