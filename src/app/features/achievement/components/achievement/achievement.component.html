@@ -15,7 +15,13 @@
       'font-size': '12px',
       margin: '0'
     }"
-    [globalFilterFields]="['id', 'achievement']"
+    [globalFilterFields]="[
+      'id',
+      'achievement',
+      'group_id.group_name',
+      'percentage',
+      'enabled'
+    ]"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -40,7 +46,6 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <!-- <th>Id</th> -->
         <th>Achievement</th>
         <th>group Name</th>
         <th>Percentage</th>
@@ -50,7 +55,6 @@
     </ng-template>
     <ng-template pTemplate="body" let-data>
       <tr>
-        <!-- <td>{{ data.id }}</td> -->
         <td>{{ data.achievement }}</td>
         <td>{{ data.group_id?.group_name }}</td>
         <td>{{ data.group_id?.percentage }}</td>
@@ -100,6 +104,8 @@
         class="flex-auto"
         autocomplete="off"
         [(ngModel)]="newAchievement.achievement"
+        required
+        maxlength="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -110,6 +116,7 @@
         optionLabel="name"
         optionValue="id"
         placeholder="Select a group name"
+        required
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -118,6 +125,7 @@
         [(ngModel)]="newAchievement.enabled"
         [binary]="true"
         inputId="binary"
+        required
       />
     </div>
     <div class="flex justify-content-end gap-2">
@@ -133,7 +141,7 @@
 
 <div class="card flex justify-content-center">
   <p-dialog
-    header="Edit Division"
+    header="Edit Achievement"
     [(visible)]="editVisible"
     [style]="{ width: '25rem' }"
   >
@@ -147,6 +155,8 @@
         id="Attitude Skill"
         class="flex-auto"
         autocomplete="off"
+        required
+        maxlength="100"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -157,6 +167,7 @@
         optionLabel="name"
         optionValue="id"
         placeholder="Select a group name"
+        required
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -165,6 +176,7 @@
         [(ngModel)]="editData.enabled"
         [binary]="true"
         inputId="binary"
+        required
       />
     </div>
     <div class="flex justify-content-end gap-2">
@@ -190,7 +202,7 @@
   >
     <div class="card">
       <p-table
-        #divisionTable
+        #achievementTable
         [value]="[dataDetail]"
         dataKey="id"
         [loading]="loading"
@@ -200,7 +212,6 @@
           'font-size': '12px',
           margin: '0'
         }"
-        [globalFilterFields]="['id', 'division_name', 'created_by.full_name']"
       >
         <ng-template pTemplate="header">
           <tr>

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
+import { SplitterModule } from 'primeng/splitter';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LoginService } from '../../services/login.service';
 import { LoginRequest } from '../models/login';
@@ -11,7 +12,13 @@ import { LoginRequest } from '../models/login';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [DividerModule, ButtonModule, InputTextModule, FormsModule],
+  imports: [
+    DividerModule,
+    ButtonModule,
+    InputTextModule,
+    FormsModule,
+    SplitterModule,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

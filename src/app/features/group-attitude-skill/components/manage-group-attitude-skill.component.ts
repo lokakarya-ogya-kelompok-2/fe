@@ -35,6 +35,7 @@ import { ManageGroupAttitudeSkillService } from '../services/manage-group-attitu
     ToastModule,
     CheckboxModule,
     FormsModule,
+    // ReactiveFormsModule,
   ],
   providers: [
     ManageGroupAttitudeSkillService,
@@ -109,7 +110,11 @@ export class ManageGroupAttitudeSkillComponent {
           this.getAllData();
         },
         error: (err) => {
-          console.error('Error creating data:', err);
+          console.error('Error creating group attitude skill:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed creating group attitude skill',
+          });
         },
       });
   }
@@ -127,7 +132,11 @@ export class ManageGroupAttitudeSkillComponent {
           this.resetEditForm();
         },
         error: (err) => {
-          console.error('Error updating data:', err);
+          console.error('Error updating group attitude skill:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed Updating Group Attitude Skill',
+          });
         },
       });
   }
@@ -151,7 +160,7 @@ export class ManageGroupAttitudeSkillComponent {
             next: (data) => {
               console.log(data);
               Swal.fire({
-                title: 'Division deleted!',
+                title: 'Group Attitude Skill deleted!',
                 icon: 'success',
                 text: data.message,
               });

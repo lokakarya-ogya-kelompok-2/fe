@@ -159,7 +159,7 @@ export class EmpAchievementComponent implements OnInit {
       },
     });
   }
-  confirm2(event: Event, key: string) {
+  confirmDelete(event: Event, key: string) {
     console.log('masuk');
     console.log(event.target);
     console.log(key);
@@ -187,11 +187,11 @@ export class EmpAchievementComponent implements OnInit {
             this.getAllEmpAchievement();
           },
           error: (err) => {
-            console.error('Error deleting division:', err);
+            console.error('Error deleting emp achievement:', err);
             this.messageService.add({
               severity: 'error',
               summary: 'error',
-              detail: 'Failed to delete division',
+              detail: 'Failed to delete emp achievement',
             });
           },
         });

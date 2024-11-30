@@ -16,7 +16,7 @@
       'font-size': '12px',
       margin: '0'
     }"
-    [globalFilterFields]="['id', 'division_name', 'created_by.full_name']"
+    [globalFilterFields]="['id', 'division_name']"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -66,7 +66,7 @@
             [raised]="true"
           ></p-button>
           <p-button
-            (onClick)="confirm2($event, data.id)"
+            (onClick)="confirmDelete($event, data.id)"
             [outlined]="true"
             severity="danger"
             icon="pi pi-trash"
@@ -87,16 +87,25 @@
     [style]="{ width: '25rem' }"
   >
     <div class="flex align-items-center gap-3 mb-3">
-      <label for="Division Name" class="font-semibold w-6rem"
-        >Division Name</label
-      >
+      <label for="Division Name" class="font-semibold w-6rem">
+        Division Name
+      </label>
       <input
         pInputText
         id="Division Name"
         class="flex-auto"
         autocomplete="off"
         [(ngModel)]="newDivision.division_name"
+        required
+        maxlength="50"
+        #divisionName="ngModel"
       />
+      <!-- <div
+        *ngIf="divisionName.invalid && divisionName.touched"
+        class="text-red-600"
+      >
+        Division Name is required and cannot be empty.
+      </div> -->
     </div>
     <div class="flex justify-content-end gap-2">
       <p-button
@@ -126,6 +135,8 @@
         id="Division Name"
         class="flex-auto"
         autocomplete="off"
+        required
+        maxlength="50"
       />
     </div>
     <div class="flex justify-content-end gap-2">
@@ -163,7 +174,6 @@
           'font-size': '12px',
           margin: '0'
         }"
-        [globalFilterFields]="['id', 'division_name', 'created_by.full_name']"
       >
         <ng-template pTemplate="header">
           <tr>
