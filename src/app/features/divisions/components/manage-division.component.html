@@ -86,35 +86,44 @@
     [(visible)]="visible"
     [style]="{ width: '25rem' }"
   >
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Division Name" class="font-semibold w-6rem">
-        Division Name
-      </label>
-      <input
-        pInputText
-        id="Division Name"
-        class="flex-auto"
-        autocomplete="off"
-        [(ngModel)]="newDivision.division_name"
-        required
-        maxlength="50"
-        #divisionName="ngModel"
-      />
-      <!-- <div
+    <form #divisionForm="ngForm" (submit)="createDivision()">
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="Division Name" class="font-semibold w-6rem">
+          Division Name
+        </label>
+        <input
+          pInputText
+          id="Division Name"
+          class="flex-auto"
+          autocomplete="off"
+          [(ngModel)]="newDivision.division_name"
+          required
+          maxlength="50"
+          name="Division_name"
+        />
+        <!-- #divisionName="ngModel" -->
+        <!-- <div
         *ngIf="divisionName.invalid && divisionName.touched"
         class="text-red-600"
       >
         Division Name is required and cannot be empty.
       </div> -->
-    </div>
-    <div class="flex justify-content-end gap-2">
-      <p-button
-        label="Cancel"
-        severity="secondary"
-        (onClick)="visible = false"
-      />
-      <p-button label="Save" (onClick)="visible = false; createDivision()" />
-    </div>
+      </div>
+
+      <div class="flex justify-content-end gap-2">
+        <p-button
+          label="Cancel"
+          severity="secondary"
+          (onClick)="visible = false"
+        />
+        <p-button
+          label="Save"
+          (onClick)="visible = false"
+          type="submit"
+          [disabled]="divisionForm.invalid"
+        />
+      </div>
+    </form>
   </p-dialog>
 </div>
 
@@ -124,32 +133,36 @@
     [(visible)]="editVisible"
     [style]="{ width: '25rem' }"
   >
-    <span class="p-text-secondary block mb-5">Edit division.</span>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Division name" class="font-semibold w-6rem"
-        >Division Name</label
-      >
-      <input
-        [(ngModel)]="editData.division_name"
-        pInputText
-        id="Division Name"
-        class="flex-auto"
-        autocomplete="off"
-        required
-        maxlength="50"
-      />
-    </div>
-    <div class="flex justify-content-end gap-2">
-      <p-button
-        label="Cancel"
-        severity="secondary"
-        (onClick)="editVisible = false"
-      />
-      <p-button
-        label="Save"
-        (onClick)="editVisible = false; updateDivision()"
-      />
-    </div>
+    <form #editDivisionForm="ngForm" (submit)="updateDivision()">
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="Division name" class="font-semibold w-6rem"
+          >Division Name
+        </label>
+        <input
+          [(ngModel)]="editData.division_name"
+          pInputText
+          id="Division Name"
+          name="Division_name"
+          class="flex-auto"
+          autocomplete="off"
+          required
+          maxlength="50"
+        />
+      </div>
+      <div class="flex justify-content-end gap-2">
+        <p-button
+          label="Cancel"
+          severity="secondary"
+          (onClick)="editVisible = false"
+        />
+        <p-button
+          label="Save"
+          (onClick)="editVisible = false"
+          [disabled]="editDivisionForm.invalid"
+          type="submit"
+        />
+      </div>
+    </form>
   </p-dialog>
 </div>
 
