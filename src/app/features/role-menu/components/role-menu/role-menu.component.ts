@@ -1,18 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
+import { TableModule } from 'primeng/table';
+import { Menu } from '../../../menus/models/menu';
+import { MenuService } from '../../../menus/services/menu.service';
+import { Role } from '../../../roles/models/role';
+import { RoleService } from '../../../roles/services/role.service';
+import { RoleMenuService } from '../../services/role-menu.service';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
-
-interface Role {
-  id: number;
-  role_name: string;
-}
-interface Menu {
-  id: number;
-  menu_name: string;
-}
 
 @Component({
   selector: 'app-role-menu',
@@ -22,68 +19,78 @@ interface Menu {
     ButtonModule,
     CommonModule,
     FormsModule,
+    TableModule,
     NavbarComponent,
   ],
   templateUrl: './role-menu.component.html',
   styleUrl: './role-menu.component.scss',
 })
-export class RoleMenuComponent {
-  roles: Role[] = [
-    {
-      id: 1,
-      role_name: 'HR',
-    },
-    {
-      id: 2,
-      role_name: 'MGR',
-    },
-    {
-      id: 3,
-      role_name: 'SVP',
-    },
-    {
-      id: 4,
-      role_name: 'USER',
-    },
-  ];
+export class RoleMenuComponent implements OnInit {
+  roles: Role[] = [];
 
-  menus: Menu[] = [
-    {
-      id: 1,
-      menu_name: 'users',
-    },
-    {
-      id: 2,
-      menu_name: 'divisions',
-    },
-    {
-      id: 3,
-      menu_name: 'attitude_skills',
-    },
-    {
-      id: 4,
-      menu_name: 'achievements',
-    },
-    {
-      id: 5,
-      menu_name: 'users_read',
-    },
-    {
-      id: 6,
-      menu_name: 'role_menu',
-    },
-  ];
+  menus: Menu[] = [];
 
-  roleMenus: { [key: string]: Menu[] } = {
-    HR: [this.menus[0], this.menus[2]],
-    MGR: [],
-    SVP: [],
-    USER: [],
+  roleMenus: { [key: string]: Menu[] } = {};
+
+  menuToReadable: { [key: string]: string } = {
+    'user#all': 'Manage All Users',
+    'user#read': 'View Users',
+    'division#all': 'Manage Divisions',
+    'role-menu#all': 'Manage Role Menu Access',
+    'group-attitude-skill#all': 'Manage Group Attitude Skills',
+    'attitude-skill#all': 'Manage Attitude Skills',
+    'technical-skill#all': 'Manage Technical Skills',
+    'dev-plan#all': 'Manage Development Plans',
+    'group-achievement#all': 'Manage Group Achievements',
+    'achievement#all': 'Manage Achievements',
+    'summary#read': 'View All Summaries',
+    'summary#read.self': 'View Own Summary',
+    'emp-achievement#all': 'Manage Employee Achievements',
+    'emp-attitude-skill#all': 'Manage Employee Attitude Skills',
+    'emp-technical-skill#all': 'Manage Employee Technical Skills',
+    'emp-dev-plan#all': 'Manage Employee Development Plans',
+    'emp-suggestion#all': 'Manage Employee Suggestions',
   };
 
+  constructor(
+    private readonly roleService: RoleService,
+    private readonly menuService: MenuService,
+    private readonly roleMenuService: RoleMenuService
+  ) {}
+
+  ngOnInit(): void {
+    this.roleService.list().subscribe({
+      next: (data) => {
+        this.roles = data.content;
+        this.roles.forEach((role) => {
+          this.roleMenus[role.id] = role.menus!;
+        });
+      },
+    });
+
+    this.menuService.list().subscribe({
+      next: (data) => {
+        this.menus = data.content;
+      },
+    });
+  }
+
   onSubmit() {
-    console.log('SELECTED MENU FOR EACH ROLE: ');
-    console.log(this.roleMenus);
-    console.log('SELECTED MENU FOR EACH ROLE: ');
+    let selectedMenusForEachRoles: Map<string, string[]> = new Map();
+    Object.entries(this.roleMenus).forEach(([roleId, menus]) => {
+      selectedMenusForEachRoles.set(
+        roleId,
+        menus.map((menu) => menu.id)
+      );
+    });
+    // console.log(selectedMenusForEachRoles);
+    this.roleMenuService.update(selectedMenusForEachRoles).subscribe({
+      next: (data) => {
+        console.log(data.message);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
 }
