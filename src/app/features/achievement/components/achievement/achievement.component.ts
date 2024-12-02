@@ -14,6 +14,7 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
+import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { Achievement, AchievementRequest } from '../../model/achievement';
 import { AchievementService } from '../../services/achievement.service';
 
@@ -34,6 +35,7 @@ import { AchievementService } from '../../services/achievement.service';
     FormsModule,
     CheckboxModule,
     DropdownModule,
+    NavbarComponent,
   ],
   templateUrl: './achievement.component.html',
   styleUrl: './achievement.component.scss',

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
+import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 
 interface Role {
   id: number;
@@ -16,7 +17,13 @@ interface Menu {
 @Component({
   selector: 'app-role-menu',
   standalone: true,
-  imports: [CheckboxModule, ButtonModule, CommonModule, FormsModule],
+  imports: [
+    CheckboxModule,
+    ButtonModule,
+    CommonModule,
+    FormsModule,
+    NavbarComponent,
+  ],
   templateUrl: './role-menu.component.html',
   styleUrl: './role-menu.component.scss',
 })

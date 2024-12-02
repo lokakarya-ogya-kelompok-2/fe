@@ -13,6 +13,7 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
+import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { Achievement } from '../../../achievement/model/achievement';
 import { AchievementService } from '../../../achievement/services/achievement.service';
 import { User } from '../../../users/models/user';
@@ -40,6 +41,7 @@ import { EmpAchievementService } from '../../services/emp-achievement.service';
     FormsModule,
     ReactiveFormsModule,
     DropdownModule,
+    NavbarComponent,
   ],
   providers: [
     EmpAchievementService,

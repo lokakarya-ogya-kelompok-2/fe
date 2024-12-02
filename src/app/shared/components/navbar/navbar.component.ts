@@ -27,17 +27,17 @@ export class NavbarComponent implements OnInit {
     this.items = [
       {
         label: 'User',
-        routerLink: '/manage/',
+        routerLink: '/manage-users',
         routerLinkActiveOptions: { exact: true },
       },
       {
         label: 'Division',
-        routerLink: 'divisions',
+        routerLink: '/manage-divisions',
         routerLinkActiveOptions: { exact: true },
       },
       {
         label: 'Role Menu',
-        routerLink: '/manage/role-menu',
+        routerLink: '/manage-role-menu',
         routerLinkActiveOptions: { exact: true },
       },
       {
@@ -46,24 +46,24 @@ export class NavbarComponent implements OnInit {
         items: [
           {
             label: 'Group Attitude kill',
-            routerLink: '/manage/group-attitude-skills',
+            routerLink: '/manage-group-attitude-skills',
             routerLinkActiveOptions: { exact: true },
           },
           {
             label: 'Attitude skill',
-            routerLink: '/manage/attitude-skills',
+            routerLink: '/manage-attitude-skills',
             routerLinkActiveOptions: { exact: true },
           },
         ],
       },
       {
         label: 'Technical skill',
-        routerLink: '/manage/technical-skills',
+        routerLink: '/manage-technical-skills',
         routerLinkActiveOptions: { exact: true },
       },
       {
         label: 'Dev-plan',
-        routerLink: '/manage/dev-plans',
+        routerLink: '/manage-dev-plans',
         routerLinkActiveOptions: { exact: true },
       },
       {
@@ -73,24 +73,24 @@ export class NavbarComponent implements OnInit {
         items: [
           {
             label: 'Group achievement',
-            routerLink: '/manage/group-achievements',
+            routerLink: '/manage-group-achievements',
             routerLinkActiveOptions: { exact: true },
           },
           {
             label: 'Achievement',
-            routerLink: '/manage/achievements',
+            routerLink: '/manage-achievements',
             routerLinkActiveOptions: { exact: true },
           },
           {
             label: 'Emp achievement',
-            routerLink: ['/manage/emp-achievements'],
+            routerLink: ['/manage-emp-achievements'],
             routerLinkActiveOptions: { exact: true },
           },
         ],
       },
       {
         label: 'Summary',
-        routerLink: '/manage/summaries',
+        routerLink: '/manage-summaries',
         routerLinkActiveOptions: { exact: true },
       },
     ];

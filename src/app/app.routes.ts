@@ -11,7 +11,6 @@ import { EmpDevPlanComponent } from './features/emp/emp-dev-plan/components/emp-
 import { GroupAchievementComponent } from './features/group-achievement/components/group-achievement/group-achievement.component';
 import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-skill/components/manage-group-attitude-skill.component';
 import { IndexPageComponent } from './features/index/components/index-page.component';
-import { ManageComponent } from './features/manage/components/manage-page.component';
 import { MainPageComponent as MenuComponent } from './features/menu/components/main-page.component';
 import { RoleMenuComponent } from './features/role-menu/components/role-menu/role-menu.component';
 import { SummaryComponent } from './features/summary/components/summary/summary.component';
@@ -29,54 +28,53 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
   { path: 'menu', component: MenuComponent, canActivate: [authGuard] },
   { path: 'emp-dev-plan', component: EmpDevPlanComponent },
+  { path: 'manage-users', component: UserListComponent },
   {
-    path: 'manage',
-    component: ManageComponent,
-    canActivate: [authGuard],
-    children: [
-      { path: '', component: UserListComponent },
-      {
-        path: 'group-attitude-skills',
-        component: ManageGroupAttitudeSkillComponent,
-      },
-      {
-        path: 'attitude-skills',
-        component: AttitudeSkillComponent,
-      },
-      {
-        path: 'divisions',
-        component: ManageDivisionComponent,
-      },
-      {
-        path: 'achievements',
-        component: AchievementComponent,
-      },
-      {
-        path: 'group-achievements',
-        component: GroupAchievementComponent,
-      },
-      {
-        path: 'dev-plans',
-        component: DevPlanComponent,
-      },
-      {
-        path: 'technical-skills',
-        component: TechnicalSkillComponent,
-      },
-      {
-        path: 'emp-achievements',
-        component: EmpAchievementComponent,
-      },
-      {
-        path: 'summaries',
-        component: SummaryComponent,
-      },
-      {
-        path: 'role-menu',
-        component: RoleMenuComponent,
-      },
-    ],
+    path: 'manage-group-attitude-skills',
+    component: ManageGroupAttitudeSkillComponent,
   },
+  {
+    path: 'manage-attitude-skills',
+    component: AttitudeSkillComponent,
+  },
+  {
+    path: 'manage-divisions',
+    component: ManageDivisionComponent,
+  },
+  {
+    path: 'manage-achievements',
+    component: AchievementComponent,
+  },
+  {
+    path: 'manage-group-achievements',
+    component: GroupAchievementComponent,
+  },
+  {
+    path: 'manage-dev-plans',
+    component: DevPlanComponent,
+  },
+  {
+    path: 'manage-technical-skills',
+    component: TechnicalSkillComponent,
+  },
+  {
+    path: 'manage-emp-achievements',
+    component: EmpAchievementComponent,
+  },
+  {
+    path: 'manage-summaries',
+    component: SummaryComponent,
+  },
+  {
+    path: 'manage-role-menu',
+    component: RoleMenuComponent,
+  },
+  // {
+  //   path: 'manage',
+  //   component: ManageComponent,
+  //   canActivate: [authGuard],
+  //   children: [],
+  // },
   {
     path: '**',
     component: NotFoundComponent,
