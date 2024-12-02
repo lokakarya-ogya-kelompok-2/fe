@@ -13,6 +13,7 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
+import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import {
   GroupAchievement,
   GroupAchievementRequest,
@@ -35,6 +36,7 @@ import { GroupAchievementService } from '../../services/group-achievement.servic
     ToastModule,
     FormsModule,
     CheckboxModule,
+    NavbarComponent,
   ],
   providers: [
     GroupAchievementService,

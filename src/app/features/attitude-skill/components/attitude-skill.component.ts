@@ -14,6 +14,7 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { GroupAttitudeSkill } from '../../group-attitude-skill/models/group-attitude-skill';
 import { ManageGroupAttitudeSkillService } from '../../group-attitude-skill/services/manage-group-attitude-skill.service';
 import { AttitudeSkill, AttitudeSkillRequest } from '../models/attitude-skill';
@@ -35,6 +36,7 @@ import { AttitudeSkillService } from '../services/attitude-skill.service';
     FormsModule,
     CheckboxModule,
     DropdownModule,
+    NavbarComponent,
   ],
   templateUrl: './attitude-skill.component.html',
   styleUrl: './attitude-skill.component.scss',

@@ -9,6 +9,7 @@ import { MenuService } from '../../../menus/services/menu.service';
 import { Role } from '../../../roles/models/role';
 import { RoleService } from '../../../roles/services/role.service';
 import { RoleMenuService } from '../../services/role-menu.service';
+import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-role-menu',
@@ -19,6 +20,7 @@ import { RoleMenuService } from '../../services/role-menu.service';
     CommonModule,
     FormsModule,
     TableModule,
+    NavbarComponent,
   ],
   templateUrl: './role-menu.component.html',
   styleUrl: './role-menu.component.scss',

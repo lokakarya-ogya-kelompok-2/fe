@@ -5,7 +5,9 @@ import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
 import { AuthService } from '../../../core/services/auth.service';
 import { TokenService } from '../../../core/services/token.service';
+import { MenuService } from '../../../features/menus/services/menu.service';
 import { UserService } from '../../../features/users/services/user.service';
+import { TokenPayload } from '../../types';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -15,94 +17,136 @@ import { UserService } from '../../../features/users/services/user.service';
 })
 export class NavbarComponent implements OnInit {
   items: MenuItem[] | undefined;
-  username: string | undefined = '';
+  tokenPayload: TokenPayload | undefined = {} as TokenPayload;
+  menu: Set<string> = new Set();
 
   constructor(
     readonly authService: AuthService,
     private tokenService: TokenService,
-    private readonly userSvc: UserService
+    private readonly userSvc: UserService,
+    private menuService: MenuService
   ) {}
 
   ngOnInit() {
+    this.getToken();
+    this.getMenuById();
+
     this.items = [
       {
+        id: 'user#all',
         label: 'User',
-        routerLink: '/manage/',
+        routerLink: '/manage-users',
         routerLinkActiveOptions: { exact: true },
       },
       {
+        id: 'division#all',
         label: 'Division',
-        routerLink: 'divisions',
+        routerLink: '/manage-divisions',
         routerLinkActiveOptions: { exact: true },
       },
       {
+        id: 'role-menu#all',
         label: 'Role Menu',
-        routerLink: '/manage/role-menu',
+        routerLink: '/manage-role-menu',
         routerLinkActiveOptions: { exact: true },
       },
       {
+        id: 'attitude-skill',
         label: 'Attitudes',
         routerLinkActiveOptions: { exact: true },
         items: [
           {
+            id: 'group-attitude-skill#all',
             label: 'Group Attitude kill',
-            routerLink: '/manage/group-attitude-skills',
+            routerLink: '/manage-group-attitude-skills',
             routerLinkActiveOptions: { exact: true },
           },
           {
+            id: 'attitude-skill#all',
             label: 'Attitude skill',
-            routerLink: '/manage/attitude-skills',
+            routerLink: '/manage-attitude-skills',
             routerLinkActiveOptions: { exact: true },
           },
         ],
       },
       {
+        id: 'technical-skill#all',
         label: 'Technical skill',
-        routerLink: '/manage/technical-skills',
+        routerLink: '/manage-technical-skills',
         routerLinkActiveOptions: { exact: true },
       },
       {
+        id: 'dev-plan#all',
         label: 'Dev-plan',
-        routerLink: '/manage/dev-plans',
+        routerLink: '/manage-dev-plans',
         routerLinkActiveOptions: { exact: true },
       },
       {
+        id: 'achievement',
         label: 'Achievements',
         style: { 'z-index': 3 },
         routerLinkActiveOptions: { exact: true },
         items: [
           {
+            id: 'group-achievement#all',
             label: 'Group achievement',
-            routerLink: '/manage/group-achievements',
+            routerLink: '/manage-group-achievements',
             routerLinkActiveOptions: { exact: true },
           },
           {
+            id: 'achievement#all',
             label: 'Achievement',
-            routerLink: '/manage/achievements',
+            routerLink: '/manage-achievements',
             routerLinkActiveOptions: { exact: true },
           },
           {
+            id: 'emp-achievement#all',
             label: 'Emp achievement',
-            routerLink: ['/manage/emp-achievements'],
+            routerLink: ['/manage-emp-achievements'],
             routerLinkActiveOptions: { exact: true },
           },
         ],
       },
       {
+        id: 'summary#read',
         label: 'Summary',
-        routerLink: '/manage/summaries',
+        routerLink: '/manage-summaries',
         routerLinkActiveOptions: { exact: true },
       },
     ];
-    this.getToken();
   }
 
   getToken(): void {
     const token = this.tokenService.getToken();
     if (token && this.authService.isAuthenticated()) {
-      const jwtPayload = this.tokenService.decodeToken(token);
-      this.username = jwtPayload.username;
-      console.log(this.username, 'ini username');
+      this.tokenPayload = this.tokenService.decodeToken(token);
+      console.log(this.tokenPayload, 'ini token payload');
     }
+  }
+  getMenuById(): void {
+    this.menuService.getMenuByUserId(this.tokenPayload?.sub!).subscribe({
+      next: (data) => {
+        data.content.map((menu) => {
+          this.menu.add(menu.menu_name);
+          this.menu.add(menu.menu_name.split('#')[0]);
+        });
+        this.items = this.items?.filter((item) => {
+          if (item.items) {
+            item.items = item.items.filter((subItem) => {
+              return this.menu.has(subItem.id!);
+            });
+          }
+          // for (const menu of this.menu) {
+          //   if (menu.includes(item.id!)) {
+          //     return true;
+          //   }
+          // }
+          // return false;
+          return this.menu.has(item.id!);
+        });
+        console.log(this.menu);
+        console.log(this.items);
+      },
+    });
   }
 }

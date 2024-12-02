@@ -12,6 +12,7 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
+import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { DialogType } from '../../../../shared/types';
 import { userToReq } from '../../../../shared/utils/mapper';
 import { User, UserReq } from '../../models/user';
@@ -35,6 +36,7 @@ import { UserFormComponent } from '../user-form/user-form.component';
     FormsModule,
     UserFormComponent,
     UserDetailComponent,
+    NavbarComponent,
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './user-list.component.html',

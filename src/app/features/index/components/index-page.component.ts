@@ -63,7 +63,7 @@ export class IndexPageComponent implements OnInit {
         root: true,
         icon: 'pi pi-list',
         command: () => {
-          this.router.navigate(['/manage']);
+          this.router.navigate(['/manage-users']);
         },
       },
       {
