@@ -1,60 +1,89 @@
 <div class="flex flex-column md:flex-row">
-  <div
-    class="w-full md:w-5 flex flex-column align-items-center justify-content-center gap-3 py-5"
-  >
-    <h1>tes</h1>
-  </div>
-  <div class="w-full md:w-2">
-    <p-divider layout="vertical" styleClass="hidden md:flex"> </p-divider>
-    <p-divider
-      layout="horizontal"
-      styleClass="flex md:hidden"
-      [align]="'center'"
+  <div>
+    <p-galleria
+      [value]="images"
+      [showIndicators]="false"
+      [showItemNavigatorsOnHover]="true"
+      [showItemNavigators]="true"
+      [responsiveOptions]="responsiveOptions"
+      [containerStyle]="{ 'max-width': '640px', height: '100px' }"
     >
-      <b>OR</b>
-    </p-divider>
+      <ng-template pTemplate="item" let-item>
+        <img
+          [src]="item.itemImageSrc"
+          style="
+            width: 100%;
+            height: 495px;
+            display: block;
+            border-radius: 5px 5px 0px 0px;
+          "
+        />
+      </ng-template>
+      <ng-template pTemplate="thumbnail" let-item>
+        <div
+          class="grid grid-nogutter justify-content-center"
+          style="border-radius: 0px 0px 5px 5px"
+        >
+          <img [src]="item.thumbnailImageSrc" style="display: block" />
+        </div>
+      </ng-template>
+    </p-galleria>
   </div>
-  <div class="card flex">
-    <div class="surface-card">
-      <h1>Login</h1>
-      <form #loginForm="ngForm" (submit)="onSubmit()">
-        <div class="field">
-          <span class="p-float-label">
-            <input
-              id="email_or_username"
-              type="text"
-              pInputText
-              name="email_or_username"
-              [(ngModel)]="loginData.email_or_username"
-              required
+  <div>
+    <p-divider layout="vertical"></p-divider>
+  </div>
+  <div class="right-part">
+    <div class="card">
+      <div class="surface-card">
+        <h1>Employee Appraisal Login</h1>
+        <p id="login-text">
+          Hey, Enter your details to get login to your account
+        </p>
+        <form #loginForm="ngForm" (submit)="onSubmit()">
+          <div class="field">
+            <span class="p-float-label">
+              <input
+                id="email_or_username"
+                type="text"
+                pInputText
+                name="email_or_username"
+                [(ngModel)]="loginData.email_or_username"
+                required
+              />
+              <label for="username">Username or Email</label>
+            </span>
+          </div>
+          <div class="field">
+            <span class="p-float-label">
+              <input
+                id="password"
+                type="password"
+                name="password"
+                pInputText
+                [(ngModel)]="loginData.password"
+                required
+                minlength="8"
+                maxlength="32"
+              />
+              <label for="password">Password</label>
+            </span>
+          </div>
+          <div class="button-login">
+            <p-button
+              type="submit"
+              label="Login"
+              severity="primary"
+              [disabled]="loginForm.invalid"
             />
-            <label for="username">Username or Email</label>
-          </span>
-        </div>
-        <div class="field">
-          <span class="p-float-label">
-            <input
-              id="password"
-              type="password"
-              name="password"
-              pInputText
-              [(ngModel)]="loginData.password"
-              required
-              minlength="8"
-              maxlength="32"
-            />
-            <label for="password">Password</label>
-          </span>
-        </div>
-        <div class="button-login">
-          <p-button
-            type="submit"
-            label="Login"
-            severity="primary"
-            [disabled]="loginForm.invalid"
-          />
-        </div>
-      </form>
+          </div>
+          <div class="login-footer">
+            <p id="footer-text">
+              Get recognized for your achievements. Track your accomplishments,
+              receive valuable feedback, and celebrate your successes.
+            </p>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

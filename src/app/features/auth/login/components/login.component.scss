@@ -1,41 +1,63 @@
 .card {
-    border-radius: 10px;
-    overflow: hidden;
-    margin: 0 ;
-    justify-content: center;
-    display: grid;
-    align-items: center;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 0;
+  justify-content: center;
+  display: grid;
+  align-items: center;
 }
 
 .surface-card {
-    padding: 2rem;
+  padding: 2rem;
 }
 
 .p-float-label {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .p-button-link {
-    text-decoration: none;
-    background-color: transparent;
-    color: #333; /* Sesuaikan warna teks link */
+  text-decoration: none;
+  background-color: transparent;
+  color: #333; /* Sesuaikan warna teks link */
 }
-.button-login{
-    display: flex;
-    justify-content: center;
+.button-login {
+  display: flex;
+  justify-content: center;
 }
-.surface-card{
-    border: 1px solid #ccc; 
-    border-radius: 4px; 
-    padding: 48px; 
-    margin: 8px;
-    margin-top: 80px; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+// .surface-card{
+//     border: 1px solid #ccc;
+//     border-radius: 4px;
+//     padding: 48px;
+//     margin: 8px;
+//     margin-top: 80px;
+//     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+// }
+.surface-card h1 {
+  text-align: center;
+  justify-content: center;
+  padding-bottom: 24px;
 }
-.surface-card h1{
-    text-align: center;
-    padding-bottom: 24px;
+#login-text {
+  padding-bottom: 24px;
+  width: 260px;
+  margin-left: 68px;
+  text-align: center;
+  opacity: 60%;
 }
-.field{
-    margin-bottom: 40px;
+.field {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+.right-part {
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+#footer-text {
+  width: 400px;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 35px;
+  opacity: 60%;
 }
