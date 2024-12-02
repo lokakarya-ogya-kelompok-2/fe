@@ -85,6 +85,7 @@ export class AttitudeSkillComponent implements OnInit {
       next: (data) => {
         this.Datas = data.content;
         this.loading = false;
+        console.log(this.Datas);
       },
       error: (err) => {
         console.error('Error fetching attitude skill:', err);

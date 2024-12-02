@@ -2,7 +2,7 @@
   <p-table
     #achievementTable
     [scrollable]="true"
-    scrollHeight="380px"
+    scrollHeight="360px"
     [value]="Datas"
     dataKey="id"
     [rows]="10"
@@ -29,7 +29,8 @@
           id="btn-modal"
           (onClick)="showDialog()"
           label="Add Achievement"
-          icon=""
+          icon="pi pi-plus"
+          [style]="{ 'font-size': '12px', padding: '10px 16px' }"
         />
         <p-iconField iconPosition="left" class="ml-auto">
           <p-inputIcon>
@@ -40,6 +41,7 @@
             type="text"
             placeholder="Search keyword"
             (input)="onGlobalFilter(achievementTable, $event)"
+            [style]="{ 'font-size': '14px' }"
           />
         </p-iconField>
       </div>
@@ -58,7 +60,11 @@
         <td>{{ data.achievement }}</td>
         <td>{{ data.group_id?.group_name }}</td>
         <td>{{ data.group_id?.percentage }}</td>
-        <td>{{ data.enabled }}</td>
+        <td>
+          <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
+            {{ data.enabled === true ? "True" : "False" }}
+          </p-tag>
+        </td>
         <td style="justify-content: space-between; display: flex">
           <p-button
             (onClick)="showDialogDetail(data)"
@@ -242,7 +248,11 @@
           </tr>
           <tr>
             <td>Enabled</td>
-            <td>{{ data.enabled }}</td>
+            <td>
+              <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
+                {{ data.enabled === true ? "True" : "False" }}
+              </p-tag>
+            </td>
           </tr>
           <tr>
             <td>Created At</td>

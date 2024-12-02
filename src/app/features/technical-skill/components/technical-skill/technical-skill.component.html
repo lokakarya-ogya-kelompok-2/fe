@@ -2,7 +2,7 @@
   <p-table
     #technicalSkillTable
     [scrollable]="true"
-    scrollHeight="380px"
+    scrollHeight="360px"
     [value]="datas"
     dataKey="id"
     [rows]="10"
@@ -23,7 +23,8 @@
           id="btn-modal"
           (onClick)="showDialog()"
           label="Add Technical Skill"
-          icon="pi pi-users"
+          icon="pi pi-plus"
+          [style]="{ 'font-size': '12px', padding: '10px 16px' }"
         />
         <p-iconField iconPosition="left" class="ml-auto">
           <p-inputIcon>
@@ -34,13 +35,13 @@
             type="text"
             placeholder="Search keyword"
             (input)="onGlobalFilter(technicalSkillTable, $event)"
+            [style]="{ 'font-size': '14px' }"
           />
         </p-iconField>
       </div>
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <!-- <th>Id</th> -->
         <th>Technical Skill</th>
         <th>Enabled</th>
         <th>Action</th>
@@ -49,7 +50,11 @@
     <ng-template pTemplate="body" let-data>
       <tr>
         <td>{{ data.technical_skill }}</td>
-        <td>{{ data.enabled }}</td>
+        <td>
+          <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
+            {{ data.enabled === true ? "True" : "False" }}
+          </p-tag>
+        </td>
         <td style="justify-content: space-evenly; display: flex">
           <p-button
             (onClick)="showDialogDetail(data)"
@@ -87,8 +92,8 @@
     [style]="{ width: '25rem' }"
   >
     <div class="flex align-items-center gap-3 mb-3">
-      <label for="Technical Skill" class="font-semibold w-6rem"
-        >Technical Skill
+      <label for="Technical Skill" class="font-semibold w-6rem">
+        Technical Skill
       </label>
       <input
         pInputText
@@ -204,7 +209,11 @@
           </tr>
           <tr>
             <td>Enabled</td>
-            <td>{{ data.enabled }}</td>
+            <td>
+              <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
+                {{ data.enabled === true ? "True" : "False" }}
+              </p-tag>
+            </td>
           </tr>
           <tr>
             <td>Created At</td>

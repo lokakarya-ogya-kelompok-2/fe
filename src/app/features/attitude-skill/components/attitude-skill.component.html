@@ -2,7 +2,7 @@
   <p-table
     #attitudeSkillTable
     [scrollable]="true"
-    scrollHeight="380px"
+    scrollHeight="360px"
     [value]="Datas"
     dataKey="id"
     [rows]="10"
@@ -29,7 +29,8 @@
           id="btn-modal"
           (onClick)="showDialog()"
           label="Add Attitude Skill"
-          icon=""
+          icon="pi pi-plus"
+          [style]="{ 'font-size': '12px', padding: '10px 16px' }"
         />
         <p-iconField iconPosition="left" class="ml-auto">
           <p-inputIcon>
@@ -40,13 +41,13 @@
             type="text"
             placeholder="Search keyword"
             (input)="onGlobalFilter(attitudeSkillTable, $event)"
+            [style]="{ 'font-size': '14px' }"
           />
         </p-iconField>
       </div>
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <!-- <th>Id</th> -->
         <th>Attitude Skill</th>
         <th>Group Name</th>
         <th>Percentage</th>
@@ -56,11 +57,14 @@
     </ng-template>
     <ng-template pTemplate="body" let-data>
       <tr>
-        <!-- <td>{{ data.id }}</td> -->
         <td>{{ data.attitude_skill }}</td>
         <td>{{ data.group_id.group_name }}</td>
         <td>{{ data.group_id.percentage }}</td>
-        <td>{{ data.enabled }}</td>
+        <td>
+          <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
+            {{ data.enabled === true ? "True" : "False" }}
+          </p-tag>
+        </td>
         <td style="justify-content: space-between; display: flex">
           <p-button
             (onClick)="showDialogDetail(data)"
@@ -75,7 +79,7 @@
             icon="pi pi-pen-to-square"
             [rounded]="true"
             [raised]="true"
-          ></p-button>
+          />
           <p-button
             (onClick)="confirmDelete($event, data.id)"
             [outlined]="true"
@@ -83,8 +87,7 @@
             icon="pi pi-trash"
             [rounded]="true"
             [raised]="true"
-          >
-          </p-button>
+          />
           <p-confirmDialog key="{{ data.id }}" />
         </td>
       </tr>
@@ -251,7 +254,11 @@
           </tr>
           <tr>
             <td>Enabled</td>
-            <td>{{ data.enabled }}</td>
+            <td>
+              <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
+                {{ data.enabled === true ? "True" : "False" }}
+              </p-tag>
+            </td>
           </tr>
           <tr>
             <td>Created At</td>

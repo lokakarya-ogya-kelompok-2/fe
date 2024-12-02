@@ -28,8 +28,9 @@
         <p-button
           id="btn-add"
           label="Add User"
-          icon="pi pi-users"
+          icon="pi pi-plus"
           (onClick)="showDialog(dialogType.ADD)"
+          [style]="{ 'font-size': '12px', padding: '10px 16px' }"
         />
         <p-dialog
           [header]="dialogHeader"
@@ -57,13 +58,13 @@
           type="text"
           placeholder="Search keyword"
           (input)="onGlobalFilter(userTable, $event)"
+          [style]="{ 'font-size': '14px' }"
         />
       </p-iconField>
     </div>
   </ng-template>
   <ng-template pTemplate="header">
     <tr>
-      <!-- <th>ID</th> -->
       <th>Full Name</th>
       <th>Username</th>
       <th>Position</th>
@@ -73,7 +74,6 @@
   </ng-template>
   <ng-template pTemplate="body" let-user>
     <tr>
-      <!-- <td>{{ user.id }}</td> -->
       <td>{{ user.full_name }}</td>
       <td>{{ user.username }}</td>
       <td>{{ user.position }}</td>
