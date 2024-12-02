@@ -103,46 +103,59 @@
     [(visible)]="visible"
     [style]="{ width: '25rem' }"
   >
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Achievement" class="font-semibold w-6rem">Achievement</label>
-      <input
-        pInputText
-        id="Achievement"
-        class="flex-auto"
-        autocomplete="off"
-        [(ngModel)]="newAchievement.achievement"
-        required
-        maxlength="100"
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="group id" class="font-semibold w-6rem">Group id</label>
-      <p-dropdown
-        [options]="groupAchievementDropdown"
-        [(ngModel)]="newAchievement.group_id"
-        optionLabel="name"
-        optionValue="id"
-        placeholder="Select a group name"
-        required
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="enabled" class="font-semibold w-6rem">Enabled</label>
-      <p-checkbox
-        [(ngModel)]="newAchievement.enabled"
-        [binary]="true"
-        inputId="binary"
-        required
-      />
-    </div>
-    <div class="flex justify-content-end gap-2">
-      <p-button
-        label="Cancel"
-        severity="secondary"
-        (onClick)="visible = false"
-      />
-      <p-button label="Save" (onClick)="visible = false; createAchievement()" />
-    </div>
+    <form #achievementForm="ngForm" (submit)="createAchievement()">
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="Achievement" class="font-semibold w-6rem"
+          >Achievement</label
+        >
+        <input
+          pInputText
+          id="Achievement"
+          class="flex-auto"
+          autocomplete="off"
+          [(ngModel)]="newAchievement.achievement"
+          required
+          maxlength="100"
+          name="achievement"
+          required
+        />
+      </div>
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="group id" class="font-semibold w-6rem">Group Name</label>
+        <p-dropdown
+          [options]="groupAchievementDropdown"
+          [(ngModel)]="newAchievement.group_id"
+          optionLabel="group_name"
+          optionValue="id"
+          placeholder="Select a group name"
+          required
+          name="group name"
+        />
+      </div>
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="enabled" class="font-semibold w-6rem">Enabled</label>
+        <p-checkbox
+          [(ngModel)]="newAchievement.enabled"
+          [binary]="true"
+          inputId="binary"
+          required
+          name="enabled"
+        />
+      </div>
+      <div class="flex justify-content-end gap-2">
+        <p-button
+          label="Cancel"
+          severity="secondary"
+          (onClick)="visible = false"
+        />
+        <p-button
+          label="Save"
+          (onClick)="visible = false"
+          type="submit"
+          [disabled]="achievementForm.invalid"
+        />
+      </div>
+    </form>
   </p-dialog>
 </div>
 
@@ -152,51 +165,58 @@
     [(visible)]="editVisible"
     [style]="{ width: '25rem' }"
   >
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Attitude Skill" class="font-semibold w-6rem">
-        Achievement
-      </label>
-      <input
-        [(ngModel)]="editData.achievement"
-        pInputText
-        id="Attitude Skill"
-        class="flex-auto"
-        autocomplete="off"
-        required
-        maxlength="100"
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Group name" class="font-semibold w-6rem">Group Name</label>
-      <p-dropdown
-        [options]="groupAchievementDropdown"
-        [(ngModel)]="editData.group_id"
-        optionLabel="name"
-        optionValue="id"
-        placeholder="Select a group name"
-        required
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Enabled" class="font-semibold w-6rem">Enabled</label>
-      <p-checkbox
-        [(ngModel)]="editData.enabled"
-        [binary]="true"
-        inputId="binary"
-        required
-      />
-    </div>
-    <div class="flex justify-content-end gap-2">
-      <p-button
-        label="Cancel"
-        severity="secondary"
-        (onClick)="editVisible = false"
-      />
-      <p-button
-        label="Save"
-        (onClick)="editVisible = false; updateAchievement()"
-      />
-    </div>
+    <form #updateAchievementForm="ngForm" (submit)="updateAchievement()">
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="Attitude Skill" class="font-semibold w-6rem">
+          Achievement
+        </label>
+        <input
+          [(ngModel)]="editData.achievement"
+          pInputText
+          id="Attitude Skill"
+          class="flex-auto"
+          autocomplete="off"
+          required
+          maxlength="100"
+          name="achievement"
+        />
+      </div>
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="Group name" class="font-semibold w-6rem">Group Name</label>
+        <p-dropdown
+          [options]="groupAchievementDropdown"
+          [(ngModel)]="editData.group_id"
+          optionLabel="group_name"
+          optionValue="id"
+          placeholder="Select a group name"
+          required
+          name="group_name"
+        />
+      </div>
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="Enabled" class="font-semibold w-6rem">Enabled</label>
+        <p-checkbox
+          [(ngModel)]="editData.enabled"
+          [binary]="true"
+          inputId="binary"
+          required
+          name="enabled"
+        />
+      </div>
+      <div class="flex justify-content-end gap-2">
+        <p-button
+          label="Cancel"
+          severity="secondary"
+          (onClick)="editVisible = false"
+        />
+        <p-button
+          label="Save"
+          (onClick)="editVisible = false; updateAchievement()"
+          type="submit"
+          [disabled]="updateAchievementForm.invalid"
+        />
+      </div>
+    </form>
   </p-dialog>
 </div>
 <div class="card flex justify-content-center">

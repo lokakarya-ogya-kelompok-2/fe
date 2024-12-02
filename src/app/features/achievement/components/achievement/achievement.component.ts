@@ -15,6 +15,7 @@ import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { GroupAchievementService } from '../../../group-achievement/services/group-achievement.service';
 import { Achievement, AchievementRequest } from '../../model/achievement';
 import { AchievementService } from '../../services/achievement.service';
 
@@ -55,7 +56,6 @@ export class AchievementComponent implements OnInit {
   editData: Achievement = {} as Achievement;
   newAchievement: AchievementRequest = {} as AchievementRequest;
   checked: boolean = false;
-  groupAttitudeSkillDropdown: any = [];
   dataDetail: Achievement = {} as Achievement;
   groupAchievementDropdown: any = [];
   resetForm(): void {
@@ -64,6 +64,7 @@ export class AchievementComponent implements OnInit {
     this.newAchievement.group_id = '';
   }
   constructor(
+    private groupAchievementService: GroupAchievementService,
     private achievementService: AchievementService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService
@@ -71,18 +72,21 @@ export class AchievementComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAchievement();
+    this.getGroupAchievement();
   }
 
+  getGroupAchievement(): void {
+    this.groupAchievementService.getGroupAchievements().subscribe({
+      next: (data) => {
+        this.groupAchievementDropdown = data.content;
+        console.log(this.groupAchievementDropdown);
+      },
+    });
+  }
   getAchievement(): void {
     this.achievementService.getAchievements().subscribe({
       next: (data) => {
         this.Datas = data.content;
-        data.content.map((item: any) => {
-          this.groupAchievementDropdown.push({
-            id: item.group_id?.id,
-            name: item.group_id?.group_name,
-          });
-        });
         console.log(this.Datas);
         console.log(this.groupAchievementDropdown);
 

@@ -94,51 +94,63 @@
     [(visible)]="visible"
     [style]="{ width: '25rem' }"
   >
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Group Name" class="font-semibold w-6rem">Group Name </label>
-      <input
-        pInputText
-        id="Group Achievement"
-        class="flex-auto"
-        autocomplete="off"
-        [(ngModel)]="newGroupAchievement.group_name"
-        required
-        maxlength="100"
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Percentage" class="font-semibold w-6rem">Percentage</label>
-      <input
-        [(ngModel)]="newGroupAchievement.percentage"
-        pInputText
-        id="Percentage"
-        class="flex-auto"
-        autocomplete="off"
-        required
-        max="100"
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Enabled" class="font-semibold w-6rem">Enabled</label>
-      <p-checkbox
-        [(ngModel)]="newGroupAchievement.enabled"
-        [binary]="true"
-        inputId="binary"
-        required
-      />
-    </div>
+    <form #groupAchievementForm="ngForm" (submit)="createGroupAchievements()">
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="Group Name" class="font-semibold w-6rem">Group Name </label>
+        <input
+          pInputText
+          id="Group Achievement"
+          class="flex-auto"
+          autocomplete="off"
+          [(ngModel)]="newGroupAchievement.group_name"
+          required
+          name="group name"
+          maxlength="100"
+          type="text"
+        />
+      </div>
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="Percentage" class="font-semibold w-6rem">Percentage</label>
+        <input
+          [(ngModel)]="newGroupAchievement.percentage"
+          pInputText
+          id="Percentage"
+          class="flex-auto"
+          autocomplete="off"
+          required
+          max="100"
+          min="0"
+          name="percentage"
+          pattern="^[0-9]*$"
+          step="1"
+          type="number"
+        />
+      </div>
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="Enabled" class="font-semibold w-6rem">Enabled</label>
+        <p-checkbox
+          [(ngModel)]="newGroupAchievement.enabled"
+          [binary]="true"
+          inputId="binary"
+          required
+          name="enabled"
+        />
+      </div>
 
-    <div class="flex justify-content-end gap-2">
-      <p-button
-        label="Cancel"
-        severity="secondary"
-        (onClick)="visible = false"
-      />
-      <p-button
-        label="Save"
-        (onClick)="visible = false; createGroupAchievements()"
-      />
-    </div>
+      <div class="flex justify-content-end gap-2">
+        <p-button
+          label="Cancel"
+          severity="secondary"
+          (onClick)="visible = false"
+        />
+        <p-button
+          label="Save"
+          (onClick)="visible = false"
+          type="submit"
+          [disabled]="groupAchievementForm.invalid"
+        />
+      </div>
+    </form>
   </p-dialog>
 </div>
 
@@ -148,50 +160,64 @@
     [(visible)]="editVisible"
     [style]="{ width: '25rem' }"
   >
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Group name" class="font-semibold w-6rem">Group Name</label>
-      <input
-        [(ngModel)]="editData.group_name"
-        pInputText
-        id="username"
-        class="flex-auto"
-        autocomplete="off"
-        required
-        maxlength="100"
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="username" class="font-semibold w-6rem">Percentage</label>
-      <input
-        [(ngModel)]="editData.percentage"
-        pInputText
-        id="username"
-        class="flex-auto"
-        autocomplete="off"
-        required
-        max="100"
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="username" class="font-semibold w-6rem">Enabled</label>
-      <p-checkbox
-        [(ngModel)]="editData.enabled"
-        [binary]="true"
-        inputId="binary"
-        required
-      />
-    </div>
-    <div class="flex justify-content-end gap-2">
-      <p-button
-        label="Cancel"
-        severity="secondary"
-        (onClick)="editVisible = false"
-      />
-      <p-button
-        label="Save"
-        (onClick)="editVisible = false; updateGroupAchievements()"
-      />
-    </div>
+    <form
+      #updateGroupAchievementForm="ngForm"
+      (submit)="updateGroupAchievements()"
+    >
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="Group name" class="font-semibold w-6rem">Group Name</label>
+        <input
+          [(ngModel)]="editData.group_name"
+          pInputText
+          id="username"
+          class="flex-auto"
+          autocomplete="off"
+          required
+          maxlength="100"
+          name="group name"
+        />
+      </div>
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="username" class="font-semibold w-6rem">Percentage</label>
+        <input
+          [(ngModel)]="editData.percentage"
+          pInputText
+          id="username"
+          class="flex-auto"
+          autocomplete="off"
+          required
+          max="100"
+          min="0"
+          name="percentage"
+          pattern="^[0-9]*$"
+          step="1"
+          type="number"
+        />
+      </div>
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="username" class="font-semibold w-6rem">Enabled</label>
+        <p-checkbox
+          [(ngModel)]="editData.enabled"
+          [binary]="true"
+          inputId="binary"
+          required
+          name="enabled"
+        />
+      </div>
+      <div class="flex justify-content-end gap-2">
+        <p-button
+          label="Cancel"
+          severity="secondary"
+          (onClick)="editVisible = false"
+        />
+        <p-button
+          label="Save"
+          (onClick)="editVisible = false"
+          type="submit"
+          [disabled]="updateGroupAchievementForm.invalid"
+        />
+      </div>
+    </form>
   </p-dialog>
 </div>
 
