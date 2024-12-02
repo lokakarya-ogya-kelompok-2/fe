@@ -146,6 +146,9 @@
         [(ngModel)]="newEmpAchievement.score"
         required
         max="100"
+        type="number"
+        min="0"
+        pattern="^[0-9]*$"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
@@ -230,6 +233,9 @@
         [(ngModel)]="editData.score"
         required
         max="100"
+        min="0"
+        type="number"
+        pattern="^[0-9]*$"
       />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
