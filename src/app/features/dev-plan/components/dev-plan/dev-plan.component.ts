@@ -13,6 +13,7 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
+import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { DevPlan, DevPlanRequest } from '../../models/dev-plan';
 import { DevPlanService } from '../../services/dev-plan.service';
 @Component({
@@ -32,6 +33,7 @@ import { DevPlanService } from '../../services/dev-plan.service';
     FormsModule,
     ReactiveFormsModule,
     CheckboxModule,
+    NavbarComponent,
   ],
   providers: [DevPlanService, ConfirmationService, MessageService, FormsModule],
   templateUrl: './dev-plan.component.html',
