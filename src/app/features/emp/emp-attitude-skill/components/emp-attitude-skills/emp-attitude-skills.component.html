@@ -1,7 +1,11 @@
 <app-navbar></app-navbar>
 <app-user-information></app-user-information>
 
-<form #empTechnicalSkillForm="ngForm" id="empTechnicalSkillForm">
+<form
+  #empAttitudeSkillForm="ngForm"
+  id="empAttitudeSkillForm"
+  (ngSubmit)="createEmpAttitudeSkill()"
+>
   <div *ngFor="let group of groupAttitudeSkills" class="mb-4">
     <h2 class="text-xl font-bold mb-2">{{ group.group_name }}</h2>
     <p-table
@@ -48,8 +52,8 @@
     <p-button
       label="Submit"
       type="submit"
-      form="empTechnicalSkillForm"
-      [disabled]="empTechnicalSkillForm.invalid"
+      form="empAttitudeSkillForm"
+      [disabled]="empAttitudeSkillForm.invalid"
     />
   </div>
 </form>

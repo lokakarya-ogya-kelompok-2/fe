@@ -7,6 +7,7 @@ import { DevPlanComponent } from './features/dev-plan/components/dev-plan/dev-pl
 import { ManageDivisionComponent } from './features/divisions/components/manage-division.component';
 import { EmpAchievementComponent } from './features/emp-achievement/components/emp-achievement/emp-achievement.component';
 import { EmpAttitudeSkillsComponent } from './features/emp/emp-attitude-skill/components/emp-attitude-skills/emp-attitude-skills.component';
+import { EmpDevPlanComponent } from './features/emp/emp-dev-plan/components/emp-dev-plan/emp-dev-plan.component';
 import { GroupAchievementComponent } from './features/group-achievement/components/group-achievement/group-achievement.component';
 import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-skill/components/manage-group-attitude-skill.component';
 import { IndexPageComponent } from './features/index/components/index-page.component';
@@ -37,6 +38,7 @@ import { TechnicalSkillComponent } from './features/technical-skill/components/t
     SummaryComponent,
     RoleMenuComponent,
     EmpAttitudeSkillsComponent,
+    EmpDevPlanComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
