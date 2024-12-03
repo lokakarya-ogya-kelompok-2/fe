@@ -12,7 +12,7 @@ export interface User extends ResponseContentMeta {
   enabled: boolean;
   password: string;
   roles: Role[];
-  division: Division;
+  division?: Division;
   employee_status: number;
 }
 

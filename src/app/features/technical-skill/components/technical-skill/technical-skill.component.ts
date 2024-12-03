@@ -54,7 +54,9 @@ export class TechnicalSkillComponent {
   visible: boolean = false;
   editVisible: boolean = false;
   detailVisible: boolean = false;
-  newTechnicalSkill: TechnicalSKillRequest = {} as TechnicalSKillRequest;
+  newTechnicalSkill: TechnicalSKillRequest = {
+    enabled: false,
+  } as TechnicalSKillRequest;
   editData: TechnicalSkill = {} as TechnicalSkill;
   dataDetail: TechnicalSkill = {} as TechnicalSkill;
   checked: boolean = false;

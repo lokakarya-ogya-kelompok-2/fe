@@ -1,21 +1,25 @@
-<p-card class="mb-4" [style]="{ 'margin-top': '10px' }">
-  <ng-template pTemplate="title"> User Information </ng-template>
-  <div class="grid">
-    <div class="col-6">
-      <p class="font-bold">Full Name:</p>
-      <p>{{ jwtPayload.full_name }}</p>
+<div class="flex justify-content-center w-full">
+  <p-card class="mb-4 mt-3 ml-3">
+    <ng-template pTemplate="title">
+      <div class="text-center mb-3">User Information</div>
+    </ng-template>
+    <div class="grid">
+      <div class="col-6">
+        <p class="font-bold">Full Name:</p>
+        <p>{{ currentUser.full_name }}</p>
+      </div>
+      <div class="col-6">
+        <p class="font-bold">Position:</p>
+        <p>{{ currentUser.position }}</p>
+      </div>
+      <div class="col-6">
+        <p class="font-bold">Division:</p>
+        <p>{{ currentUser.division?.division_name }}</p>
+      </div>
+      <div class="col-6">
+        <p class="font-bold">Assessment Year:</p>
+        <p>{{ currentYear }}</p>
+      </div>
     </div>
-    <div class="col-6">
-      <p class="font-bold">Position:</p>
-      <p>{{ userLogin.position }}</p>
-    </div>
-    <div class="col-6">
-      <p class="font-bold">Division:</p>
-      <p>{{ userLogin.division.division_name }}</p>
-    </div>
-    <div class="col-6">
-      <p class="font-bold">Assessment Year:</p>
-      <p>{{ currentYear }}</p>
-    </div>
-  </div>
-</p-card>
+  </p-card>
+</div>
