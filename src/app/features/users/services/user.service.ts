@@ -16,6 +16,10 @@ export class UserService {
     return this.httpClient.get<Response<User[]>>(this.baseUserUrl);
   }
 
+  getById(id: string): Observable<Response<User>> {
+    return this.httpClient.get<Response<User>>(`${this.baseUserUrl}/${id}`);
+  }
+
   add(user: UserReq): Observable<Response<User>> {
     return this.httpClient.post<Response<User>>(this.baseUserUrl, user);
   }

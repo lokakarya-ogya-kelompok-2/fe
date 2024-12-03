@@ -1,6 +1,6 @@
-<app-navbar/>
-<div class="flex flex-column align-items-center">
-  <div class="flex justify-content-between align-items-center w-8 mb-4">
+<app-navbar />
+<div class="flex flex-column align-items-center mt-4">
+  <div class="flex justify-content-between align-items-center w-10 mb-4">
     <h2 class="text-800 font-bold m-0">Menu Access Management</h2>
     <p-button
       label="Save"
@@ -8,10 +8,11 @@
       icon="pi pi-save"
       severity="primary"
       [raised]="true"
+      [loading]="isLoading"
     />
   </div>
 
-  <div class="card shadow-2" style="width: 80%">
+  <div class="card shadow-2 w-10">
     <p-table
       [value]="menus"
       [scrollable]="true"
@@ -38,7 +39,7 @@
           <td class="text-center">
             <p-checkbox
               [(ngModel)]="roleMenus[role.id]"
-              [value]="menu"
+              [value]="menu.id"
               name="group"
               class="cursor-pointer"
             />
@@ -49,3 +50,5 @@
     </p-table>
   </div>
 </div>
+
+<p-toast position="bottom-right" />
