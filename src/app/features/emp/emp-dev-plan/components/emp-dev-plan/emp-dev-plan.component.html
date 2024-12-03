@@ -1,3 +1,56 @@
 <app-navbar />
-<!-- <p>Nama: {{ data.name }}</p> -->
-TITIT
+<app-user-information />
+<form #empAttitudeSkillForm="ngForm" id="empAttitudeSkillForm">
+  <!-- (ngSubmit)="createEmpAttitudeSkill()" -->
+
+  <div *ngFor="let plan of plans" class="mb-4">
+    <h2 class="text-xl font-bold mb-2">{{ plan.dev_plan_id.plan }}</h2>
+    <!-- [value]="group.attitude_skills" -->
+    <p-table
+      [tableStyle]="{
+        'min-width': '50rem',
+        'box-shadow': '0 4px 6px rgba(0, 0, 0, 0.1)',
+        'border-radius': '8px',
+        'table-layout': 'fixed'
+      }"
+      [style]="{ width: '100%' }"
+      class="p-datatable-striped p-datatable-gridlines custom-table"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="custom-header" style="width: 60%">Attitude Skill</th>
+          <th class="custom-header" style="width: 40%">Input Field</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-skill let-i="rowIndex">
+        <tr>
+          <td>{{ skill.attitude_skill }}</td>
+          <td>
+            <div class="card flex justify-content-center">
+              <!-- [options]="scoreCategory" -->
+              <p-dropdown
+                [(ngModel)]="skill.score"
+                optionLabel="category"
+                optionValue="score"
+                placeholder="Select score category"
+                class="custom-dropdown"
+                appendTo="body"
+                required
+              />
+              <!-- name="score-{{ group.group_name }}-{{ i }}" -->
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <p-divider />
+  <div class="card flex justify-content-center">
+    <p-button
+      label="Submit"
+      type="submit"
+      form="empAttitudeSkillForm"
+      [disabled]="empAttitudeSkillForm.invalid"
+    />
+  </div>
+</form>

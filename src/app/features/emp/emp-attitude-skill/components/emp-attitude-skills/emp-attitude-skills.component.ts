@@ -12,6 +12,8 @@ import { NavbarComponent } from '../../../../../shared/components/navbar/navbar.
 import { ManageGroupAttitudeSkillService } from '../../../../group-attitude-skill/services/manage-group-attitude-skill.service';
 import { UserService } from '../../../../users/services/user.service';
 import { UserInformationComponent } from '../../../user-information/components/user-information/user-information.component';
+import { EmpAttitudeSkillRequest } from '../../models/emp-attitude-skill';
+import { EmpAttitudeSkillsService } from '../../services/emp-attitude-skills.service';
 interface scoreCategory {
   category: string;
   score: number;
@@ -40,11 +42,13 @@ export class EmpAttitudeSkillsComponent implements OnInit {
   userLogin: any = {};
   currentYear: number = new Date().getFullYear();
   scoreCategory: scoreCategory[] = [];
+  newEmpAttitudeSkill: EmpAttitudeSkillRequest = {} as EmpAttitudeSkillRequest;
   constructor(
     private tokenService: TokenService,
     private authService: AuthService,
     private groupAttitudeSkillService: ManageGroupAttitudeSkillService,
-    private userService: UserService
+    private userService: UserService,
+    private empAttitudeSkillService: EmpAttitudeSkillsService
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +64,16 @@ export class EmpAttitudeSkillsComponent implements OnInit {
     ];
   }
 
+  createEmpAttitudeSkill(): void {
+    console.log('hasil submit: ', this.groupAttitudeSkills);
+    this.empAttitudeSkillService
+      .createEmpAttitudeSkill(this.newEmpAttitudeSkill)
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+        },
+      });
+  }
   getUser() {
     this.userService.list().subscribe({
       next: (data) => {
