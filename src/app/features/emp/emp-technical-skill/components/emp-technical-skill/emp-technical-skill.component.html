@@ -1,0 +1,67 @@
+<app-navbar />
+<app-user-information />
+
+<form #technicalSkillForm="ngForm" class="card m-4 p-4">
+  @for (technicalSkill of technicalSkills; track technicalSkill.id) {
+  <div class="mb-4">
+    <h2 class="text-xl font-bold mb-3 text-center">
+      {{ technicalSkill.technical_skill }}
+    </h2>
+
+    <p-table [value]="empTechnicalSkills[technicalSkill.id]">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Detail</th>
+          <th>Knowledge Level</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-inputForm let-i="rowIndex">
+        <tr>
+          <td class="w-6">
+            <input
+              type="text"
+              pInputText
+              class="w-full"
+              [(ngModel)]="empTechnicalSkills[technicalSkill.id][i].detail"
+              [name]="'detail_' + technicalSkill.id + '_' + i"
+              placeholder="Enter details"
+              required
+            />
+          </td>
+          <td class="w-6">
+            <p-dropdown
+              [options]="skillLevels"
+              [(ngModel)]="empTechnicalSkills[technicalSkill.id][i].score"
+              [name]="'score_' + technicalSkill.id + '_' + i"
+              optionLabel="description"
+              optionValue="level"
+              placeholder="Select your knowledge level"
+              class="w-full"
+              required
+            />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <div class="flex justify-content-end mt-3">
+      <p-button
+        label="Add Field"
+        icon="pi pi-plus"
+        (onClick)="addField(technicalSkill.id)"
+        severity="secondary"
+      />
+    </div>
+  </div>
+  }
+
+  <div class="flex justify-content-center mt-4">
+    <p-button
+      label="Submit"
+      icon="pi pi-check"
+      (onClick)="onSubmit()"
+      [disabled]="!technicalSkillForm.valid"
+      severity="primary"
+    />
+  </div>
+</form>
