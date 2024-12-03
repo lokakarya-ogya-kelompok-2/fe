@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Response } from '../../../shared/models/response';
 import {
   TechnicalSkill,
   TechnicalSKillRequest,
@@ -13,8 +14,8 @@ export class TechnicalSkillService {
   private Api = 'http://localhost:8080/technical-skills';
   constructor(private http: HttpClient) {}
 
-  getAllTechnicalSkills(): Observable<any> {
-    return this.http.get(this.Api);
+  getAllTechnicalSkills(): Observable<Response<TechnicalSkill[]>> {
+    return this.http.get<Response<TechnicalSkill[]>>(this.Api);
   }
   createTechnicalSkill(
     technicalSkillRequest: TechnicalSKillRequest
