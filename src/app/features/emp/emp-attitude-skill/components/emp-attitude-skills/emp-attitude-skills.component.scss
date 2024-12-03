@@ -1,0 +1,29 @@
+/* Shadow and border radius for the table */
+:host ::ng-deep .custom-table {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Custom styling for table header */
+:host ::ng-deep .custom-header {
+  background-color: #4caf50; /* Green background for contrast */
+  color: #fff; /* White text */
+  font-weight: bold;
+  text-align: center;
+  padding: 0.75rem;
+  border-bottom: 2px solid #388e3c; /* Darker border for effect */
+}
+
+/* Add hover effect on table rows */
+:host ::ng-deep .p-datatable tbody tr:hover {
+  background-color: rgba(76, 175, 80, 0.1); /* Light green highlight */
+}
+
+/* Adjust padding for table rows */
+:host ::ng-deep .p-datatable tbody td {
+  padding: 0.5rem 1rem;
+}
+.custom-dropdown {
+  z-index: 10;
+}
