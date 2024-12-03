@@ -1,0 +1,21 @@
+<p-card class="mb-4" [style]="{ 'margin-top': '10px' }">
+  <ng-template pTemplate="title"> User Information </ng-template>
+  <div class="grid">
+    <div class="col-6">
+      <p class="font-bold">Full Name:</p>
+      <p>{{ jwtPayload.full_name }}</p>
+    </div>
+    <div class="col-6">
+      <p class="font-bold">Position:</p>
+      <p>{{ userLogin.position }}</p>
+    </div>
+    <div class="col-6">
+      <p class="font-bold">Division:</p>
+      <p>{{ userLogin.division.division_name }}</p>
+    </div>
+    <div class="col-6">
+      <p class="font-bold">Assessment Year:</p>
+      <p>{{ currentYear }}</p>
+    </div>
+  </div>
+</p-card>
