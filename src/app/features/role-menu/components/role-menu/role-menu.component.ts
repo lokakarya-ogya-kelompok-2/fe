@@ -1,15 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { Menu } from '../../../menus/models/menu';
 import { MenuService } from '../../../menus/services/menu.service';
 import { Role } from '../../../roles/models/role';
 import { RoleService } from '../../../roles/services/role.service';
 import { RoleMenuService } from '../../services/role-menu.service';
-import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-role-menu',
@@ -21,16 +24,20 @@ import { NavbarComponent } from '../../../../shared/components/navbar/navbar.com
     FormsModule,
     TableModule,
     NavbarComponent,
+    ToastModule,
   ],
   templateUrl: './role-menu.component.html',
   styleUrl: './role-menu.component.scss',
+  providers: [MessageService],
 })
 export class RoleMenuComponent implements OnInit {
   roles: Role[] = [];
 
   menus: Menu[] = [];
 
-  roleMenus: { [key: string]: Menu[] } = {};
+  isLoading: boolean = false;
+
+  roleMenus: { [key: string]: string[] } = {};
 
   menuToReadable: { [key: string]: string } = {
     'user#all': 'Manage All Users',
@@ -55,7 +62,9 @@ export class RoleMenuComponent implements OnInit {
   constructor(
     private readonly roleService: RoleService,
     private readonly menuService: MenuService,
-    private readonly roleMenuService: RoleMenuService
+    private readonly roleMenuService: RoleMenuService,
+    private readonly messageService: MessageService,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -63,7 +72,7 @@ export class RoleMenuComponent implements OnInit {
       next: (data) => {
         this.roles = data.content;
         this.roles.forEach((role) => {
-          this.roleMenus[role.id] = role.menus!;
+          this.roleMenus[role.id] = role.menus!.map((menu) => menu.id);
         });
       },
     });
@@ -76,20 +85,37 @@ export class RoleMenuComponent implements OnInit {
   }
 
   onSubmit() {
-    let selectedMenusForEachRoles: Map<string, string[]> = new Map();
-    Object.entries(this.roleMenus).forEach(([roleId, menus]) => {
-      selectedMenusForEachRoles.set(
-        roleId,
-        menus.map((menu) => menu.id)
-      );
-    });
-    // console.log(selectedMenusForEachRoles);
-    this.roleMenuService.update(selectedMenusForEachRoles).subscribe({
+    this.isLoading = true;
+    this.messageService.clear();
+
+    this.roleMenuService.update(this.roleMenus).subscribe({
       next: (data) => {
-        console.log(data.message);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: data.message,
+        });
+        this.isLoading = false;
+        // setTimeout(() => {
+        // this.router
+        //   .navigate(['/'], {
+        //     skipLocationChange: true,
+        //   })
+        //   .then((_) => {
+        //     this.router.navigate(['manage-role-menu']);
+        //   });
+        // }, 1000);
+        // this.router.onSameUrlNavigation
+        window.location.reload();
       },
       error: (err) => {
-        console.error(err);
+        this.messageService.add({
+          severity: 'danger',
+          summary: 'Failed',
+          detail: err.data.message,
+          life: 3000,
+        });
+        this.isLoading = false;
       },
     });
   }

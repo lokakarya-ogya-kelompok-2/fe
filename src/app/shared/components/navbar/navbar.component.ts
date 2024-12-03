@@ -17,7 +17,7 @@ import { TokenPayload } from '../../types';
 })
 export class NavbarComponent implements OnInit {
   items: MenuItem[] | undefined;
-  tokenPayload: TokenPayload | undefined = {} as TokenPayload;
+  tokenPayload: TokenPayload = {} as TokenPayload;
   menu: Set<string> = new Set();
 
   constructor(
@@ -52,7 +52,7 @@ export class NavbarComponent implements OnInit {
       },
       {
         id: 'attitude-skill',
-        label: 'Attitudes',
+        label: 'Attitude Skills',
         routerLinkActiveOptions: { exact: true },
         items: [
           {
@@ -67,19 +67,46 @@ export class NavbarComponent implements OnInit {
             routerLink: '/manage-attitude-skills',
             routerLinkActiveOptions: { exact: true },
           },
+          {
+            id: 'emp-attitude-skill#all',
+            label: 'Employee Attitude Skill',
+          },
         ],
       },
       {
-        id: 'technical-skill#all',
-        label: 'Technical skill',
-        routerLink: '/manage-technical-skills',
-        routerLinkActiveOptions: { exact: true },
+        id: 'technical-skill',
+        label: 'Technical Skills',
+        items: [
+          {
+            id: 'technical-skill#all',
+            label: 'Manage Technical Skills',
+            routerLink: '/manage-technical-skills',
+            routerLinkActiveOptions: { exact: true },
+          },
+          {
+            id: 'emp-technical-skill#all',
+            label: 'Employee Technical Skills',
+            routerLink: '/emp-technical-skill',
+            routerLinkActiveOptions: { exact: true },
+          },
+        ],
       },
       {
-        id: 'dev-plan#all',
-        label: 'Dev-plan',
-        routerLink: '/manage-dev-plans',
+        id: 'dev-plan',
+        label: 'Development Plans',
         routerLinkActiveOptions: { exact: true },
+        items: [
+          {
+            id: 'emp-dev-plan#all',
+            label: 'Employee Dev Plan',
+            routerLink: '/emp-dev-plan',
+          },
+          {
+            id: 'dev-plan#all',
+            label: 'Manage Dev Plan',
+            routerLink: '/manage-dev-plans',
+          },
+        ],
       },
       {
         id: 'achievement',
@@ -108,10 +135,27 @@ export class NavbarComponent implements OnInit {
         ],
       },
       {
-        id: 'summary#read',
+        id: 'summary',
         label: 'Summary',
-        routerLink: '/manage-summaries',
-        routerLinkActiveOptions: { exact: true },
+        // routerLinkActiveOptions: { exact: true },
+        items: [
+          {
+            id: 'summary#read',
+            label: 'Read Summaries',
+            routerLink: '/manage-summaries',
+            routerLinkActiveOptions: { exact: true },
+          },
+          {
+            id: 'summary#read.self',
+            label: 'My Summary',
+            // routerLink: '/manage-summaries',
+            routerLinkActiveOptions: { exact: true },
+          },
+        ],
+      },
+      {
+        id: 'emp-suggestion#all',
+        label: 'Suggestion',
       },
     ];
   }
@@ -127,6 +171,10 @@ export class NavbarComponent implements OnInit {
     this.menuService.getMenuByUserId(this.tokenPayload?.sub!).subscribe({
       next: (data) => {
         data.content.map((menu) => {
+          if (menu.menu_name.startsWith('emp-')) {
+            const empRemoved = menu.menu_name.slice(4);
+            this.menu.add(empRemoved.split('#')[0]);
+          }
           this.menu.add(menu.menu_name);
           this.menu.add(menu.menu_name.split('#')[0]);
         });
@@ -136,17 +184,18 @@ export class NavbarComponent implements OnInit {
               return this.menu.has(subItem.id!);
             });
           }
-          // for (const menu of this.menu) {
-          //   if (menu.includes(item.id!)) {
-          //     return true;
-          //   }
-          // }
-          // return false;
           return this.menu.has(item.id!);
         });
-        console.log(this.menu);
-        console.log(this.items);
+        console.log(this.menu, 'USER MENUS');
+        console.log(this.items, 'NAVBAR MENUS');
       },
     });
   }
+
+  getInitial = (fullName: string, n: number): string =>
+    fullName
+      .split(' ')
+      .map((w) => w.slice(0, 1))
+      .slice(0, n)
+      .join('');
 }
