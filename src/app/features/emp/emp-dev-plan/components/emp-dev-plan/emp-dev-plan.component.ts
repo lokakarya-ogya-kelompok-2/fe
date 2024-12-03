@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
+import { NavbarComponent } from '../../../../../shared/components/navbar/navbar.component';
 import { EmpDevPlanService } from '../../services/emp-dev-plan.service';
 
 @Component({
   selector: 'app-emp-dev-plan',
   standalone: true,
-  imports: [],
+  imports: [NavbarComponent],
   templateUrl: './emp-dev-plan.component.html',
   styleUrl: './emp-dev-plan.component.scss',
 })

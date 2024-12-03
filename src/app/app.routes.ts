@@ -9,6 +9,7 @@ import { DevPlanComponent } from './features/dev-plan/components/dev-plan/dev-pl
 import { ManageDivisionComponent } from './features/divisions/components/manage-division.component';
 import { EmpAchievementComponent } from './features/emp-achievement/components/emp-achievement/emp-achievement.component';
 import { EmpDevPlanComponent } from './features/emp/emp-dev-plan/components/emp-dev-plan/emp-dev-plan.component';
+import { EmpTechnicalSkillComponent } from './features/emp/emp-technical-skill/components/emp-technical-skill/emp-technical-skill.component';
 import { GroupAchievementComponent } from './features/group-achievement/components/group-achievement/group-achievement.component';
 import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-skill/components/manage-group-attitude-skill.component';
 import { IndexPageComponent } from './features/index/components/index-page.component';
@@ -126,6 +127,14 @@ export const routes: Routes = [
     canActivate: [authGuard, roleMenuGuard],
     data: {
       permission: 'role-menu#all',
+    },
+  },
+  {
+    path: 'emp-technical-skill',
+    component: EmpTechnicalSkillComponent,
+    canActivate: [authGuard, roleMenuGuard],
+    data: {
+      permission: 'emp-technical-skill#all',
     },
   },
   // {

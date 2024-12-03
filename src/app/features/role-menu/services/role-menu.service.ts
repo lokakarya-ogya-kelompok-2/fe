@@ -11,10 +11,7 @@ export class RoleMenuService {
   private readonly baseMenuRoleUrl = `${environment.baseApiURL}/role-menu`;
   constructor(private readonly httpClient: HttpClient) {}
 
-  update(data: Map<string, string[]>): Observable<Response<void>> {
-    return this.httpClient.put<Response<void>>(
-      this.baseMenuRoleUrl,
-      Object.fromEntries(data)
-    );
+  update(data: { [key: string]: string[] }): Observable<Response<void>> {
+    return this.httpClient.put<Response<void>>(this.baseMenuRoleUrl, data);
   }
 }
