@@ -1,3 +1,6 @@
 btn-modal {
   margin-left: 10px;
 }
+:host ::ng-deep .custom-header {
+  text-align: center;
+}
