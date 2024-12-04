@@ -76,7 +76,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-user>
-    <tr>
+    <tr [style]="{ padding: '0.5rem' }">
       <td [style]="{ padding: '0.5rem' }">{{ user.full_name }}</td>
       <td [style]="{ padding: '0.5rem' }">{{ user.username }}</td>
       <td [style]="{ padding: '0.5rem' }">{{ user.position }}</td>
@@ -85,10 +85,11 @@
       </td>
       <td
         style="
-          justify-content: space-between;
+          justify-content: space-evenly;
           display: flex;
           align-items: center;
         "
+        [style]="{ padding: '0.5rem' }"
       >
         <p-button
           severity="primary"

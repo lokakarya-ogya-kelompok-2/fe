@@ -79,21 +79,29 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="rowexpansion" let-data>
-      <tr>
-        <td>{{ data.achievement }}</td>
-        <td>{{ data.group_id?.percentage }}</td>
-        <td>
+      <tr [style]="{ padding: '0.5rem' }">
+        <td [style]="{ padding: '0.5rem' }">{{ data.achievement }}</td>
+        <td [style]="{ padding: '0.5rem' }">{{ data.group_id?.percentage }}</td>
+        <td [style]="{ padding: '0.5rem' }">
           <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
             {{ data.enabled === true ? "True" : "False" }}
           </p-tag>
         </td>
-        <td style="justify-content: space-between; display: flex">
+        <td
+          style="
+            justify-content: space-evenly;
+            display: flex;
+            align-items: center;
+          "
+          [style]="{ padding: '0.5rem' }"
+        >
           <p-button
             (onClick)="showDialogDetail(data)"
             label=""
             icon="pi pi-info-circle"
             [rounded]="true"
             [raised]="true"
+            [style]="{ height: '40px', width: '40px' }"
           />
           <p-button
             (onClick)="showEditDialog(data)"
@@ -101,6 +109,7 @@
             icon="pi pi-pen-to-square"
             [rounded]="true"
             [raised]="true"
+            [style]="{ height: '40px', width: '40px' }"
           ></p-button>
           <p-button
             (onClick)="confirmDelete($event, data.id)"
@@ -109,6 +118,7 @@
             icon="pi pi-trash"
             [rounded]="true"
             [raised]="true"
+            [style]="{ height: '40px', width: '40px' }"
           >
           </p-button>
         </td>

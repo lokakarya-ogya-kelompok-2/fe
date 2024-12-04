@@ -51,20 +51,28 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-data>
-      <tr>
-        <td>{{ data.plan }}</td>
-        <td>
+      <tr [style]="{ padding: '0.5rem' }">
+        <td [style]="{ padding: '0.5rem' }">{{ data.plan }}</td>
+        <td [style]="{ padding: '0.5rem' }">
           <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
             {{ data.enabled === true ? "True" : "False" }}
           </p-tag>
         </td>
-        <td style="justify-content: space-evenly; display: flex">
+        <td
+          style="
+            justify-content: space-evenly;
+            display: flex;
+            align-items: center;
+          "
+          [style]="{ padding: '0.5rem' }"
+        >
           <p-button
             (onClick)="showDialogDetail(data)"
             label=""
             icon="pi pi-info-circle"
             [rounded]="true"
             [raised]="true"
+            [style]="{ height: '40px', width: '40px' }"
           />
           <p-button
             (onClick)="showEditDialog(data)"
@@ -72,6 +80,7 @@
             icon="pi pi-pen-to-square"
             [rounded]="true"
             [raised]="true"
+            [style]="{ height: '40px', width: '40px' }"
           ></p-button>
           <p-button
             (onClick)="confirmDelete($event, data.id)"
@@ -80,6 +89,7 @@
             icon="pi pi-trash"
             [rounded]="true"
             [raised]="true"
+            [style]="{ height: '40px', width: '40px' }"
           ></p-button>
         </td>
         <p-confirmDialog key="{{ data.id }}" />

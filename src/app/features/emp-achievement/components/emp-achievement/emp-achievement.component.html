@@ -61,19 +61,28 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-data>
-      <tr>
-        <td>{{ data.user_id?.username }}</td>
-        <td>{{ data.achievement_id.achievement }}</td>
-        <td>{{ data.notes }}</td>
-        <td>{{ data.score }}</td>
-        <td>{{ data.assessment_year }}</td>
-        <td style="justify-content: space-evenly; display: flex">
+      <tr [style]="{ padding: '0.5rem' }">
+        <td [style]="{ padding: '0.5rem' }">{{ data.user_id?.username }}</td>
+        <td [style]="{ padding: '0.5rem' }">
+          {{ data.achievement_id.achievement }}
+        </td>
+        <td [style]="{ padding: '0.5rem' }">{{ data.notes }}</td>
+        <td [style]="{ padding: '0.5rem' }">{{ data.score }}</td>
+        <td [style]="{ padding: '0.5rem' }">{{ data.assessment_year }}</td>
+        <td
+          style="
+            justify-content: space-evenly;
+            display: flex;
+            align-items: center;
+          "
+        >
           <p-button
             (onClick)="showDialogDetail(data)"
             label=""
             icon="pi pi-info-circle"
             [rounded]="true"
             [raised]="true"
+            [style]="{ height: '40px', width: '40px' }"
           />
           <p-button
             (onClick)="showEditDialog(data)"
@@ -81,6 +90,7 @@
             icon="pi pi-pen-to-square"
             [rounded]="true"
             [raised]="true"
+            [style]="{ height: '40px', width: '40px' }"
           ></p-button>
           <p-button
             (onClick)="confirmDelete($event, data.id)"
@@ -89,6 +99,7 @@
             icon="pi pi-trash"
             [rounded]="true"
             [raised]="true"
+            [style]="{ height: '40px', width: '40px' }"
           ></p-button>
         </td>
         <p-confirmDialog key="{{ data.id }}" />
