@@ -1,10 +1,16 @@
 <div class="navbar">
-  <div class="navbar-start"></div>
-  <div class="navbar-center">
+  <div [class]="includeUserAction ? 'navbar-start' : ''"></div>
+  <div
+    [class]="
+      includeUserAction ? 'navbar-center' : 'w-full flex justify-content-center'
+    "
+  >
     <p-menubar
       id="menu-bar"
       [model]="items"
-      class="custom-menubar"
+      [class]="
+        includeUserAction ? 'custom-menubar' : 'custom-menubar centered-menubar'
+      "
       [style]="{ 'font-size': '14px' }"
     >
       @if (includeUserAction) {
@@ -15,7 +21,11 @@
           routerLink="/"
           id="profil"
         >
-          <p-avatar label="IA" class="mr-2" shape="circle" />
+          <p-avatar
+            [label]="getInitial(tokenPayload.full_name, 2)"
+            class="mr-2"
+            shape="circle"
+          />
           <span class="inline-flex flex-column">
             <span class="font-bold">{{ tokenPayload.username }}</span>
             <span class="text-sm">HR</span>

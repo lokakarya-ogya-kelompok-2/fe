@@ -15,3 +15,10 @@
 #profil {
   margin-right: 50px;
 }
+
+.centered-menubar {
+  .p-menubar-root-list {
+    justify-content: center;
+    width: 100%;
+  }
+}
