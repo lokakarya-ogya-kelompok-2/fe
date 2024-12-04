@@ -64,10 +64,10 @@ export class UserListComponent implements OnInit {
     this.userSvc.list().subscribe({
       next: (data) => {
         this.users = data.content;
-      },
-      error: (err) => {},
-      complete: () => {
         this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching user:', err);
       },
     });
   }
