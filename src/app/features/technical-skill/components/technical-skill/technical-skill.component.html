@@ -14,8 +14,11 @@
       'min-width': '50rem',
       'text-align': 'center',
       'font-size': '12px',
-      margin: '0'
+      margin: '0',
+      'border-radius': '8px',
+      'table-layout': 'fixed'
     }"
+    [style]="{ width: '100%' }"
     [globalFilterFields]="['id', 'technical_skill', 'enabled']"
     [sortField]="'created_at'"
     [sortOrder]="-1"
@@ -45,15 +48,17 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th>Technical Skill</th>
-        <th>Enabled</th>
-        <th>Action</th>
+        <th style="width: 60%; text-align: center">Technical Skill</th>
+        <th style="width: 15%; text-align: center">Enabled</th>
+        <th style="width: 25%; text-align: center">Action</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-data>
       <tr [style]="{ padding: '0.5rem' }">
-        <td [style]="{ padding: '0.5rem' }">{{ data.technical_skill }}</td>
         <td [style]="{ padding: '0.5rem' }">
+          {{ data.technical_skill }}
+        </td>
+        <td [style]="{ padding: '0.5rem', 'text-align': 'center' }">
           <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
             {{ data.enabled === true ? "True" : "False" }}
           </p-tag>

@@ -14,7 +14,9 @@
       'min-width': '50rem',
       'text-align': 'center',
       'font-size': '12px',
-      margin: '0'
+      margin: '0',
+      'border-radius': '8px',
+      'table-layout': 'fixed'
     }"
     [globalFilterFields]="[
       'id',
@@ -23,6 +25,7 @@
       'percentage',
       'enabled'
     ]"
+    [style]="{ width: '100%' }"
     [sortField]="'created_at'"
     [sortOrder]="-1"
     groupRowsBy="group_id.group_name"
@@ -54,10 +57,10 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th>Attitude Skill</th>
-        <th>Percentage</th>
-        <th>Enabled</th>
-        <th>Action</th>
+        <th style="width: 45%; text-align: center">Attitude Skill</th>
+        <th style="width: 15%; text-align: center">Percentage</th>
+        <th style="width: 15%; text-align: center">Enabled</th>
+        <th style="width: 25%; text-align: center">Action</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="groupheader" let-data let-expanded="expanded">
@@ -81,8 +84,10 @@
     <ng-template pTemplate="rowexpansion" let-data>
       <tr [style]="{ padding: '0.5rem' }">
         <td [style]="{ padding: '0.5rem' }">{{ data.attitude_skill }}</td>
-        <td [style]="{ padding: '0.5rem' }">{{ data.group_id.percentage }}</td>
-        <td [style]="{ padding: '0.5rem' }">
+        <td [style]="{ padding: '0.5rem', 'text-align': 'center' }">
+          {{ data.group_id.percentage }}
+        </td>
+        <td [style]="{ padding: '0.5rem', 'text-align': 'center' }">
           <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
             {{ data.enabled === true ? "True" : "False" }}
           </p-tag>
