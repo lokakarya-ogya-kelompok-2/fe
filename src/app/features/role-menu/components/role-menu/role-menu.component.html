@@ -2,6 +2,15 @@
 <div class="flex flex-column align-items-center mt-4">
   <div class="flex justify-content-between align-items-center w-10 mb-4">
     <h2 class="text-800 font-bold m-0">Menu Access Management</h2>
+
+    @if(!isFetching && !menuPageMustBeOwnedByAtLeastOneRole()) {
+    <p-message
+      severity="warn"
+      text="At least one role must have role-menu access!"
+      styleClass="mx-2"
+    ></p-message>
+    }
+
     <p-button
       label="Save"
       (onClick)="onSubmit()"
@@ -9,6 +18,7 @@
       severity="primary"
       [raised]="true"
       [loading]="isLoading"
+      [disabled]="!menuPageMustBeOwnedByAtLeastOneRole()"
     />
   </div>
 
@@ -19,6 +29,7 @@
       scrollHeight="400px"
       [tableStyle]="{ 'min-width': '50rem' }"
       styleClass="p-datatable-sm"
+      [loading]="isFetching"
     >
       <ng-template pTemplate="header">
         <tr>

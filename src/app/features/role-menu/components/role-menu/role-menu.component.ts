@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
+import { MessageModule } from 'primeng/message';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
@@ -25,6 +26,7 @@ import { RoleMenuService } from '../../services/role-menu.service';
     TableModule,
     NavbarComponent,
     ToastModule,
+    MessageModule,
   ],
   templateUrl: './role-menu.component.html',
   styleUrl: './role-menu.component.scss',
@@ -37,7 +39,11 @@ export class RoleMenuComponent implements OnInit {
 
   isLoading: boolean = false;
 
+  isFetching: boolean = true;
+
   roleMenus: { [key: string]: string[] } = {};
+
+  private roleMenuAccessId: string = '';
 
   menuToReadable: { [key: string]: string } = {
     'user#all': 'Manage All Users',
@@ -74,13 +80,25 @@ export class RoleMenuComponent implements OnInit {
         this.roles.forEach((role) => {
           this.roleMenus[role.id] = role.menus!.map((menu) => menu.id);
         });
+        this.isFetching = false;
       },
     });
 
     this.menuService.list().subscribe({
       next: (data) => {
         this.menus = data.content;
+        this.menus.forEach((menu) => {
+          if (menu.menu_name === 'role-menu#all') {
+            this.roleMenuAccessId = menu.id;
+          }
+        });
       },
+    });
+  }
+
+  menuPageMustBeOwnedByAtLeastOneRole(): boolean {
+    return Object.values(this.roleMenus).some((menu) => {
+      return menu.includes(this.roleMenuAccessId);
     });
   }
 
@@ -96,17 +114,9 @@ export class RoleMenuComponent implements OnInit {
           detail: data.message,
         });
         this.isLoading = false;
-        // setTimeout(() => {
-        // this.router
-        //   .navigate(['/'], {
-        //     skipLocationChange: true,
-        //   })
-        //   .then((_) => {
-        //     this.router.navigate(['manage-role-menu']);
-        //   });
-        // }, 1000);
-        // this.router.onSameUrlNavigation
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       },
       error: (err) => {
         this.messageService.add({
