@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
@@ -16,6 +16,7 @@ import { TokenPayload } from '../../types';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit {
+  @Input() includeUserAction: boolean = true;
   items: MenuItem[] | undefined;
   tokenPayload: TokenPayload = {} as TokenPayload;
   menu: Set<string> = new Set();
@@ -46,7 +47,7 @@ export class NavbarComponent implements OnInit {
       },
       {
         id: 'role-menu#all',
-        label: 'Role Menu',
+        label: 'Menu Access',
         routerLink: '/manage-role-menu',
         routerLinkActiveOptions: { exact: true },
       },
@@ -70,6 +71,7 @@ export class NavbarComponent implements OnInit {
           {
             id: 'emp-attitude-skill#all',
             label: 'Employee Attitude Skill',
+            routerLinkL: '/emp-attitude-skill',
           },
         ],
       },
@@ -137,7 +139,6 @@ export class NavbarComponent implements OnInit {
       {
         id: 'summary',
         label: 'Summary',
-        // routerLinkActiveOptions: { exact: true },
         items: [
           {
             id: 'summary#read',
@@ -148,7 +149,7 @@ export class NavbarComponent implements OnInit {
           {
             id: 'summary#read.self',
             label: 'My Summary',
-            // routerLink: '/manage-summaries',
+            routerLink: '/my-summaries',
             routerLinkActiveOptions: { exact: true },
           },
         ],
@@ -156,6 +157,7 @@ export class NavbarComponent implements OnInit {
       {
         id: 'emp-suggestion#all',
         label: 'Suggestion',
+        routerLink: '/emp-suggestions',
       },
     ];
   }
