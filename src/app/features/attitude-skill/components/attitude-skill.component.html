@@ -62,7 +62,7 @@
     </ng-template>
     <ng-template pTemplate="groupheader" let-data let-expanded="expanded">
       <tr [pRowToggler]="data" class="cursor-pointer">
-        <td colspan="4">
+        <td colspan="4" [style]="{ padding: '0.5rem' }">
           <div class="flex align-items-center gap-2 pl-2">
             <i
               [class]="[
@@ -79,10 +79,10 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="rowexpansion" let-data>
-      <tr>
-        <td>{{ data.attitude_skill }}</td>
-        <td>{{ data.group_id.percentage }}</td>
-        <td>
+      <tr [style]="{ padding: '0.5rem' }">
+        <td [style]="{ padding: '0.5rem' }">{{ data.attitude_skill }}</td>
+        <td [style]="{ padding: '0.5rem' }">{{ data.group_id.percentage }}</td>
+        <td [style]="{ padding: '0.5rem' }">
           <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
             {{ data.enabled === true ? "True" : "False" }}
           </p-tag>
