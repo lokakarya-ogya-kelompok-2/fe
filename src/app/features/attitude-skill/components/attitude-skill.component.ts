@@ -53,6 +53,7 @@ export class AttitudeSkillComponent implements OnInit {
   checked: boolean = false;
   groupAttitudeSkillDropdown: GroupAttitudeSkill[] = [];
   dataDetail: AttitudeSkill = {} as AttitudeSkill;
+  expandedRows: { [key: string]: boolean } = {};
   resetForm(): void {
     this.newAttitudeSkill.attitude_skill = '';
     this.newAttitudeSkill.enabled = false;
@@ -73,6 +74,7 @@ export class AttitudeSkillComponent implements OnInit {
     this.groupAttitudeSkillService.getGroupAttitudeSkillss().subscribe({
       next: (data) => {
         this.groupAttitudeSkillDropdown = data.content;
+
         console.log(this.groupAttitudeSkillDropdown);
       },
       error: (err) => {
@@ -86,6 +88,9 @@ export class AttitudeSkillComponent implements OnInit {
     this.attitudeSkillService.getAttitudeSkills().subscribe({
       next: (data) => {
         this.Datas = data.content;
+        this.Datas.forEach((data) => {
+          this.expandedRows[data.group_id.group_name] = true;
+        });
         this.loading = false;
         console.log(this.Datas);
       },
