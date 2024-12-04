@@ -18,6 +18,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { PasswordModule } from 'primeng/password';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import Swal from 'sweetalert2';
 import { userToReq } from '../../../../shared/utils/mapper';
 import { Division } from '../../../divisions/models/division';
 import { ManageDivisionService } from '../../../divisions/services/manage-division.service';
@@ -112,6 +113,10 @@ export class UserFormComponent implements OnInit, OnChanges {
       this.userSvc.update(this.formData).subscribe({
         next: (_) => {
           this.submit.emit();
+          Swal.fire({
+            title: 'User Updated!',
+            icon: 'success',
+          });
           this.submitBtnLoading = false;
         },
         error: (err) => {
@@ -124,6 +129,10 @@ export class UserFormComponent implements OnInit, OnChanges {
       this.userSvc.add(this.formData).subscribe({
         next: (_) => {
           this.submit.emit();
+          Swal.fire({
+            title: 'User Created!',
+            icon: 'success',
+          });
           this.submitBtnLoading = false;
         },
         error: (err) => {

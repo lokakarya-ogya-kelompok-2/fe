@@ -14,7 +14,9 @@
               required
               class="w-full"
             />
-            <label for="fullName">Full Name</label>
+            <label for="fullName">
+              Full Name<span class="text-red-600">*</span>
+            </label>
           </p-floatLabel>
         </div>
 
@@ -30,7 +32,9 @@
               required
               class="w-full"
             />
-            <label for="position">Position</label>
+            <label for="position">
+              Position<span class="text-red-600">*</span>
+            </label>
           </p-floatLabel>
         </div>
 
@@ -46,7 +50,9 @@
               required
               class="w-full"
             />
-            <label for="username">Username</label>
+            <label for="username">
+              Username<span class="text-red-600">*</span>
+            </label>
           </p-floatLabel>
         </div>
 
@@ -63,7 +69,9 @@
               class="w-full"
               email
             />
-            <label for="email">Email</label>
+            <label for="email">
+              Email<span class="text-red-600">*</span>
+            </label>
           </p-floatLabel>
         </div>
 
@@ -80,7 +88,9 @@
               styleClass="w-full"
               inputStyleClass="w-full"
             />
-            <label for="password">Password</label>
+            <label for="password">
+              Password<span class="text-red-600">*</span>
+            </label>
           </p-floatLabel>
         </div>
         }
@@ -99,7 +109,9 @@
               required
               styleClass="w-full"
             />
-            <label for="division">Division</label>
+            <label for="division">
+              Division<span class="text-red-600">*</span>
+            </label>
           </p-floatLabel>
         </div>
 
@@ -117,13 +129,15 @@
               styleClass="w-full"
               required
             />
-            <label for="role">Roles</label>
+            <label for="role"> Roles<span class="text-red-600">*</span> </label>
           </p-floatLabel>
         </div>
 
         <!-- Join Date -->
         <div class="col-12 mb-4">
-          <label for="joinDate">Join Date</label>
+          <label for="joinDate">
+            Join Date<span class="text-red-600">*</span>
+          </label>
           <p-calendar
             inline="true"
             [(ngModel)]="formData.join_date"
@@ -139,7 +153,9 @@
         <div class="col-12 mb-4">
           <div class="flex justify-content-around align-items-center">
             <div>
-              <label class="block mb-2">Employment Status</label>
+              <label class="block mb-2">
+                Employment Status<span class="text-red-600">*</span>
+              </label>
               <p-selectButton
                 [options]="statusOptions"
                 [(ngModel)]="formData.employee_status"
@@ -150,7 +166,9 @@
               ></p-selectButton>
             </div>
             <div>
-              <label for="enabled" class="block mb-2">Enabled</label>
+              <label for="enabled" class="block mb-2">
+                Enabled<span class="text-red-600">*</span>
+              </label>
               <p-toggleButton
                 [(ngModel)]="formData.enabled"
                 onLabel="Enabled"

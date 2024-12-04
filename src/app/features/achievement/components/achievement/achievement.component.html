@@ -23,6 +23,8 @@
       'percentage',
       'enabled'
     ]"
+    [sortField]="'created_at'"
+    [sortOrder]="-1"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -90,8 +92,8 @@
             [raised]="true"
           >
           </p-button>
-          <p-confirmDialog key="{{ data.id }}" />
         </td>
+        <p-confirmDialog key="{{ data.id }}" />
       </tr>
     </ng-template>
   </p-table>
@@ -101,13 +103,13 @@
   <p-dialog
     header="Add Achievement"
     [(visible)]="visible"
-    [style]="{ width: '25rem' }"
+    [style]="{ width: '30rem' }"
   >
     <form #achievementForm="ngForm" (submit)="createAchievement()">
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="Achievement" class="font-semibold w-6rem"
-          >Achievement</label
-        >
+      <div class="flex align-items-center gap-6 mb-5">
+        <label for="Achievement" class="font-semibold w-6rem">
+          Achievement<span class="text-red-600">*</span>
+        </label>
         <input
           pInputText
           id="Achievement"
@@ -120,8 +122,14 @@
           required
         />
       </div>
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="group id" class="font-semibold w-6rem">Group Name</label>
+      <div class="flex align-items-center gap-6 mb-5">
+        <label
+          for="group id"
+          class="font-semibold w-6rem"
+          style="width: 12rem; white-space: nowrap"
+        >
+          Group Name<span class="text-red-600">*</span>
+        </label>
         <p-dropdown
           [options]="groupAchievementDropdown"
           [(ngModel)]="newAchievement.group_id"
@@ -132,8 +140,10 @@
           name="group name"
         />
       </div>
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="enabled" class="font-semibold w-6rem">Enabled</label>
+      <div class="flex align-items-center gap-6 mb-5">
+        <label for="enabled" class="font-semibold w-6rem">
+          Enabled<span class="text-red-600">*</span>
+        </label>
         <p-checkbox
           [(ngModel)]="newAchievement.enabled"
           [binary]="true"
@@ -163,12 +173,12 @@
   <p-dialog
     header="Edit Achievement"
     [(visible)]="editVisible"
-    [style]="{ width: '25rem' }"
+    [style]="{ width: '30rem' }"
   >
     <form #updateAchievementForm="ngForm" (submit)="updateAchievement()">
-      <div class="flex align-items-center gap-3 mb-3">
+      <div class="flex align-items-center gap-6 mb-5">
         <label for="Attitude Skill" class="font-semibold w-6rem">
-          Achievement
+          Achievement<span class="text-red-600">*</span>
         </label>
         <input
           [(ngModel)]="editData.achievement"
@@ -181,8 +191,14 @@
           name="achievement"
         />
       </div>
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="Group name" class="font-semibold w-6rem">Group Name</label>
+      <div class="flex align-items-center gap-6 mb-5">
+        <label
+          for="Group name"
+          class="font-semibold w-6rem"
+          style="width: 12rem; white-space: nowrap"
+        >
+          Group Name<span class="text-red-600">*</span>
+        </label>
         <p-dropdown
           [options]="groupAchievementDropdown"
           [(ngModel)]="editData.group_id"
@@ -193,8 +209,10 @@
           name="group_name"
         />
       </div>
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="Enabled" class="font-semibold w-6rem">Enabled</label>
+      <div class="flex align-items-center gap-6 mb-5">
+        <label for="Enabled" class="font-semibold w-6rem">
+          Enabled<span class="text-red-600">*</span>
+        </label>
         <p-checkbox
           [(ngModel)]="editData.enabled"
           [binary]="true"

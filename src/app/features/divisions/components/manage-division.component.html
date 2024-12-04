@@ -17,6 +17,8 @@
       margin: '0'
     }"
     [globalFilterFields]="['id', 'division_name']"
+    [sortField]="'created_at'"
+    [sortOrder]="-1"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -49,14 +51,21 @@
     </ng-template>
     <ng-template pTemplate="body" let-data>
       <tr>
-        <td>{{ data.division_name }}</td>
-        <td style="justify-content: space-evenly; display: flex">
+        <td [style]="{ padding: '0.5rem' }">{{ data.division_name }}</td>
+        <td
+          style="
+            justify-content: space-evenly;
+            display: flex;
+            align-items: center;
+          "
+        >
           <p-button
             (onClick)="showDialogDetail(data)"
             label=""
             icon="pi pi-info-circle"
             [rounded]="true"
             [raised]="true"
+            [style]="{ height: '40px', width: '40px' }"
           />
           <p-button
             (onClick)="showEditDialog(data)"
@@ -64,6 +73,7 @@
             icon="pi pi-pen-to-square"
             [rounded]="true"
             [raised]="true"
+            [style]="{ height: '40px', width: '40px' }"
           ></p-button>
           <p-button
             (onClick)="confirmDelete($event, data.id)"
@@ -72,9 +82,10 @@
             icon="pi pi-trash"
             [rounded]="true"
             [raised]="true"
+            [style]="{ height: '40px', width: '40px' }"
           ></p-button>
-          <p-confirmDialog key="{{ data.id }}" />
         </td>
+        <p-confirmDialog key="{{ data.id }}" />
       </tr>
     </ng-template>
   </p-table>
@@ -84,12 +95,16 @@
   <p-dialog
     header="Add Division"
     [(visible)]="visible"
-    [style]="{ width: '25rem' }"
+    [style]="{ width: '30rem' }"
   >
     <form #divisionForm="ngForm" (submit)="createDivision()">
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="Division Name" class="font-semibold w-6rem">
-          Division Name
+      <div class="flex align-items-center gap-6 mb-5">
+        <label
+          for="Division Name"
+          class="font-semibold w-6rem"
+          style="width: 8rem; white-space: nowrap"
+        >
+          Division Name<span class="text-red-600">*</span>
         </label>
         <input
           pInputText
@@ -131,12 +146,15 @@
   <p-dialog
     header="Edit Division"
     [(visible)]="editVisible"
-    [style]="{ width: '25rem' }"
+    [style]="{ width: '30rem' }"
   >
     <form #editDivisionForm="ngForm" (submit)="updateDivision()">
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="Division name" class="font-semibold w-6rem"
-          >Division Name
+      <div class="flex align-items-center gap-6 mb-5">
+        <label
+          for="Division name"
+          class="font-semibold w-6rem"
+          style="width: 8rem; white-space: nowrap"
+          >Division Name<span class="text-red-600">*</span>
         </label>
         <input
           [(ngModel)]="editData.division_name"

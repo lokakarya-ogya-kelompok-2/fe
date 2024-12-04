@@ -23,6 +23,8 @@
       'percentage',
       'enabled'
     ]"
+    [sortField]="'created_at'"
+    [sortOrder]="-1"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -89,8 +91,8 @@
             [rounded]="true"
             [raised]="true"
           />
-          <p-confirmDialog key="{{ data.id }}" />
         </td>
+        <p-confirmDialog key="{{ data.id }}" />
       </tr>
     </ng-template>
   </p-table>
@@ -100,12 +102,16 @@
   <p-dialog
     header="Add Attitude Skill"
     [(visible)]="visible"
-    [style]="{ width: '25rem' }"
+    [style]="{ width: '40rem' }"
   >
     <form #attitudeSKillForm="ngForm" (submit)="createAttitudeSkill()">
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="attitude skill" class="font-semibold w-6rem">
-          Attitude Skill
+      <div class="flex align-items-center gap-6 mb-5">
+        <label
+          for="attitude skill"
+          class="font-semibold w-6rem"
+          style="width: 8rem; white-space: nowrap"
+        >
+          Attitude Skill<span class="text-red-600">*</span>
         </label>
         <input
           pInputText
@@ -118,8 +124,13 @@
           maxlength="100"
         />
       </div>
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="Group name" class="font-semibold w-6rem">Group name</label>
+      <div class="flex align-items-center gap-6 mb-5">
+        <label
+          for="Group name"
+          class="font-semibold w-6rem"
+          style="width: 8rem; white-space: nowrap"
+          >Group name<span class="text-red-600">*</span>
+        </label>
         <p-dropdown
           [options]="groupAttitudeSkillDropdown"
           [(ngModel)]="newAttitudeSkill.group_id"
@@ -131,8 +142,10 @@
           max="100"
         />
       </div>
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="enabled" class="font-semibold w-6rem">Enabled</label>
+      <div class="flex align-items-center gap-6 mb-5">
+        <label for="enabled" class="font-semibold w-6rem">
+          Enabled<span class="text-red-600">*</span>
+        </label>
         <p-checkbox
           [(ngModel)]="newAttitudeSkill.enabled"
           [binary]="true"
@@ -162,12 +175,16 @@
   <p-dialog
     header="Edit Attitude Skill"
     [(visible)]="editVisible"
-    [style]="{ width: '25rem' }"
+    [style]="{ width: '40rem' }"
   >
     <form #editAttitudeSkillForm="ngForm" (submit)="updateAttitudeSkill()">
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="Attitude Skill" class="font-semibold w-6rem">
-          Attitude Skill
+      <div class="flex align-items-center gap-6 mb-5">
+        <label
+          for="Attitude Skill"
+          class="font-semibold w-6rem"
+          style="width: 8rem; white-space: nowrap"
+        >
+          Attitude Skill<span class="text-red-600">*</span>
         </label>
         <input
           [(ngModel)]="editData.attitude_skill"
@@ -180,8 +197,14 @@
           maxlength="100"
         />
       </div>
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="Group id" class="font-semibold w-6rem">Group name</label>
+      <div class="flex align-items-center gap-6 mb-5">
+        <label
+          for="Group id"
+          class="font-semibold w-6rem"
+          style="width: 8rem; white-space: nowrap"
+        >
+          Group name<span class="text-red-600">*</span>
+        </label>
         <p-dropdown
           [options]="groupAttitudeSkillDropdown"
           [(ngModel)]="editData.group_id"
@@ -193,8 +216,10 @@
           maxlength="100"
         />
       </div>
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="Enabled" class="font-semibold w-6rem">Enabled</label>
+      <div class="flex align-items-center gap-6 mb-5">
+        <label for="Enabled" class="font-semibold w-6rem">
+          Enabled<span class="text-red-600">*</span>
+        </label>
         <p-checkbox
           [(ngModel)]="editData.enabled"
           [binary]="true"

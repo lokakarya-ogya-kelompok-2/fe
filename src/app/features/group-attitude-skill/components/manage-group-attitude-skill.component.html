@@ -17,6 +17,8 @@
       margin: '0'
     }"
     [globalFilterFields]="['id', 'group_name', 'enabled', 'percentage']"
+    [sortField]="'created_at'"
+    [sortOrder]="-1"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -81,8 +83,8 @@
             [rounded]="true"
             [raised]="true"
           ></p-button>
-          <p-confirmDialog key="{{ data.id }}" />
         </td>
+        <p-confirmDialog key="{{ data.id }}" />
       </tr>
     </ng-template>
   </p-table>
@@ -92,14 +94,19 @@
   <p-dialog
     header="Add Group Attitude Skill"
     [(visible)]="visible"
-    [style]="{ width: '25rem' }"
+    [style]="{ width: '30rem' }"
   >
     <form
       #groupAttitudeSkillForm="ngForm"
       (submit)="createGroupAttitudeSkill()"
     >
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="Group name" class="font-semibold w-6rem">Group Name</label>
+      <div class="flex align-items-center gap-6 mb-5">
+        <label
+          for="Group name"
+          class="font-semibold w-6rem"
+          style="width: 8rem; white-space: nowrap"
+          >Group Name <span class="text-red-600">*</span></label
+        >
         <input
           [(ngModel)]="newGroupAttitudeSkill.group_name"
           pInputText
@@ -111,8 +118,10 @@
           name="group_name"
         />
       </div>
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="Percentage" class="font-semibold w-6rem">Percentage</label>
+      <div class="flex align-items-center gap-6 mb-5">
+        <label for="Percentage" class="font-semibold w-6rem">
+          Percentage<span class="text-red-600">*</span>
+        </label>
         <input
           [(ngModel)]="newGroupAttitudeSkill.percentage"
           pInputText
@@ -128,8 +137,10 @@
           min="0"
         />
       </div>
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="Enabled" class="font-semibold w-6rem">Enabled</label>
+      <div class="flex align-items-center gap-6 mb-5">
+        <label for="Enabled" class="font-semibold w-6rem">
+          Enabled<span class="text-red-600">*</span>
+        </label>
         <p-checkbox
           [(ngModel)]="newGroupAttitudeSkill.enabled"
           [binary]="true"
@@ -159,17 +170,20 @@
   <p-dialog
     header="Edit Group Attitude Skill"
     [(visible)]="editVisible"
-    [style]="{ width: '25rem' }"
+    [style]="{ width: '30rem' }"
   >
     <form
       #updateGroupAttitudeSkillForm="ngForm"
       (submit)="updateGroupAttitudeSkill()"
     >
-      <span class="p-text-secondary block mb-5"
-        >Edit group attitude skill.</span
-      >
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="Group Name" class="font-semibold w-6rem">Group Name</label>
+      <div class="flex align-items-center gap-6 mb-5">
+        <label
+          for="Group Name"
+          class="font-semibold w-6rem"
+          style="width: 8rem; white-space: nowrap"
+        >
+          Group Name <span class="text-red-600">*</span>
+        </label>
         <input
           [(ngModel)]="editData.group_name"
           pInputText
@@ -181,8 +195,10 @@
           maxlength="100"
         />
       </div>
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="Percentage" class="font-semibold w-6rem">Percentage</label>
+      <div class="flex align-items-center gap-6 mb-5">
+        <label for="Percentage" class="font-semibold w-6rem">
+          Percentage<span class="text-red-600">*</span>
+        </label>
         <input
           [(ngModel)]="editData.percentage"
           pInputText
@@ -198,8 +214,10 @@
           min="0"
         />
       </div>
-      <div class="flex align-items-center gap-3 mb-3">
-        <label for="Enabled" class="font-semibold w-6rem">Enabled</label>
+      <div class="flex align-items-center gap-6 mb-5">
+        <label for="Enabled" class="font-semibold w-6rem">
+          Enabled<span class="text-red-600">*</span>
+        </label>
         <p-checkbox
           [(ngModel)]="editData.enabled"
           [binary]="true"
@@ -218,6 +236,7 @@
         <p-button
           label="Save"
           type="submit"
+          (onClick)="editVisible = false"
           [disabled]="updateGroupAttitudeSkillForm.invalid"
         />
       </div>

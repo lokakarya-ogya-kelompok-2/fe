@@ -80,6 +80,7 @@ export class EmpAchievementComponent implements OnInit {
     this.getAllEmpAchievement();
     this.getAllUser();
     this.getAllAchievement();
+    this.newEmpAchievement.assessment_year = new Date().getFullYear();
   }
 
   getAllAchievement(): void {
