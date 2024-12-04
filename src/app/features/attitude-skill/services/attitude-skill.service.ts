@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Response } from '../../../shared/models/response';
 import { AttitudeSkill, AttitudeSkillRequest } from '../models/attitude-skill';
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ export class AttitudeSkillService {
   private Api = 'http://localhost:8080/attitude-skills';
   constructor(private http: HttpClient) {}
 
-  getAttitudeSkills(): Observable<any> {
+  getAttitudeSkills(): Observable<Response<AttitudeSkill[]>> {
     return this.http.get<any>(this.Api);
   }
   createAttitudeSkill(

@@ -58,6 +58,8 @@ export class AchievementComponent implements OnInit {
   checked: boolean = false;
   dataDetail: Achievement = {} as Achievement;
   groupAchievementDropdown: any = [];
+
+  expandedRows: { [key: string]: boolean } = {};
   resetForm(): void {
     this.newAchievement.achievement = '';
     this.newAchievement.enabled = false;
@@ -87,9 +89,9 @@ export class AchievementComponent implements OnInit {
     this.achievementService.getAchievements().subscribe({
       next: (data) => {
         this.Datas = data.content;
-        console.log(this.Datas);
-        console.log(this.groupAchievementDropdown);
-
+        this.Datas.forEach((data) => {
+          this.expandedRows[data.group_id.group_name] = true;
+        });
         this.loading = false;
       },
     });
