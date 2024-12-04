@@ -148,7 +148,11 @@ export const routes: Routes = [
   //   children: [],
   // },
   {
-    path: '**',
+    path: 'not-found',
     component: NotFoundComponent,
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found',
   },
 ];

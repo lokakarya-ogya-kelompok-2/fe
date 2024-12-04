@@ -1,11 +1,12 @@
 import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Menu } from '../../features/menus/models/menu';
 import { MenuService } from '../../features/menus/services/menu.service';
 import { TokenService } from '../services/token.service';
 
 export const roleMenuGuard: CanActivateFn = async (route, state) => {
+  const router = inject(Router);
   const tokenService = inject(TokenService);
   const jwtPayload = tokenService.decodeToken(tokenService.getToken()!);
   const userId = jwtPayload.sub!;
@@ -15,9 +16,13 @@ export const roleMenuGuard: CanActivateFn = async (route, state) => {
   try {
     menus = data.content;
   } catch (e) {
-    console.error(e);
+    router.navigate(['/not-found']);
     return false;
   }
   const requiredPermission = route.data['permission'];
-  return menus.some((menu) => menu.menu_name === requiredPermission);
+  const hasAccess = menus.some((menu) => menu.menu_name === requiredPermission);
+  if (!hasAccess) {
+    router.navigate(['/not-found']);
+  }
+  return hasAccess;
 };
