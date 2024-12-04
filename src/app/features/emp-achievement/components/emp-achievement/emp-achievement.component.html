@@ -14,8 +14,11 @@
       'min-width': '50rem',
       'text-align': 'center',
       'font-size': '12px',
-      margin: '0'
+      margin: '0',
+      'border-radius': '8px',
+      'table-layout': 'fixed'
     }"
+    [style]="{ width: '100%' }"
     [globalFilterFields]="[
       'id',
       'notes',
@@ -52,23 +55,29 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th>Username</th>
-        <th>Achievement</th>
-        <th>Notes</th>
-        <th>Score</th>
-        <th>Assessment Year</th>
-        <th>Action</th>
+        <th style="width: 15%; text-align: center">Username</th>
+        <th style="width: 25%; text-align: center">Achievement</th>
+        <th style="width: 25%; text-align: center">Notes</th>
+        <th style="width: 10%; text-align: center">Score</th>
+        <th style="width: 10%; text-align: center">Assessment Year</th>
+        <th style="width: 25%; text-align: center">Action</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-data>
       <tr [style]="{ padding: '0.5rem' }">
-        <td [style]="{ padding: '0.5rem' }">{{ data.user_id?.username }}</td>
+        <td [style]="{ padding: '0.5rem', 'text-align': 'center' }">
+          {{ data.user_id?.username }}
+        </td>
         <td [style]="{ padding: '0.5rem' }">
           {{ data.achievement_id.achievement }}
         </td>
         <td [style]="{ padding: '0.5rem' }">{{ data.notes }}</td>
-        <td [style]="{ padding: '0.5rem' }">{{ data.score }}</td>
-        <td [style]="{ padding: '0.5rem' }">{{ data.assessment_year }}</td>
+        <td [style]="{ padding: '0.5rem', 'text-align': 'center' }">
+          {{ data.score }}
+        </td>
+        <td [style]="{ padding: '0.5rem', 'text-align': 'center' }">
+          {{ data.assessment_year }}
+        </td>
         <td
           style="
             justify-content: space-evenly;
