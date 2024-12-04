@@ -12,6 +12,7 @@ import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 import { AuthService } from '../../../core/services/auth.service';
 import { TokenService } from '../../../core/services/token.service';
+import { TokenPayload } from '../../../shared/types';
 import { ChangePasswordReq } from '../../users/models/user';
 import { UserService } from '../../users/services/user.service';
 
@@ -39,6 +40,7 @@ export class IndexPageComponent implements OnInit {
   formData: ChangePasswordReq = {} as ChangePasswordReq;
   isChangePasswordBtnLoading: boolean = false;
   items: MegaMenuItem[] | undefined;
+  tokenPayload: TokenPayload = {} as TokenPayload;
 
   constructor(
     private tokenService: TokenService,
@@ -114,4 +116,10 @@ export class IndexPageComponent implements OnInit {
   resetFormData() {
     this.formData = {} as ChangePasswordReq;
   }
+  getInitial = (fullName: string, n: number): string =>
+    fullName
+      .split(' ')
+      .map((w) => w.slice(0, 1))
+      .slice(0, n)
+      .join('');
 }

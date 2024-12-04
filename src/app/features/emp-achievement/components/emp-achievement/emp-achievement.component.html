@@ -19,10 +19,13 @@
     [globalFilterFields]="[
       'id',
       'notes',
+      'user_id.username',
       'achievement_id.achievement',
       'score',
       'assessment_year'
     ]"
+    [sortField]="'created_at'"
+    [sortOrder]="-1"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -87,8 +90,8 @@
             [rounded]="true"
             [raised]="true"
           ></p-button>
-          <p-confirmDialog key="{{ data.id }}" />
         </td>
+        <p-confirmDialog key="{{ data.id }}" />
       </tr>
     </ng-template>
   </p-table>
@@ -98,86 +101,116 @@
   <p-dialog
     header="Add Emp Achievement"
     [(visible)]="visible"
-    [style]="{ width: '25rem' }"
+    [style]="{ width: '52rem' }"
   >
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Notes" class="font-semibold w-6rem">Notes</label>
-      <input
-        pInputText
-        id="Notes"
-        class="flex-auto"
-        autocomplete="off"
-        [(ngModel)]="newEmpAchievement.notes"
-        required
-        maxlength="100"
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="User Id" class="font-semibold w-6rem"> User Id </label>
-      <p-dropdown
-        [options]="userDropdown"
-        [(ngModel)]="newEmpAchievement.user_id"
-        optionLabel="username"
-        optionValue="id"
-        placeholder="Select a username"
-        required
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="achievement id" class="font-semibold w-6rem">
-        Achievement Name
-      </label>
-      <p-dropdown
-        [options]="achievementDropdown"
-        [(ngModel)]="newEmpAchievement.achievement_id"
-        optionLabel="achievement"
-        optionValue="id"
-        placeholder=" Achievement Name "
-        required
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Score" class="font-semibold w-6rem"> Score </label>
-      <input
-        pInputText
-        id="Score"
-        class="flex-auto"
-        autocomplete="off"
-        [(ngModel)]="newEmpAchievement.score"
-        required
-        max="100"
-        type="number"
-        min="0"
-        pattern="^[0-9]*$"
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Assessment Year" class="font-semibold w-6rem">
-        Assessment Year
-      </label>
-      <input
-        pInputText
-        id="Assessment Year"
-        class="flex-auto"
-        autocomplete="off"
-        [(ngModel)]="newEmpAchievement.assessment_year"
-        required
-        min="2000"
-        max="2100"
-      />
-    </div>
+    <form #empAchievementForm="ngForm" (submit)="createEmpAchievement()">
+      <div class="flex align-items-center gap-8 mb-5">
+        <label for="Notes" class="font-semibold w-6rem">
+          Notes<span class="text-red-600">*</span>
+        </label>
+        <input
+          pInputText
+          id="Notes"
+          class="flex-auto"
+          autocomplete="off"
+          [(ngModel)]="newEmpAchievement.notes"
+          required
+          maxlength="100"
+          name="notes"
+        />
+      </div>
+      <div class="flex align-items-center gap-8 mb-5">
+        <label
+          for="User Id"
+          class="font-semibold w-6rem"
+          style="width: 12rem; white-space: nowrap"
+        >
+          Employee<span class="text-red-600">*</span>
+        </label>
+        <p-dropdown
+          [options]="userDropdown"
+          [(ngModel)]="newEmpAchievement.user_id"
+          optionLabel="username"
+          optionValue="id"
+          placeholder="Select an employee"
+          required
+          name="employee"
+        />
+      </div>
+      <div class="flex align-items-center gap-8 mb-5">
+        <label
+          for="achievement id"
+          class="font-semibold w-6rem"
+          style="width: 12rem; white-space: nowrap"
+        >
+          Achievement Name<span class="text-red-600">*</span>
+        </label>
+        <p-dropdown
+          [options]="achievementDropdown"
+          [(ngModel)]="newEmpAchievement.achievement_id"
+          optionLabel="achievement"
+          optionValue="id"
+          placeholder=" Achievement Name "
+          required
+          name="achievement"
+        />
+      </div>
+      <div class="flex align-items-center gap-8 mb-5">
+        <label
+          for="Score"
+          class="font-semibold w-6rem"
+          style="width: 8rem; white-space: nowrap"
+        >
+          Score<span class="text-red-600">*</span>
+        </label>
+        <input
+          pInputText
+          id="Score"
+          class="flex-auto"
+          autocomplete="off"
+          [(ngModel)]="newEmpAchievement.score"
+          required
+          max="100"
+          type="number"
+          min="0"
+          pattern="^[0-9]*$"
+          name="score"
+        />
+      </div>
+      <div class="flex align-items-center gap-8 mb-5">
+        <label
+          for="Assessment Year"
+          class="font-semibold w-6rem"
+          style="width: 8rem; white-space: nowrap"
+        >
+          Assessment Year<span class="text-red-600">*</span>
+        </label>
+        <input
+          pInputText
+          id="Assessment Year"
+          class="flex-auto"
+          autocomplete="off"
+          [(ngModel)]="newEmpAchievement.assessment_year"
+          required
+          [disabled]="true"
+          name="year"
+        />
+      </div>
 
-    <div class="flex justify-content-end gap-2">
-      <p-button
-        label="Cancel"
-        severity="secondary"
-        (onClick)="visible = false"
-      />
-      <p-button
-        label="Save"
-        (onClick)="visible = false; createEmpAchievement()"
-      />
-    </div>
+      <div class="flex justify-content-end gap-2">
+        <p-button
+          label="Cancel"
+          severity="secondary"
+          (onClick)="visible = false"
+        />
+        <p-button
+          label="Save"
+          (onClick)="visible = false"
+          type="submit"
+          [disabled]="empAchievementForm.invalid"
+        />
+      </div>
+    </form>
   </p-dialog>
 </div>
 
@@ -185,84 +218,105 @@
   <p-dialog
     header="Edit Emp Achievement"
     [(visible)]="editVisible"
-    [style]="{ width: '25rem' }"
+    [style]="{ width: '52rem' }"
   >
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Notes" class="font-semibold w-6rem">Notes</label>
-      <input
-        [(ngModel)]="editData.notes"
-        pInputText
-        id="Notes"
-        class="flex-auto"
-        autocomplete="off"
-        required
-        maxlength="100"
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="User Id" class="font-semibold w-6rem"> User Id </label>
-      <p-dropdown
-        [options]="userDropdown"
-        [(ngModel)]="editData.user_id"
-        optionLabel="username"
-        optionValue="id"
-        placeholder="Select an username"
-        required
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Achievement Id" class="font-semibold w-6rem">
-        Achievement Name
-      </label>
-      <p-dropdown
-        [options]="achievementDropdown"
-        [(ngModel)]="editData.achievement_id"
-        optionLabel="achievement"
-        optionValue="id"
-        placeholder=" Achievement Name "
-        required
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Score" class="font-semibold w-6rem"> Score </label>
-      <input
-        pInputText
-        id="Score"
-        class="flex-auto"
-        autocomplete="off"
-        [(ngModel)]="editData.score"
-        required
-        max="100"
-        min="0"
-        type="number"
-        pattern="^[0-9]*$"
-      />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="Assessment Year" class="font-semibold w-6rem">
-        Assessment Year
-      </label>
-      <input
-        pInputText
-        id="Assessment Year"
-        class="flex-auto"
-        autocomplete="off"
-        [(ngModel)]="editData.assessment_year"
-        min="2000"
-        max="2100"
-      />
-    </div>
-    <div class="flex justify-content-end gap-2">
-      <p-button
-        label="Cancel"
-        severity="secondary"
-        (onClick)="editVisible = false"
-      />
-      <p-button
-        label="Save"
-        (onClick)="editVisible = false; updateEmpAchievement()"
-      />
-    </div>
+    <form #updateEmpAchievementForm="ngForm" (submit)="updateEmpAchievement()">
+      <div class="flex align-items-center gap-8 mb-5">
+        <label for="Notes" class="font-semibold w-6rem">
+          Notes<span class="text-red-600">*</span>
+        </label>
+        <input
+          [(ngModel)]="editData.notes"
+          pInputText
+          id="Notes"
+          class="flex-auto"
+          autocomplete="off"
+          required
+          maxlength="100"
+          name="notes"
+        />
+      </div>
+      <div class="flex align-items-center gap-8 mb-5">
+        <label for="User Id" class="font-semibold w-6rem">
+          Employee<span class="text-red-600">*</span>
+        </label>
+        <p-dropdown
+          [options]="userDropdown"
+          [(ngModel)]="editData.user_id"
+          optionLabel="username"
+          optionValue="id"
+          placeholder="Select an employee"
+          required
+          name="employee"
+        />
+      </div>
+      <div class="flex align-items-center gap-8 mb-5">
+        <label
+          for="Achievement Id"
+          class="font-semibold w-6rem"
+          style="width: 20rem; white-space: nowrap"
+        >
+          Achievement Name<span class="text-red-600">*</span>
+        </label>
+        <p-dropdown
+          [options]="achievementDropdown"
+          [(ngModel)]="editData.achievement_id"
+          optionLabel="achievement"
+          optionValue="id"
+          placeholder=" Achievement Name "
+          required
+          name="achievement"
+        />
+      </div>
+      <div class="flex align-items-center gap-8 mb-5">
+        <label for="Score" class="font-semibold w-6rem">
+          Score<span class="text-red-600">*</span>
+        </label>
+        <input
+          pInputText
+          id="Score"
+          class="flex-auto"
+          autocomplete="off"
+          [(ngModel)]="editData.score"
+          required
+          max="100"
+          min="0"
+          type="number"
+          pattern="^[0-9]*$"
+          name="score"
+        />
+      </div>
+      <div class="flex align-items-center gap-8 mb-5">
+        <label
+          for="Assessment Year"
+          class="font-semibold w-6rem"
+          style="width: 20rem; white-space: nowrap"
+        >
+          Assessment Year<span class="text-red-600">*</span>
+        </label>
+        <input
+          pInputText
+          id="Assessment Year"
+          class="flex-auto"
+          autocomplete="off"
+          [(ngModel)]="editData.assessment_year"
+          name="assessment-year"
+        />
+      </div>
+      <div class="flex justify-content-end gap-2">
+        <p-button
+          label="Cancel"
+          severity="secondary"
+          (onClick)="editVisible = false"
+        />
+        <p-button
+          label="Save"
+          (onClick)="editVisible = false"
+          type="submit"
+          [disabled]="updateEmpAchievementForm.invalid"
+        />
+      </div>
+    </form>
   </p-dialog>
 </div>
 
