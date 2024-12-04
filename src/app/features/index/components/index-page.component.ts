@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { MegaMenuItem } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
@@ -12,6 +12,7 @@ import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 import { AuthService } from '../../../core/services/auth.service';
 import { TokenService } from '../../../core/services/token.service';
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { TokenPayload } from '../../../shared/types';
 import { ChangePasswordReq } from '../../users/models/user';
 import { UserService } from '../../users/services/user.service';
@@ -21,7 +22,6 @@ import { UserService } from '../../users/services/user.service';
   standalone: true,
   imports: [
     ButtonModule,
-    RouterLink,
     DialogModule,
     FormsModule,
     FloatLabelModule,
@@ -30,12 +30,12 @@ import { UserService } from '../../users/services/user.service';
     MegaMenuModule,
     CommonModule,
     AvatarModule,
+    NavbarComponent,
   ],
   templateUrl: './index-page.component.html',
   styleUrl: './index-page.component.scss',
 })
 export class IndexPageComponent implements OnInit {
-  fullName: string | undefined = '';
   dialogVisible: boolean = false;
   formData: ChangePasswordReq = {} as ChangePasswordReq;
   isChangePasswordBtnLoading: boolean = false;
@@ -61,14 +61,6 @@ export class IndexPageComponent implements OnInit {
         },
       },
       {
-        label: 'Main Menu',
-        root: true,
-        icon: 'pi pi-list',
-        command: () => {
-          this.router.navigate(['/manage-users']);
-        },
-      },
-      {
         label: 'Logout',
         root: true,
         style: { color: 'red !important' },
@@ -82,8 +74,7 @@ export class IndexPageComponent implements OnInit {
   getToken(): void {
     const token = this.tokenService.getToken();
     if (token && this.authService.isAuthenticated()) {
-      const jwtPayload = this.tokenService.decodeToken(token);
-      this.fullName = jwtPayload.full_name;
+      this.tokenPayload = this.tokenService.decodeToken(token);
     }
   }
 

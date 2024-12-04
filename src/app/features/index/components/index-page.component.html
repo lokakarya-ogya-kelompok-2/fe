@@ -1,7 +1,7 @@
 <!-- <p>Welcome {{ username }}</p> -->
 
 <!-- @if (username) { -->
-
+<app-navbar [includeUserAction]="false" />
 <div class="center">
   <div
     style="
@@ -12,13 +12,13 @@
     "
   >
     <p-avatar
-      label="IA"
+      [label]="getInitial(tokenPayload.full_name, 2)"
       styleClass="mr-2"
       size="xlarge"
       [style]="{ width: '150px', height: '150px' }"
       shape="circle"
     />
-    <h1>Welcome, {{ fullName }}</h1>
+    <h1>Welcome, {{ tokenPayload.full_name }}</h1>
     <ng-template pTemplate="end" style="display: inline"> </ng-template>
     <div class="card">
       <p-megaMenu
@@ -37,22 +37,8 @@
             <span class="ml-2">{{ item.label }}</span>
           </a>
         </ng-template>
-        <!-- <ng-template pTemplate="start" style="display: flex">
-          <p-avatar
-            image="https://primefaces.org/cdn/primeng/images/demo/avatar/walter.jpg"
-            shape="circle"
-          />
-        </ng-template> -->
       </p-megaMenu>
     </div>
-
-    <!-- <p-button label="Change Password" (onClick)="dialogVisible = true" />
-    <p-button label="Main menu" severity="success" [routerLink]="'/manage'" />
-    <p-button
-      label="Logout"
-      severity="danger"
-      (onClick)="authService.logout()"
-    /> -->
   </div>
 </div>
 

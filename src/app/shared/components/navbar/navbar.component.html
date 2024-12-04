@@ -7,6 +7,7 @@
       class="custom-menubar"
       [style]="{ 'font-size': '14px' }"
     >
+      @if (includeUserAction) {
       <ng-template pTemplate="start">
         <button
           pRipple
@@ -27,6 +28,7 @@
         severity="danger"
         (onClick)="authService.logout()"
       />
+      }
     </p-menubar>
   </div>
 </div>
