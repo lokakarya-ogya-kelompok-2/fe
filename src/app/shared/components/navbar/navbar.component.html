@@ -1,6 +1,10 @@
 <div class="navbar">
-  <div class="navbar-start"></div>
-  <div class="navbar-center">
+  <div [class]="includeUserAction ? 'navbar-start' : ''"></div>
+  <div
+    [class]="
+      includeUserAction ? 'navbar-center' : 'w-full flex justify-content-center'
+    "
+  >
     <p-menubar
       id="menu-bar"
       [model]="items"
