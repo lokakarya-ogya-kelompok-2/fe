@@ -9,8 +9,15 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import {
+  Confirmation,
+  ConfirmationService,
+  Message,
+  MessageService,
+} from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
@@ -42,14 +49,17 @@ import { UserService } from '../../services/user.service';
     SelectButtonModule,
     MultiSelectModule,
     ToggleButtonModule,
+    ConfirmDialogModule,
   ],
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.scss',
+  providers: [ConfirmationService],
 })
 export class UserFormComponent implements OnInit, OnChanges {
   @Input() userData = {} as User;
   @Output() submit = new EventEmitter<void>();
   @Output() onCancel = new EventEmitter<void>();
+  @Output() showToast = new EventEmitter<Message>();
 
   divisions: Division[] = [];
   isDivisionLoading: boolean = true;
@@ -57,6 +67,7 @@ export class UserFormComponent implements OnInit, OnChanges {
   maxDate: Date = new Date();
   submitBtnLoading: boolean = false;
   formData: UserReq = {} as UserReq;
+  resetPasswordLoading: boolean = false;
 
   statusOptions = [
     {
@@ -72,7 +83,9 @@ export class UserFormComponent implements OnInit, OnChanges {
   constructor(
     private readonly divisionSvc: ManageDivisionService,
     private readonly roleSvc: RoleService,
-    private readonly userSvc: UserService
+    private readonly userSvc: UserService,
+    private readonly confirmationSvc: ConfirmationService,
+    private readonly messageSvc: MessageService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -142,5 +155,52 @@ export class UserFormComponent implements OnInit, OnChanges {
         complete: () => {},
       });
     }
+  }
+
+  onResetPassword(event: Event, userId: string) {
+    this.showConfirmDialog(event, {
+      target: event.target as EventTarget,
+      message: "Are you sure you want to reset this user's password?",
+      header: 'Reset Password',
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonStyleClass: 'p-button-text',
+      accept: () => {
+        this.userSvc.resetPassword(userId).subscribe({
+          next: (data) => {
+            Swal.fire({
+              title: 'Password changed successfully!',
+              html: `
+                <div class="flex align-items-center justify-content-center gap-2">
+                  <span>New Password: ${data.content}</span>
+                  <button class="p-button p-button-text" onclick="navigator.clipboard.writeText('${data.content}')">
+                    <i class="pi pi-copy"></i>
+                  </button>
+                </div>
+              `,
+              icon: 'success',
+              customClass: {},
+              didOpen: () => {
+                const copyBtn =
+                  Swal.getHtmlContainer()?.querySelector('button');
+                if (copyBtn) {
+                  copyBtn.addEventListener('click', () => {
+                    this.showToast.emit({
+                      severity: 'success',
+                      summary: 'Text Copied',
+                      detail: 'New password copied to clipboard!',
+                    });
+                  });
+                }
+              },
+            });
+          },
+        });
+      },
+    });
+  }
+
+  showConfirmDialog(event: Event, confirmation: Confirmation) {
+    this.confirmationSvc.close();
+    this.confirmationSvc.confirm(confirmation);
   }
 }
