@@ -18,11 +18,12 @@ export class EmpAttitudeSkillsService {
   getEmpAttitudeSkill(): Observable<any> {
     return this.http.get<any>(this.Api);
   }
+
   createEmpAttitudeSkill(
     empAttitudeSkillRequest: EmpAttitudeSkillRequest[]
   ): Observable<EmpAttitudeSkill[]> {
     return this.http.post<EmpAttitudeSkill[]>(
-      this.Api,
+      `${this.Api}/bulk-create`,
       empAttitudeSkillRequest
     );
   }
