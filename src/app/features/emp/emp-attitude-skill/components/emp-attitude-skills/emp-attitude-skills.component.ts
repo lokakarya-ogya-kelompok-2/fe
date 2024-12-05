@@ -80,13 +80,11 @@ export class EmpAttitudeSkillsComponent implements OnInit {
       }
     });
     console.log(result, 'HASILNYA');
-    this.empAttitudeSkillService
-      .createEmpAttitudeSkill(this.groupAttitudeSkills)
-      .subscribe({
-        next: (data) => {
-          console.log(data);
-        },
-      });
+    this.empAttitudeSkillService.createEmpAttitudeSkill(result).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+    });
   }
   getUser() {
     this.userService.list().subscribe({
