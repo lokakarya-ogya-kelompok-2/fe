@@ -71,7 +71,7 @@ export class NavbarComponent implements OnInit {
           {
             id: 'emp-attitude-skill#all',
             label: 'Employee Attitude Skill',
-            routerLinkL: '/emp-attitude-skill',
+            routerLink: '/emp-attitude-skills',
           },
         ],
       },
@@ -159,6 +159,12 @@ export class NavbarComponent implements OnInit {
         label: 'Suggestion',
         routerLink: '/emp-suggestions',
       },
+      {
+        label: 'Logout',
+        icon: 'pi pi-sign-out',
+        routerLink: '/login',
+        style: { 'margin-left': '40px', color: 'red' },
+      },
     ];
   }
 
@@ -186,7 +192,7 @@ export class NavbarComponent implements OnInit {
               return this.menu.has(subItem.id!);
             });
           }
-          return this.menu.has(item.id!);
+          return this.menu.has(item.id!) || !item.id;
         });
         console.log(this.menu, 'USER MENUS');
         console.log(this.items, 'NAVBAR MENUS');

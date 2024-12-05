@@ -42,10 +42,7 @@ export const routes: Routes = [
       permission: 'emp-dev-plan#all',
     },
   },
-  {
-    path: 'emp-attitude-skills',
-    component: EmpAttitudeSkillsComponent,
-  },
+
   {
     path: 'manage-users',
     component: UserListComponent,
@@ -140,6 +137,14 @@ export const routes: Routes = [
     canActivate: [authGuard, roleMenuGuard],
     data: {
       permission: 'emp-technical-skill#all',
+    },
+  },
+  {
+    path: 'emp-attitude-skills',
+    component: EmpAttitudeSkillsComponent,
+    canActivate: [authGuard, roleMenuGuard],
+    data: {
+      permission: 'emp-attitude-skill#all',
     },
   },
   // {

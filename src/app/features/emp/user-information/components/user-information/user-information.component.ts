@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CardModule } from 'primeng/card';
+import { MenubarModule } from 'primeng/menubar';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { TokenService } from '../../../../../core/services/token.service';
 import { User } from '../../../../users/models/user';
@@ -8,7 +9,7 @@ import { UserService } from '../../../../users/services/user.service';
 @Component({
   selector: 'app-user-information',
   standalone: true,
-  imports: [CardModule],
+  imports: [CardModule, MenubarModule],
   templateUrl: './user-information.component.html',
   styleUrl: './user-information.component.scss',
 })
