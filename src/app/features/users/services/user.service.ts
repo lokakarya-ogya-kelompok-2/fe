@@ -41,4 +41,11 @@ export class UserService {
       data
     );
   }
+
+  resetPassword(userId: string): Observable<Response<string>> {
+    return this.httpClient.post<Response<string>>(
+      `${this.baseUserUrl}/${userId}/reset-password`,
+      null
+    );
+  }
 }

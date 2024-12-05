@@ -67,6 +67,7 @@ export class EmpTechnicalSkillComponent implements OnInit {
 
   ngOnInit() {
     this.userId = this.tokenSvc.decodeToken(this.tokenSvc.getToken()!).sub!;
+
     this.empTechSkillSvc
       .getByUserIdAndYear(this.userId, this.currentYear)
       .subscribe({
@@ -84,19 +85,29 @@ export class EmpTechnicalSkillComponent implements OnInit {
               detail: empTechSkill.detail,
             });
           });
+          console.log(this.empTechnicalSkills, 'after atas');
+        },
+        complete: () => {
+          this.techSkillSvc.getAllTechnicalSkills().subscribe({
+            next: (data) => {
+              this.technicalSkills = data.content;
+              this.technicalSkills.forEach((groupTechSkill) => {
+                if (!this.empTechnicalSkills[groupTechSkill.id]) {
+                  this.empTechnicalSkills[groupTechSkill.id] = [
+                    {} as EmpTechnicalSkillReq,
+                  ];
+                }
+              });
+              this.technicalSkills.sort(
+                (a, b) => b.created_at.getTime() - a.created_at.getTime()
+              );
+            },
+            error: (err) => {
+              console.error(`error on fetching technical skills: ${err}`);
+            },
+          });
         },
       });
-    this.techSkillSvc.getAllTechnicalSkills().subscribe({
-      next: (data) => {
-        this.technicalSkills = data.content;
-        this.technicalSkills.forEach((groupTechSkill) => {
-          this.empTechnicalSkills[groupTechSkill.id] = [];
-        });
-      },
-      error: (err) => {
-        console.error(`error on fetching technical skills: ${err}`);
-      },
-    });
   }
 
   addField(key: string) {
@@ -107,9 +118,6 @@ export class EmpTechnicalSkillComponent implements OnInit {
   }
 
   removeField(key: string, ix: number) {
-    // if (this.empTechnicalSkills[key][ix].id) {
-    //   this.onDelete(this.empTechnicalSkills[key][ix].id);
-    // }
     this.empTechnicalSkills[key] = this.empTechnicalSkills[key].filter(
       (_, i) => i !== ix
     );
@@ -156,7 +164,7 @@ export class EmpTechnicalSkillComponent implements OnInit {
     );
 
     this.empTechSkillSvc.insertBulk(empTechnicalSkillsReq).subscribe({
-      next: (data) => {
+      next: (_) => {
         this.messageSvc.add({
           severity: 'success',
           summary: 'Add',

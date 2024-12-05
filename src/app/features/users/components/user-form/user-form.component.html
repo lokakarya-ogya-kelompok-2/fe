@@ -182,6 +182,18 @@
         </div>
       </div>
 
+      @if (formData.id !== null) {
+      <div class="flex justify-content-center mb-3">
+        <p-button
+          label="Reset Password"
+          icon="pi pi-key"
+          severity="danger"
+          [loading]="resetPasswordLoading"
+          (onClick)="onResetPassword($event, formData.id)"
+        />
+      </div>
+      }
+
       <!-- Submit and Cancel Buttons -->
       <div class="flex justify-content-center gap-2 mt-4">
         <p-button
@@ -201,3 +213,5 @@
     </form>
   </div>
 </div>
+
+<p-confirmDialog />

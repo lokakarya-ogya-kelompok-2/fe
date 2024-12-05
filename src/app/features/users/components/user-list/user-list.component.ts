@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, Message, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
@@ -132,12 +132,18 @@ export class UserListComponent implements OnInit {
         });
       },
       reject: () => {
-        this.messageService.add({
+        this.showToast({
           severity: 'error',
           summary: 'Rejected',
           detail: 'You have rejected',
         });
       },
     });
+  }
+
+  showToast(message: Message) {
+    console.log('ADAADADADADA', message);
+    this.messageService.clear();
+    this.messageService.add(message);
   }
 }
