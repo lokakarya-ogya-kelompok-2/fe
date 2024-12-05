@@ -1,7 +1,5 @@
-<!-- <p>Welcome {{ username }}</p> -->
-
-<!-- @if (username) { -->
 <app-navbar [includeUserAction]="false" />
+
 <div class="center">
   <div
     style="
@@ -55,7 +53,6 @@
     class="p-fluid"
   >
     <div class="flex flex-column gap-4 mt-4">
-      <!-- Current password - full width -->
       <div class="field w-full">
         <p-floatLabel>
           <p-password
@@ -73,7 +70,6 @@
         </p-floatLabel>
       </div>
 
-      <!-- New passwords container - side by side -->
       <div class="flex gap-3">
         <div class="field w-8">
           <p-floatLabel>
@@ -142,9 +138,3 @@
     </div>
   </form>
 </p-dialog>
-<!-- } @else { -->
-<!-- <div class="center">
-  <H1 style="margin-right: 24px">Please log in ==> </H1>
-  <p-button label="Login" routerLink="/login" severity="primary" />
-</div> -->
-<!-- } -->

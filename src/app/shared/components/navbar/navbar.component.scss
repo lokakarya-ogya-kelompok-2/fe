@@ -13,5 +13,17 @@
   margin-right: 10px;
 }
 #profil {
-  margin-right: 50px;
+  margin-right: 10px;
+}
+
+:host
+  ::ng-deep
+  .p-menubar
+  .p-menubar-root-list
+  > .p-menuitem
+  > .p-menuitem-content
+  .p-menuitem-link {
+  padding: 0.75rem 0.5rem;
+  -webkit-user-select: none;
+  user-select: none;
 }

@@ -66,8 +66,22 @@ export class EmpAttitudeSkillsComponent implements OnInit {
 
   createEmpAttitudeSkill(): void {
     console.log('hasil submit: ', this.groupAttitudeSkills);
+    let result: any[] = [];
+    this.groupAttitudeSkills.forEach((group) => {
+      if (group.attitude_skills && group.attitude_skills.length > 0) {
+        group.attitude_skills.forEach((skill: any) => {
+          result.push({
+            attitude_skill_id: skill.id,
+            score: skill.score,
+            assessment_year: this.currentYear,
+            user_id: this.jwtPayload.sub,
+          });
+        });
+      }
+    });
+    console.log(result, 'HASILNYA');
     this.empAttitudeSkillService
-      .createEmpAttitudeSkill(this.newEmpAttitudeSkill)
+      .createEmpAttitudeSkill(this.groupAttitudeSkills)
       .subscribe({
         next: (data) => {
           console.log(data);
@@ -98,6 +112,7 @@ export class EmpAttitudeSkillsComponent implements OnInit {
       next: (data) => {
         console.log(data.content);
         this.groupAttitudeSkills = data.content;
+        console.log(this.groupAttitudeSkills, 'ini dari ngoninit');
       },
     });
   }

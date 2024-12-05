@@ -4,31 +4,43 @@
     <p-menubar
       id="menu-bar"
       [model]="items"
-      class="custom-menubar"
-      [style]="{ 'font-size': '14px' }"
+      class="custom-menubar bg-blue-100"
+      [style]="{
+        'font-size': '14px',
+        'min-width': '100px',
+        padding: '0.75rem 0.5rem'
+      }"
     >
-      @if (includeUserAction) {
       <ng-template pTemplate="start">
+        @if (includeUserAction) {
         <button
           pRipple
           class="relative overflow-hidden w-full p-link flex align-items-center p-2 pl-3 text-color hover:surface-200 border-noround"
           routerLink="/"
           id="profil"
         >
-          <p-avatar label="IA" class="mr-2" shape="circle" />
+          <p-avatar
+            [label]="getInitial(tokenPayload.full_name, 2)"
+            class="mr-2"
+            shape="circle"
+          />
           <span class="inline-flex flex-column">
             <span class="font-bold">{{ tokenPayload.username }}</span>
             <span class="text-sm">HR</span>
           </span>
         </button>
+        }
       </ng-template>
-      <p-button
-        id="logout"
-        label="Logout"
-        severity="danger"
-        (onClick)="authService.logout()"
-      />
-      }
+      <!-- <div>
+        @if (includeUserAction) {
+        <p-button
+          id="logout"
+          label="Logout"
+          severity="danger"
+          (onClick)="authService.logout()"
+        />
+        }
+      </div> -->
     </p-menubar>
   </div>
 </div>
