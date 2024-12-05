@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
 import { TokenService } from '../../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../../shared/components/navbar/navbar.component';
 import { TechnicalSkill } from '../../../../technical-skill/models/technical-skill';
@@ -23,9 +25,11 @@ import { EmpTechnicalSkillService } from '../../services/emp-technical-skill.ser
     FormsModule,
     ButtonModule,
     DropdownModule,
+    ToastModule,
   ],
   templateUrl: './emp-technical-skill.component.html',
   styleUrl: './emp-technical-skill.component.scss',
+  providers: [MessageService],
 })
 export class EmpTechnicalSkillComponent implements OnInit {
   readonly skillLevels = [
@@ -57,16 +61,36 @@ export class EmpTechnicalSkillComponent implements OnInit {
   constructor(
     private readonly empTechSkillSvc: EmpTechnicalSkillService,
     private readonly techSkillSvc: TechnicalSkillService,
-    private readonly tokenSvc: TokenService
+    private readonly tokenSvc: TokenService,
+    private readonly messageSvc: MessageService
   ) {}
 
   ngOnInit() {
     this.userId = this.tokenSvc.decodeToken(this.tokenSvc.getToken()!).sub!;
+    this.empTechSkillSvc
+      .getByUserIdAndYear(this.userId, this.currentYear)
+      .subscribe({
+        next: (data) => {
+          data.content.forEach((empTechSkill) => {
+            if (!this.empTechnicalSkills[empTechSkill.technical_skill.id]) {
+              this.empTechnicalSkills[empTechSkill.technical_skill.id] = [];
+            }
+
+            this.empTechnicalSkills[empTechSkill.technical_skill.id].push({
+              id: empTechSkill.id,
+              assessment_year: empTechSkill.assessment_year,
+              technical_skill_id: empTechSkill.technical_skill.id,
+              score: empTechSkill.score,
+              detail: empTechSkill.detail,
+            });
+          });
+        },
+      });
     this.techSkillSvc.getAllTechnicalSkills().subscribe({
       next: (data) => {
         this.technicalSkills = data.content;
-        this.technicalSkills.forEach((techSkill) => {
-          this.empTechnicalSkills[techSkill.id] = [{} as EmpTechnicalSkillReq];
+        this.technicalSkills.forEach((groupTechSkill) => {
+          this.empTechnicalSkills[groupTechSkill.id] = [];
         });
       },
       error: (err) => {
@@ -82,11 +106,48 @@ export class EmpTechnicalSkillComponent implements OnInit {
     this.empTechnicalSkills[key].push({} as EmpTechnicalSkillReq);
   }
 
+  removeField(key: string, ix: number) {
+    // if (this.empTechnicalSkills[key][ix].id) {
+    //   this.onDelete(this.empTechnicalSkills[key][ix].id);
+    // }
+    this.empTechnicalSkills[key] = this.empTechnicalSkills[key].filter(
+      (_, i) => i !== ix
+    );
+  }
+
+  onDelete(id: string) {
+    this.messageSvc.clear();
+    this.empTechSkillSvc.delete(id).subscribe({
+      next: (data) => {
+        this.messageSvc.add({
+          severity: 'info',
+          summary: 'Delete',
+          detail: data.message,
+        });
+      },
+      error: (err: any) => {
+        this.messageSvc.add({
+          severity: 'info',
+          summary: 'Delete',
+          detail: err.message,
+        });
+      },
+    });
+  }
+
   onSubmit() {
+    const submit = window.confirm('u sure?');
+    if (!submit) {
+      return;
+    }
+    this.messageSvc.clear();
     let empTechnicalSkillsReq: EmpTechnicalSkillReq[] = [];
     Object.entries(this.empTechnicalSkills).forEach(
       ([techSkillId, userInputs]) => {
         userInputs.forEach((userInput) => {
+          if (userInput.id) {
+            return;
+          }
           userInput.technical_skill_id = techSkillId;
           userInput.assessment_year = this.currentYear;
           empTechnicalSkillsReq.push(userInput);
@@ -94,14 +155,23 @@ export class EmpTechnicalSkillComponent implements OnInit {
       }
     );
 
-    console.log(empTechnicalSkillsReq);
-
     this.empTechSkillSvc.insertBulk(empTechnicalSkillsReq).subscribe({
       next: (data) => {
-        console.log(data);
+        this.messageSvc.add({
+          severity: 'success',
+          summary: 'Add',
+          detail: 'New Technical Skill Added!',
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       },
       error: (err) => {
-        console.error(`error occured during insert bulk:  ${err}`);
+        this.messageSvc.add({
+          severity: 'error',
+          summary: 'Delete',
+          detail: err.error?.message,
+        });
       },
     });
   }
