@@ -27,3 +27,10 @@
   -webkit-user-select: none;
   user-select: none;
 }
+
+.centered-menubar {
+  .p-menubar-root-list {
+    justify-content: center;
+    width: 100%;
+  }
+}

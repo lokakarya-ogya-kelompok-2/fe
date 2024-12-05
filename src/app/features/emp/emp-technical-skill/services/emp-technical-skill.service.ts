@@ -31,4 +31,17 @@ export class EmpTechnicalSkillService {
       data
     );
   }
+
+  delete(id: string): Observable<Response<void>> {
+    return this.httpClient.delete<Response<void>>(`${this.baseApiUrl}/${id}`);
+  }
+
+  getByUserIdAndYear(
+    userId: string,
+    year: number
+  ): Observable<Response<EmpTechnicalSkill[]>> {
+    return this.httpClient.get<Response<EmpTechnicalSkill[]>>(
+      `${this.baseApiUrl}?user_ids=${userId}&years=${year}`
+    );
+  }
 }
