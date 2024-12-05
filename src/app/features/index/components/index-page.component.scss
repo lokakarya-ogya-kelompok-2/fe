@@ -1,12 +1,16 @@
 .center {
   display: flex;
-  justify-content: center; /* Horizontal alignment */
-  align-items: center; /* Vertical alignment */
-  height: 90vh; /* Full viewport height */
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
   margin: 0;
 }
 
 h1 {
-  font-size: 2.5rem; /* Customize font size as needed */
-  color: #333; /* Customize text color as needed */
+  font-size: 2.5rem;
+  color: #333;
+}
+
+.p-menubarsub {
+  margin-left: 100px;
 }

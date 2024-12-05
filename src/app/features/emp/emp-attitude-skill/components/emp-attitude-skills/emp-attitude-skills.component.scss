@@ -7,12 +7,12 @@
 
 /* Custom styling for table header */
 :host ::ng-deep .custom-header {
-  background-color: #4caf50; /* Green background for contrast */
-  color: #fff; /* White text */
+  background-color: #f1f1f1; /* Green background for contrast */
+  color: #000000; /* White text */
   font-weight: bold;
   text-align: center;
   padding: 0.75rem;
-  border-bottom: 2px solid #388e3c; /* Darker border for effect */
+  border-bottom: 2px solid #e5e4e4; /* Darker border for effect */
 }
 
 /* Add hover effect on table rows */
