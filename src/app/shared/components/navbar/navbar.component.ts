@@ -54,6 +54,7 @@ export class NavbarComponent implements OnInit {
       {
         id: 'attitude-skill',
         label: 'Attitude Skills',
+        style: { 'z-index': 3 },
         routerLinkActiveOptions: { exact: true },
         items: [
           {
@@ -78,6 +79,7 @@ export class NavbarComponent implements OnInit {
       {
         id: 'technical-skill',
         label: 'Technical Skills',
+        style: { 'z-index': 3 },
         items: [
           {
             id: 'technical-skill#all',
@@ -99,14 +101,14 @@ export class NavbarComponent implements OnInit {
         routerLinkActiveOptions: { exact: true },
         items: [
           {
-            id: 'emp-dev-plan#all',
-            label: 'Employee Dev Plan',
-            routerLink: '/emp-dev-plan',
-          },
-          {
             id: 'dev-plan#all',
             label: 'Manage Dev Plan',
             routerLink: '/manage-dev-plans',
+          },
+          {
+            id: 'emp-dev-plan#all',
+            label: 'Employee Dev Plan',
+            routerLink: '/emp-dev-plans',
           },
         ],
       },
@@ -139,6 +141,7 @@ export class NavbarComponent implements OnInit {
       {
         id: 'summary',
         label: 'Summary',
+        style: { 'z-index': 3 },
         items: [
           {
             id: 'summary#read',
@@ -159,12 +162,12 @@ export class NavbarComponent implements OnInit {
         label: 'Suggestion',
         routerLink: '/emp-suggestions',
       },
-      {
-        label: 'Logout',
-        icon: 'pi pi-sign-out',
-        routerLink: '/login',
-        style: { 'margin-left': '40px', color: 'red' },
-      },
+      // {
+      //   label: 'Logout',
+      //   icon: 'pi pi-sign-out',
+      //   routerLink: '/login',
+      //   style: { 'margin-left': '40px', color: 'red' },
+      // },
     ];
   }
 
@@ -192,7 +195,7 @@ export class NavbarComponent implements OnInit {
               return this.menu.has(subItem.id!);
             });
           }
-          return this.menu.has(item.id!) || !item.id;
+          return this.menu.has(item.id!);
         });
         console.log(this.menu, 'USER MENUS');
         console.log(this.items, 'NAVBAR MENUS');

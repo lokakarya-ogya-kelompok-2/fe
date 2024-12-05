@@ -4,11 +4,13 @@
     <p-menubar
       id="menu-bar"
       [model]="items"
-      class="custom-menubar bg-blue-100"
+      class="custom-menubar"
+      styleClass="flex justify-content-center"
       [style]="{
         'font-size': '14px',
         'min-width': '100px',
-        padding: '0.75rem 0.5rem'
+        padding: '0.75rem 0.5rem',
+        'justify-content': 'center'
       }"
     >
       <ng-template pTemplate="start">
@@ -31,16 +33,18 @@
         </button>
         }
       </ng-template>
-      <!-- <div>
+      <ng-template pTemplate="end">
         @if (includeUserAction) {
         <p-button
           id="logout"
           label="Logout"
+          icon="pi pi-sign-out"
+          styleClass="p-button-text"
           severity="danger"
           (onClick)="authService.logout()"
         />
         }
-      </div> -->
+      </ng-template>
     </p-menubar>
   </div>
 </div>

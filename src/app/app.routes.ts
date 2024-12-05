@@ -35,15 +35,6 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'emp-dev-plans',
-    component: EmpDevPlanComponent,
-    // canActivate: [authGuard, roleMenuGuard],
-    data: {
-      permission: 'emp-dev-plan#all',
-    },
-  },
-
-  {
     path: 'manage-users',
     component: UserListComponent,
     canActivate: [authGuard, roleMenuGuard],
@@ -145,6 +136,14 @@ export const routes: Routes = [
     canActivate: [authGuard, roleMenuGuard],
     data: {
       permission: 'emp-attitude-skill#all',
+    },
+  },
+  {
+    path: 'emp-dev-plans',
+    component: EmpDevPlanComponent,
+    canActivate: [authGuard, roleMenuGuard],
+    data: {
+      permission: 'emp-dev-plan#all',
     },
   },
   // {
