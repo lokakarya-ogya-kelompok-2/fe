@@ -10,7 +10,10 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { TokenService } from '../../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../../shared/components/navbar/navbar.component';
+import { TokenPayload } from '../../../../../shared/types';
+import { GroupAttitudeSkill } from '../../../../group-attitude-skill/models/group-attitude-skill';
 import { ManageGroupAttitudeSkillService } from '../../../../group-attitude-skill/services/manage-group-attitude-skill.service';
+import { User } from '../../../../users/models/user';
 import { UserService } from '../../../../users/services/user.service';
 import { UserInformationComponent } from '../../../user-information/components/user-information/user-information.component';
 import { EmpAttitudeSkillRequest } from '../../models/emp-attitude-skill';
@@ -38,14 +41,19 @@ interface scoreCategory {
   styleUrl: './emp-attitude-skills.component.scss',
 })
 export class EmpAttitudeSkillsComponent implements OnInit {
-  jwtPayload: any = {};
-  groupAttitudeSkills: any[] = [];
-  userLogin: any = {};
+  jwtPayload: TokenPayload = {} as TokenPayload;
+  groupAttitudeSkills: GroupAttitudeSkill[] = [];
+  userLogin: User = {} as User;
   currentYear: number = new Date().getFullYear();
-  scoreCategory: scoreCategory[] = [];
+  scoreCategory: scoreCategory[] = [
+    { category: 'Excellent', score: 100 },
+    { category: 'Good', score: 80 },
+    { category: 'Fair', score: 60 },
+    { category: 'Poor', score: 40 },
+    { category: 'Very Poor', score: 20 },
+  ];
   newEmpAttitudeSkill: EmpAttitudeSkillRequest = {} as EmpAttitudeSkillRequest;
-  userId: string = '';
-  empAttitudeSkills: { [key: string]: EmpAttitudeSkillRequest[] } = {};
+  empAttitudeSkills: { [key: string]: EmpAttitudeSkillRequest } = {};
   constructor(
     private tokenService: TokenService,
     private authService: AuthService,
@@ -56,69 +64,56 @@ export class EmpAttitudeSkillsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getToken();
-    this.getGroupAttitudeSkill();
     this.getUser();
-    this.scoreCategory = [
-      { category: 'Excellent', score: 100 },
-      { category: 'Good', score: 80 },
-      { category: 'Fair', score: 60 },
-      { category: 'Poor', score: 40 },
-      { category: 'Very Poor', score: 20 },
-    ];
-
-    this.userId = this.tokenService.decodeToken(
-      this.tokenService.getToken()!
-    ).sub!;
-    console.log(this.userId, 'ini user id ');
-
     this.empAttitudeSkillService
-      .getByUserIdAndYear(this.userId, this.currentYear)
+      .getByUserIdAndYear(this.jwtPayload.sub!, this.currentYear)
       .subscribe({
         next: (data) => {
-          console.log(data.content, 'by user id and year');
           data.content.forEach((empAttitudeSkill) => {
-            console.log(empAttitudeSkill);
-            if (!this.empAttitudeSkills[empAttitudeSkill.attitude_skill.id]) {
-              this.empAttitudeSkills[empAttitudeSkill.attitude_skill.id] = [];
-            }
-            this.empAttitudeSkills[empAttitudeSkill.attitude_skill.id].push({
+            this.empAttitudeSkills[empAttitudeSkill.attitude_skill.id] = {
               id: empAttitudeSkill.id,
-              attitude_skill_id: empAttitudeSkill.attitude_skill.id,
               score: empAttitudeSkill.score,
+              attitude_skill_id: empAttitudeSkill.attitude_skill.id,
               assessment_year: empAttitudeSkill.assessment_year,
-            });
+            };
           });
-          console.log('Employee Attitude Skill: ', this.empAttitudeSkills);
         },
         error: (err) => {
-          console.error('Error Fetching dev plan:', err);
+          console.error('Error Fetching employee attitude skill:', err);
           Swal.fire({
             icon: 'error',
-            title: 'Failed Fetching Dev Plan',
+            title: 'Failed to fetch employee attitude skill',
+          });
+        },
+        complete: () => {
+          this.groupAttitudeSkillService.getGroupAttitudeSkillss().subscribe({
+            next: (data) => {
+              this.groupAttitudeSkills = data.content;
+              this.groupAttitudeSkills.forEach((group) => {
+                group.attitude_skills?.forEach((attitudeSkill) => {
+                  if (!this.empAttitudeSkills[attitudeSkill.id]) {
+                    this.empAttitudeSkills[attitudeSkill.id] = {
+                      score: 0,
+                      attitude_skill_id: attitudeSkill.id,
+                      assessment_year: this.currentYear,
+                    };
+                  }
+                });
+              });
+            },
+            complete: () => {},
           });
         },
       });
   }
 
   createEmpAttitudeSkill(): void {
-    console.log('hasil submit: ', this.groupAttitudeSkills);
-    let result: any[] = [];
-    this.groupAttitudeSkills.forEach((group) => {
-      if (group.attitude_skills && group.attitude_skills.length > 0) {
-        group.attitude_skills.forEach((skill: any) => {
-          result.push({
-            attitude_skill_id: skill.id,
-            score: skill.score,
-            assessment_year: this.currentYear,
-            user_id: this.jwtPayload.sub,
-          });
-        });
-      }
-    });
-    console.log(result, 'HASILNYA');
+    let result: EmpAttitudeSkillRequest[] = [];
+    Object.values(this.empAttitudeSkills).forEach((empAttitudeSkill) =>
+      result.push(empAttitudeSkill)
+    );
     this.empAttitudeSkillService.createEmpAttitudeSkill(result).subscribe({
       next: (data) => {
-        console.log(data);
         Swal.fire({
           title: 'Emp Attitude Skill created!',
           icon: 'success',
@@ -129,32 +124,23 @@ export class EmpAttitudeSkillsComponent implements OnInit {
       },
     });
   }
+
   getUser() {
-    this.userService.list().subscribe({
+    this.userService.getById(this.jwtPayload.sub!).subscribe({
       next: (data) => {
-        console.log(data.content);
-        this.userLogin = data.content.filter(
-          (user) => user.id == this.jwtPayload.sub
-        )[0];
-        console.log(this.userLogin);
+        this.userLogin = data.content;
       },
     });
   }
+
   getToken(): void {
     const token = this.tokenService.getToken();
     if (token && this.authService.isAuthenticated()) {
       this.jwtPayload = this.tokenService.decodeToken(token);
     }
-    console.log(this.jwtPayload);
   }
 
-  getGroupAttitudeSkill() {
-    this.groupAttitudeSkillService.getGroupAttitudeSkillss().subscribe({
-      next: (data) => {
-        console.log(data.content);
-        this.groupAttitudeSkills = data.content;
-        console.log(this.groupAttitudeSkills, 'ini dari ngoninit');
-      },
-    });
+  stringify(obj: object) {
+    return JSON.stringify(obj);
   }
 }

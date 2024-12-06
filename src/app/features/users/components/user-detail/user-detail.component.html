@@ -2,6 +2,10 @@
   <p-table [value]="[userData]" styleClass="datatable-sm vertical-table">
     <ng-template pTemplate="body" let-user>
       <tr>
+        <th class="text-left"><strong>User ID</strong></th>
+        <td>{{ user.id }}</td>
+      </tr>
+      <tr>
         <th class="text-left"><strong>Full Name</strong></th>
         <td>{{ user.full_name }}</td>
       </tr>
