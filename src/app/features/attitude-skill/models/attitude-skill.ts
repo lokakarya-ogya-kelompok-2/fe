@@ -2,7 +2,7 @@ import { ResponseContentMeta } from '../../../shared/models/response-content-met
 import { GroupAchievement } from '../../group-achievement/model/group-achievement';
 
 export interface AttitudeSkill extends ResponseContentMeta {
-  id: number;
+  id: string;
   attitude_skill: string;
   group_id: GroupAchievement;
   enabled: boolean;

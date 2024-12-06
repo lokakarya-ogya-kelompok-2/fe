@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Response } from '../../../../shared/models/response';
 import {
   EmpAttitudeSkill,
   EmpAttitudeSkillRequest,
@@ -25,6 +26,15 @@ export class EmpAttitudeSkillsService {
     return this.http.post<EmpAttitudeSkill[]>(
       `${this.Api}/bulk-create`,
       empAttitudeSkillRequest
+    );
+  }
+
+  getByUserIdAndYear(
+    userId: string,
+    year: number
+  ): Observable<Response<EmpAttitudeSkill[]>> {
+    return this.http.get<Response<EmpAttitudeSkill[]>>(
+      `${this.Api}?user_ids=${userId}&years=${year}`
     );
   }
 }

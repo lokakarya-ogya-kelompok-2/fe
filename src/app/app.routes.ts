@@ -16,6 +16,7 @@ import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-ski
 import { IndexPageComponent } from './features/index/components/index-page.component';
 import { MainPageComponent as MenuComponent } from './features/menu/components/main-page.component';
 import { RoleMenuComponent } from './features/role-menu/components/role-menu/role-menu.component';
+import { SummariesComponent } from './features/summaries/components/summaries/summaries.component';
 import { SummaryComponent } from './features/summary/components/summary/summary.component';
 import { TechnicalSkillComponent } from './features/technical-skill/components/technical-skill/technical-skill.component';
 import { UserListComponent } from './features/users/components/user-list/user-list.component';
@@ -107,12 +108,20 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'manage-summaries',
+    path: 'manage-summary',
     component: SummaryComponent,
     canActivate: [authGuard, roleMenuGuard],
     data: {
       permission: 'summary#read',
     },
+  },
+  {
+    path: 'summaries',
+    component: SummariesComponent,
+    // canActivate: [authGuard, roleMenuGuard],
+    // data: {
+    //   permission: 'summary#read',
+    // },
   },
   {
     path: 'manage-role-menu',
