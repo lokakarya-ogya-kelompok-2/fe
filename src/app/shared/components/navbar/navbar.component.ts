@@ -152,7 +152,7 @@ export class NavbarComponent implements OnInit {
           {
             id: 'summary#read.self',
             label: 'My Summary',
-            routerLink: '/manage-summary',
+            routerLink: '/my-summary',
             routerLinkActiveOptions: { exact: true },
           },
         ],

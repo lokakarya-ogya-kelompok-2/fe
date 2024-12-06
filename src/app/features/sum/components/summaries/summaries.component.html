@@ -1,2 +1,75 @@
 <app-navbar />
-<p>Read summaries works!</p>
+<p-table
+  #userTable
+  [scrollable]="true"
+  scrollHeight="380px"
+  [value]="users"
+  dataKey="id"
+  [rows]="10"
+  [rowsPerPageOptions]="[10, 20, 50]"
+  [loading]="isLoading"
+  [paginator]="true"
+  [tableStyle]="{
+    'min-width': '50rem',
+    'text-align': 'center',
+    'font-size': '12px',
+    margin: 0,
+    'border-radius': '8px',
+    'table-layout': 'fixed'
+  }"
+  [style]="{ width: '100%' }"
+  [globalFilterFields]="[
+    'full_name',
+    'username',
+    'email',
+    'position',
+    'division.division_name'
+  ]"
+  [sortField]="'created_at'"
+  [sortOrder]="-1"
+>
+  <ng-template pTemplate="caption">
+    <div class="flex">
+      <p-iconField iconPosition="left" class="ml-auto">
+        <p-inputIcon>
+          <i class="pi pi-search"></i>
+        </p-inputIcon>
+        <input
+          pInputText
+          type="text"
+          placeholder="Search keyword"
+          (input)="onGlobalFilter(userTable, $event)"
+          [style]="{ 'font-size': '14px' }"
+        />
+      </p-iconField>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 25%; text-align: center">Full Name</th>
+      <th style="width: 25%; text-align: center">Username</th>
+      <th style="width: 25%; text-align: center">Position</th>
+      <th style="width: 25%; text-align: center">Division</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-user>
+    <tr (click)="showDialog(user)" style="cursor: pointer">
+      <td>{{ user.full_name }}</td>
+      <td style="text-align: center">{{ user.username }}</td>
+      <td style="text-align: center">{{ user.position }}</td>
+      <td style="text-align: center">
+        {{ user.division?.division_name ?? "Unknown" }}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  [header]="selectedUser?.full_name + ' Details '"
+  [modal]="true"
+  [(visible)]="visible"
+  [maximizable]="true"
+  class="absolute z-3"
+>
+  <app-summary />
+</p-dialog>

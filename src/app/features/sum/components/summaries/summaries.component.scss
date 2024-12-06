@@ -1,0 +1,12 @@
+:host ::ng-deep {
+  .p-datatable {
+    .p-datatable-tbody > tr {
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #f0f7ff !important;
+      }
+    }
+  }
+}
