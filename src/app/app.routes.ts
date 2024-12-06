@@ -16,8 +16,8 @@ import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-ski
 import { IndexPageComponent } from './features/index/components/index-page.component';
 import { MainPageComponent as MenuComponent } from './features/menu/components/main-page.component';
 import { RoleMenuComponent } from './features/role-menu/components/role-menu/role-menu.component';
-import { SummariesComponent } from './features/summaries/components/summaries/summaries.component';
-import { SummaryComponent } from './features/summary/components/summary/summary.component';
+import { SummariesComponent } from './features/sum/components/summaries/summaries.component';
+import { SummaryComponent } from './features/sum/components/summary/summary.component';
 import { TechnicalSkillComponent } from './features/technical-skill/components/technical-skill/technical-skill.component';
 import { UserListComponent } from './features/users/components/user-list/user-list.component';
 import { NotFoundComponent } from './shared/pages/not-found/not-found.component';

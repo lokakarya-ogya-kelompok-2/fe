@@ -157,11 +157,6 @@ export class NavbarComponent implements OnInit {
           },
         ],
       },
-      {
-        id: 'emp-suggestion#all',
-        label: 'Suggestion',
-        routerLink: '/emp-suggestions',
-      },
       // {
       //   label: 'Logout',
       //   icon: 'pi pi-sign-out',
