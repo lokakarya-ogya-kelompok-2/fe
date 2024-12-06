@@ -45,7 +45,9 @@ export class DevPlanComponent implements OnInit {
   visible: boolean = false;
   editVisible: boolean = false;
   detailVisible: boolean = false;
-  newDevPlan: DevPlanRequest = {} as DevPlanRequest;
+  newDevPlan: DevPlanRequest = {
+    enabled: true,
+  } as DevPlanRequest;
   editData: DevPlan = {} as DevPlan;
   dataDetail: DevPlan = {} as DevPlan;
   checked: boolean = false;
