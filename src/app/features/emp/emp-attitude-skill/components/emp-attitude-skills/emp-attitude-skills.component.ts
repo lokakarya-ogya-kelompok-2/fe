@@ -6,6 +6,7 @@ import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { TokenService } from '../../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../../shared/components/navbar/navbar.component';
@@ -43,6 +44,8 @@ export class EmpAttitudeSkillsComponent implements OnInit {
   currentYear: number = new Date().getFullYear();
   scoreCategory: scoreCategory[] = [];
   newEmpAttitudeSkill: EmpAttitudeSkillRequest = {} as EmpAttitudeSkillRequest;
+  userId: string = '';
+  empAttitudeSkills: { [key: string]: EmpAttitudeSkillRequest[] } = {};
   constructor(
     private tokenService: TokenService,
     private authService: AuthService,
@@ -62,6 +65,39 @@ export class EmpAttitudeSkillsComponent implements OnInit {
       { category: 'Poor', score: 40 },
       { category: 'Very Poor', score: 20 },
     ];
+
+    this.userId = this.tokenService.decodeToken(
+      this.tokenService.getToken()!
+    ).sub!;
+    console.log(this.userId, 'ini user id ');
+
+    this.empAttitudeSkillService
+      .getByUserIdAndYear(this.userId, this.currentYear)
+      .subscribe({
+        next: (data) => {
+          console.log(data.content, 'by user id and year');
+          data.content.forEach((empAttitudeSkill) => {
+            console.log(empAttitudeSkill);
+            if (!this.empAttitudeSkills[empAttitudeSkill.attitude_skill.id]) {
+              this.empAttitudeSkills[empAttitudeSkill.attitude_skill.id] = [];
+            }
+            this.empAttitudeSkills[empAttitudeSkill.attitude_skill.id].push({
+              id: empAttitudeSkill.id,
+              attitude_skill_id: empAttitudeSkill.attitude_skill.id,
+              score: empAttitudeSkill.score,
+              assessment_year: empAttitudeSkill.assessment_year,
+            });
+          });
+          console.log('Employee Attitude Skill: ', this.empAttitudeSkills);
+        },
+        error: (err) => {
+          console.error('Error Fetching dev plan:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed Fetching Dev Plan',
+          });
+        },
+      });
   }
 
   createEmpAttitudeSkill(): void {
@@ -83,6 +119,13 @@ export class EmpAttitudeSkillsComponent implements OnInit {
     this.empAttitudeSkillService.createEmpAttitudeSkill(result).subscribe({
       next: (data) => {
         console.log(data);
+        Swal.fire({
+          title: 'Emp Attitude Skill created!',
+          icon: 'success',
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       },
     });
   }

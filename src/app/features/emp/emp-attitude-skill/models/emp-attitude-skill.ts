@@ -10,7 +10,7 @@ export interface EmpAttitudeSkill extends ResponseContentMeta {
   assessment_year: number;
 }
 export interface EmpAttitudeSkillRequest {
-  user_id: string;
+  id: string;
   attitude_skill_id: string;
   score: number;
   assessment_year: number;

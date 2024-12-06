@@ -5,6 +5,12 @@ export class PhotoService {
   getData() {
     return [
       {
+        itemImageSrc: 'assets/img/IMG4.jpg',
+        thumbnailImageSrc: '../img/IMG4.jpg',
+        alt: 'Description for Image 0',
+        title: 'Title 0',
+      },
+      {
         itemImageSrc:
           'https://primefaces.org/cdn/primeng/images/galleria/galleria1.jpg',
         thumbnailImageSrc:
