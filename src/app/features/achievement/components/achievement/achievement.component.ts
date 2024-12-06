@@ -54,7 +54,9 @@ export class AchievementComponent implements OnInit {
   editVisible: boolean = false;
   detailVisible: boolean = false;
   editData: Achievement = {} as Achievement;
-  newAchievement: AchievementRequest = {} as AchievementRequest;
+  newAchievement: AchievementRequest = {
+    enabled: true,
+  } as AchievementRequest;
   checked: boolean = false;
   dataDetail: Achievement = {} as Achievement;
   groupAchievementDropdown: any = [];

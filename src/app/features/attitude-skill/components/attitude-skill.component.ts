@@ -49,7 +49,9 @@ export class AttitudeSkillComponent implements OnInit {
   editVisible: boolean = false;
   detailVisible: boolean = false;
   editData: AttitudeSkill = {} as AttitudeSkill;
-  newAttitudeSkill: AttitudeSkillRequest = {} as AttitudeSkillRequest;
+  newAttitudeSkill: AttitudeSkillRequest = {
+    enabled: false,
+  } as AttitudeSkillRequest;
   checked: boolean = false;
   groupAttitudeSkillDropdown: GroupAttitudeSkill[] = [];
   dataDetail: AttitudeSkill = {} as AttitudeSkill;

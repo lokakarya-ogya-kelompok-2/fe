@@ -54,7 +54,9 @@ export class GroupAchievementComponent implements OnInit {
   editVisible: boolean = false;
   detailVisible: boolean = false;
   checked: boolean = false;
-  newGroupAchievement: GroupAchievementRequest = {} as GroupAchievementRequest;
+  newGroupAchievement: GroupAchievementRequest = {
+    enabled: true,
+  } as GroupAchievementRequest;
   editGroupAchievement: GroupAchievement = {} as GroupAchievement;
   editData: GroupAchievement = {} as GroupAchievement;
   dataDetail: GroupAchievement = {} as GroupAchievement;
