@@ -8,8 +8,11 @@
 >
   <div *ngFor="let group of groupAttitudeSkills" class="mb-4">
     <h2 class="text-xl font-bold mb-2">{{ group.group_name }}</h2>
+
+    <!-- <h1>INI {{ stringify(empAttitudeSkills) }} << INI ID >> {{ group.id }}</h1> -->
+
     <p-table
-      [value]="group.attitude_skills"
+      [value]="group.attitude_skills!"
       [tableStyle]="{
         'min-width': '50rem',
         'box-shadow': '0 4px 6px rgba(0, 0, 0, 0.1)',
@@ -32,12 +35,13 @@
             <div class="card flex justify-content-center">
               <p-dropdown
                 [options]="scoreCategory"
-                [(ngModel)]="skill.score"
+                [(ngModel)]="empAttitudeSkills[skill.id].score"
                 optionLabel="category"
                 optionValue="score"
-                placeholder="Select score category"
+                placeholder="Select a score category"
                 class="custom-dropdown"
                 appendTo="body"
+                [disabled]="empAttitudeSkills[skill.id].id !== undefined"
                 required
                 name="score-{{ group.group_name }}-{{ i }}"
               />
