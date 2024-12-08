@@ -13,6 +13,7 @@ import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-ski
 import { IndexPageComponent } from './features/index/components/index-page.component';
 import { MainPageComponent } from './features/menu/components/main-page.component';
 import { RoleMenuComponent } from './features/role-menu/components/role-menu/role-menu.component';
+import { MySummaryComponent } from './features/sum/components/my-summary/my-summary.component';
 import { SummariesComponent } from './features/sum/components/summaries/summaries.component';
 import { SummaryComponent } from './features/sum/components/summary/summary.component';
 import { TechnicalSkillComponent } from './features/technical-skill/components/technical-skill/technical-skill.component';
@@ -41,6 +42,7 @@ import { TechnicalSkillComponent } from './features/technical-skill/components/t
     EmpAttitudeSkillsComponent,
     EmpDevPlanComponent,
     SummariesComponent,
+    MySummaryComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

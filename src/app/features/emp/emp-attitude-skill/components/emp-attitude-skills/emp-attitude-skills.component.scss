@@ -23,3 +23,59 @@
 .custom-dropdown {
   z-index: 10;
 }
+
+.text-center {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  :host ::ng-deep .p-dropdown {
+    width: 200px;
+  }
+
+  .custom-dropdown {
+    width: 200px; // Adjust width as needed
+  }
+
+  .error-message {
+    display: block;
+    width: 200px;
+    text-align: left;
+    margin-top: 0.25rem;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+td {
+  position: relative;
+  vertical-align: middle;
+  min-height: 60px; // Add space for error message
+}

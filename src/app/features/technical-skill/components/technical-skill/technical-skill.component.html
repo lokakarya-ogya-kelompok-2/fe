@@ -118,16 +118,38 @@
         >
           Technical Skill<span class="text-red-600">*</span>
         </label>
-        <input
-          pInputText
-          id="Technical Skill"
-          class="flex-auto"
-          autocomplete="off"
-          [(ngModel)]="newTechnicalSkill.technical_skill"
-          required
-          name="technical_skill"
-          maxlength="100"
-        />
+        <div class="flex-auto">
+          <input
+            pInputText
+            id="Technical Skill"
+            class="w-full"
+            autocomplete="off"
+            [(ngModel)]="newTechnicalSkill.technical_skill"
+            required
+            name="technical_skill"
+            maxlength="100"
+            #technicalSkill="ngModel"
+          />
+          <div
+            *ngIf="
+              technicalSkill.invalid &&
+              (technicalSkill.dirty || technicalSkill.touched)
+            "
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="technicalSkill.errors?.['required']"
+            >
+              Technical skill is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="technicalSkill.errors?.['maxlength']"
+            >
+              Technical skill cannot exceed 100 characters
+            </small>
+          </div>
+        </div>
       </div>
       <div class="flex align-items-center gap-6 mb-5">
         <label for="Enabled" class="font-semibold w-6rem">
@@ -173,16 +195,38 @@
         >
           Technical Skill<span class="text-red-600">*</span>
         </label>
-        <input
-          [(ngModel)]="editData.technical_skill"
-          pInputText
-          id="Technical Skill"
-          class="flex-auto"
-          autocomplete="off"
-          required
-          name="technical_skill"
-          maxlength="100"
-        />
+        <div class="flex-auto">
+          <input
+            [(ngModel)]="editData.technical_skill"
+            pInputText
+            id="Technical Skill"
+            class="w-full"
+            autocomplete="off"
+            required
+            name="technical_skill"
+            maxlength="100"
+            #editTechnicalSkill="ngModel"
+          />
+          <div
+            *ngIf="
+              editTechnicalSkill.invalid &&
+              (editTechnicalSkill.dirty || editTechnicalSkill.touched)
+            "
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="editTechnicalSkill.errors?.['required']"
+            >
+              Technical skill is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="editTechnicalSkill.errors?.['maxlength']"
+            >
+              Technical skill cannot exceed 100 characters
+            </small>
+          </div>
+        </div>
       </div>
       <div class="flex align-items-center gap-6 mb-5">
         <label for="Enabled" class="font-semibold w-6rem">

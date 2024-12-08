@@ -102,7 +102,7 @@
     [style]="{ width: '30rem' }"
   >
     <form #divisionForm="ngForm" (submit)="createDivision()">
-      <div class="flex align-items-center gap-6 mb-5">
+      <div class="flex align-items-center gap-6 mb-2">
         <label
           for="Division Name"
           class="font-semibold w-6rem"
@@ -110,23 +110,28 @@
         >
           Division Name<span class="text-red-600">*</span>
         </label>
-        <input
-          pInputText
-          id="Division Name"
-          class="flex-auto"
-          autocomplete="off"
-          [(ngModel)]="newDivision.division_name"
-          required
-          maxlength="50"
-          name="Division_name"
-        />
-        <!-- #divisionName="ngModel" -->
-        <!-- <div
-        *ngIf="divisionName.invalid && divisionName.touched"
-        class="text-red-600"
-      >
-        Division Name is required and cannot be empty.
-      </div> -->
+        <div class="flex-auto">
+          <input
+            pInputText
+            id="Division Name"
+            class="w-full"
+            autocomplete="off"
+            [(ngModel)]="newDivision.division_name"
+            required
+            maxlength="50"
+            name="Division_name"
+            #divisionName="ngModel"
+          />
+          <small
+            class="p-error block mt-2"
+            *ngIf="
+              divisionName.invalid &&
+              (divisionName.dirty || divisionName.touched)
+            "
+          >
+            Division name is required
+          </small>
+        </div>
       </div>
 
       <div class="flex justify-content-end gap-2">
@@ -158,18 +163,31 @@
           for="Division name"
           class="font-semibold w-6rem"
           style="width: 8rem; white-space: nowrap"
-          >Division Name<span class="text-red-600">*</span>
+        >
+          Division Name<span class="text-red-600">*</span>
         </label>
-        <input
-          [(ngModel)]="editData.division_name"
-          pInputText
-          id="Division Name"
-          name="Division_name"
-          class="flex-auto"
-          autocomplete="off"
-          required
-          maxlength="50"
-        />
+        <div class="flex-auto">
+          <input
+            [(ngModel)]="editData.division_name"
+            pInputText
+            id="Division Name"
+            name="Division_name"
+            class="w-full"
+            autocomplete="off"
+            required
+            maxlength="50"
+            #editDivisionName="ngModel"
+          />
+          <small
+            class="p-error block mt-1"
+            *ngIf="
+              editDivisionName.invalid &&
+              (editDivisionName.dirty || editDivisionName.touched)
+            "
+          >
+            Division name is required
+          </small>
+        </div>
       </div>
       <div class="flex justify-content-end gap-2">
         <p-button

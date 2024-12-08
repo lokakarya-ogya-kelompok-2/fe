@@ -128,17 +128,35 @@
         <label for="Notes" class="font-semibold w-6rem">
           Notes<span class="text-red-600">*</span>
         </label>
-        <input
-          pInputText
-          id="Notes"
-          class="flex-auto"
-          autocomplete="off"
-          [(ngModel)]="newEmpAchievement.notes"
-          required
-          maxlength="100"
-          name="notes"
-        />
+        <div class="flex-auto">
+          <input
+            pInputText
+            id="Notes"
+            class="w-full"
+            autocomplete="off"
+            [(ngModel)]="newEmpAchievement.notes"
+            required
+            maxlength="100"
+            name="notes"
+            #notes="ngModel"
+          />
+          <div *ngIf="notes.invalid && (notes.dirty || notes.touched)">
+            <small
+              class="p-error block mt-1"
+              *ngIf="notes.errors?.['required']"
+            >
+              Notes is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="notes.errors?.['maxlength']"
+            >
+              Notes cannot exceed 100 characters
+            </small>
+          </div>
+        </div>
       </div>
+
       <div class="flex align-items-center gap-8 mb-5">
         <label
           for="User Id"
@@ -147,16 +165,28 @@
         >
           Employee<span class="text-red-600">*</span>
         </label>
-        <p-dropdown
-          [options]="userDropdown"
-          [(ngModel)]="newEmpAchievement.user_id"
-          optionLabel="username"
-          optionValue="id"
-          placeholder="Select an employee"
-          required
-          name="employee"
-        />
+        <div class="flex-auto">
+          <p-dropdown
+            [options]="userDropdown"
+            [(ngModel)]="newEmpAchievement.user_id"
+            optionLabel="username"
+            optionValue="id"
+            placeholder="Select an employee"
+            required
+            name="employee"
+            #employee="ngModel"
+          />
+          <div *ngIf="employee.invalid && (employee.dirty || employee.touched)">
+            <small
+              class="p-error block mt-1"
+              *ngIf="employee.errors?.['required']"
+            >
+              Please select an employee
+            </small>
+          </div>
+        </div>
       </div>
+
       <div class="flex align-items-center gap-8 mb-5">
         <label
           for="achievement id"
@@ -165,16 +195,32 @@
         >
           Achievement Name<span class="text-red-600">*</span>
         </label>
-        <p-dropdown
-          [options]="achievementDropdown"
-          [(ngModel)]="newEmpAchievement.achievement_id"
-          optionLabel="achievement"
-          optionValue="id"
-          placeholder=" Achievement Name "
-          required
-          name="achievement"
-        />
+        <div class="flex-auto">
+          <p-dropdown
+            [options]="achievementDropdown"
+            [(ngModel)]="newEmpAchievement.achievement_id"
+            optionLabel="achievement"
+            optionValue="id"
+            placeholder="Achievement Name"
+            required
+            name="achievement"
+            #achievement="ngModel"
+          />
+          <div
+            *ngIf="
+              achievement.invalid && (achievement.dirty || achievement.touched)
+            "
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="achievement.errors?.['required']"
+            >
+              Please select an achievement
+            </small>
+          </div>
+        </div>
       </div>
+
       <div class="flex align-items-center gap-8 mb-5">
         <label
           for="Score"
@@ -183,27 +229,48 @@
         >
           Score<span class="text-red-600">*</span>
         </label>
-        <input
-          pInputText
-          id="Score"
-          class="flex-auto"
-          autocomplete="off"
-          [(ngModel)]="newEmpAchievement.score"
-          required
-          max="100"
-          type="number"
-          min="0"
-          pattern="^[0-9]*$"
-          name="score"
-        />
+        <div class="flex-auto">
+          <input
+            pInputText
+            id="Score"
+            class="w-full"
+            autocomplete="off"
+            [(ngModel)]="newEmpAchievement.score"
+            required
+            max="100"
+            type="number"
+            min="0"
+            pattern="^[0-9]*$"
+            name="score"
+            #score="ngModel"
+          />
+          <div *ngIf="score.invalid && (score.dirty || score.touched)">
+            <small
+              class="p-error block mt-1"
+              *ngIf="score.errors?.['required']"
+            >
+              Score is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="score.errors?.['min'] || score.errors?.['max']"
+            >
+              Score must be between 0 and 100
+            </small>
+            <small class="p-error block mt-1" *ngIf="score.errors?.['pattern']">
+              Score must be a number
+            </small>
+          </div>
+        </div>
       </div>
+
       <div class="flex align-items-center gap-8 mb-5">
         <label
           for="Assessment Year"
           class="font-semibold w-6rem"
           style="width: 8rem; white-space: nowrap"
         >
-          Assessment Year<span class="text-red-600">*</span>
+          Assessment Year
         </label>
         <input
           pInputText
@@ -245,31 +312,68 @@
         <label for="Notes" class="font-semibold w-6rem">
           Notes<span class="text-red-600">*</span>
         </label>
-        <input
-          [(ngModel)]="editData.notes"
-          pInputText
-          id="Notes"
-          class="flex-auto"
-          autocomplete="off"
-          required
-          maxlength="100"
-          name="notes"
-        />
+        <div class="flex-auto">
+          <input
+            [(ngModel)]="editData.notes"
+            pInputText
+            id="Notes"
+            class="w-full"
+            autocomplete="off"
+            required
+            maxlength="100"
+            name="notes"
+            #editNotes="ngModel"
+          />
+          <div
+            *ngIf="editNotes.invalid && (editNotes.dirty || editNotes.touched)"
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="editNotes.errors?.['required']"
+            >
+              Notes is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="editNotes.errors?.['maxlength']"
+            >
+              Notes cannot exceed 100 characters
+            </small>
+          </div>
+        </div>
       </div>
+
       <div class="flex align-items-center gap-8 mb-5">
         <label for="User Id" class="font-semibold w-6rem">
           Employee<span class="text-red-600">*</span>
         </label>
-        <p-dropdown
-          [options]="userDropdown"
-          [(ngModel)]="editData.user_id"
-          optionLabel="username"
-          optionValue="id"
-          placeholder="Select an employee"
-          required
-          name="employee"
-        />
+        <div class="flex-auto">
+          <p-dropdown
+            [options]="userDropdown"
+            [(ngModel)]="editData.user_id"
+            optionLabel="username"
+            optionValue="id"
+            placeholder="Select an employee"
+            required
+            name="employee"
+            #editEmployee="ngModel"
+          />
+          <div
+            *ngIf="
+              editEmployee.invalid &&
+              (editEmployee.dirty || editEmployee.touched)
+            "
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="editEmployee.errors?.['required']"
+            >
+              Please select an employee
+            </small>
+          </div>
+        </div>
       </div>
+
       <div class="flex align-items-center gap-8 mb-5">
         <label
           for="Achievement Id"
@@ -278,16 +382,33 @@
         >
           Achievement Name<span class="text-red-600">*</span>
         </label>
-        <p-dropdown
-          [options]="achievementDropdown"
-          [(ngModel)]="editData.achievement_id"
-          optionLabel="achievement"
-          optionValue="id"
-          placeholder=" Achievement Name "
-          required
-          name="achievement"
-        />
+        <div class="flex-auto">
+          <p-dropdown
+            [options]="achievementDropdown"
+            [(ngModel)]="editData.achievement_id"
+            optionLabel="achievement"
+            optionValue="id"
+            placeholder=" Achievement Name "
+            required
+            name="achievement"
+            #editAchievement="ngModel"
+          />
+          <div
+            *ngIf="
+              editAchievement.invalid &&
+              (editAchievement.dirty || editAchievement.touched)
+            "
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="editAchievement.errors?.['required']"
+            >
+              Please select an achievement
+            </small>
+          </div>
+        </div>
       </div>
+
       <div class="flex align-items-center gap-8 mb-5">
         <label for="Score" class="font-semibold w-6rem">
           Score<span class="text-red-600">*</span>
@@ -312,7 +433,7 @@
           class="font-semibold w-6rem"
           style="width: 20rem; white-space: nowrap"
         >
-          Assessment Year<span class="text-red-600">*</span>
+          Assessment Year
         </label>
         <input
           pInputText

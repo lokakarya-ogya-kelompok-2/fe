@@ -31,8 +31,8 @@
       <ng-template pTemplate="body" let-skill let-i="rowIndex">
         <tr>
           <td>{{ skill.attitude_skill }}<span class="text-red-600">*</span></td>
-          <td>
-            <div class="card flex justify-content-center">
+          <td class="text-center">
+            <div class="card flex justify-content-center align-items-center">
               <p-dropdown
                 [options]="scoreCategory"
                 [(ngModel)]="empAttitudeSkills[skill.id].score"
@@ -44,7 +44,21 @@
                 [disabled]="empAttitudeSkills[skill.id].id !== undefined"
                 required
                 name="score-{{ group.group_name }}-{{ i }}"
+                #scoreDropdown="ngModel"
               />
+              <div
+                *ngIf="
+                  scoreDropdown.invalid &&
+                  (scoreDropdown.dirty || scoreDropdown.touched)
+                "
+              >
+                <small
+                  class="p-error block mt-1"
+                  *ngIf="scoreDropdown.errors?.['required']"
+                >
+                  Please select a score
+                </small>
+              </div>
             </div>
           </td>
         </tr>
