@@ -8,7 +8,7 @@ import { GroupAchievement } from '../../../group-achievement/model/group-achieve
 import { GroupAchievementService } from '../../../group-achievement/services/group-achievement.service';
 import { GroupAttitudeSkill } from '../../../group-attitude-skill/models/group-attitude-skill';
 import { ManageGroupAttitudeSkillService } from '../../../group-attitude-skill/services/manage-group-attitude-skill.service';
-import { Summary, SummaryData } from '../../models/summary';
+import { SummaryData, SummaryItem } from '../../models/summary';
 import { TableComponent } from '../table/table.component';
 
 @Component({
@@ -30,8 +30,7 @@ export class SummaryComponent implements OnChanges {
     [key: string]: EmpAchievement[];
   } = {};
   idToGroupId: { [key: string]: string } = {};
-  userAttitudeSkillSummary: Summary[] = [];
-  userAchievementSummart: Summary[] = [];
+
   summaryData: SummaryData = {} as SummaryData;
   constructor(
     private readonly groupAttitudeSkillSvc: ManageGroupAttitudeSkillService,
@@ -94,7 +93,7 @@ export class SummaryComponent implements OnChanges {
                 const summary = {
                   aspect: group.group_name,
                   weight: group.percentage,
-                } as Summary;
+                } as SummaryItem;
                 let totalScore = 0;
                 this.currentUserAttitudeSkillsGroupedByGroupId[
                   group.id
@@ -168,7 +167,7 @@ export class SummaryComponent implements OnChanges {
                 const summary = {
                   aspect: group.group_name,
                   weight: group.percentage,
-                } as Summary;
+                } as SummaryItem;
                 let totalScore = 0;
                 this.currentUserAchievementsGroupedByGroupId[group.id]?.forEach(
                   (empAchievement) => {

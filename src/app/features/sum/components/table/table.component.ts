@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { Summary } from '../../models/summary';
+import { SummaryItem } from '../../models/summary';
 
 @Component({
   selector: 'app-table',
@@ -10,6 +10,6 @@ import { Summary } from '../../models/summary';
   styleUrl: './table.component.scss',
 })
 export class TableComponent {
-  @Input() data: Summary[] = [];
+  @Input() data: SummaryItem[] = [];
   @Input() tableHeader: string = '';
 }
