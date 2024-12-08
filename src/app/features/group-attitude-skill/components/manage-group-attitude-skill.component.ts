@@ -85,7 +85,7 @@ export class ManageGroupAttitudeSkillComponent {
   }
 
   getAllData(): void {
-    this.manageGroupAttitudeSkillService.getGroupAttitudeSkillss().subscribe({
+    this.manageGroupAttitudeSkillService.getGroupAttitudeSkills().subscribe({
       next: (data) => {
         this.datas = data.content;
         this.loading = false;

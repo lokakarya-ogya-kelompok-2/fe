@@ -73,7 +73,7 @@ export class AttitudeSkillComponent implements OnInit {
     this.getAttitudeSkill();
   }
   getGroupAttitudeSkill(): void {
-    this.groupAttitudeSkillService.getGroupAttitudeSkillss().subscribe({
+    this.groupAttitudeSkillService.getGroupAttitudeSkills().subscribe({
       next: (data) => {
         this.groupAttitudeSkillDropdown = data.content;
 

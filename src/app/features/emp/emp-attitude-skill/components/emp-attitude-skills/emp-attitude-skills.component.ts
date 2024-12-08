@@ -86,7 +86,7 @@ export class EmpAttitudeSkillsComponent implements OnInit {
           });
         },
         complete: () => {
-          this.groupAttitudeSkillService.getGroupAttitudeSkillss().subscribe({
+          this.groupAttitudeSkillService.getGroupAttitudeSkills().subscribe({
             next: (data) => {
               this.groupAttitudeSkills = data.content;
               this.groupAttitudeSkills.forEach((group) => {
@@ -108,21 +108,23 @@ export class EmpAttitudeSkillsComponent implements OnInit {
   }
 
   createEmpAttitudeSkill(): void {
-    let result: EmpAttitudeSkillRequest[] = [];
-    Object.values(this.empAttitudeSkills).forEach((empAttitudeSkill) =>
-      result.push(empAttitudeSkill)
-    );
-    this.empAttitudeSkillService.createEmpAttitudeSkill(result).subscribe({
-      next: (data) => {
-        Swal.fire({
-          title: 'Emp Attitude Skill created!',
-          icon: 'success',
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      },
-    });
+    this.empAttitudeSkillService
+      .createEmpAttitudeSkill(
+        Object.values(this.empAttitudeSkills).filter(
+          (empAttitudeSkill) => !empAttitudeSkill.id
+        )
+      )
+      .subscribe({
+        next: (data) => {
+          Swal.fire({
+            title: 'Emp Attitude Skill created!',
+            icon: 'success',
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        },
+      });
   }
 
   getUser() {
