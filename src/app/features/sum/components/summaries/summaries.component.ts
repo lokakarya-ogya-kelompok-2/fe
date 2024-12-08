@@ -16,8 +16,12 @@ import { NavbarComponent } from '../../../../shared/components/navbar/navbar.com
 import { DialogType } from '../../../../shared/types';
 import { User } from '../../../users/models/user';
 import { UserService } from '../../../users/services/user.service';
+import { Summary } from '../../models/summary';
+import { SummaryService } from '../../services/summary.service';
 import { SummaryComponent } from '../summary/summary.component';
-
+interface yearOption {
+  year: number;
+}
 @Component({
   selector: 'app-summaries',
   standalone: true,
@@ -42,8 +46,9 @@ import { SummaryComponent } from '../summary/summary.component';
   styleUrl: './summaries.component.scss',
 })
 export class SummariesComponent {
-  users: User[] = [];
+  summaries: Summary[] = [];
   divisions: any[] = [];
+  years: yearOption[] = [];
   isLoading: boolean = true;
   visible: boolean = false;
   dialogHeader: string = '';
@@ -53,15 +58,44 @@ export class SummariesComponent {
   } as User;
   dialogType = DialogType;
   currentDialogType: DialogType = DialogType.ADD;
-  constructor(private readonly userSvc: UserService) {}
+  constructor(
+    private readonly userSvc: UserService,
+    private readonly summaryService: SummaryService
+  ) {}
 
-  loadUsers() {
+  // loadUsers() {
+  //   this.isLoading = true;
+  //   this.userSvc.list().subscribe({
+  //     next: (data) => {
+  //       this.users = data.content;
+  //       this.isLoading = false;
+  //       console.log(this.users);
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching user:', err);
+  //     },
+  //     complete: () => {
+  //       this.divisions = Array.from(
+  //         new Set(
+  //           this.users
+  //             .map((user) => user.division?.division_name)
+  //             .filter((name) => name != null)
+  //         )
+  //       )
+  //         .sort()
+  //         .map((name) => ({ division_name: name }));
+
+  //       console.log('Unique divisions:', this.divisions);
+  //     },
+  //   });
+  // }
+  loadSummary() {
     this.isLoading = true;
-    this.userSvc.list().subscribe({
+    this.summaryService.getAllSummary().subscribe({
       next: (data) => {
-        this.users = data.content;
+        this.summaries = data.content;
         this.isLoading = false;
-        console.log(this.users);
+        console.log(this.summaries);
       },
       error: (err) => {
         console.error('Error fetching user:', err);
@@ -69,8 +103,8 @@ export class SummariesComponent {
       complete: () => {
         this.divisions = Array.from(
           new Set(
-            this.users
-              .map((user) => user.division?.division_name)
+            this.summaries
+              .map((summary) => summary.user_id.division?.division_name)
               .filter((name) => name != null)
           )
         )
@@ -78,6 +112,17 @@ export class SummariesComponent {
           .map((name) => ({ division_name: name }));
 
         console.log('Unique divisions:', this.divisions);
+
+        this.years = Array.from(
+          new Set(
+            this.summaries
+              .map((summary) => summary?.year)
+              .filter((year) => year != null)
+          )
+        )
+          .sort()
+          .map((year) => ({ year }));
+        console.log(this.years, 'ini yearsssssssssss');
       },
     });
   }
@@ -90,11 +135,8 @@ export class SummariesComponent {
   }
 
   ngOnInit(): void {
-    this.loadUsers();
-    // console.log(this.users);
-    this.divisions = Array.from(
-      new Set(this.users.map((user) => user.division))
-    ).filter((division) => division != null);
+    // this.loadUsers();
+    this.loadSummary();
     console.log(this.divisions);
   }
 
