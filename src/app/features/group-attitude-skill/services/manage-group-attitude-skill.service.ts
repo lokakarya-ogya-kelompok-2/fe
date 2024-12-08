@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Response } from '../../../shared/models/response';
 import {
   GroupAttitudeSkill,
   GroupAttitudeSkillRequest,
@@ -12,8 +13,8 @@ import {
 export class ManageGroupAttitudeSkillService {
   private Api = 'http://localhost:8080/group-attitude-skills';
   constructor(private http: HttpClient) {}
-  getGroupAttitudeSkillss(): Observable<any> {
-    return this.http.get<any>(this.Api);
+  getGroupAttitudeSkills(): Observable<Response<GroupAttitudeSkill[]>> {
+    return this.http.get<Response<GroupAttitudeSkill[]>>(this.Api);
   }
   createGroupAttitudeSkills(
     groupAttitudeSkill: GroupAttitudeSkillRequest

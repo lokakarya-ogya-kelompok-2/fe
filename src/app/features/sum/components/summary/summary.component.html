@@ -1,2 +1,6 @@
-<app-table />
-<app-table />
+<app-user-information />
+<app-table
+  [data]="summaryData.attitudeSkillSummary"
+  tableHeader="Attitude Skill"
+/>
+<app-table [data]="summaryData.achievementSummary" tableHeader="Achievement" />

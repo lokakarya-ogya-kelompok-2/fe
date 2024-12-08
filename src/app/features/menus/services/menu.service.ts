@@ -14,7 +14,7 @@ export class MenuService {
 
   getMenuByUserId(userId: string): Observable<Response<Menu[]>> {
     return this.httpClient.get<Response<Menu[]>>(
-      `${this.baseMenuUrl}/search?user_id=${userId}`
+      `${this.baseMenuUrl}?user_id=${userId}`
     );
   }
 

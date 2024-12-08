@@ -112,7 +112,7 @@ export const routes: Routes = [
     component: MySummaryComponent,
     canActivate: [authGuard, roleMenuGuard],
     data: {
-      permission: 'summary#read',
+      permission: 'summary#read.self',
     },
   },
   {

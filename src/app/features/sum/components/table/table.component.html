@@ -1,5 +1,5 @@
 <div class="table-container">
-  <div class="table-title">Achievement</div>
+  <div class="table-title">{{tableHeader}}</div>
   <div style="display: flex; justify-content: center; padding: 20px">
     <p-table [value]="data" [style]="{ width: '80%', minWidth: '60rem' }">
       <ng-template pTemplate="header">
@@ -12,10 +12,10 @@
       </ng-template>
       <ng-template pTemplate="body" let-item>
         <tr>
-          <td>{{ item.aspek }}</td>
-          <td style="text-align: center">{{ item.nilai }}</td>
-          <td style="text-align: center">{{ item.bobot }}</td>
-          <td style="text-align: center">{{ item.nilaiAkhir }}</td>
+          <td>{{ item.aspect }}</td>
+          <td style="text-align: center">{{ item.score }}</td>
+          <td style="text-align: center">{{ item.weight }}</td>
+          <td style="text-align: center">{{ item.finalScore }}</td>
         </tr>
       </ng-template>
     </p-table>
