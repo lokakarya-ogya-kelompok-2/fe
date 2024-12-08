@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Response } from '../../../shared/models/response';
 import {
   GroupAchievement,
   GroupAchievementRequest,
@@ -13,8 +14,8 @@ export class GroupAchievementService {
   private Api = 'http://localhost:8080/group-achievements';
   constructor(private http: HttpClient) {}
 
-  getGroupAchievements(): Observable<any> {
-    return this.http.get<any>(this.Api);
+  getGroupAchievements(): Observable<Response<GroupAchievement[]>> {
+    return this.http.get<Response<GroupAchievement[]>>(this.Api);
   }
   createGroupAchievement(
     groupAchievement: GroupAchievementRequest

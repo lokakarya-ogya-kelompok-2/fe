@@ -1,2 +1,7 @@
-<app-table />
-<app-table />
+<h1>{{ userId }}</h1>
+<app-user-information />
+<app-table
+  [data]="summaryData.attitudeSkillSummary"
+  tableHeader="Attitude Skill"
+/>
+<app-table [data]="summaryData.achievementSummary" tableHeader="Achievement" />

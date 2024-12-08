@@ -135,11 +135,11 @@
 </p-table>
 
 <p-dialog
-  [header]="selectedUser?.full_name + ' Details '"
+  [header]="selectedUser.full_name + ' Details '"
   [modal]="true"
   [(visible)]="visible"
   [maximizable]="true"
   class="absolute z-3"
 >
-  <app-summary />
+  <app-summary [userId]="selectedUser.id" />
 </p-dialog>
