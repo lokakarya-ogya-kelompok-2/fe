@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -26,6 +27,7 @@ import { EmpTechnicalSkillService } from '../../services/emp-technical-skill.ser
     ButtonModule,
     DropdownModule,
     ToastModule,
+    CommonModule,
   ],
   templateUrl: './emp-technical-skill.component.html',
   styleUrl: './emp-technical-skill.component.scss',

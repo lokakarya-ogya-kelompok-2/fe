@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
@@ -35,12 +36,14 @@ import { SummaryComponent } from '../summary/summary.component';
     NavbarComponent,
     ChipModule,
     SummaryComponent,
+    DropdownModule,
   ],
   templateUrl: './summaries.component.html',
   styleUrl: './summaries.component.scss',
 })
 export class SummariesComponent {
   users: User[] = [];
+  divisions: any[] = [];
   isLoading: boolean = true;
   visible: boolean = false;
   dialogHeader: string = '';
@@ -63,6 +66,19 @@ export class SummariesComponent {
       error: (err) => {
         console.error('Error fetching user:', err);
       },
+      complete: () => {
+        this.divisions = Array.from(
+          new Set(
+            this.users
+              .map((user) => user.division?.division_name)
+              .filter((name) => name != null)
+          )
+        )
+          .sort()
+          .map((name) => ({ division_name: name }));
+
+        console.log('Unique divisions:', this.divisions);
+      },
     });
   }
 
@@ -75,6 +91,11 @@ export class SummariesComponent {
 
   ngOnInit(): void {
     this.loadUsers();
+    // console.log(this.users);
+    this.divisions = Array.from(
+      new Set(this.users.map((user) => user.division))
+    ).filter((division) => division != null);
+    console.log(this.divisions);
   }
 
   onGlobalFilter(table: Table, event: Event) {

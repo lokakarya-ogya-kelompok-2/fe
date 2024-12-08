@@ -120,37 +120,81 @@
         >
           Group Name<span class="text-red-600">*</span>
         </label>
-        <input
-          pInputText
-          id="Group Achievement"
-          class="flex-auto"
-          autocomplete="off"
-          [(ngModel)]="newGroupAchievement.group_name"
-          required
-          name="group name"
-          maxlength="100"
-          type="text"
-        />
+        <div class="flex-auto">
+          <input
+            pInputText
+            id="Group Achievement"
+            class="w-full"
+            autocomplete="off"
+            [(ngModel)]="newGroupAchievement.group_name"
+            required
+            name="group_name"
+            maxlength="100"
+            type="text"
+            #groupName="ngModel"
+          />
+          <div
+            *ngIf="groupName.invalid && (groupName.dirty || groupName.touched)"
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="groupName.errors?.['required']"
+            >
+              Group name is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="groupName.errors?.['maxlength']"
+            >
+              Group name cannot exceed 100 characters
+            </small>
+          </div>
+        </div>
       </div>
+
       <div class="flex align-items-center gap-6 mb-5">
-        <label for="Percentage" class="font-semibold w-6rem">
-          Percentage<span class="text-red-600">*</span>
+        <label for="Weight" class="font-semibold w-6rem">
+          Weight<span class="text-red-600">*</span>
         </label>
-        <input
-          [(ngModel)]="newGroupAchievement.percentage"
-          pInputText
-          id="Percentage"
-          class="flex-auto"
-          autocomplete="off"
-          required
-          max="100"
-          min="0"
-          name="percentage"
-          pattern="^[0-9]*$"
-          step="1"
-          type="number"
-        />
+        <div class="flex-auto">
+          <input
+            [(ngModel)]="newGroupAchievement.percentage"
+            pInputText
+            id="percentage"
+            class="w-full"
+            autocomplete="off"
+            required
+            max="100"
+            min="0"
+            name="percentage"
+            pattern="^[0-9]*$"
+            step="1"
+            type="number"
+            #weight="ngModel"
+          />
+          <div *ngIf="weight.invalid && (weight.dirty || weight.touched)">
+            <small
+              class="p-error block mt-1"
+              *ngIf="weight.errors?.['required']"
+            >
+              Weight is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="weight.errors?.['min'] || weight.errors?.['max']"
+            >
+              Weight must be between 0 and 100
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="weight.errors?.['pattern']"
+            >
+              Weight must be a number
+            </small>
+          </div>
+        </div>
       </div>
+
       <div class="flex align-items-center gap-6 mb-5">
         <label for="Enabled" class="font-semibold w-6rem">
           Enabled<span class="text-red-600">*</span>
@@ -199,60 +243,86 @@
         >
           Group Name<span class="text-red-600">*</span>
         </label>
-        <input
-          [(ngModel)]="editData.group_name"
-          pInputText
-          id="username"
-          class="flex-auto"
-          autocomplete="off"
-          required
-          maxlength="100"
-          name="group name"
-        />
+        <div class="flex-auto">
+          <input
+            [(ngModel)]="editData.group_name"
+            pInputText
+            id="group_name"
+            class="w-full"
+            autocomplete="off"
+            required
+            maxlength="100"
+            name="group_name"
+            #editGroupName="ngModel"
+          />
+          <div
+            *ngIf="
+              editGroupName.invalid &&
+              (editGroupName.dirty || editGroupName.touched)
+            "
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="editGroupName.errors?.['required']"
+            >
+              Group name is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="editGroupName.errors?.['maxlength']"
+            >
+              Group name cannot exceed 100 characters
+            </small>
+          </div>
+        </div>
       </div>
+
       <div class="flex align-items-center gap-6 mb-5">
-        <label for="username" class="font-semibold w-6rem">
-          Percentage<span class="text-red-600">*</span>
+        <label for="Weight" class="font-semibold w-6rem">
+          Weight<span class="text-red-600">*</span>
         </label>
-        <input
-          [(ngModel)]="editData.percentage"
-          pInputText
-          id="username"
-          class="flex-auto"
-          autocomplete="off"
-          required
-          max="100"
-          min="0"
-          name="percentage"
-          pattern="^[0-9]*$"
-          step="1"
-          type="number"
-        />
-      </div>
-      <div class="flex align-items-center gap-6 mb-5">
-        <label for="username" class="font-semibold w-6rem">
-          Enabled<span class="text-red-600">*</span>
-        </label>
-        <p-checkbox
-          [(ngModel)]="editData.enabled"
-          [binary]="true"
-          inputId="binary"
-          required
-          name="enabled"
-        />
-      </div>
-      <div class="flex justify-content-end gap-2">
-        <p-button
-          label="Cancel"
-          severity="secondary"
-          (onClick)="editVisible = false"
-        />
-        <p-button
-          label="Save"
-          (onClick)="editVisible = false"
-          type="submit"
-          [disabled]="updateGroupAchievementForm.invalid"
-        />
+        <div class="flex-auto">
+          <input
+            [(ngModel)]="editData.percentage"
+            pInputText
+            id="percentage"
+            class="w-full"
+            autocomplete="off"
+            required
+            max="100"
+            min="0"
+            name="weight"
+            pattern="^[0-9]*$"
+            step="1"
+            type="number"
+            #editPercentage="ngModel"
+          />
+          <div
+            *ngIf="
+              editPercentage.invalid &&
+              (editPercentage.dirty || editPercentage.touched)
+            "
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="editPercentage.errors?.['required']"
+            >
+              Percentage is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="editPercentage.errors?.['min'] || editPercentage.errors?.['max']"
+            >
+              Percentage must be between 0 and 100
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="editPercentage.errors?.['pattern']"
+            >
+              Percentage must be a number
+            </small>
+          </div>
+        </div>
       </div>
     </form>
   </p-dialog>

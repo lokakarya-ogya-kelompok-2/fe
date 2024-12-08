@@ -2,7 +2,6 @@
   <div style="max-width: 600px; width: 100%">
     <form #userForm="ngForm" (submit)="onSubmit()">
       <div class="grid pt-4">
-        <!-- Full Name -->
         <div class="col-12 mb-4">
           <p-floatLabel>
             <input
@@ -12,15 +11,29 @@
               id="fullName"
               [(ngModel)]="formData.full_name"
               required
+              maxlength="60"
+              #fullName="ngModel"
               class="w-full"
             />
             <label for="fullName">
               Full Name<span class="text-red-600">*</span>
             </label>
           </p-floatLabel>
+          <div *ngIf="fullName.invalid && (fullName.dirty || fullName.touched)">
+            <small
+              class="p-error block mt-1"
+              *ngIf="fullName.errors?.['required']"
+            >
+              Full name is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="fullName.errors?.['maxlength']"
+            >
+              Full name cannot exceed 60 characters
+            </small>
+          </div>
         </div>
-
-        <!-- Position -->
         <div class="col-12 mb-4">
           <p-floatLabel>
             <input
@@ -30,15 +43,29 @@
               id="position"
               [(ngModel)]="formData.position"
               required
+              maxlength="50"
+              #position="ngModel"
               class="w-full"
             />
             <label for="position">
               Position<span class="text-red-600">*</span>
             </label>
           </p-floatLabel>
+          <div *ngIf="position.invalid && (position.dirty || position.touched)">
+            <small
+              class="p-error block mt-1"
+              *ngIf="position.errors?.['required']"
+            >
+              Position is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="position.errors?.['maxlength']"
+            >
+              Position cannot exceed 50 characters
+            </small>
+          </div>
         </div>
-
-        <!-- Username -->
         <div class="col-12 mb-4">
           <p-floatLabel>
             <input
@@ -48,15 +75,29 @@
               id="username"
               [(ngModel)]="formData.username"
               required
+              maxlength="30"
+              #username="ngModel"
               class="w-full"
             />
             <label for="username">
               Username<span class="text-red-600">*</span>
             </label>
           </p-floatLabel>
+          <div *ngIf="username.invalid && (username.dirty || username.touched)">
+            <small
+              class="p-error block mt-1"
+              *ngIf="username.errors?.['required']"
+            >
+              Username is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="username.errors?.['maxlength']"
+            >
+              Username cannot exceed 30 characters
+            </small>
+          </div>
         </div>
-
-        <!-- Email -->
         <div class="col-12 mb-4">
           <p-floatLabel>
             <input
@@ -66,36 +107,86 @@
               id="email"
               [(ngModel)]="formData.email"
               required
-              class="w-full"
+              maxlength="60"
               email
+              #emailInput="ngModel"
+              class="w-full"
             />
             <label for="email">
               Email<span class="text-red-600">*</span>
             </label>
           </p-floatLabel>
+          <div
+            *ngIf="
+              emailInput.invalid && (emailInput.dirty || emailInput.touched)
+            "
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="emailInput.errors?.['required']"
+            >
+              Email is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="emailInput.errors?.['maxlength']"
+            >
+              Email cannot exceed 60 characters
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="emailInput.errors?.['email']"
+            >
+              Please enter a valid email address
+            </small>
+          </div>
         </div>
 
         @if (formData.id === null) {
-        <!-- Password -->
         <div class="col-12 mb-4">
           <p-floatLabel>
             <p-password
               [(ngModel)]="formData.password"
+              required
               minlength="8"
               maxlength="32"
               name="password"
               id="password"
               styleClass="w-full"
               inputStyleClass="w-full"
+              #passwordInput="ngModel"
             />
             <label for="password">
               Password<span class="text-red-600">*</span>
             </label>
           </p-floatLabel>
+          <div
+            *ngIf="
+              passwordInput.invalid &&
+              (passwordInput.dirty || passwordInput.touched)
+            "
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="passwordInput.errors?.['required']"
+            >
+              Password is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="passwordInput.errors?.['minlength']"
+            >
+              Password must be at least 8 characters
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="passwordInput.errors?.['maxlength']"
+            >
+              Password cannot exceed 32 characters
+            </small>
+          </div>
         </div>
         }
-
-        <!-- Division -->
         <div class="col-12 mb-4">
           <p-floatLabel>
             <p-dropdown
@@ -108,14 +199,27 @@
               [loading]="isDivisionLoading"
               required
               styleClass="w-full"
+              #divisionInput="ngModel"
             />
             <label for="division">
               Division<span class="text-red-600">*</span>
             </label>
           </p-floatLabel>
+          <div
+            *ngIf="
+              divisionInput.invalid &&
+              (divisionInput.dirty || divisionInput.touched)
+            "
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="divisionInput.errors?.['required']"
+            >
+              Please select a division
+            </small>
+          </div>
         </div>
 
-        <!-- Roles -->
         <div class="col-12 mb-4">
           <p-floatLabel>
             <p-multiSelect
@@ -128,12 +232,24 @@
               id="roles"
               styleClass="w-full"
               required
+              #rolesInput="ngModel"
             />
             <label for="role"> Roles<span class="text-red-600">*</span> </label>
           </p-floatLabel>
+          <div
+            *ngIf="
+              rolesInput.invalid && (rolesInput.dirty || rolesInput.touched)
+            "
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="rolesInput.errors?.['required']"
+            >
+              Please select at least one role
+            </small>
+          </div>
         </div>
 
-        <!-- Join Date -->
         <div class="col-12 mb-4">
           <label for="joinDate">
             Join Date<span class="text-red-600">*</span>
@@ -146,10 +262,23 @@
             styleClass="w-full"
             [maxDate]="maxDate"
             required
+            #joinDateInput="ngModel"
           />
+          <div
+            *ngIf="
+              joinDateInput.invalid &&
+              (joinDateInput.dirty || joinDateInput.touched)
+            "
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="joinDateInput.errors?.['required']"
+            >
+              Please select a join date
+            </small>
+          </div>
         </div>
 
-        <!-- Combined Employment Status and Enabled Toggle -->
         <div class="col-12 mb-4">
           <div class="flex justify-content-around align-items-center">
             <div>
@@ -182,24 +311,23 @@
         </div>
       </div>
 
-      @if (formData.id !== null) {
-      <div class="flex justify-content-center mb-3">
-        <p-button
-          label="Reset Password"
-          icon="pi pi-key"
-          severity="danger"
-          [loading]="resetPasswordLoading"
-          (onClick)="onResetPassword($event, formData.id)"
-        />
-      </div>
-      }
-
-      <!-- Submit and Cancel Buttons -->
-      <div class="flex justify-content-center gap-2 mt-4">
+      <div class="flex justify-content-center mt-4">
+        @if (formData.id !== null) {
+        <div class="flex justify-content-center mb-3 mr-6">
+          <p-button
+            label="Reset Password"
+            icon="pi pi-key"
+            severity="danger"
+            [loading]="resetPasswordLoading"
+            (onClick)="onResetPassword($event, formData.id)"
+          />
+        </div>
+        }
         <p-button
           label="Cancel"
           icon="pi pi-times"
           severity="secondary"
+          class="mr-1"
           (onClick)="onCancel.emit()"
         />
         <p-button

@@ -112,16 +112,35 @@
         <label for="Plan" class="font-semibold w-6rem">
           Plan<span class="text-red-600">*</span>
         </label>
-        <input
-          pInputText
-          id="Plan"
-          class="flex-auto"
-          autocomplete="off"
-          [(ngModel)]="newDevPlan.plan"
-          required
-          maxlength="100"
-          name="plan"
-        />
+        <div class="flex-auto">
+          <input
+            pInputText
+            id="Plan"
+            class="w-full"
+            autocomplete="off"
+            [(ngModel)]="newDevPlan.plan"
+            required
+            maxlength="100"
+            name="plan"
+            #planInput="ngModel"
+          />
+          <div
+            *ngIf="planInput.invalid && (planInput.dirty || planInput.touched)"
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="planInput.errors?.['required']"
+            >
+              Plan is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="planInput.errors?.['maxlength']"
+            >
+              Plan cannot exceed 100 characters
+            </small>
+          </div>
+        </div>
       </div>
       <div class="flex align-items-center gap-4 mb-4">
         <label for="Enabled" class="font-semibold w-6rem">
@@ -167,16 +186,38 @@
         >
           Dev Plan<span class="text-red-600">*</span>
         </label>
-        <input
-          [(ngModel)]="editData.plan"
-          pInputText
-          id="Dev Plan"
-          class="flex-auto"
-          autocomplete="off"
-          required
-          maxlength="100"
-          name="dev plan"
-        />
+        <div class="flex-auto">
+          <input
+            [(ngModel)]="editData.plan"
+            pInputText
+            id="Dev Plan"
+            class="w-full"
+            autocomplete="off"
+            required
+            maxlength="100"
+            name="dev_plan"
+            #editPlanInput="ngModel"
+          />
+          <div
+            *ngIf="
+              editPlanInput.invalid &&
+              (editPlanInput.dirty || editPlanInput.touched)
+            "
+          >
+            <small
+              class="p-error block mt-1"
+              *ngIf="editPlanInput.errors?.['required']"
+            >
+              Plan is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="editPlanInput.errors?.['maxlength']"
+            >
+              Plan cannot exceed 100 characters
+            </small>
+          </div>
+        </div>
       </div>
       <div class="flex align-items-center gap-4 mb-4">
         <label for="Enabled" class="font-semibold w-6rem">
