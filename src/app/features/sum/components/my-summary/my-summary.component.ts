@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenService } from '../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { UserInformationComponent } from '../../../emp/user-information/components/user-information/user-information.component';
 import { SummaryComponent } from '../summary/summary.component';
 
 @Component({
   selector: 'app-my-summary',
   standalone: true,
-  imports: [NavbarComponent, SummaryComponent],
+  imports: [NavbarComponent, SummaryComponent, UserInformationComponent],
   templateUrl: './my-summary.component.html',
   styleUrl: './my-summary.component.scss',
 })
