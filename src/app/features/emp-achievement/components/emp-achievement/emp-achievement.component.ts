@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AccordionModule } from 'primeng/accordion';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
+import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -16,6 +18,7 @@ import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { Achievement } from '../../../achievement/model/achievement';
 import { AchievementService } from '../../../achievement/services/achievement.service';
+import { UserInformationComponent } from '../../../emp/user-information/components/user-information/user-information.component';
 import { User } from '../../../users/models/user';
 import { UserService } from '../../../users/services/user.service';
 import {
@@ -23,7 +26,10 @@ import {
   EmpAchievementRequest,
 } from '../../models/emp-achievement';
 import { EmpAchievementService } from '../../services/emp-achievement.service';
-
+interface GroupedAchievement {
+  group_name: string;
+  achievements: Achievement[];
+}
 @Component({
   selector: 'app-emp-achievement',
   standalone: true,
@@ -42,6 +48,9 @@ import { EmpAchievementService } from '../../services/emp-achievement.service';
     ReactiveFormsModule,
     DropdownModule,
     NavbarComponent,
+    UserInformationComponent,
+    AccordionModule,
+    DividerModule,
   ],
   providers: [
     EmpAchievementService,
@@ -61,14 +70,19 @@ export class EmpAchievementComponent implements OnInit {
   newEmpAchievement: EmpAchievementRequest = {} as EmpAchievementRequest;
   editData: EmpAchievement = {} as EmpAchievement;
   dataDetail: EmpAchievement = {} as EmpAchievement;
-  userIdDropdown: any = [];
-  achievementIdDropdown: any = [];
+  users: User[] = [];
   userDropdown: User[] = [];
-  achievementDropdown: Achievement[] = [];
+  achievementData: Achievement[] = [];
+  selectedUser: User = {
+    enabled: true,
+    employee_status: 1,
+  } as User;
+  groupedAchievements: GroupedAchievement[] = [];
 
   resetForm(): void {
     // this.newEmpAchievement.user_id = '';
   }
+
   constructor(
     private empAchievementService: EmpAchievementService,
     private confirmationService: ConfirmationService,
@@ -86,19 +100,30 @@ export class EmpAchievementComponent implements OnInit {
   getAllAchievement(): void {
     this.achievementService.getAchievements().subscribe({
       next: (data) => {
-        this.achievementDropdown = data.content;
-        console.log(this.achievementDropdown);
+        this.achievementData = data.content;
+        console.log(this.achievementData);
       },
       error: (err) => {
         console.error('Error fetching achievement:', err);
+      },
+      complete: () => {
+        this.groupedAchievements = Array.from(
+          new Set(this.achievementData.map((a) => a.group_id.group_name))
+        ).map((groupName) => ({
+          group_name: groupName,
+          achievements: this.achievementData.filter(
+            (a) => a.group_id.group_name === groupName
+          ),
+        }));
+        console.log(this.achievementData);
       },
     });
   }
   getAllUser(): void {
     this.userService.list().subscribe({
       next: (data) => {
-        this.userDropdown = data.content;
-        console.log(this.userDropdown);
+        this.users = data.content;
+        console.log(this.users, 'ini user');
       },
       error: (err) => {
         console.error('Error fetching user:', err);
@@ -209,7 +234,8 @@ export class EmpAchievementComponent implements OnInit {
     });
   }
   // modal
-  showDialog() {
+  showDialog(user: User) {
+    this.selectedUser = user;
     this.visible = true;
   }
   showEditDialog(data: any) {

@@ -1,0 +1,116 @@
+:host ::ng-deep {
+  .p-datatable {
+    .p-datatable-tbody > tr {
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #f0f7ff !important;
+      }
+    }
+  }
+}
+:host ::ng-deep {
+  .p-dropdown {
+    .p-dropdown-label {
+      padding: 0.4rem 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    &.p-dropdown-sm {
+      height: 2.5rem;
+    }
+  }
+
+  .p-dropdown-panel-md {
+    .p-dropdown-items {
+      padding: 0.5rem 0;
+
+      .p-dropdown-item {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+      }
+    }
+  }
+}
+
+:host ::ng-deep {
+  .p-dropdown-panel {
+    z-index: 1000 !important;
+  }
+
+  .p-dropdown {
+    z-index: 999;
+
+    &.p-dropdown-sm {
+      height: 2.6rem;
+    }
+  }
+}
+
+:host ::ng-deep {
+  .p-column-filter {
+    .p-column-filter-clear-button {
+      // display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+  }
+}
+:host ::ng-deep {
+  .p-datatable {
+    th {
+      height: 5rem;
+      vertical-align: middle;
+    }
+
+    .flex-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(10px, -50%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+}
+
+:host ::ng-deep {
+  #summaries-table {
+    .p-datatable-tbody {
+      tr {
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+
+        &::after {
+          content: "\e913";
+          font-family: "PrimeIcons";
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #2196f3;
+          opacity: 1;
+          font-size: 1rem;
+          animation: fadeIn 0.6s ease;
+        }
+
+        &:hover {
+          background-color: #f0f7ff !important;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+      }
+    }
+  }
+}

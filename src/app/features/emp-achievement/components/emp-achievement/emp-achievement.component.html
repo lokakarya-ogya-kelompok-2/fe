@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<div class="card">
+<!-- <div class="card">
   <p-table
     #empAchievementTable
     [scrollable]="true"
@@ -115,9 +115,9 @@
       </tr>
     </ng-template>
   </p-table>
-</div>
+</div> -->
 
-<div class="card flex justify-content-center">
+<!-- <div class="card flex justify-content-center">
   <p-dialog
     header="Add Emp Achievement"
     [(visible)]="visible"
@@ -533,4 +533,173 @@
       </p-table>
     </div>
   </p-dialog>
-</div>
+</div> -->
+<app-user-information />
+
+<p-table
+  #userTable
+  id="summaries-table"
+  [scrollable]="true"
+  scrollHeight="380px"
+  [value]="users"
+  dataKey="id"
+  [rows]="10"
+  [rowsPerPageOptions]="[10, 20, 50]"
+  [loading]="loading"
+  [paginator]="true"
+  [tableStyle]="{
+    'min-width': '50rem',
+    'text-align': 'center',
+    'font-size': '12px',
+    margin: 0,
+    'border-radius': '8px',
+    'table-layout': 'fixed'
+  }"
+  [style]="{ width: '100%' }"
+  [sortField]="'created_at'"
+  [sortOrder]="-1"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 25%; text-align: center">
+        <div class="flex flex-column align-items-center">
+          <span>Full Name</span>
+        </div>
+      </th>
+      <th style="width: 25%; text-align: center">
+        <div class="flex flex-column align-items-center">
+          <span>Username</span>
+        </div>
+      </th>
+      <th style="width: 25%; text-align: center">
+        <div class="flex flex-column align-items-center">
+          <span>Position</span>
+        </div>
+      </th>
+      <th style="width: 25%; text-align: center">
+        <div class="flex flex-column align-items-center gap-2">
+          <span>Division</span>
+        </div>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-user>
+    <tr class="clickable-row" (click)="showDialog(user)">
+      <td>{{ user.full_name }}</td>
+      <td style="text-align: center">{{ user.username }}</td>
+      <td style="text-align: center">{{ user.position }}</td>
+      <td style="text-align: center">
+        {{ user.division?.division_name ?? "Unknown" }}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  [header]="selectedUser?.full_name + ' Achievement'"
+  [modal]="true"
+  [(visible)]="visible"
+  [maximizable]="true"
+  class="absolute z-5"
+  appendTo="body"
+>
+  <div class="achievement-groups">
+    <p-accordion [multiple]="true">
+      <p-accordionTab
+        *ngFor="let group of groupedAchievements"
+        [header]="group.group_name"
+      >
+        <div class="p-4">
+          <div class="mb-4" *ngFor="let achievement of group.achievements">
+            <div class="flex align-items-center justify-content-between">
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold mb-2">
+                  {{ achievement.achievement }}
+                </h3>
+                <form #achievementForm="ngForm">
+                  <div class="flex flex-column gap-3">
+                    <div class="field">
+                      <label for="score" class="block mb-1">
+                        Score<span class="text-red-600">*</span>
+                      </label>
+                      <input
+                        [(ngModel)]="achievement.score"
+                        pInputText
+                        type="number"
+                        id="score"
+                        name="score"
+                        required
+                        min="0"
+                        max="100"
+                        class="w-full"
+                      />
+                      <!-- #scoreInput="ngModel" -->
+                      <!-- <div
+                        *ngIf="
+                          scoreInput.invalid &&
+                          (scoreInput.dirty || scoreInput.touched)
+                        "
+                      >
+                        <small
+                          class="p-error block mt-1"
+                          *ngIf="scoreInput.errors?.['required']"
+                        >
+                          Score is required
+                        </small>
+                        <small
+                          class="p-error block mt-1"
+                          *ngIf="scoreInput.errors?.['min'] || scoreInput.errors?.['max']"
+                        >
+                          Score must be between 0 and 100
+                        </small>
+                      </div> -->
+                    </div>
+
+                    <!-- Notes Input -->
+                    <div class="field">
+                      <label for="notes" class="block mb-1">
+                        Notes
+                        <span class="text-red-600">*</span>
+                      </label>
+                      <!-- [(ngModel)]="achievement.notes" -->
+                      <textarea
+                        pInputTextarea
+                        id="notes"
+                        name="notes"
+                        required
+                        maxlength="100"
+                        rows="3"
+                        class="w-full"
+                      ></textarea>
+                      <!-- #notesInput="ngModel" -->
+                      <!-- <div
+                        *ngIf="
+                          notesInput.invalid &&
+                          (notesInput.dirty || notesInput.touched)
+                        "
+                      >
+                        <small
+                          class="p-error block mt-1"
+                          *ngIf="notesInput.errors?.['required']"
+                        >
+                          Notes is required
+                        </small>
+                        <small
+                          class="p-error block mt-1"
+                          *ngIf="notesInput.errors?.['maxlength']"
+                        >
+                          Notes cannot exceed 100 characters
+                        </small>
+                      </div> -->
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <p-divider></p-divider>
+          </div>
+        </div>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+</p-dialog>
