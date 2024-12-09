@@ -68,7 +68,6 @@ export class EmpAchievementComponent implements OnInit {
   visible: boolean = false;
   editVisible: boolean = false;
   detailVisible: boolean = false;
-  // newEmpAchievement: EmpAchievementRequest = {} as EmpAchievementRequest;
   empAchievementRequests: { [key: string]: EmpAchievementRequest } = {};
   editData: EmpAchievement = {} as EmpAchievement;
   dataDetail: EmpAchievement = {} as EmpAchievement;
@@ -82,11 +81,7 @@ export class EmpAchievementComponent implements OnInit {
   groupedAchievements: GroupedAchievement[] = [];
   userId: string = '';
   currentYear = new Date().getFullYear();
-
-  resetForm(): void {
-    // this.newEmpAchievement.user_id = '';
-  }
-
+  submittedAchievements: { [key: string]: boolean } = {};
   constructor(
     private empAchievementService: EmpAchievementService,
     private confirmationService: ConfirmationService,
@@ -150,6 +145,10 @@ export class EmpAchievementComponent implements OnInit {
         this.datas = data.content;
         this.loading = false;
         console.log('Data fetched:', this.datas);
+        data.content.forEach((achievement) => {
+          this.submittedAchievements[achievement.id] = true;
+        });
+        console.log(this.submittedAchievements);
       },
       error: (err) => {
         console.error('Error fetching emp achievement:', err);
@@ -164,8 +163,28 @@ export class EmpAchievementComponent implements OnInit {
     Object.entries(this.empAchievementRequests).forEach(([id, empAcReq]) => {
       empAcReq.achievement_id = id;
       reqData.push(empAcReq);
+      console.log(this.empAchievementRequests);
     });
     console.log(reqData);
+    this.empAchievementService.createEmpAchievement(reqData).subscribe({
+      next: (data) => {
+        console.log(data);
+        Swal.fire({
+          title: 'emp achievement created!',
+          icon: 'success',
+        });
+        this.getAllEmpAchievement();
+        this.visible = false;
+      },
+      error: (err) => {
+        console.error('Error creating emp achievement:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error.message,
+        });
+      },
+    });
     // this.empAchievementService
     //   .createEmpAchievement(this.newEmpAchievement)
     //   .subscribe({
@@ -188,73 +207,7 @@ export class EmpAchievementComponent implements OnInit {
     //     },
     //   });
   }
-  updateEmpAchievement() {
-    this.empAchievementService.updateEmpAchievement(this.editData).subscribe({
-      next: (data) => {
-        console.log(data);
-        Swal.fire({
-          title: 'emp achievement updated!',
-          icon: 'success',
-        });
-        this.getAllEmpAchievement();
-        this.editVisible = false;
-      },
-      error: (err) => {
-        console.error('Error updating emp achievement:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: err.error.message,
-        });
-      },
-    });
-  }
-  confirmDelete(event: Event, key: string) {
-    console.log('masuk');
-    console.log(event.target);
-    console.log(key);
-    this.confirmationService.confirm({
-      target: event.target as EventTarget,
-      message: 'Do you want to delete this record?',
-      header: 'Delete Confirmation',
-      icon: 'pi pi-info-circle',
-      acceptButtonStyleClass: 'p-button-danger p-button-text',
-      rejectButtonStyleClass: 'p-button-text p-button-text',
-      acceptIcon: 'none',
-      rejectIcon: 'none',
-      key: key,
-      accept: () => {
-        console.log('delete data');
-        this.empAchievementService.deleteEmpAchievement(key).subscribe({
-          next: (data) => {
-            console.log(data);
-            Swal.fire({
-              title: 'Emp Achievement deleted!',
-              icon: 'success',
-              text: data.message,
-            });
-            console.log('Data deleted successfully');
-            this.getAllEmpAchievement();
-          },
-          error: (err) => {
-            console.error('Error deleting emp achievement:', err);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'error',
-              detail: 'Failed to delete emp achievement',
-            });
-          },
-        });
-      },
-      reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
-        });
-      },
-    });
-  }
+
   // modal
   showDialog(user: User) {
     this.selectedUser = user;

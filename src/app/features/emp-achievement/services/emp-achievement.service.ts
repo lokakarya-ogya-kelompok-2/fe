@@ -18,9 +18,12 @@ export class EmpAchievementService {
     return this.http.get<Response<EmpAchievement[]>>(this.Api);
   }
   createEmpAchievement(
-    empAchievement: EmpAchievementRequest
-  ): Observable<EmpAchievement> {
-    return this.http.post<EmpAchievement>(this.Api, empAchievement);
+    empAchievement: EmpAchievementRequest[]
+  ): Observable<EmpAchievement[]> {
+    return this.http.post<EmpAchievement[]>(
+      `${this.Api}/bulk-create`,
+      empAchievement
+    );
   }
   updateEmpAchievement(
     empAchievement: EmpAchievement
