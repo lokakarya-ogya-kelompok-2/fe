@@ -74,12 +74,8 @@ export class EmpAchievementComponent implements OnInit {
   users: User[] = [];
   userDropdown: User[] = [];
   achievementData: Achievement[] = [];
-  selectedUser: User = {
-    enabled: true,
-    employee_status: 1,
-  } as User;
+  selectedUser: User = {} as User;
   groupedAchievements: GroupedAchievement[] = [];
-  userId: string = '';
   currentYear = new Date().getFullYear();
   submittedAchievements: { [key: string]: boolean } = {};
   constructor(
@@ -91,9 +87,6 @@ export class EmpAchievementComponent implements OnInit {
     private readonly tokenService: TokenService
   ) {}
   ngOnInit(): void {
-    this.userId = this.tokenService.decodeToken(
-      this.tokenService.getToken()!
-    ).sub!;
     this.getAllEmpAchievement();
     this.getAllUser();
     this.getAllAchievement();
@@ -106,7 +99,6 @@ export class EmpAchievementComponent implements OnInit {
         this.achievementData = data.content;
         this.achievementData.forEach((empAc) => {
           this.empAchievementRequests[empAc.id] = {
-            user_id: this.userId,
             assessment_year: this.currentYear,
           } as EmpAchievementRequest;
         });
@@ -157,15 +149,15 @@ export class EmpAchievementComponent implements OnInit {
     });
   }
   createEmpAchievement() {
-    // console.log(this.newEmpAchievement);
     console.log(this.empAchievementRequests, ' INI REQ DATANYA');
     let reqData: EmpAchievementRequest[] = [];
     Object.entries(this.empAchievementRequests).forEach(([id, empAcReq]) => {
       empAcReq.achievement_id = id;
+      empAcReq.user_id = this.selectedUser.id;
       reqData.push(empAcReq);
       console.log(this.empAchievementRequests);
     });
-    console.log(reqData);
+    // console.log(reqData);
     this.empAchievementService.createEmpAchievement(reqData).subscribe({
       next: (data) => {
         console.log(data);
