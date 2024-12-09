@@ -15,6 +15,7 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
+import { TokenService } from '../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { Achievement } from '../../../achievement/model/achievement';
 import { AchievementService } from '../../../achievement/services/achievement.service';
@@ -62,12 +63,13 @@ interface GroupedAchievement {
   styleUrl: './emp-achievement.component.scss',
 })
 export class EmpAchievementComponent implements OnInit {
-  datas: any[] = [];
+  datas: EmpAchievement[] = [];
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
   detailVisible: boolean = false;
-  newEmpAchievement: EmpAchievementRequest = {} as EmpAchievementRequest;
+  // newEmpAchievement: EmpAchievementRequest = {} as EmpAchievementRequest;
+  empAchievementRequests: { [key: string]: EmpAchievementRequest } = {};
   editData: EmpAchievement = {} as EmpAchievement;
   dataDetail: EmpAchievement = {} as EmpAchievement;
   users: User[] = [];
@@ -78,6 +80,8 @@ export class EmpAchievementComponent implements OnInit {
     employee_status: 1,
   } as User;
   groupedAchievements: GroupedAchievement[] = [];
+  userId: string = '';
+  currentYear = new Date().getFullYear();
 
   resetForm(): void {
     // this.newEmpAchievement.user_id = '';
@@ -88,19 +92,29 @@ export class EmpAchievementComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private userService: UserService,
-    private achievementService: AchievementService
+    private achievementService: AchievementService,
+    private readonly tokenService: TokenService
   ) {}
   ngOnInit(): void {
+    this.userId = this.tokenService.decodeToken(
+      this.tokenService.getToken()!
+    ).sub!;
     this.getAllEmpAchievement();
     this.getAllUser();
     this.getAllAchievement();
-    this.newEmpAchievement.assessment_year = new Date().getFullYear();
+    // this.newEmpAchievement.assessment_year = this.currentYear;
   }
 
   getAllAchievement(): void {
     this.achievementService.getAchievements().subscribe({
       next: (data) => {
         this.achievementData = data.content;
+        this.achievementData.forEach((empAc) => {
+          this.empAchievementRequests[empAc.id] = {
+            user_id: this.userId,
+            assessment_year: this.currentYear,
+          } as EmpAchievementRequest;
+        });
         console.log(this.achievementData);
       },
       error: (err) => {
@@ -144,27 +158,35 @@ export class EmpAchievementComponent implements OnInit {
     });
   }
   createEmpAchievement() {
-    this.empAchievementService
-      .createEmpAchievement(this.newEmpAchievement)
-      .subscribe({
-        next: (data) => {
-          console.log(data);
-          Swal.fire({
-            title: 'emp achievement created!',
-            icon: 'success',
-          });
-          this.getAllEmpAchievement();
-          this.visible = false;
-        },
-        error: (err) => {
-          console.error('Error creating emp achievement:', err);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: err.error.message,
-          });
-        },
-      });
+    // console.log(this.newEmpAchievement);
+    console.log(this.empAchievementRequests, ' INI REQ DATANYA');
+    let reqData: EmpAchievementRequest[] = [];
+    Object.entries(this.empAchievementRequests).forEach(([id, empAcReq]) => {
+      empAcReq.achievement_id = id;
+      reqData.push(empAcReq);
+    });
+    console.log(reqData);
+    // this.empAchievementService
+    //   .createEmpAchievement(this.newEmpAchievement)
+    //   .subscribe({
+    //     next: (data) => {
+    //       console.log(data);
+    //       Swal.fire({
+    //         title: 'emp achievement created!',
+    //         icon: 'success',
+    //       });
+    //       this.getAllEmpAchievement();
+    //       this.visible = false;
+    //     },
+    //     error: (err) => {
+    //       console.error('Error creating emp achievement:', err);
+    //       this.messageService.add({
+    //         severity: 'error',
+    //         summary: 'Error',
+    //         detail: err.error.message,
+    //       });
+    //     },
+    //   });
   }
   updateEmpAchievement() {
     this.empAchievementService.updateEmpAchievement(this.editData).subscribe({
@@ -237,18 +259,6 @@ export class EmpAchievementComponent implements OnInit {
   showDialog(user: User) {
     this.selectedUser = user;
     this.visible = true;
-  }
-  showEditDialog(data: any) {
-    this.editVisible = true;
-    this.editData = { ...data };
-    this.editData.achievement_id = data.achievement_id.id;
-    this.editData.user_id = data.user_id.id;
-    console.log(this.editData, 'from dialog button');
-  }
-  showDialogDetail(data: any) {
-    this.detailVisible = true;
-    this.dataDetail = data;
-    console.log(this.dataDetail);
   }
 
   onGlobalFilter(table: Table, event: Event) {

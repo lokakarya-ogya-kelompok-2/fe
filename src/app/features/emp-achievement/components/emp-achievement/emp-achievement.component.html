@@ -61,7 +61,7 @@
 </p-table>
 
 <p-dialog
-  [header]="selectedUser?.full_name + ' Achievement'"
+  [header]="selectedUser.full_name + ' Achievement'"
   [modal]="true"
   [(visible)]="visible"
   [maximizable]="true"
@@ -71,18 +71,18 @@
 >
   <div class="achievement-groups">
     <p-accordion [multiple]="true">
-      <p-accordionTab
-        *ngFor="let group of groupedAchievements"
-        [header]="group.group_name"
-      >
-        <div class="p-4">
-          <div class="mb-4" *ngFor="let achievement of group.achievements">
-            <div class="flex align-items-center justify-content-between">
-              <div class="flex-1">
-                <h3 class="text-lg font-semibold mb-2">
-                  {{ achievement.achievement }}
-                </h3>
-                <form #achievementForm="ngForm">
+      <form #achievementForm="ngForm">
+        <p-accordionTab
+          *ngFor="let group of groupedAchievements"
+          [header]="group.group_name"
+        >
+          <div class="p-4">
+            <div class="mb-4" *ngFor="let achievement of group.achievements">
+              <div class="flex align-items-center justify-content-between">
+                <div class="flex-1">
+                  <h3 class="text-lg font-semibold mb-2">
+                    {{ achievement.achievement }}
+                  </h3>
                   <div class="flex flex-column gap-3">
                     <div class="field">
                       <label for="score" class="block mb-1">
@@ -90,6 +90,9 @@
                       </label>
                       <!-- [(ngModel)]="achievement.score" -->
                       <input
+                        [(ngModel)]="
+                          empAchievementRequests[achievement.id].score
+                        "
                         pInputText
                         type="number"
                         id="score"
@@ -98,9 +101,9 @@
                         min="0"
                         max="100"
                         class="w-full"
+                        #scoreInput="ngModel"
                       />
-                      <!-- #scoreInput="ngModel" -->
-                      <!-- <div
+                      <div
                         *ngIf="
                           scoreInput.invalid &&
                           (scoreInput.dirty || scoreInput.touched)
@@ -118,7 +121,7 @@
                         >
                           Score must be between 0 and 100
                         </small>
-                      </div> -->
+                      </div>
                     </div>
 
                     <!-- Notes Input -->
@@ -129,6 +132,9 @@
                       </label>
                       <!-- [(ngModel)]="achievement.notes" -->
                       <textarea
+                        [(ngModel)]="
+                          empAchievementRequests[achievement.id].notes
+                        "
                         pInputTextarea
                         id="notes"
                         name="notes"
@@ -136,9 +142,9 @@
                         maxlength="100"
                         rows="3"
                         class="w-full"
+                        #notesInput="ngModel"
                       ></textarea>
-                      <!-- #notesInput="ngModel" -->
-                      <!-- <div
+                      <div
                         *ngIf="
                           notesInput.invalid &&
                           (notesInput.dirty || notesInput.touched)
@@ -156,16 +162,21 @@
                         >
                           Notes cannot exceed 100 characters
                         </small>
-                      </div> -->
+                      </div>
                     </div>
                   </div>
-                </form>
+                </div>
               </div>
+              <p-divider></p-divider>
             </div>
-            <p-divider></p-divider>
           </div>
-        </div>
-      </p-accordionTab>
+        </p-accordionTab>
+        <p-button
+          type="submit"
+          (onClick)="createEmpAchievement()"
+          label="WAAAAA"
+        />
+      </form>
     </p-accordion>
   </div>
 </p-dialog>
