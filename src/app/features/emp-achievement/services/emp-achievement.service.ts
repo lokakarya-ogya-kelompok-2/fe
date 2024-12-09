@@ -14,8 +14,8 @@ import {
 export class EmpAchievementService {
   private Api = `${environment.baseApiURL}/emp-achievement-skills`;
   constructor(private http: HttpClient) {}
-  getAllEmpAchievements(): Observable<any> {
-    return this.http.get<any>(this.Api);
+  getAllEmpAchievements(): Observable<Response<EmpAchievement[]>> {
+    return this.http.get<Response<EmpAchievement[]>>(this.Api);
   }
   createEmpAchievement(
     empAchievement: EmpAchievementRequest
