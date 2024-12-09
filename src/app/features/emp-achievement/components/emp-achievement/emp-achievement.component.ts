@@ -64,7 +64,7 @@ interface GroupedAchievement {
 })
 export class EmpAchievementComponent implements OnInit {
   datas: EmpAchievement[] = [];
-  loading: boolean = true;
+  loading: boolean = false;
   visible: boolean = false;
   editVisible: boolean = false;
   detailVisible: boolean = false;
@@ -87,9 +87,11 @@ export class EmpAchievementComponent implements OnInit {
     private readonly tokenService: TokenService
   ) {}
   ngOnInit(): void {
-    this.getAllEmpAchievement();
+    // this.getAllEmpAchievement();
     this.getAllUser();
-    this.getAllAchievement();
+    // this.getAllAchievement();
+    console.log(this.selectedUser, 'ini selected user');
+
     // this.newEmpAchievement.assessment_year = this.currentYear;
   }
 
@@ -120,33 +122,46 @@ export class EmpAchievementComponent implements OnInit {
       },
     });
   }
+
   getAllUser(): void {
+    this.loading = true;
     this.userService.list().subscribe({
       next: (data) => {
         this.users = data.content;
         console.log(this.users, 'ini user');
+        this.loading = false;
       },
       error: (err) => {
         console.error('Error fetching user:', err);
+        this.loading = false;
       },
     });
   }
   getAllEmpAchievement() {
-    this.empAchievementService.getAllEmpAchievements().subscribe({
-      next: (data) => {
-        this.datas = data.content;
-        this.loading = false;
-        console.log('Data fetched:', this.datas);
-        data.content.forEach((achievement) => {
-          this.submittedAchievements[achievement.id] = true;
-        });
-        console.log(this.submittedAchievements);
-      },
-      error: (err) => {
-        console.error('Error fetching emp achievement:', err);
-        this.loading = false;
-      },
-    });
+    console.log('ini get allll');
+
+    this.empAchievementService
+      .getByUserIdAndYear(this.selectedUser.id, this.currentYear)
+      .subscribe({
+        next: (data) => {
+          this.submittedAchievements = {};
+          this.datas = data.content;
+          this.loading = false;
+          console.log('Data fetched:', this.datas);
+          data.content.forEach((empAc) => {
+            this.submittedAchievements[empAc.achievement_id.id] = true;
+          });
+          console.log(
+            this.submittedAchievements,
+            'CURRENT UESR EMP = ',
+            this.selectedUser.id
+          );
+        },
+        error: (err) => {
+          console.error('Error fetching emp achievement:', err);
+          this.loading = false;
+        },
+      });
   }
   createEmpAchievement() {
     console.log(this.empAchievementRequests, ' INI REQ DATANYA');
@@ -204,6 +219,9 @@ export class EmpAchievementComponent implements OnInit {
   showDialog(user: User) {
     this.selectedUser = user;
     this.visible = true;
+    this.getAllAchievement();
+    this.getAllEmpAchievement();
+    console.log(this.selectedUser, 'ini selected user');
   }
 
   onGlobalFilter(table: Table, event: Event) {
