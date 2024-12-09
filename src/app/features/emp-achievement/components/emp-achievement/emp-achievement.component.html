@@ -88,7 +88,6 @@
                       <label for="score" class="block mb-1">
                         Score<span class="text-red-600">*</span>
                       </label>
-                      <!-- [(ngModel)]="achievement.score" -->
                       <input
                         [(ngModel)]="
                           empAchievementRequests[achievement.id].score
@@ -102,6 +101,7 @@
                         max="100"
                         class="w-full"
                         #scoreInput="ngModel"
+                        [disabled]="!submittedAchievements[achievement.id]"
                       />
                       <div
                         *ngIf="
@@ -123,14 +123,11 @@
                         </small>
                       </div>
                     </div>
-
-                    <!-- Notes Input -->
                     <div class="field">
                       <label for="notes" class="block mb-1">
                         Notes
                         <span class="text-red-600">*</span>
                       </label>
-                      <!-- [(ngModel)]="achievement.notes" -->
                       <textarea
                         [(ngModel)]="
                           empAchievementRequests[achievement.id].notes
@@ -143,6 +140,7 @@
                         rows="3"
                         class="w-full"
                         #notesInput="ngModel"
+                        [disabled]="submittedAchievements[achievement.id]"
                       ></textarea>
                       <div
                         *ngIf="
@@ -174,7 +172,7 @@
         <p-button
           type="submit"
           (onClick)="createEmpAchievement()"
-          label="WAAAAA"
+          label="Submit"
         />
       </form>
     </p-accordion>
