@@ -72,11 +72,15 @@ export class EmpAttitudeSkillsComponent implements OnInit {
           data.content.forEach((empAttitudeSkill) => {
             this.empAttitudeSkills[empAttitudeSkill.attitude_skill.id] = {
               id: empAttitudeSkill.id,
-              score: empAttitudeSkill.score,
+              score: empAttitudeSkill.score || 0,
               attitude_skill_id: empAttitudeSkill.attitude_skill.id,
               assessment_year: empAttitudeSkill.assessment_year,
             };
           });
+          console.log(
+            this.empAttitudeSkills,
+            'INI LIST OF CURRENT EMPLOYEES AS'
+          );
         },
         error: (err) => {
           console.error('Error Fetching employee attitude skill:', err);
@@ -120,9 +124,9 @@ export class EmpAttitudeSkillsComponent implements OnInit {
             title: 'Emp Attitude Skill created!',
             icon: 'success',
           });
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 1000);
         },
       });
   }

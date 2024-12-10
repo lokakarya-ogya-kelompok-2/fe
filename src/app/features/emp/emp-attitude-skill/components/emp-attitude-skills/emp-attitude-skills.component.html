@@ -32,7 +32,7 @@
             <div class="dropdown-container">
               <p-dropdown
                 [options]="scoreCategory"
-                [(ngModel)]="skill.score"
+                [(ngModel)]="this.empAttitudeSkills[skill.id].score"
                 optionLabel="category"
                 optionValue="score"
                 placeholder="Select score category"
@@ -40,6 +40,7 @@
                 appendTo="body"
                 required
                 name="score-{{ group.group_name }}-{{ i }}"
+                [disabled]="this.empAttitudeSkills[skill.id].id != undefined"
                 #scoreDropdown="ngModel"
               />
               <div

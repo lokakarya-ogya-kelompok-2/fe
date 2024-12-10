@@ -1,5 +1,5 @@
 <div class="table-container">
-  <div class="table-title">{{tableHeader}}</div>
+  <div class="table-title">{{ tableHeader }}</div>
   <div style="display: flex; justify-content: center; padding: 20px">
     <p-table [value]="data" [style]="{ width: '80%', minWidth: '60rem' }">
       <ng-template pTemplate="header">
@@ -14,8 +14,8 @@
         <tr>
           <td>{{ item.aspect }}</td>
           <td style="text-align: center">{{ item.score }}</td>
-          <td style="text-align: center">{{ item.weight }}</td>
-          <td style="text-align: center">{{ item.finalScore }}</td>
+          <td style="text-align: center">{{ item.weight }} %</td>
+          <td style="text-align: center">{{ item.final_score }}</td>
         </tr>
       </ng-template>
     </p-table>
