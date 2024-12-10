@@ -47,16 +47,21 @@
   </ng-template>
   <ng-template pTemplate="header">
     <tr>
-      <th style="width: 25%; text-align: center">
+      <th
+        style="width: 25%; text-align: center"
+        pSortableColumn="user_id.full_name"
+      >
         <div class="flex flex-column align-items-center">
           <span>Full Name</span>
+          <p-sortIcon field="user_id.full_name" />
           <div style="height: 2.3rem"></div>
         </div>
       </th>
-      <th style="width: 25%; text-align: center">
+      <th style="width: 25%; text-align: center" pSortableColumn="score">
         <div class="flex flex-column align-items-center">
-          <span>Username</span>
-          <div style="height: 2.3rem"></div>
+          <span> Code </span>
+          <p-sortIcon field="score" />
+          <div style="height: 1.5rem"></div>
         </div>
       </th>
       <th style="width: 25%; text-align: center">
@@ -127,7 +132,7 @@
       (click)="showDialog(summary.user_id, summary.year)"
     >
       <td>{{ summary.user_id.full_name }}</td>
-      <td style="text-align: center">{{ summary.user_id.username }}</td>
+      <td style="text-align: center">{{ summary.score }}</td>
       <td style="text-align: center">{{ summary.user_id.position }}</td>
       <td style="text-align: center">
         {{ summary.user_id.division?.division_name ?? "Unknown" }}
