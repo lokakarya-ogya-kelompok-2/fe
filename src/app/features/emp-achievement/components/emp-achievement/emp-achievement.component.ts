@@ -15,7 +15,6 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
-import { TokenService } from '../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { Achievement } from '../../../achievement/model/achievement';
 import { AchievementService } from '../../../achievement/services/achievement.service';
@@ -77,18 +76,15 @@ export class EmpAchievementComponent implements OnInit {
   selectedUser: User = {} as User;
   groupedAchievements: GroupedAchievement[] = [];
   currentYear = new Date().getFullYear();
-  submittedAchievements: { [key: string]: boolean } = {};
   constructor(
     private empAchievementService: EmpAchievementService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private userService: UserService,
-    private achievementService: AchievementService,
-    private readonly tokenService: TokenService
+    private achievementService: AchievementService
   ) {}
   ngOnInit(): void {
     this.getAllUser();
-    console.log(this.selectedUser, 'ini selected user');
   }
 
   getAllAchievement(): void {
@@ -114,7 +110,7 @@ export class EmpAchievementComponent implements OnInit {
             (a) => a.group_id.group_name === groupName
           ),
         }));
-        console.log(this.achievementData);
+        this.getAllEmpAchievement();
       },
     });
   }
@@ -134,24 +130,21 @@ export class EmpAchievementComponent implements OnInit {
     });
   }
   getAllEmpAchievement() {
-    console.log('ini get allll');
-
     this.empAchievementService
       .getByUserIdAndYear(this.selectedUser.id, this.currentYear)
       .subscribe({
         next: (data) => {
-          this.submittedAchievements = {};
           this.datas = data.content;
           this.loading = false;
           console.log('Data fetched:', this.datas);
           data.content.forEach((empAc) => {
-            this.submittedAchievements[empAc.achievement_id.id] = true;
+            this.empAchievementRequests[empAc.achievement_id.id] = {
+              ...this.empAchievementRequests[empAc.achievement_id.id],
+              id: empAc.id,
+              notes: empAc.notes,
+              score: empAc.score,
+            };
           });
-          console.log(
-            this.submittedAchievements,
-            'CURRENT UESR EMP = ',
-            this.selectedUser.id
-          );
         },
         error: (err) => {
           console.error('Error fetching emp achievement:', err);
@@ -175,7 +168,6 @@ export class EmpAchievementComponent implements OnInit {
           title: 'emp achievement created!',
           icon: 'success',
         });
-        this.getAllEmpAchievement();
         this.visible = false;
       },
       error: (err) => {
@@ -194,8 +186,6 @@ export class EmpAchievementComponent implements OnInit {
     this.selectedUser = user;
     this.visible = true;
     this.getAllAchievement();
-    this.getAllEmpAchievement();
-    console.log(this.selectedUser, 'ini selected user');
   }
 
   onGlobalFilter(table: Table, event: Event) {

@@ -101,7 +101,9 @@
                         max="100"
                         class="w-full"
                         #scoreInput="ngModel"
-                        [disabled]="submittedAchievements[achievement.id]"
+                        [disabled]="
+                          empAchievementRequests[achievement.id].id != undefined
+                        "
                       />
                       <div
                         *ngIf="
@@ -140,7 +142,9 @@
                         rows="3"
                         class="w-full"
                         #notesInput="ngModel"
-                        [disabled]="submittedAchievements[achievement.id]"
+                        [disabled]="
+                          empAchievementRequests[achievement.id].id != undefined
+                        "
                       ></textarea>
                       <div
                         *ngIf="
@@ -174,6 +178,7 @@
           (onClick)="createEmpAchievement()"
           label="Submit"
           class="flex mt-4 ml-3"
+          [disabled]="achievementForm.invalid"
         />
       </form>
     </p-accordion>
