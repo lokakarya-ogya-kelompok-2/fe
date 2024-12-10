@@ -62,7 +62,6 @@ interface GroupedAchievement {
   styleUrl: './emp-achievement.component.scss',
 })
 export class EmpAchievementComponent implements OnInit {
-  datas: EmpAchievement[] = [];
   loading: boolean = false;
   visible: boolean = false;
   editVisible: boolean = false;
@@ -136,7 +135,6 @@ export class EmpAchievementComponent implements OnInit {
         next: (data) => {
           this.datas = data.content;
           this.loading = false;
-          console.log('Data fetched:', this.datas);
           data.content.forEach((empAc) => {
             this.empAchievementRequests[empAc.achievement_id.id] = {
               ...this.empAchievementRequests[empAc.achievement_id.id],
