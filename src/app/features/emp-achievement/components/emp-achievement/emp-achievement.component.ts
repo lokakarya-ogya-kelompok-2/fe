@@ -87,12 +87,8 @@ export class EmpAchievementComponent implements OnInit {
     private readonly tokenService: TokenService
   ) {}
   ngOnInit(): void {
-    // this.getAllEmpAchievement();
     this.getAllUser();
-    // this.getAllAchievement();
     console.log(this.selectedUser, 'ini selected user');
-
-    // this.newEmpAchievement.assessment_year = this.currentYear;
   }
 
   getAllAchievement(): void {
@@ -172,7 +168,6 @@ export class EmpAchievementComponent implements OnInit {
       reqData.push(empAcReq);
       console.log(this.empAchievementRequests);
     });
-    // console.log(reqData);
     this.empAchievementService.createEmpAchievement(reqData).subscribe({
       next: (data) => {
         console.log(data);
@@ -192,27 +187,6 @@ export class EmpAchievementComponent implements OnInit {
         });
       },
     });
-    // this.empAchievementService
-    //   .createEmpAchievement(this.newEmpAchievement)
-    //   .subscribe({
-    //     next: (data) => {
-    //       console.log(data);
-    //       Swal.fire({
-    //         title: 'emp achievement created!',
-    //         icon: 'success',
-    //       });
-    //       this.getAllEmpAchievement();
-    //       this.visible = false;
-    //     },
-    //     error: (err) => {
-    //       console.error('Error creating emp achievement:', err);
-    //       this.messageService.add({
-    //         severity: 'error',
-    //         summary: 'Error',
-    //         detail: err.error.message,
-    //       });
-    //     },
-    //   });
   }
 
   // modal

@@ -6,6 +6,7 @@ import { DividerModule } from 'primeng/divider';
 import { GalleriaModule } from 'primeng/galleria';
 import { InputTextModule } from 'primeng/inputtext';
 import { SplitterModule } from 'primeng/splitter';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LoginService } from '../../services/login.service';
 import { LoginRequest } from '../models/login';
@@ -65,6 +66,11 @@ export class LoginComponent implements OnInit {
       },
       error: (err) => {
         console.error('Login error:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Login failed! Your email or password maybe wrong, Please try again.',
+        });
       },
     });
   }
