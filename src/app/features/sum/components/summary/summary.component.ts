@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { catchError, forkJoin, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap } from 'rxjs';
 import { EmpAchievement } from '../../../emp-achievement/models/emp-achievement';
 import { EmpAchievementService } from '../../../emp-achievement/services/emp-achievement.service';
 import { EmpAttitudeSkill } from '../../../emp/emp-attitude-skill/models/emp-attitude-skill';
@@ -8,7 +8,8 @@ import { GroupAchievement } from '../../../group-achievement/model/group-achieve
 import { GroupAchievementService } from '../../../group-achievement/services/group-achievement.service';
 import { GroupAttitudeSkill } from '../../../group-attitude-skill/models/group-attitude-skill';
 import { ManageGroupAttitudeSkillService } from '../../../group-attitude-skill/services/manage-group-attitude-skill.service';
-import { SummaryData, SummaryItem } from '../../models/summary';
+import { Summary, SummaryItem } from '../../models/summary';
+import { SummaryService } from '../../services/summary.service';
 import { TableComponent } from '../table/table.component';
 
 @Component({
@@ -20,7 +21,7 @@ import { TableComponent } from '../table/table.component';
 })
 export class SummaryComponent implements OnChanges {
   @Input() userId: string = '';
-  currentYear = new Date().getFullYear();
+  @Input() year = new Date().getFullYear();
   groupAttitudeSkills: GroupAttitudeSkill[] = [];
   groupAchievements: GroupAchievement[] = [];
   currentUserAttitudeSkillsGroupedByGroupId: {
@@ -32,53 +33,70 @@ export class SummaryComponent implements OnChanges {
   idToGroupId: { [key: string]: string } = {};
   totalWeight = 0;
 
-  summaryData: SummaryData = {} as SummaryData;
+  percentage: number = 0.0;
+  summary: Summary = {} as Summary;
+  // summaryData: SummaryData = {} as SummaryData;
   constructor(
     private readonly groupAttitudeSkillSvc: ManageGroupAttitudeSkillService,
     private readonly groupAchievementSvc: GroupAchievementService,
     private readonly empAttitudeSkilltSvc: EmpAttitudeSkillsService,
-    private readonly empAchievementSvc: EmpAchievementService
+    private readonly empAchievementSvc: EmpAchievementService,
+    private readonly summarySvc: SummaryService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['userId'] && this.userId) {
-      forkJoin({
-        attitudeSkills: this.fetchAttitudeSkills(),
-        achievements: this.fetchAchievements(),
-      })
-        .pipe(
-          catchError((error) => {
-            console.error('Error fetching summary data:', error);
-            return of({ attitudeSkills: [], achievements: [] });
-          })
-        )
-        .subscribe((results) => {
-          this.summaryData = {
-            attitudeSkillSummary: results.attitudeSkills,
-            achievementSummary: results.achievements,
-            totalScore: 0,
-            totalPercentage: 0,
-          };
-          this.summaryData.attitudeSkillSummary =
-            this.summaryData.attitudeSkillSummary.map((item) => {
-              item.weight /= this.totalWeight;
-              item.finalScore = Math.round(item.score * item.weight);
-              this.summaryData.totalScore += item.finalScore;
-              item.weight = Math.round(item.weight * 100);
-              this.summaryData.totalPercentage += item.weight;
-              return item;
-            });
-
-          this.summaryData.achievementSummary =
-            this.summaryData.achievementSummary.map((item) => {
-              item.weight /= this.totalWeight;
-              item.finalScore = Math.round(item.score * item.weight);
-              this.summaryData.totalScore += item.finalScore;
-              item.weight = Math.round(item.weight * 100);
-              this.summaryData.totalPercentage += item.weight;
-              return item;
-            });
-        });
+      this.summarySvc.calculateSummary(this.userId, this.year).subscribe({
+        next: (data) => {
+          this.summary = data.content;
+          this.summary.achievements?.forEach((item) => {
+            this.percentage += item.weight;
+          });
+          this.summary.attitude_skills?.forEach((item) => {
+            this.percentage += item.weight;
+          });
+          console.log(this.summary, ' INI');
+        },
+        error: (err) => {
+          console.error('Error fetching summary: ', err);
+        },
+      });
+      // forkJoin({
+      //   attitudeSkills: this.fetchAttitudeSkills(),
+      //   achievements: this.fetchAchievements(),
+      // })
+      //   .pipe(
+      //     catchError((error) => {
+      //       console.error('Error fetching summary data:', error);
+      //       return of({ attitudeSkills: [], achievements: [] });
+      //     })
+      //   )
+      //   .subscribe((results) => {
+      //     this.summaryData = {
+      //       attitudeSkillSummary: results.attitudeSkills,
+      //       achievementSummary: results.achievements,
+      //       totalScore: 0,
+      //       totalPercentage: 0,
+      //     };
+      //     this.summaryData.attitudeSkillSummary =
+      //       this.summaryData.attitudeSkillSummary.map((item) => {
+      //         item.weight /= this.totalWeight;
+      //         item.finalScore = Math.round(item.score * item.weight);
+      //         this.summaryData.totalScore += item.finalScore;
+      //         item.weight = Math.round(item.weight * 100);
+      //         this.summaryData.totalPercentage += item.weight;
+      //         return item;
+      //       });
+      //     this.summaryData.achievementSummary =
+      //       this.summaryData.achievementSummary.map((item) => {
+      //         item.weight /= this.totalWeight;
+      //         item.finalScore = Math.round(item.score * item.weight);
+      //         this.summaryData.totalScore += item.finalScore;
+      //         item.weight = Math.round(item.weight * 100);
+      //         this.summaryData.totalPercentage += item.weight;
+      //         return item;
+      //       });
+      //   });
     }
   }
 
@@ -95,7 +113,7 @@ export class SummaryComponent implements OnChanges {
         });
 
         return this.empAttitudeSkilltSvc
-          .getByUserIdAndYear(this.userId, this.currentYear)
+          .getByUserIdAndYear(this.userId, this.year)
           .pipe(
             map((empData) => {
               const groupedSkills: { [key: string]: EmpAttitudeSkill[] } = {};
@@ -147,7 +165,7 @@ export class SummaryComponent implements OnChanges {
         });
 
         return this.empAchievementSvc
-          .getByUserIdAndYear(this.userId, this.currentYear)
+          .getByUserIdAndYear(this.userId, this.year)
           .pipe(
             map((empData) => {
               const groupedAchievements: { [key: string]: any[] } = {};

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import console from 'console';
 import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -52,10 +53,8 @@ export class SummariesComponent {
   isLoading: boolean = true;
   visible: boolean = false;
   dialogHeader: string = '';
-  selectedUser: User = {
-    enabled: true,
-    employee_status: 1,
-  } as User;
+  selectedUser: User = {} as User;
+  selectedYear: number = new Date().getFullYear();
   dialogType = DialogType;
   currentDialogType: DialogType = DialogType.ADD;
   constructor(
@@ -127,10 +126,11 @@ export class SummariesComponent {
     });
   }
 
-  showDialog(userData: User = {} as User) {
+  showDialog(user: User, year: number) {
     this.visible = true;
-    this.selectedUser = userData;
-    console.log(userData);
+    this.selectedUser = user;
+    this.selectedYear = year;
+    // console.log(userData);
     console.log('DIALOG VISIBLE: ', this.visible);
   }
 

@@ -122,7 +122,10 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-summary>
-    <tr class="clickable-row" (click)="showDialog(summary.user_id)">
+    <tr
+      class="clickable-row"
+      (click)="showDialog(summary.user_id, summary.year)"
+    >
       <td>{{ summary.user_id.full_name }}</td>
       <td style="text-align: center">{{ summary.user_id.username }}</td>
       <td style="text-align: center">{{ summary.user_id.position }}</td>
@@ -142,5 +145,5 @@
   class="absolute z-5"
   appendTo="body"
 >
-  <app-summary [userId]="selectedUser.id" />
+  <app-summary [userId]="selectedUser.id" [year]="selectedYear" />
 </p-dialog>

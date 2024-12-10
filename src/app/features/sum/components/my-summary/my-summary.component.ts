@@ -19,6 +19,7 @@ import { SummaryComponent } from '../summary/summary.component';
 })
 export class MySummaryComponent implements OnInit {
   userId: string = '';
+  currentYear = new Date().getFullYear();
 
   constructor(private readonly tokenSvc: TokenService) {}
 

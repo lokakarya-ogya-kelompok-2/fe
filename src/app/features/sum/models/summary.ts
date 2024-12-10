@@ -16,7 +16,7 @@ export interface SummaryItem {
   aspect: string;
   score: number;
   weight: number;
-  finalScore: number;
+  final_score: number;
 }
 
 export interface Summary extends ResponseContentMeta {
@@ -25,11 +25,6 @@ export interface Summary extends ResponseContentMeta {
   score: number;
   status: number;
   year: number;
-}
-
-export interface SummaryData {
-  attitudeSkillSummary: SummaryItem[];
-  achievementSummary: SummaryItem[];
-  totalPercentage: number;
-  totalScore: number;
+  achievements?: SummaryItem[];
+  attitude_skills?: SummaryItem[];
 }
