@@ -1,0 +1,67 @@
+<div class="card" style="width: 98.4%; margin-left: 9px">
+  <p-card header="Give your suggestion">
+    <form #suggestionForm="ngForm">
+      <div class="flex flex-column gap-3">
+        <div
+          *ngFor="let suggestion of empSuggestionRequest; let i = index"
+          class="flex align-items-start gap-2"
+        >
+          <div class="card w-full" id="field-area">
+            <div class="flex align-items-start gap-2">
+              <textarea
+                [(ngModel)]="empSuggestionRequest[i].suggestion"
+                pInputTextarea
+                [name]="'suggestion_' + i"
+                rows="3"
+                class="flex-grow-1"
+                placeholder="Enter your suggestion here..."
+                required
+                maxlength="200"
+                #textArea="ngModel"
+              ></textarea>
+              <p-button
+                *ngIf="empSuggestionRequest.length > 1"
+                icon="pi pi-trash"
+                severity="danger"
+                (onClick)="deleteSuggestion(i)"
+                pTooltip="Delete suggestion"
+              ></p-button>
+            </div>
+            <div
+              *ngIf="textArea.invalid && (textArea.dirty || textArea.touched)"
+            >
+              <small
+                class="p-error block mt-1"
+                *ngIf="textArea.errors?.['required']"
+              >
+                Suggestion is required
+              </small>
+              <small
+                class="p-error block mt-1"
+                *ngIf="textArea.errors?.['maxlength']"
+              >
+                Suggestion cannot exceed 200 characters
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="button flex gap-2 ml-3">
+          <p-button
+            icon="pi pi-plus"
+            severity="success"
+            (onClick)="addSuggestion()"
+            pTooltip="Add text area"
+            label="Add text area"
+          ></p-button>
+          <p-button
+            severity="primary"
+            type="submit"
+            label="Submit Suggestion"
+            [disabled]="suggestionForm.invalid"
+            (onClick)="createSuggestion()"
+          ></p-button>
+        </div>
+      </div>
+    </form>
+  </p-card>
+</div>
