@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Response } from '../../../shared/models/response';
 import { EmpSuggestion, EmpSuggestionRequest } from '../models/emp-suggestion';
 
 @Injectable({
@@ -15,6 +16,14 @@ export class EmpSuggestionService {
     return this.http.post<EmpSuggestion[]>(
       `${this.Api}/bulk-create`,
       empSuggestion
+    );
+  }
+  getByUserIdAndYear(
+    userId: string,
+    year: number
+  ): Observable<Response<EmpSuggestion[]>> {
+    return this.http.get<Response<EmpSuggestion[]>>(
+      `${this.Api}?user_ids=${userId}&years=${year}`
     );
   }
 }
