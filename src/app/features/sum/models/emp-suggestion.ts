@@ -7,6 +7,7 @@ export interface EmpSuggestion extends ResponseContentMeta {
   assessment_year: number;
 }
 export interface EmpSuggestionRequest {
+  id?: string;
   user_id: string;
   suggestion: string;
   assessment_year: number;
