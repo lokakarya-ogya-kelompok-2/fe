@@ -8,6 +8,8 @@
 :host ::ng-deep {
   #card-header {
     .p-card {
+      width: 38%;
+      margin: 1rem auto;
       margin-top: 1rem;
       background-color: var(--surface-card);
       border-radius: 8px;
