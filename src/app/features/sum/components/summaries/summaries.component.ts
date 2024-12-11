@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import console from 'console';
 import { ButtonModule } from 'primeng/button';
@@ -16,10 +16,9 @@ import { ToastModule } from 'primeng/toast';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { DialogType } from '../../../../shared/types';
 import { User } from '../../../users/models/user';
-import { UserService } from '../../../users/services/user.service';
 import { Summary } from '../../models/summary';
 import { SummaryService } from '../../services/summary.service';
-import { SummaryComponent } from '../summary/summary.component';
+import { SummaryAndSuggestionsComponent } from '../summary-and-suggestions/summary-and-suggestions.component';
 interface yearOption {
   year: number;
 }
@@ -40,13 +39,13 @@ interface yearOption {
     FormsModule,
     NavbarComponent,
     ChipModule,
-    SummaryComponent,
+    SummaryAndSuggestionsComponent,
     DropdownModule,
   ],
   templateUrl: './summaries.component.html',
   styleUrl: './summaries.component.scss',
 })
-export class SummariesComponent {
+export class SummariesComponent implements OnInit {
   summaries: Summary[] = [];
   divisions: any[] = [];
   years: yearOption[] = [];
@@ -57,10 +56,13 @@ export class SummariesComponent {
   selectedYear: number = new Date().getFullYear();
   dialogType = DialogType;
   currentDialogType: DialogType = DialogType.ADD;
-  constructor(
-    private readonly userSvc: UserService,
-    private readonly summaryService: SummaryService
-  ) {}
+  isSuggestionsLoading: boolean = false;
+
+  constructor(private readonly summaryService: SummaryService) {}
+
+  ngOnInit(): void {
+    this.loadSummary();
+  }
 
   loadSummary() {
     this.isLoading = true;
@@ -68,7 +70,6 @@ export class SummariesComponent {
       next: (data) => {
         this.summaries = data.content;
         this.isLoading = false;
-        // console.log(this.summaries);
       },
       error: (err) => {
         console.error('Error fetching user:', err);
@@ -95,7 +96,6 @@ export class SummariesComponent {
         )
           .sort()
           .map((year) => ({ year }));
-        // console.log(this.years, 'ini yearsssssssssss');
       },
     });
   }
@@ -106,12 +106,6 @@ export class SummariesComponent {
     this.selectedYear = year;
     // console.log(userData);
     console.log('DIALOG VISIBLE: ', this.visible);
-  }
-
-  ngOnInit(): void {
-    // this.loadUsers();
-    this.loadSummary();
-    // console.log(this.divisions);
   }
 
   onGlobalFilter(table: Table, event: Event) {

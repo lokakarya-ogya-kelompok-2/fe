@@ -152,5 +152,10 @@
   class="absolute z-5"
   appendTo="body"
 >
-  <app-summary [userId]="selectedUser.id" [year]="selectedYear" />
+  @if(selectedUser.id && selectedYear) {
+  <app-summary-and-suggestions
+    [userId]="selectedUser.id"
+    [year]="selectedYear"
+  />
+  }
 </p-dialog>
