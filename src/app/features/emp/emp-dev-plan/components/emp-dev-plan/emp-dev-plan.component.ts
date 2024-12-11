@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
@@ -29,6 +30,7 @@ import { EmpDevPlanService } from '../../services/emp-dev-plan.service';
     ButtonModule,
     ToastModule,
     InputTextModule,
+    CardModule,
   ],
   templateUrl: './emp-dev-plan.component.html',
   styleUrl: './emp-dev-plan.component.scss',

@@ -1,91 +1,104 @@
 <app-navbar />
+<div class="card">
+  <p-card id="card-header">
+    <div class="flex justify-content-between align-items-center">
+      <h2 class="text-xl font-semibold m-0">
+        Employee Technical Skills Assessment
+      </h2>
+    </div>
+  </p-card>
+</div>
 <app-user-information />
 
 <form #technicalSkillForm="ngForm" class="card m-4 p-4">
   @for (technicalSkill of technicalSkills; track technicalSkill.id) {
-  <div class="mb-4">
-    <h2 class="text-xl font-bold mb-3 text-center">
-      {{ technicalSkill.technical_skill }}
-    </h2>
+  <div class="inner-card w-full">
+    <div class="mb-4">
+      <h2 class="text-xl font-bold mb-3 text-center">
+        {{ technicalSkill.technical_skill }}
+      </h2>
 
-    @for (inputForm of empTechnicalSkills[technicalSkill.id]; track $index) {
-    <div class="p-2 mb-2 border-1 border-round surface-border">
-      <div class="flex flex-column md:flex-row gap-3 align-items-center">
-        <div class="flex-1">
-          <input
-            type="text"
-            pInputText
-            class="w-full"
-            [(ngModel)]="empTechnicalSkills[technicalSkill.id][$index].detail"
-            [name]="'detail_' + technicalSkill.id + '_' + $index"
-            placeholder="Enter details"
-            [disabled]="
-              empTechnicalSkills[technicalSkill.id][$index].id != undefined
-            "
-            required
-            #detailInput="ngModel"
-          />
-          <div
-            *ngIf="
-              detailInput.invalid && (detailInput.dirty || detailInput.touched)
-            "
-          >
-            <small
-              class="p-error block mt-1"
-              *ngIf="detailInput.errors?.['required']"
+      @for (inputForm of empTechnicalSkills[technicalSkill.id]; track $index) {
+      <div class="p-2 mb-2 border-1 border-round surface-border">
+        <div class="flex flex-column md:flex-row gap-3 align-items-center">
+          <div class="flex-1">
+            <input
+              type="text"
+              pInputText
+              class="w-full"
+              [(ngModel)]="empTechnicalSkills[technicalSkill.id][$index].detail"
+              [name]="'detail_' + technicalSkill.id + '_' + $index"
+              placeholder="Enter details"
+              [disabled]="
+                empTechnicalSkills[technicalSkill.id][$index].id != undefined
+              "
+              required
+              #detailInput="ngModel"
+            />
+            <div
+              *ngIf="
+                detailInput.invalid &&
+                (detailInput.dirty || detailInput.touched)
+              "
             >
-              Detail is required
-            </small>
+              <small
+                class="p-error block mt-1"
+                *ngIf="detailInput.errors?.['required']"
+              >
+                Detail is required
+              </small>
+            </div>
           </div>
-        </div>
-        <div class="flex-1">
-          <p-dropdown
-            [options]="skillLevels"
-            [(ngModel)]="empTechnicalSkills[technicalSkill.id][$index].score"
-            [name]="'score_' + technicalSkill.id + '_' + $index"
-            optionLabel="description"
-            optionValue="level"
-            placeholder="Select your knowledge level"
-            class="w-full"
-            [disabled]="
-              empTechnicalSkills[technicalSkill.id][$index].id != undefined
-            "
-            required
-            #skillLevel="ngModel"
-          />
-          <div
-            *ngIf="
-              skillLevel.invalid && (skillLevel.dirty || skillLevel.touched)
-            "
-          >
-            <small
-              class="p-error block mt-1"
-              *ngIf="skillLevel.errors?.['required']"
+          <div class="flex-1">
+            <p-dropdown
+              [options]="skillLevels"
+              [(ngModel)]="empTechnicalSkills[technicalSkill.id][$index].score"
+              [name]="'score_' + technicalSkill.id + '_' + $index"
+              optionLabel="description"
+              optionValue="level"
+              placeholder="Select your knowledge level"
+              class="w-full"
+              [disabled]="
+                empTechnicalSkills[technicalSkill.id][$index].id != undefined
+              "
+              required
+              #skillLevel="ngModel"
+            />
+            <div
+              *ngIf="
+                skillLevel.invalid && (skillLevel.dirty || skillLevel.touched)
+              "
             >
-              Please select a skill level
-            </small>
+              <small
+                class="p-error block mt-1"
+                *ngIf="skillLevel.errors?.['required']"
+              >
+                Please select a skill level
+              </small>
+            </div>
           </div>
-        </div>
-        <div class="flex gap-2" style="min-width: 2.5rem">
-          @if (empTechnicalSkills[technicalSkill.id][$index].id == undefined) {
-          <p-button
-            icon="pi pi-trash"
-            severity="danger"
-            (onClick)="removeField(technicalSkill.id, $index)"
-          />
-          }
+          <div class="flex gap-2" style="min-width: 2.5rem">
+            @if (empTechnicalSkills[technicalSkill.id][$index].id == undefined)
+            {
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              (onClick)="removeField(technicalSkill.id, $index)"
+            />
+            }
+          </div>
         </div>
       </div>
-    </div>
-    }
+      }
 
-    <div class="flex justify-content-end mt-3">
-      <p-button
-        label="Add New"
-        icon="pi pi-plus"
-        (onClick)="addField(technicalSkill.id)"
-        severity="secondary"
-      />
+      <div class="flex justify-content-end mt-3">
+        <p-button
+          label="Add New"
+          icon="pi pi-plus"
+          (onClick)="addField(technicalSkill.id)"
+          severity="secondary"
+        />
+      </div>
     </div>
   </div>
   }
