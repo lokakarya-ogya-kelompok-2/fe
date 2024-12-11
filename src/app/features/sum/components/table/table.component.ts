@@ -1,18 +1,16 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { SummaryItem } from '../../models/summary';
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [TableModule],
+  imports: [TableModule, CommonModule],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
-export class TableComponent implements OnChanges {
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.data, ' INI DATA');
-  }
+export class TableComponent {
   @Input() data: SummaryItem[] = [];
   @Input() tableHeader: string = '';
 }

@@ -17,7 +17,20 @@
       shape="circle"
     />
     <h1>Welcome, {{ tokenPayload.full_name }}</h1>
-    <ng-template pTemplate="end" style="display: inline"> </ng-template>
+    <div
+      class="flex gap-2 flex-wrap justify-content-center animate-scale-in animation-delay-300"
+    >
+      @for (role of currentUser.roles; track role.id) {
+      <p-chip
+        [label]="role.role_name"
+        styleClass="font-semibold"
+        [style]="{
+          backgroundColor: 'var(--primary-color)',
+          color: 'white'
+        }"
+      />
+      }
+    </div>
     <div class="card">
       <p-megaMenu
         [model]="items"
