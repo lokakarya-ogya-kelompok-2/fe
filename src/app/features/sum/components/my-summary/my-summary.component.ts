@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TokenService } from '../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { UserInformationComponent } from '../../../emp/user-information/components/user-information/user-information.component';
+import { MenuService } from '../../../menus/services/menu.service';
 import { SuggestionComponent } from '../suggestion/suggestion.component';
 import { SummaryComponent } from '../summary/summary.component';
 
@@ -20,11 +21,25 @@ import { SummaryComponent } from '../summary/summary.component';
 export class MySummaryComponent implements OnInit {
   userId: string = '';
   currentYear = new Date().getFullYear();
+  hasAccessToSuggestion: boolean = true;
 
-  constructor(private readonly tokenSvc: TokenService) {}
+  constructor(
+    private readonly tokenSvc: TokenService,
+    private readonly menuSvc: MenuService
+  ) {}
 
   ngOnInit(): void {
     const tokenPayload = this.tokenSvc.decodeToken(this.tokenSvc.getToken()!);
     this.userId = tokenPayload.sub!;
+    this.menuSvc.getMenuByUserId(this.userId).subscribe({
+      next: (data) => {
+        this.hasAccessToSuggestion = data.content.some(
+          (menu) => menu.menu_name === 'emp-suggestion#all'
+        );
+      },
+      error: (err) => {
+        console.error('Error fetching user menu: ', err);
+      },
+    });
   }
 }

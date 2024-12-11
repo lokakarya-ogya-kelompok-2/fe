@@ -75,6 +75,7 @@ export class EmpAchievementComponent implements OnInit {
   selectedUser: User = {} as User;
   groupedAchievements: GroupedAchievement[] = [];
   currentYear = new Date().getFullYear();
+  notSubmissible = false;
   constructor(
     private empAchievementService: EmpAchievementService,
     private confirmationService: ConfirmationService,
@@ -133,14 +134,14 @@ export class EmpAchievementComponent implements OnInit {
       .getByUserIdAndYear(this.selectedUser.id, this.currentYear)
       .subscribe({
         next: (data) => {
-          this.datas = data.content;
           this.loading = false;
           data.content.forEach((empAc) => {
+            this.notSubmissible ||= empAc.id == undefined;
             this.empAchievementRequests[empAc.achievement_id.id] = {
               ...this.empAchievementRequests[empAc.achievement_id.id],
               id: empAc.id,
-              notes: empAc.notes,
-              score: empAc.score,
+              notes: empAc.notes || '',
+              score: empAc.score || 0,
             };
           });
         },
@@ -154,10 +155,11 @@ export class EmpAchievementComponent implements OnInit {
     console.log(this.empAchievementRequests, ' INI REQ DATANYA');
     let reqData: EmpAchievementRequest[] = [];
     Object.entries(this.empAchievementRequests).forEach(([id, empAcReq]) => {
-      empAcReq.achievement_id = id;
-      empAcReq.user_id = this.selectedUser.id;
-      reqData.push(empAcReq);
-      console.log(this.empAchievementRequests);
+      if (!empAcReq.id) {
+        empAcReq.achievement_id = id;
+        empAcReq.user_id = this.selectedUser.id;
+        reqData.push(empAcReq);
+      }
     });
     this.empAchievementService.createEmpAchievement(reqData).subscribe({
       next: (data) => {

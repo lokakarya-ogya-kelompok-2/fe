@@ -1,4 +1,6 @@
 <app-navbar />
 <app-user-information />
 <app-summary [userId]="userId" />
+@if (hasAccessToSuggestion) {
 <app-suggestion />
+}

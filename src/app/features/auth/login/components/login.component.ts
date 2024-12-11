@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Login failed! Your email or password maybe wrong, Please try again.',
+          text: 'Login failed! Your email/username or password maybe wrong, Please try again.',
         });
       },
     });

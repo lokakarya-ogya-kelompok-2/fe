@@ -34,11 +34,30 @@ export class NavbarComponent implements OnInit {
 
     this.items = [
       {
-        id: 'user#all',
-        label: 'User',
-        routerLink: '/manage-users',
-        routerLinkActiveOptions: { exact: true },
+        id: 'user',
+        label: 'Users',
+        style: { 'z-index': 3 },
+        items: [
+          {
+            id: 'user#all',
+            label: 'Manage User',
+            routerLink: '/manage-users',
+            routerLinkActiveOptions: { exact: true },
+          },
+          {
+            id: 'user#read',
+            label: 'List User',
+            routerLink: '/users',
+            routerLinkActiveOptions: { exact: true },
+          },
+        ],
       },
+      // {
+      //   id: 'user#all',
+      //   label: 'User',
+      //   routerLink: '/manage-users',
+      //   routerLinkActiveOptions: { exact: true },
+      // },
       {
         id: 'division#all',
         label: 'Division',

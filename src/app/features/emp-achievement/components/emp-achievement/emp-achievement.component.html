@@ -95,7 +95,7 @@
                         pInputText
                         type="number"
                         id="score"
-                        name="score"
+                        [name]="achievement.id + 'score'"
                         required
                         min="0"
                         max="100"
@@ -136,7 +136,7 @@
                         "
                         pInputTextarea
                         id="notes"
-                        name="notes"
+                        [name]="achievement.id + 'notes'"
                         required
                         maxlength="100"
                         rows="3"
@@ -178,7 +178,7 @@
           (onClick)="createEmpAchievement()"
           label="Submit"
           class="flex mt-4 ml-3"
-          [disabled]="achievementForm.invalid"
+          [disabled]="notSubmissible || achievementForm.invalid"
         />
       </form>
     </p-accordion>
