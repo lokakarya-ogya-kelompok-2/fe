@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { MegaMenuItem } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
+import { ChipModule } from 'primeng/chip';
 import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { MegaMenuModule } from 'primeng/megamenu';
@@ -14,7 +14,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { TokenService } from '../../../core/services/token.service';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { TokenPayload } from '../../../shared/types';
-import { ChangePasswordReq } from '../../users/models/user';
+import { ChangePasswordReq, User } from '../../users/models/user';
 import { UserService } from '../../users/services/user.service';
 
 @Component({
@@ -31,6 +31,7 @@ import { UserService } from '../../users/services/user.service';
     CommonModule,
     AvatarModule,
     NavbarComponent,
+    ChipModule,
   ],
   templateUrl: './index-page.component.html',
   styleUrl: './index-page.component.scss',
@@ -41,16 +42,24 @@ export class IndexPageComponent implements OnInit {
   isChangePasswordBtnLoading: boolean = false;
   items: MegaMenuItem[] | undefined;
   tokenPayload: TokenPayload = {} as TokenPayload;
+  currentUser: User = {} as User;
 
   constructor(
     private tokenService: TokenService,
     readonly authService: AuthService,
-    private readonly userSvc: UserService,
-    private router: Router
+    private readonly userSvc: UserService
   ) {}
 
   ngOnInit(): void {
     this.getToken();
+    this.userSvc.getById(this.tokenPayload.sub!).subscribe({
+      next: (data) => {
+        this.currentUser = data.content;
+      },
+      error: (err) => {
+        console.error('Error fetching user: ', err);
+      },
+    });
     this.items = [
       {
         label: 'Change Password',

@@ -6,7 +6,6 @@ import { CardModule } from 'primeng/card';
 import Swal from 'sweetalert2';
 import { TokenService } from '../../../../core/services/token.service';
 import { TokenPayload } from '../../../../shared/types';
-import { UserService } from '../../../users/services/user.service';
 import { EmpSuggestionRequest } from '../../models/emp-suggestion';
 import { EmpSuggestionService } from '../../services/emp-suggestion.service';
 @Component({
@@ -25,8 +24,7 @@ export class SuggestionComponent implements OnInit {
   tokenPayload: TokenPayload = {} as TokenPayload;
   constructor(
     private empSuggestionService: EmpSuggestionService,
-    private tokenService: TokenService,
-    private userService: UserService
+    private tokenService: TokenService
   ) {}
 
   ngOnInit(): void {
