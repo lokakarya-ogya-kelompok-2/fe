@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { AchievementComponent } from './features/achievement/components/achievement/achievement.component';
 import { AttitudeSkillComponent } from './features/attitude-skill/components/attitude-skill.component';
 import { LoginComponent } from './features/auth/login/components/login.component';
@@ -43,6 +43,7 @@ import { TechnicalSkillComponent } from './features/technical-skill/components/t
     EmpDevPlanComponent,
     SummariesComponent,
     MySummaryComponent,
+    RouterModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

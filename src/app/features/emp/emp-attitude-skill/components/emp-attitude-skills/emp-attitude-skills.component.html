@@ -1,4 +1,13 @@
 <app-navbar></app-navbar>
+<div class="card">
+  <p-card>
+    <div class="flex justify-content-between align-items-center">
+      <h2 class="text-xl font-semibold m-0">
+        Employee Attitude Skills Assessment
+      </h2>
+    </div>
+  </p-card>
+</div>
 <app-user-information></app-user-information>
 
 <form
@@ -7,61 +16,65 @@
   (ngSubmit)="createEmpAttitudeSkill()"
 >
   <div *ngFor="let group of groupAttitudeSkills" class="mb-4">
-    <h2 class="text-xl font-bold mb-2">{{ group.group_name }}</h2>
-    <p-table
-      [value]="group.attitude_skills!"
-      [tableStyle]="{
-        'min-width': '50rem',
-        'box-shadow': '0 4px 6px rgba(0, 0, 0, 0.1)',
-        'border-radius': '8px',
-        'table-layout': 'fixed'
-      }"
-      [style]="{ width: '100%' }"
-      class="p-datatable-striped p-datatable-gridlines custom-table"
-    >
-      <ng-template pTemplate="header">
-        <tr>
-          <th class="custom-header" style="width: 60%">Attitude Skill</th>
-          <th class="custom-header" style="width: 40%">Input Field</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-skill let-i="rowIndex">
-        <tr>
-          <td>{{ skill.attitude_skill }}<span class="text-red-600">*</span></td>
-          <td class="text-center">
-            <div class="dropdown-container">
-              <p-dropdown
-                [options]="scoreCategory"
-                [(ngModel)]="this.empAttitudeSkills[skill.id].score"
-                optionLabel="category"
-                optionValue="score"
-                placeholder="Select score category"
-                class="custom-dropdown"
-                appendTo="body"
-                required
-                name="score-{{ group.group_name }}-{{ i }}"
-                [disabled]="this.empAttitudeSkills[skill.id].id != undefined"
-                #scoreDropdown="ngModel"
-              />
-              <div
-                *ngIf="
-                  scoreDropdown.invalid &&
-                  (scoreDropdown.dirty || scoreDropdown.touched)
-                "
-                class="error-message"
-              >
-                <small
-                  class="p-error block mt-1"
-                  *ngIf="scoreDropdown.errors?.['required']"
+    <div class="inner-card">
+      <h2 class="text-xl font-bold mb-2">{{ group.group_name }}</h2>
+      <p-table
+        [value]="group.attitude_skills!"
+        [tableStyle]="{
+          'min-width': '50rem',
+          'box-shadow': '0 4px 6px rgba(0, 0, 0, 0.1)',
+          'border-radius': '8px',
+          'table-layout': 'fixed'
+        }"
+        [style]="{ width: '100%' }"
+        class="p-datatable-striped p-datatable-gridlines custom-table"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="custom-header" style="width: 60%">Attitude Skill</th>
+            <th class="custom-header" style="width: 40%">Input Field</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-skill let-i="rowIndex">
+          <tr>
+            <td>
+              {{ skill.attitude_skill }}<span class="text-red-600">*</span>
+            </td>
+            <td class="text-center">
+              <div class="dropdown-container">
+                <p-dropdown
+                  [options]="scoreCategory"
+                  [(ngModel)]="this.empAttitudeSkills[skill.id].score"
+                  optionLabel="category"
+                  optionValue="score"
+                  placeholder="Select score category"
+                  class="custom-dropdown"
+                  appendTo="body"
+                  required
+                  name="score-{{ group.group_name }}-{{ i }}"
+                  [disabled]="this.empAttitudeSkills[skill.id].id != undefined"
+                  #scoreDropdown="ngModel"
+                />
+                <div
+                  *ngIf="
+                    scoreDropdown.invalid &&
+                    (scoreDropdown.dirty || scoreDropdown.touched)
+                  "
+                  class="error-message"
                 >
-                  Please select a score
-                </small>
+                  <small
+                    class="p-error block mt-1"
+                    *ngIf="scoreDropdown.errors?.['required']"
+                  >
+                    Please select a score
+                  </small>
+                </div>
               </div>
-            </div>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
   </div>
   <p-divider />
   <div class="card flex justify-content-center">

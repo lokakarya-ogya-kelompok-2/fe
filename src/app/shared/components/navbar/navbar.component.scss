@@ -34,3 +34,33 @@
     width: 100%;
   }
 }
+
+:host ::ng-deep {
+  .p-menubar {
+    .p-menuitem-link {
+      &.active-route {
+        background-color: var(--primary-color) !important;
+        color: var(--primary-color-text) !important;
+
+        .p-menuitem-text,
+        .p-menuitem-icon {
+          color: var(--primary-color-text) !important;
+        }
+      }
+    }
+
+    .p-submenu-list {
+      .p-menuitem-link {
+        &.active-route {
+          background-color: var(--primary-color) !important;
+          color: var(--primary-color-text) !important;
+
+          .p-menuitem-text,
+          .p-menuitem-icon {
+            color: var(--primary-color-text) !important;
+          }
+        }
+      }
+    }
+  }
+}
