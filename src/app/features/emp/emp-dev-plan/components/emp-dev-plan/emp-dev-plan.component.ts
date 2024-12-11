@@ -7,6 +7,7 @@ import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
+import { forkJoin } from 'rxjs';
 import { TokenService } from '../../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../../shared/components/navbar/navbar.component';
 import { DevPlan } from '../../../../dev-plan/models/dev-plan';
@@ -35,7 +36,6 @@ import { EmpDevPlanService } from '../../services/emp-dev-plan.service';
   providers: [MessageService],
 })
 export class EmpDevPlanComponent implements OnInit {
-  plans: any[] = [];
   private readonly currentYear: number = new Date().getFullYear();
   devPlans: DevPlan[] = [];
   empDevPlans: { [key: string]: EmpDevPlanRequest[] } = {};
@@ -49,48 +49,35 @@ export class EmpDevPlanComponent implements OnInit {
 
   ngOnInit(): void {
     this.userId = this.tokenSvc.decodeToken(this.tokenSvc.getToken()!).sub!;
-    console.log(this.userId, 'ini user id ');
 
-    this.empDevPlanService
-      .getByUserIdAndYear(this.userId, this.currentYear)
-      .subscribe({
-        next: (data) => {
-          console.log(data.content, 'by user id and year');
-          data.content.forEach((empDevPlan) => {
-            console.log(empDevPlan);
-            if (!this.empDevPlans[empDevPlan.dev_plan.id]) {
-              this.empDevPlans[empDevPlan.dev_plan.id] = [];
-            }
-            this.empDevPlans[empDevPlan.dev_plan.id].push({
-              id: empDevPlan.id,
-              assessment_year: empDevPlan.assessment_year,
-              dev_plan_id: empDevPlan.dev_plan.id,
-              detail: empDevPlan.detail,
-            });
-          });
-          console.log('Employee Dev Plans: ', this.empDevPlans);
-        },
+    forkJoin({
+      empDevPlans: this.empDevPlanService.getByUserIdAndYear(
+        this.userId,
+        this.currentYear
+      ),
+      devPlans: this.devPlanService.getAllDevPlan(),
+    }).subscribe(({ empDevPlans, devPlans }) => {
+      empDevPlans.content.forEach((empDevPlan) => {
+        if (!this.empDevPlans[empDevPlan.dev_plan.id]) {
+          this.empDevPlans[empDevPlan.dev_plan.id] = [];
+        }
+        this.empDevPlans[empDevPlan.dev_plan.id].push({
+          id: empDevPlan.id,
+          assessment_year: empDevPlan.assessment_year,
+          dev_plan_id: empDevPlan.dev_plan.id,
+          detail: empDevPlan.detail,
+        });
       });
-    // this.getAllEmpDevPlan();
-    this.devPlanService.getAllDevPlan().subscribe({
-      next: (data) => {
-        this.devPlans = data.content;
-        console.log(this.plans);
-      },
-      error: (err) => {
-        console.error('Error fetching dev plan:', err);
-      },
-    });
-  }
-  getAllEmpDevPlan(): void {
-    this.empDevPlanService.getAllEmpDevPlans().subscribe({
-      next: (data) => {
-        this.devPlans = data.content;
-        console.log(this.plans);
-      },
-      error: (err) => {
-        console.error('Error fetching emp dev plan:', err);
-      },
+      this.devPlans = devPlans.content;
+      devPlans.content.forEach((devPlan) => {
+        if (!this.empDevPlans[devPlan.id]) {
+          this.empDevPlans[devPlan.id] = [
+            {
+              assessment_year: this.currentYear,
+            } as EmpDevPlanRequest,
+          ];
+        }
+      });
     });
   }
 
@@ -98,8 +85,11 @@ export class EmpDevPlanComponent implements OnInit {
     if (!this.empDevPlans[key]) {
       this.empDevPlans[key] = [];
     }
-    this.empDevPlans[key].push({} as EmpDevPlanRequest);
+    this.empDevPlans[key].push({
+      assessment_year: this.currentYear,
+    } as EmpDevPlanRequest);
   }
+
   removeField(key: string, ix: number) {
     this.empDevPlans[key] = this.empDevPlans[key].filter((_, i) => i !== ix);
   }

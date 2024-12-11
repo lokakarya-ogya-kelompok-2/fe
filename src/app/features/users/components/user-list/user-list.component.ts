@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, Message, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -12,7 +12,6 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
-import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { DialogType } from '../../../../shared/types';
 import { userToReq } from '../../../../shared/utils/mapper';
 import { User, UserReq } from '../../models/user';
@@ -36,13 +35,13 @@ import { UserFormComponent } from '../user-form/user-form.component';
     FormsModule,
     UserFormComponent,
     UserDetailComponent,
-    NavbarComponent,
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss',
 })
 export class UserListComponent implements OnInit {
+  @Input() withActionButtons: boolean = true;
   users: User[] = [];
   isLoading: boolean = true;
   visible: boolean = false;

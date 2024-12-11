@@ -19,7 +19,8 @@ import { RoleMenuComponent } from './features/role-menu/components/role-menu/rol
 import { MySummaryComponent } from './features/sum/components/my-summary/my-summary.component';
 import { SummariesComponent } from './features/sum/components/summaries/summaries.component';
 import { TechnicalSkillComponent } from './features/technical-skill/components/technical-skill/technical-skill.component';
-import { UserListComponent } from './features/users/components/user-list/user-list.component';
+import { UserManageComponent } from './features/users/components/user-manage/user-manage.component';
+import { UsersReadComponent } from './features/users/components/users-read/users-read.component';
 import { NotFoundComponent } from './shared/pages/not-found/not-found.component';
 
 export const routes: Routes = [
@@ -37,10 +38,18 @@ export const routes: Routes = [
   },
   {
     path: 'manage-users',
-    component: UserListComponent,
+    component: UserManageComponent,
     canActivate: [authGuard, roleMenuGuard],
     data: {
       permission: 'user#all',
+    },
+  },
+  {
+    path: 'users',
+    component: UsersReadComponent,
+    // canActivate: [authGuard, roleMenuGuard],
+    data: {
+      PermissionStatus: 'user#read',
     },
   },
   {
