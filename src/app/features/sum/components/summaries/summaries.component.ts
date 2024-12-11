@@ -62,39 +62,13 @@ export class SummariesComponent {
     private readonly summaryService: SummaryService
   ) {}
 
-  // loadUsers() {
-  //   this.isLoading = true;
-  //   this.userSvc.list().subscribe({
-  //     next: (data) => {
-  //       this.users = data.content;
-  //       this.isLoading = false;
-  //       console.log(this.users);
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching user:', err);
-  //     },
-  //     complete: () => {
-  //       this.divisions = Array.from(
-  //         new Set(
-  //           this.users
-  //             .map((user) => user.division?.division_name)
-  //             .filter((name) => name != null)
-  //         )
-  //       )
-  //         .sort()
-  //         .map((name) => ({ division_name: name }));
-
-  //       console.log('Unique divisions:', this.divisions);
-  //     },
-  //   });
-  // }
   loadSummary() {
     this.isLoading = true;
     this.summaryService.getAllSummary().subscribe({
       next: (data) => {
         this.summaries = data.content;
         this.isLoading = false;
-        console.log(this.summaries);
+        // console.log(this.summaries);
       },
       error: (err) => {
         console.error('Error fetching user:', err);
@@ -110,7 +84,7 @@ export class SummariesComponent {
           .sort()
           .map((name) => ({ division_name: name }));
 
-        console.log('Unique divisions:', this.divisions);
+        // console.log('Unique divisions:', this.divisions);
 
         this.years = Array.from(
           new Set(
@@ -121,7 +95,7 @@ export class SummariesComponent {
         )
           .sort()
           .map((year) => ({ year }));
-        console.log(this.years, 'ini yearsssssssssss');
+        // console.log(this.years, 'ini yearsssssssssss');
       },
     });
   }
@@ -137,7 +111,7 @@ export class SummariesComponent {
   ngOnInit(): void {
     // this.loadUsers();
     this.loadSummary();
-    console.log(this.divisions);
+    // console.log(this.divisions);
   }
 
   onGlobalFilter(table: Table, event: Event) {
