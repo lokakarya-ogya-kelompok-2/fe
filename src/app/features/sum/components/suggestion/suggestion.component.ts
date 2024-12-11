@@ -5,12 +5,9 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import Swal from 'sweetalert2';
 import { TokenService } from '../../../../core/services/token.service';
-import { User } from '../../../users/models/user';
+import { TokenPayload } from '../../../../shared/types';
 import { UserService } from '../../../users/services/user.service';
-import {
-  EmpSuggestion,
-  EmpSuggestionRequest,
-} from '../../models/emp-suggestion';
+import { EmpSuggestionRequest } from '../../models/emp-suggestion';
 import { EmpSuggestionService } from '../../services/emp-suggestion.service';
 @Component({
   selector: 'app-suggestion',
@@ -20,16 +17,12 @@ import { EmpSuggestionService } from '../../services/emp-suggestion.service';
   styleUrl: './suggestion.component.scss',
 })
 export class SuggestionComponent implements OnInit {
-  datas: EmpSuggestion[] = [];
   loading: boolean = false;
   suggestions: string[] = [''];
   userId: string = '';
   currentYear: number = new Date().getFullYear();
-  empSuggestionRequest: EmpSuggestionRequest[] = [
-    { suggestion: '', user_id: '', assessment_year: this.currentYear },
-  ];
-  currentUser: User = {} as User;
-  submittedEmpSuggestions: { [key: string]: boolean } = {};
+  empSuggestionRequests: EmpSuggestionRequest[] = [];
+  tokenPayload: TokenPayload = {} as TokenPayload;
   constructor(
     private empSuggestionService: EmpSuggestionService,
     private tokenService: TokenService,
@@ -37,35 +30,24 @@ export class SuggestionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const jwtPayload = this.tokenService.decodeToken(
+    this.tokenPayload = this.tokenService.decodeToken(
       this.tokenService.getToken()!
     );
-    this.userService.getById(jwtPayload.sub!).subscribe({
-      next: (data) => {
-        this.currentUser = data.content;
-        console.log(this.currentUser);
-      },
-      error: (err) => {
-        console.error('Error fetching user:', err);
-      },
-      complete: () => {
-        this.getAllEmpSuggestions();
-      },
-    });
+    this.getAllEmpSuggestions();
   }
   addSuggestion() {
-    this.empSuggestionRequest.push({} as EmpSuggestionRequest);
+    this.empSuggestionRequests.push({} as EmpSuggestionRequest);
   }
 
   deleteSuggestion(index: number) {
-    if (this.empSuggestionRequest.length > 1) {
-      this.empSuggestionRequest.splice(index, 1);
+    if (this.empSuggestionRequests.length > 1) {
+      this.empSuggestionRequests.splice(index, 1);
     }
   }
   createSuggestion() {
-    console.log(this.empSuggestionRequest);
+    console.log(this.empSuggestionRequests);
     let suggestionData: EmpSuggestionRequest[] = [];
-    const hasEmptySuggestion = this.empSuggestionRequest.some(
+    const hasEmptySuggestion = this.empSuggestionRequests.some(
       (req) => !req.suggestion || req.suggestion.trim() === ''
     );
 
@@ -79,14 +61,13 @@ export class SuggestionComponent implements OnInit {
       return;
     }
 
-    Object.entries(this.empSuggestionRequest).forEach(([id, data]) => {
+    Object.entries(this.empSuggestionRequests).forEach(([id, data]) => {
       data.assessment_year = this.currentYear;
       suggestionData.push(data);
     });
-    console.log(suggestionData);
 
     this.empSuggestionService
-      .createSuggestion(this.empSuggestionRequest)
+      .createSuggestion(this.empSuggestionRequests)
       .subscribe({
         next: (data) => {
           console.log(data);
@@ -101,22 +82,28 @@ export class SuggestionComponent implements OnInit {
           console.error('Error creating suggestion: ', err);
         },
       });
-    console.log(this.empSuggestionRequest);
+    console.log(this.empSuggestionRequests);
   }
   getAllEmpSuggestions() {
-    console.log(this.currentUser);
     this.empSuggestionService
-      .getByUserIdAndYear(this.currentUser.id, this.currentYear)
+      .getByUserIdAndYear(this.tokenPayload.sub!, this.currentYear)
       .subscribe({
         next: (data) => {
-          this.datas = data.content;
-          this.submittedEmpSuggestions = {};
           this.loading = false;
-          console.log('ini dataaaaaaaaaaaa', this.datas);
+          console.log('THERE ARE ' + data.content.length + ' ITEMS');
           data.content.forEach((empSuggestion) => {
-            this.submittedEmpSuggestions[empSuggestion.id] = true;
+            this.empSuggestionRequests.push({
+              id: empSuggestion.id,
+              assessment_year: empSuggestion.assessment_year,
+              suggestion: empSuggestion.suggestion,
+            } as EmpSuggestionRequest);
           });
-          console.log(this.submittedEmpSuggestions);
+          if (this.empSuggestionRequests.length == 0) {
+            this.empSuggestionRequests.push({
+              assessment_year: this.currentYear,
+              suggestion: '',
+            } as EmpSuggestionRequest);
+          }
           console.log(data);
         },
         error: (err) => {

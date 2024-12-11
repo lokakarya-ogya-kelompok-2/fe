@@ -104,13 +104,15 @@
                         pInputText
                         type="number"
                         id="score"
-                        name="score"
+                        [name]="achievement.id + 'score'"
                         required
                         min="0"
                         max="100"
                         class="w-full"
                         #scoreInput="ngModel"
-                        [disabled]="submittedAchievements[achievement.id]"
+                        [disabled]="
+                          empAchievementRequests[achievement.id].id != undefined
+                        "
                       />
                       <div
                         *ngIf="
@@ -143,13 +145,15 @@
                         "
                         pInputTextarea
                         id="notes"
-                        name="notes"
+                        [name]="achievement.id + 'notes'"
                         required
                         maxlength="100"
                         rows="3"
                         class="w-full"
                         #notesInput="ngModel"
-                        [disabled]="submittedAchievements[achievement.id]"
+                        [disabled]="
+                          empAchievementRequests[achievement.id].id != undefined
+                        "
                       ></textarea>
                       <div
                         *ngIf="
@@ -183,6 +187,7 @@
           (onClick)="createEmpAchievement()"
           label="Submit"
           class="flex mt-4 ml-3"
+          [disabled]="notSubmissible || achievementForm.invalid"
         />
       </form>
     </p-accordion>

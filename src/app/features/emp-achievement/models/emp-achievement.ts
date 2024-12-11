@@ -11,6 +11,7 @@ export interface EmpAchievement extends ResponseContentMeta {
 }
 
 export interface EmpAchievementRequest {
+  id?: string;
   user_id: string;
   notes: string;
   achievement_id: string;

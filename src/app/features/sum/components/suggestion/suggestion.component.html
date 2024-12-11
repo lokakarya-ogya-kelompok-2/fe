@@ -3,13 +3,13 @@
     <form #suggestionForm="ngForm">
       <div class="flex flex-column gap-3">
         <div
-          *ngFor="let suggestion of empSuggestionRequest; let i = index"
+          *ngFor="let suggestion of empSuggestionRequests; let i = index"
           class="flex align-items-start gap-2"
         >
           <div class="card w-full" id="field-area">
             <div class="flex align-items-start gap-2">
               <textarea
-                [(ngModel)]="empSuggestionRequest[i].suggestion"
+                [(ngModel)]="empSuggestionRequests[i].suggestion"
                 pInputTextarea
                 [name]="'suggestion_' + i"
                 rows="3"
@@ -18,15 +18,15 @@
                 required
                 maxlength="200"
                 #textArea="ngModel"
-                [disabled]="submittedEmpSuggestions[currentUser.id]"
+                [disabled]="empSuggestionRequests[i].id != undefined"
               ></textarea>
               <p-button
-                *ngIf="empSuggestionRequest.length > 1"
+                *ngIf="empSuggestionRequests.length > 1"
                 icon="pi pi-trash"
                 severity="danger"
                 (onClick)="deleteSuggestion(i)"
                 pTooltip="Delete suggestion"
-                [disabled]="submittedEmpSuggestions[currentUser.id]"
+                [disabled]="empSuggestionRequests[i].id != undefined"
               ></p-button>
             </div>
             <div

@@ -1,17 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { Response } from '../../../shared/models/response';
 import { DevPlan, DevPlanRequest } from '../models/dev-plan';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DevPlanService {
-  private Api = 'http://localhost:8080/dev-plans';
+  private Api = `${environment.baseApiURL}/dev-plans`;
   constructor(private http: HttpClient) {}
 
-  getAllDevPlan(): Observable<any> {
-    return this.http.get(this.Api);
+  getAllDevPlan(): Observable<Response<DevPlan[]>> {
+    return this.http.get<Response<DevPlan[]>>(this.Api);
   }
   createDevPlan(devPlanRequest: DevPlanRequest): Observable<DevPlan> {
     return this.http.post<DevPlan>(this.Api, devPlanRequest);
