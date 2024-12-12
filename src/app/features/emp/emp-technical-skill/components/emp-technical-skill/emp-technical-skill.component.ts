@@ -8,6 +8,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
+import Swal from 'sweetalert2';
 import { TokenService } from '../../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../../shared/components/navbar/navbar.component';
 import { TechnicalSkill } from '../../../../technical-skill/models/technical-skill';
@@ -65,8 +66,7 @@ export class EmpTechnicalSkillComponent implements OnInit {
   constructor(
     private readonly empTechSkillSvc: EmpTechnicalSkillService,
     private readonly techSkillSvc: TechnicalSkillService,
-    private readonly tokenSvc: TokenService,
-    private readonly messageSvc: MessageService
+    private readonly tokenSvc: TokenService
   ) {}
 
   ngOnInit() {
@@ -130,64 +130,50 @@ export class EmpTechnicalSkillComponent implements OnInit {
     );
   }
 
-  onDelete(id: string) {
-    this.messageSvc.clear();
-    this.empTechSkillSvc.delete(id).subscribe({
-      next: (data) => {
-        this.messageSvc.add({
-          severity: 'info',
-          summary: 'Delete',
-          detail: data.message,
-        });
-      },
-      error: (err: any) => {
-        this.messageSvc.add({
-          severity: 'info',
-          summary: 'Delete',
-          detail: err.message,
-        });
-      },
-    });
-  }
-
   onSubmit() {
-    const submit = window.confirm('u sure?');
-    if (!submit) {
-      return;
-    }
-    this.messageSvc.clear();
-    let empTechnicalSkillsReq: EmpTechnicalSkillReq[] = [];
-    Object.entries(this.empTechnicalSkills).forEach(
-      ([techSkillId, userInputs]) => {
-        userInputs.forEach((userInput) => {
-          if (userInput.id) {
-            return;
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'After submitting this form, you will not be able to modify the data. Are you sure you want to proceed?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let empTechnicalSkillsReq: EmpTechnicalSkillReq[] = [];
+        Object.entries(this.empTechnicalSkills).forEach(
+          ([techSkillId, userInputs]) => {
+            userInputs.forEach((userInput) => {
+              if (userInput.id) {
+                return;
+              }
+              userInput.technical_skill_id = techSkillId;
+              userInput.assessment_year = this.currentYear;
+              empTechnicalSkillsReq.push(userInput);
+            });
           }
-          userInput.technical_skill_id = techSkillId;
-          userInput.assessment_year = this.currentYear;
-          empTechnicalSkillsReq.push(userInput);
+        );
+
+        this.empTechSkillSvc.insertBulk(empTechnicalSkillsReq).subscribe({
+          next: (_) => {
+            Swal.fire({
+              title: 'Emp Technical Skill created!',
+              icon: 'success',
+            });
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+          },
+          error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Failed to create employee technical skill',
+              text: err.error.message,
+            });
+          },
         });
       }
-    );
-
-    this.empTechSkillSvc.insertBulk(empTechnicalSkillsReq).subscribe({
-      next: (_) => {
-        this.messageSvc.add({
-          severity: 'success',
-          summary: 'Add',
-          detail: 'New Technical Skill Added!',
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      },
-      error: (err) => {
-        this.messageSvc.add({
-          severity: 'error',
-          summary: 'Delete',
-          detail: err.error?.message,
-        });
-      },
     });
   }
 }

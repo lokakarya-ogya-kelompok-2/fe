@@ -22,7 +22,6 @@
       'id',
       'attitude_skill',
       'group_id.group_name',
-      'percentage',
       'enabled'
     ]"
     [style]="{ width: '100%' }"
@@ -58,7 +57,7 @@
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 45%; text-align: center">Attitude Skill</th>
-        <th style="width: 15%; text-align: center">Percentage</th>
+        <th style="width: 15%; text-align: center">Weight</th>
         <th style="width: 15%; text-align: center">Enabled</th>
         <th style="width: 25%; text-align: center">Action</th>
       </tr>
@@ -414,7 +413,7 @@
             <td>{{ data.group_id?.group_name }}</td>
           </tr>
           <tr>
-            <td>Percentage</td>
+            <td>Weight</td>
             <td>{{ data.group_id?.percentage }}</td>
           </tr>
           <tr>

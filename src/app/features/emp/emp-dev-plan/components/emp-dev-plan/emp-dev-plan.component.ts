@@ -9,6 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { forkJoin } from 'rxjs';
+import Swal from 'sweetalert2';
 import { TokenService } from '../../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../../shared/components/navbar/navbar.component';
 import { DevPlan } from '../../../../dev-plan/models/dev-plan';
@@ -16,7 +17,6 @@ import { DevPlanService } from '../../../../dev-plan/services/dev-plan.service';
 import { UserInformationComponent } from '../../../user-information/components/user-information/user-information.component';
 import { EmpDevPlanRequest } from '../../models/emp-dev-plan';
 import { EmpDevPlanService } from '../../services/emp-dev-plan.service';
-
 @Component({
   selector: 'app-emp-dev-plan',
   standalone: true,
@@ -97,44 +97,52 @@ export class EmpDevPlanComponent implements OnInit {
   }
 
   onSubmit() {
-    const submit = window.confirm('u sure?');
-    if (!submit) {
-      return;
-    }
-    this.messageSvc.clear();
-    let empDevPlanRequest: EmpDevPlanRequest[] = [];
-    Object.entries(this.empDevPlans).forEach(([devPlanId, userInputs]) => {
-      userInputs.forEach((userInput) => {
-        if (userInput.id) {
-          return;
-        }
-        userInput.dev_plan_id = devPlanId;
-        userInput.assessment_year = this.currentYear;
-        empDevPlanRequest.push(userInput);
-        console.log(empDevPlanRequest, 'ini request emp dev plan');
-      });
-    });
-    console.log(this.devPlans, 'DEV PLANS');
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'After submitting this form, you will not be able to modify the data. Are you sure you want to proceed?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.messageSvc.clear();
+        let empDevPlanRequest: EmpDevPlanRequest[] = [];
+        Object.entries(this.empDevPlans).forEach(([devPlanId, userInputs]) => {
+          userInputs.forEach((userInput) => {
+            if (userInput.id) {
+              return;
+            }
+            userInput.dev_plan_id = devPlanId;
+            userInput.assessment_year = this.currentYear;
+            empDevPlanRequest.push(userInput);
+            console.log(empDevPlanRequest, 'ini request emp dev plan');
+          });
+        });
+        console.log(this.devPlans, 'DEV PLANS');
 
-    this.empDevPlanService.insertBulk(empDevPlanRequest).subscribe({
-      next: (data) => {
-        console.log(data);
-        this.messageSvc.add({
-          severity: 'success',
-          summary: 'Add',
-          detail: 'New Dev Plan Added!',
+        this.empDevPlanService.insertBulk(empDevPlanRequest).subscribe({
+          next: (data) => {
+            console.log(data);
+            this.messageSvc.add({
+              severity: 'success',
+              summary: 'Add',
+              detail: 'New Dev Plan Added!',
+            });
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+          },
+          error: (err) => {
+            this.messageSvc.add({
+              severity: 'error',
+              summary: 'Delete',
+              detail: err.error?.message,
+            });
+          },
         });
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      },
-      error: (err) => {
-        this.messageSvc.add({
-          severity: 'error',
-          summary: 'Delete',
-          detail: err.error?.message,
-        });
-      },
+      }
     });
   }
 }

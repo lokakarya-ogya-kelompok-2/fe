@@ -114,31 +114,43 @@ export class EmpAttitudeSkillsComponent implements OnInit {
   }
 
   createEmpAttitudeSkill(): void {
-    this.empAttitudeSkillService
-      .createEmpAttitudeSkill(
-        Object.values(this.empAttitudeSkills).filter(
-          (empAttitudeSkill) => !empAttitudeSkill.id
-        )
-      )
-      .subscribe({
-        next: (data) => {
-          Swal.fire({
-            title: 'Emp Attitude Skill created!',
-            icon: 'success',
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'After submitting this form, you will not be able to modify the data. Are you sure you want to proceed?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.empAttitudeSkillService
+          .createEmpAttitudeSkill(
+            Object.values(this.empAttitudeSkills).filter(
+              (empAttitudeSkill) => !empAttitudeSkill.id
+            )
+          )
+          .subscribe({
+            next: (data) => {
+              Swal.fire({
+                title: 'Emp Attitude Skill created!',
+                icon: 'success',
+              });
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+            },
+            error: (err) => {
+              console.error('Error creating employee attitude skill:', err);
+              Swal.fire({
+                icon: 'error',
+                title: 'Failed to create employee attitude skill',
+                text: err.error.message,
+              });
+            },
           });
-          // setTimeout(() => {
-          //   window.location.reload();
-          // }, 1000);
-        },
-        error: (err) => {
-          console.error('Error creating employee attitude skill:', err);
-          Swal.fire({
-            icon: 'error',
-            title: 'Failed to create employee attitude skill',
-            text: err.error.message,
-          });
-        },
-      });
+      }
+    });
   }
 
   getUser() {

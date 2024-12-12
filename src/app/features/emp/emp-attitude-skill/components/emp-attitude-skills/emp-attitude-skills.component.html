@@ -32,7 +32,7 @@
         <ng-template pTemplate="header">
           <tr>
             <th class="custom-header" style="width: 60%">Attitude Skill</th>
-            <th class="custom-header" style="width: 40%">Input Field</th>
+            <th class="custom-header" style="width: 40%">Score Category</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
@@ -59,6 +59,7 @@
                   #scoreDropdown="ngModel"
                   appendTo="body"
                   [disabled]="this.empAttitudeSkills[skill.id].id != undefined"
+                  [style]="{ width: '230px' }"
                 />
                 <div
                   *ngIf="
@@ -95,7 +96,6 @@
   </div>
   <p-divider />
   <div class="card flex justify-content-center">
-    <h1>{{ empAttitudeSkillForm.invalid }} DAN {{ notSubmisisble }}</h1>
     <p-button
       label="Submit"
       type="submit"

@@ -141,13 +141,6 @@ export class UserListComponent implements OnInit {
           },
         });
       },
-      reject: () => {
-        this.showToast({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
-        });
-      },
     });
   }
 
