@@ -93,8 +93,8 @@ export class ManageDivisionComponent implements OnInit {
         console.error('Error creating division:', err);
         Swal.fire({
           icon: 'error',
-          title: 'Oops...',
-          text: 'create division failed!',
+          title: 'Failed to create division',
+          text: err.error.message,
         });
       },
     });
@@ -114,8 +114,8 @@ export class ManageDivisionComponent implements OnInit {
         console.error('Error updating division:', err);
         Swal.fire({
           icon: 'error',
-          title: 'Oops...',
-          text: 'update division failed!',
+          title: 'Update Division Failed',
+          text: err.error.message,
         });
       },
     });

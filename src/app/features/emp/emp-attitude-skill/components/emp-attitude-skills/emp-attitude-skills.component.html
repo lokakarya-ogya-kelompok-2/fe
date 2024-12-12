@@ -59,6 +59,7 @@
                   name="score-{{ group.group_name }}-{{ i }}"
                   [disabled]="this.empAttitudeSkills[skill.id].id != undefined"
                   #scoreDropdown="ngModel"
+                  appendTo="body"
                 />
                 <div
                   *ngIf="
@@ -83,9 +84,9 @@
             <td colspan="4" class="text-center p-4">
               <div class="flex flex-column align-items-center gap-2">
                 <i class="pi pi-info-circle text-4xl text-primary"></i>
-                <span class="font-semibold text-lg"
-                  >No attitude skill data available</span
-                >
+                <span class="font-semibold text-lg">
+                  No attitude skill data available
+                </span>
               </div>
             </td>
           </tr>

@@ -80,7 +80,7 @@ export class UserListComponent implements OnInit {
   }
 
   showDialog(dialogType: DialogType, userData: User = {} as User) {
-    this.visible = true;
+    this.toggleDialog(true);
     this.currentDialogType = dialogType;
     switch (dialogType) {
       case DialogType.ADD:
@@ -103,7 +103,12 @@ export class UserListComponent implements OnInit {
 
   onSubmit() {
     this.loadUsers();
-    this.visible = false;
+    // this.visible = false;
+  }
+
+  toggleDialog(value: boolean) {
+    console.log('DIPANGGIL', value, ' INIIIIIIIII');
+    this.visible = value;
   }
 
   onDelete(event: Event, key: string) {

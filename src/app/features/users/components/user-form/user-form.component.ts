@@ -60,6 +60,7 @@ export class UserFormComponent implements OnInit, OnChanges {
   @Output() submit = new EventEmitter<void>();
   @Output() onCancel = new EventEmitter<void>();
   @Output() showToast = new EventEmitter<Message>();
+  @Output() toggleDialog = new EventEmitter<boolean>();
 
   divisions: Division[] = [];
   isDivisionLoading: boolean = true;
@@ -131,10 +132,19 @@ export class UserFormComponent implements OnInit, OnChanges {
             icon: 'success',
           });
           this.submitBtnLoading = false;
+          this.toggleDialog.emit(false);
+          setTimeout(() => {
+            window.location.reload();
+          }, 750);
         },
         error: (err) => {
           console.log('ERROR ON UPDATE USER');
           this.submitBtnLoading = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed to update user',
+            text: err.error.message,
+          });
         },
         complete: () => {},
       });
@@ -147,10 +157,16 @@ export class UserFormComponent implements OnInit, OnChanges {
             icon: 'success',
           });
           this.submitBtnLoading = false;
+          this.toggleDialog.emit(false);
         },
         error: (err) => {
           console.log('ERROR ON ADD USER: ' + err);
           this.submitBtnLoading = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed to create user',
+            text: err.error.message,
+          });
         },
         complete: () => {},
       });

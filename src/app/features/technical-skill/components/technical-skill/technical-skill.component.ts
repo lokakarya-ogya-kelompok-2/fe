@@ -105,6 +105,14 @@ export class TechnicalSkillComponent {
           this.resetForm();
           this.getAllTechnicalSkills();
         },
+        error: (err) => {
+          console.error('Error creating technical skill:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed Creating Technical Skill',
+            text: err.error.message,
+          });
+        },
       });
   }
   updateTechnicalSkill(): void {
@@ -123,6 +131,7 @@ export class TechnicalSkillComponent {
         Swal.fire({
           icon: 'error',
           title: 'Failed Updating Technical Skill',
+          text: err.error.message,
         });
       },
     });

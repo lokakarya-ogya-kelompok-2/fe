@@ -116,11 +116,14 @@ export class ManageGroupAttitudeSkillComponent {
           Swal.fire({
             icon: 'error',
             title: 'Failed creating group attitude skill',
+            text: err.error.message,
           });
         },
       });
   }
   updateGroupAttitudeSkill(): void {
+    console.log('edittt');
+
     this.manageGroupAttitudeSkillService
       .updateGroupAttitudeSkills(this.editData)
       .subscribe({
@@ -138,6 +141,7 @@ export class ManageGroupAttitudeSkillComponent {
           Swal.fire({
             icon: 'error',
             title: 'Failed Updating Group Attitude Skill',
+            text: err.error.message,
           });
         },
       });
