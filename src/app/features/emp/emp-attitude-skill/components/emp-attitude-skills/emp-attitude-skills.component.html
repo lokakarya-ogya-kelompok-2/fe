@@ -35,6 +35,11 @@
             <th class="custom-header" style="width: 40%">Input Field</th>
           </tr>
         </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="2" class="text-center p-4">No data available</td>
+          </tr>
+        </ng-template>
         <ng-template pTemplate="body" let-skill let-i="rowIndex">
           <tr>
             <td>
@@ -54,6 +59,7 @@
                   name="score-{{ group.group_name }}-{{ i }}"
                   [disabled]="this.empAttitudeSkills[skill.id].id != undefined"
                   #scoreDropdown="ngModel"
+                  appendTo="body"
                 />
                 <div
                   *ngIf="
@@ -69,6 +75,18 @@
                     Please select a score
                   </small>
                 </div>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="4" class="text-center p-4">
+              <div class="flex flex-column align-items-center gap-2">
+                <i class="pi pi-info-circle text-4xl text-primary"></i>
+                <span class="font-semibold text-lg">
+                  No attitude skill data available
+                </span>
               </div>
             </td>
           </tr>

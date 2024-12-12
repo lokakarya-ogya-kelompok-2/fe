@@ -104,6 +104,8 @@ export class SummariesComponent implements OnInit {
     this.visible = true;
     this.selectedUser = user;
     this.selectedYear = year;
+    // console.log(userData);
+    console.log('DIALOG VISIBLE: ', this.visible);
   }
 
   onGlobalFilter(table: Table, event: Event) {

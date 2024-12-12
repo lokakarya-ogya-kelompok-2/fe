@@ -99,6 +99,7 @@ export class DevPlanComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Failed Creating Dev Plan',
+          text: err.error.message,
         });
       },
     });
@@ -119,6 +120,7 @@ export class DevPlanComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Failed Updating Dev Plan',
+          text: err.error.message,
         });
       },
     });

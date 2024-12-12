@@ -1,0 +1,9 @@
+:host ::ng-deep {
+  .p-datatable {
+    tr {
+      td {
+        padding: 1rem !important;
+      }
+    }
+  }
+}

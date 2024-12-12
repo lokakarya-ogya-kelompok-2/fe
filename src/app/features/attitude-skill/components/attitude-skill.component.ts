@@ -120,6 +120,7 @@ export class AttitudeSkillComponent implements OnInit {
           Swal.fire({
             icon: 'error',
             title: 'Failed Updating Attitude Skill',
+            text: err.error.message,
           });
         },
       });
@@ -140,6 +141,7 @@ export class AttitudeSkillComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Failed Updating Attitude Skill',
+          text: err.error.message,
         });
       },
     });

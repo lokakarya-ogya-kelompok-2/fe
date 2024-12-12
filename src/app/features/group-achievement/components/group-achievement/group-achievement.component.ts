@@ -102,6 +102,14 @@ export class GroupAchievementComponent implements OnInit {
           this.resetForm();
           this.getGroupAchievements();
         },
+        error: (err) => {
+          console.error('Error creating group achievement:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed to create group achievement',
+            text: err.error.message,
+          });
+        },
       });
   }
   updateGroupAchievements(): void {
@@ -113,11 +121,20 @@ export class GroupAchievementComponent implements OnInit {
           Swal.fire({
             title: 'Group Achievement updated!',
             icon: 'success',
+            customClass: {
+              container: 'custom-swal-container',
+            },
           });
           this.getGroupAchievements();
+          this.editVisible = false;
         },
         error: (err) => {
           console.error('Error updating data:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed to update group achievement',
+            text: err.error.message,
+          });
         },
       });
   }

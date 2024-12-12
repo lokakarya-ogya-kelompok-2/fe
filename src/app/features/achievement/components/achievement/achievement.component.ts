@@ -109,6 +109,14 @@ export class AchievementComponent implements OnInit {
         this.resetForm();
         this.getAchievement();
       },
+      error: (err) => {
+        console.error('Error creating achievement:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed to create achievement',
+          text: err.error.message,
+        });
+      },
     });
   }
   updateAchievement(): void {
@@ -126,6 +134,7 @@ export class AchievementComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Failed Updating Achievement',
+          text: err.error.message,
         });
       },
     });

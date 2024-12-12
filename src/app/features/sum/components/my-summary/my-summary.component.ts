@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CardModule } from 'primeng/card';
 import { TokenService } from '../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { UserInformationComponent } from '../../../emp/user-information/components/user-information/user-information.component';
@@ -14,6 +15,7 @@ import { SummaryComponent } from '../summary/summary.component';
     SummaryComponent,
     UserInformationComponent,
     SuggestionComponent,
+    CardModule,
   ],
   templateUrl: './my-summary.component.html',
   styleUrl: './my-summary.component.scss',

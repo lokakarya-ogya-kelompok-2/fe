@@ -128,6 +128,14 @@ export class EmpAttitudeSkillsComponent implements OnInit {
           //   window.location.reload();
           // }, 1000);
         },
+        error: (err) => {
+          console.error('Error creating employee attitude skill:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed to create employee attitude skill',
+            text: err.error.message,
+          });
+        },
       });
   }
 
