@@ -1,24 +1,33 @@
-<app-table [data]="summary.attitude_skills!" tableHeader="Attitude Skill" />
-<app-table [data]="summary.achievements!" tableHeader="Achievement" />
+@if(!assessmentSummaryAvailable) {
+<div class="flex justify-content-center">
+  <p-message
+    severity="error"
+    text="You haven't filled out the current assessment!"
+  />
+</div>
+}
+
+<app-table [data]="summary.attitude_skills!" tableHeader="Attitude Skills" />
+<app-table [data]="summary.achievements!" tableHeader="Achievements" />
 
 <div class="flex justify-content-center w-full py-4">
   <div class="surface-card p-4 border-round w-3 min-w-max shadow-1">
     <div class="flex flex-column gap-3">
       <div class="flex justify-content-between align-items-center">
-        <span class="text-lg font-medium text-700"
-          >Total percentage<span class="pl-3"> :</span></span
-        >
-        <span class="text-xl font-bold text-primary"
-          >{{ percentage | number : "1.0-2" }}%</span
-        >
+        <span class="text-lg font-medium text-700">
+          Total Percentage<span class="pl-3">:</span>
+        </span>
+        <span class="text-xl font-bold text-primary">
+          {{ percentage | number : "1.0-2" }}%
+        </span>
       </div>
       <div class="flex justify-content-between align-items-center">
-        <span class="text-lg font-medium text-700"
-          >Total score<span class="pl-7">:</span></span
-        >
-        <span class="text-xl font-bold text-primary">{{
-          summary.score | number : "1.0-2"
-        }}</span>
+        <span class="text-lg font-medium text-700">
+          Total Score<span class="pl-7">:</span>
+        </span>
+        <span class="text-xl font-bold text-primary">
+          {{ summary.score | number : "1.0-2" }}
+        </span>
       </div>
     </div>
   </div>
