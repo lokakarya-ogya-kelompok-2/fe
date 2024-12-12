@@ -54,6 +54,8 @@ export class EmpAttitudeSkillsComponent implements OnInit {
   ];
   newEmpAttitudeSkill: EmpAttitudeSkillRequest = {} as EmpAttitudeSkillRequest;
   empAttitudeSkills: { [key: string]: EmpAttitudeSkillRequest } = {};
+  notSubmisisble: boolean = false;
+
   constructor(
     private tokenService: TokenService,
     private authService: AuthService,
@@ -70,9 +72,10 @@ export class EmpAttitudeSkillsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           data.content.forEach((empAttitudeSkill) => {
+            this.notSubmisisble ||= empAttitudeSkill.id == undefined;
             this.empAttitudeSkills[empAttitudeSkill.attitude_skill.id] = {
               id: empAttitudeSkill.id,
-              score: empAttitudeSkill.score || 0,
+              score: empAttitudeSkill.score,
               attitude_skill_id: empAttitudeSkill.attitude_skill.id,
               assessment_year: empAttitudeSkill.assessment_year,
             };
@@ -97,10 +100,9 @@ export class EmpAttitudeSkillsComponent implements OnInit {
                 group.attitude_skills?.forEach((attitudeSkill) => {
                   if (!this.empAttitudeSkills[attitudeSkill.id]) {
                     this.empAttitudeSkills[attitudeSkill.id] = {
-                      score: 0,
                       attitude_skill_id: attitudeSkill.id,
                       assessment_year: this.currentYear,
-                    };
+                    } as EmpAttitudeSkillRequest;
                   }
                 });
               });
