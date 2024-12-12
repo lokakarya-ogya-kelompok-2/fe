@@ -12,6 +12,7 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
+import { TokenService } from '../../../../core/services/token.service';
 import { DialogType } from '../../../../shared/types';
 import { userToReq } from '../../../../shared/utils/mapper';
 import { User, UserReq } from '../../models/user';
@@ -52,10 +53,12 @@ export class UserListComponent implements OnInit {
   } as User;
   dialogType = DialogType;
   currentDialogType: DialogType = DialogType.ADD;
+  currentUserId: string = '';
   constructor(
     private readonly userSvc: UserService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private readonly tokenSvc: TokenService
   ) {}
 
   loadUsers() {
@@ -73,6 +76,9 @@ export class UserListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUsers();
+    this.currentUserId = this.tokenSvc.decodeToken(
+      this.tokenSvc.getToken()!
+    ).sub!;
   }
 
   onGlobalFilter(table: Table, event: Event) {

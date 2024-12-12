@@ -125,6 +125,7 @@
           [raised]="true"
           (onClick)="onDelete($event, user.id)"
           [style]="{ height: '40px', width: '40px' }"
+          [disabled]="user.id == currentUserId"
         />
       </td>
       <p-confirmDialog key="{{ user.id }}" />

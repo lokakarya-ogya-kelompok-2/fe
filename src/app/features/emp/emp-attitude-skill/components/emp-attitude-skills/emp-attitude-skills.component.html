@@ -54,12 +54,11 @@
                   optionValue="score"
                   placeholder="Select score category"
                   class="custom-dropdown"
-                  appendTo="body"
                   required
-                  name="score-{{ group.group_name }}-{{ i }}"
-                  [disabled]="this.empAttitudeSkills[skill.id].id != undefined"
+                  [name]="'score-' + skill.id"
                   #scoreDropdown="ngModel"
                   appendTo="body"
+                  [disabled]="this.empAttitudeSkills[skill.id].id != undefined"
                 />
                 <div
                   *ngIf="
@@ -96,11 +95,11 @@
   </div>
   <p-divider />
   <div class="card flex justify-content-center">
+    <h1>{{ empAttitudeSkillForm.invalid }} DAN {{ notSubmisisble }}</h1>
     <p-button
       label="Submit"
       type="submit"
-      form="empAttitudeSkillForm"
-      [disabled]="empAttitudeSkillForm.invalid"
+      [disabled]="empAttitudeSkillForm.invalid && !notSubmisisble"
     />
   </div>
 </form>
