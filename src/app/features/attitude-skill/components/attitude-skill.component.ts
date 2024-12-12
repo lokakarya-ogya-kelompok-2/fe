@@ -109,7 +109,7 @@ export class AttitudeSkillComponent implements OnInit {
         next: (data) => {
           console.log(data);
           Swal.fire({
-            title: 'Attitude SKill created!',
+            title: 'Attitude Skill created!',
             icon: 'success',
           });
           this.resetForm();
