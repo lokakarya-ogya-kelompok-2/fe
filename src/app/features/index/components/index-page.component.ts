@@ -10,6 +10,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../../core/services/auth.service';
 import { TokenService } from '../../../core/services/token.service';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
@@ -93,10 +94,19 @@ export class IndexPageComponent implements OnInit {
       next: (_) => {
         this.dialogVisible = false;
         this.isChangePasswordBtnLoading = false;
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Password changed successfully!',
+        });
       },
       error: (err) => {
-        console.log('CHANGE PASSWORD ERROR: ' + err);
         this.isChangePasswordBtnLoading = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: err.error.message || 'Unknown error occured!',
+        });
       },
     });
   }
