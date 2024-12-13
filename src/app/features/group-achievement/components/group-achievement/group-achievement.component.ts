@@ -12,6 +12,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import {
@@ -37,6 +38,7 @@ import { GroupAchievementService } from '../../services/group-achievement.servic
     FormsModule,
     CheckboxModule,
     NavbarComponent,
+    ToggleButtonModule,
   ],
   providers: [
     GroupAchievementService,
