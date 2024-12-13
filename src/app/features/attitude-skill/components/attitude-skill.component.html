@@ -229,15 +229,16 @@
         </div>
       </div>
       <div class="flex align-items-center gap-6 mb-5">
-        <label for="enabled" class="font-semibold w-6rem">
+        <label for="Enabled" class="font-semibold w-6rem">
           Enabled<span class="text-red-600">*</span>
         </label>
-        <p-checkbox
+        <p-toggleButton
           [(ngModel)]="newAttitudeSkill.enabled"
-          [binary]="true"
           inputId="binary"
-          required
+          requied
           name="enabled"
+          onLabel="Enable"
+          offLabel="Disable"
         />
       </div>
       <div class="flex justify-content-end gap-2">
@@ -346,12 +347,13 @@
         <label for="Enabled" class="font-semibold w-6rem">
           Enabled<span class="text-red-600">*</span>
         </label>
-        <p-checkbox
+        <p-toggleButton
           [(ngModel)]="editData.enabled"
-          [binary]="true"
           inputId="binary"
-          required
+          requied
           name="enabled"
+          onLabel="Enable"
+          offLabel="Disable"
         />
       </div>
       <div class="flex justify-content-end gap-2">

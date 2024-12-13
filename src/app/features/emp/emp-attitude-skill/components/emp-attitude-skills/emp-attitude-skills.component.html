@@ -16,12 +16,12 @@
   (ngSubmit)="createEmpAttitudeSkill()"
 >
   <div *ngFor="let group of groupAttitudeSkills" class="mb-4">
-    <div class="inner-card">
+    <div class="inner-card" style="max-width: 1148px; margin: 0 auto">
       <h2 class="text-xl font-bold mb-2">{{ group.group_name }}</h2>
       <p-table
         [value]="group.attitude_skills!"
         [tableStyle]="{
-          'min-width': '50rem',
+          'min-width': '40rem',
           'box-shadow': '0 4px 6px rgba(0, 0, 0, 0.1)',
           'border-radius': '8px',
           'table-layout': 'fixed'

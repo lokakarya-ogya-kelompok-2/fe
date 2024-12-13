@@ -1,4 +1,8 @@
-<div class="card" style="width: 98.4%; margin-left: 9px">
+<div
+  class="card"
+  style="width: 98.4%; margin-left: 9px"
+  style="max-width: 1148px; margin: 0 auto"
+>
   <p-card header="Give your suggestion">
     <form #suggestionForm="ngForm">
       <div class="flex flex-column gap-3">
@@ -53,6 +57,7 @@
             severity="success"
             (onClick)="addSuggestion()"
             pTooltip="Add text area"
+            [disabled]="empSuggestionRequests.length >= 10"
             label="Add another"
           ></p-button>
           <p-button

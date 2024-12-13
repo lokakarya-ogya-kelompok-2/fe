@@ -2,14 +2,16 @@
 <div class="card">
   <p-card id="card-header">
     <div class="flex justify-content-between align-items-center">
-      <h2 class="text-xl font-semibold m-0">
-        Employee Achievements Assessment
-      </h2>
+      <div class="flex align-items-center gap-4">
+        <h2 class="text-xl font-semibold m-0">
+          Employee Achievements Assessment
+        </h2>
+      </div>
     </div>
   </p-card>
 </div>
 <app-user-information />
-<div class="inner-card">
+<div class="inner-card" style="max-width: 1148px; margin: 0 auto">
   <p-table
     #userTable
     id="summaries-table"
@@ -78,9 +80,13 @@
   appendTo="body"
   [style]="{ width: '90vw', maxWidth: '45%' }"
 >
+  <!-- =0 -->
   @if(groupedAchievements.length == 0) {
   <div class="flex justify-content-center">
-    <p-message text="Gaada" severity="error" />
+    <p-message
+      text="Achievement data for this user is empty"
+      severity="error"
+    />
   </div>
   } @else {
   <div class="achievement-groups">

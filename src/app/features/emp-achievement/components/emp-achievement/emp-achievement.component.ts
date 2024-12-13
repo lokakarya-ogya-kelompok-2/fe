@@ -80,6 +80,7 @@ export class EmpAchievementComponent implements OnInit {
   groupedAchievements: GroupedAchievement[] = [];
   currentYear = new Date().getFullYear();
   notSubmissible = false;
+  selectedPeriod: any = null;
   constructor(
     private empAchievementService: EmpAchievementService,
     private messageService: MessageService,
