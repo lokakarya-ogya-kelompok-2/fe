@@ -12,6 +12,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
@@ -53,6 +54,7 @@ interface GroupedAchievement {
     AccordionModule,
     DividerModule,
     CardModule,
+    MessageModule,
   ],
   providers: [
     EmpAchievementService,
@@ -80,7 +82,6 @@ export class EmpAchievementComponent implements OnInit {
   notSubmissible = false;
   constructor(
     private empAchievementService: EmpAchievementService,
-    private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private userService: UserService,
     private achievementService: AchievementService

@@ -78,6 +78,11 @@
   appendTo="body"
   [style]="{ width: '90vw', maxWidth: '45%' }"
 >
+  @if(groupedAchievements.length == 0) {
+  <div class="flex justify-content-center">
+    <p-message text="Gaada" severity="error" />
+  </div>
+  } @else {
   <div class="achievement-groups">
     <p-accordion [multiple]="true">
       <form #achievementForm="ngForm">
@@ -192,4 +197,5 @@
       </form>
     </p-accordion>
   </div>
+  }
 </p-dialog>
