@@ -14,3 +14,45 @@ h1 {
 .p-menubarsub {
   margin-left: 100px;
 }
+
+.bg-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.bg-container {
+  background-image: url("https://images.unsplash.com/photo-1556761175-4b46a572b786?q=80");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 86.5vh;
+  width: 100%;
+  position: relative;
+}
+:host ::ng-deep {
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+  }
+}
+:host ::ng-deep body.p-overflow-hidden {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+}

@@ -1,9 +1,9 @@
 <app-navbar></app-navbar>
-<div class="card">
+<div class="card surface-0 shadow-2 border-round-2xl" style="margin: 1rem">
   <p-table
     #divisionTable
     [scrollable]="true"
-    scrollHeight="360px"
+    scrollHeight="345px"
     [value]="datas"
     dataKey="id"
     [rows]="10"
@@ -14,9 +14,8 @@
       'min-width': '50rem',
       'text-align': 'center',
       'font-size': '12px',
-      margin: '0',
       'border-radius': '8px',
-      'table-layout': 'fixed'
+      'table-layout': 'fixed',
     }"
     [style]="{ width: '100%' }"
     [globalFilterFields]="['id', 'division_name']"

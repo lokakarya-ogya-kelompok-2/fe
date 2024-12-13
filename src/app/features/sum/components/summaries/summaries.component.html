@@ -1,149 +1,154 @@
 <app-navbar />
-<p-table
-  #userTable
-  id="summaries-table"
-  [scrollable]="true"
-  scrollHeight="380px"
-  [value]="summaries"
-  dataKey="id"
-  [rows]="10"
-  [rowsPerPageOptions]="[10, 20, 50]"
-  [loading]="isLoading"
-  [paginator]="true"
-  [tableStyle]="{
-    'min-width': '50rem',
-    'text-align': 'center',
-    'font-size': '12px',
-    margin: 0,
-    'border-radius': '8px',
-    'table-layout': 'fixed'
-  }"
-  [style]="{ width: '100%' }"
-  [globalFilterFields]="[
-    'full_name',
-    'username',
-    'email',
-    'position',
-    'division.division_name'
-  ]"
-  [sortField]="'created_at'"
-  [sortOrder]="-1"
->
-  <ng-template pTemplate="caption">
-    <div class="flex">
-      <p-iconField iconPosition="left" class="ml-auto">
-        <p-inputIcon>
-          <i class="pi pi-search"></i>
-        </p-inputIcon>
-        <input
-          pInputText
-          type="text"
-          placeholder="Search keyword"
-          (input)="onGlobalFilter(userTable, $event)"
-          [style]="{ 'font-size': '14px' }"
-        />
-      </p-iconField>
-    </div>
-  </ng-template>
-  <ng-template pTemplate="header">
-    <tr>
-      <th
-        style="width: 25%; text-align: center"
-        pSortableColumn="user_id.full_name"
-      >
-        <div class="flex align-items-center justify-content-center gap-2 mb-5">
-          <span>Full Name</span>
-          <p-sortIcon field="user_id.full_name" />
-          <div style="height: 2.3rem"></div>
-        </div>
-      </th>
-      <th style="width: 25%; text-align: center" pSortableColumn="score">
-        <div class="flex align-items-center justify-content-center gap-2 mb-5">
-          <span> Score </span>
-          <p-sortIcon field="score" />
-          <div style="height: 1.5rem"></div>
-        </div>
-      </th>
-      <th style="width: 25%; text-align: center">
-        <div class="flex flex-column align-items-center">
-          <span>Position</span>
-          <div style="height: 2.3rem"></div>
-        </div>
-      </th>
-      <th style="width: 25%; text-align: center">
-        <div class="flex flex-column align-items-center gap-2">
-          <span>Division</span>
-          <p-columnFilter
-            field="user_id.division.division_name"
-            matchMode="equals"
-            [showMenu]="false"
+<div class="card surface-0 shadow-2 border-round-2xl" style="margin: 1rem">
+  <p-table
+    #userTable
+    id="summaries-table"
+    [scrollable]="true"
+    scrollHeight="380px"
+    [value]="summaries"
+    dataKey="id"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 20, 50]"
+    [loading]="isLoading"
+    [paginator]="true"
+    [tableStyle]="{
+      'min-width': '50rem',
+      'text-align': 'center',
+      'font-size': '12px',
+      margin: 0,
+      'border-radius': '8px',
+      'table-layout': 'fixed'
+    }"
+    [style]="{ width: '100%' }"
+    [globalFilterFields]="[
+      'full_name',
+      'username',
+      'email',
+      'position',
+      'division.division_name'
+    ]"
+    [sortField]="'created_at'"
+    [sortOrder]="-1"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex">
+        <p-iconField iconPosition="left" class="ml-auto">
+          <p-inputIcon>
+            <i class="pi pi-search"></i>
+          </p-inputIcon>
+          <input
+            pInputText
+            type="text"
+            placeholder="Search keyword"
+            (input)="onGlobalFilter(userTable, $event)"
+            [style]="{ 'font-size': '14px' }"
+          />
+        </p-iconField>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th
+          style="width: 25%; text-align: center"
+          pSortableColumn="user_id.full_name"
+        >
+          <div
+            class="flex align-items-center justify-content-center gap-2 mb-5"
           >
-            <ng-template
-              pTemplate="filter"
-              let-value
-              let-filter="filterCallback"
+            <span>Full Name</span>
+            <p-sortIcon field="user_id.full_name" />
+            <div style="height: 2.3rem"></div>
+          </div>
+        </th>
+        <th style="width: 25%; text-align: center" pSortableColumn="score">
+          <div
+            class="flex align-items-center justify-content-center gap-2 mb-5"
+          >
+            <span> Score </span>
+            <p-sortIcon field="score" />
+            <div style="height: 1.5rem"></div>
+          </div>
+        </th>
+        <th style="width: 25%; text-align: center">
+          <div class="flex flex-column align-items-center">
+            <span>Position</span>
+            <div style="height: 2.3rem"></div>
+          </div>
+        </th>
+        <th style="width: 25%; text-align: center">
+          <div class="flex flex-column align-items-center gap-2">
+            <span>Division</span>
+            <p-columnFilter
+              field="user_id.division.division_name"
+              matchMode="equals"
+              [showMenu]="false"
             >
-              <p-dropdown
-                [ngModel]="value"
-                [options]="divisions"
-                (onChange)="filter($event.value)"
-                placeholder="Select Division"
-                [showClear]="true"
-                optionLabel="division_name"
-                optionValue="division_name"
-                [style]="{ 'min-width': '14rem' }"
-                appendTo="body"
+              <ng-template
+                pTemplate="filter"
+                let-value
+                let-filter="filterCallback"
               >
-              </p-dropdown>
-            </ng-template>
-          </p-columnFilter>
-        </div>
-      </th>
-      <th style="width: 25%; text-align: center">
-        <div class="flex flex-column align-items-center gap-2">
-          <span>Year</span>
-          <p-columnFilter field="year" matchMode="equals" [showMenu]="false">
-            <ng-template
-              pTemplate="filter"
-              let-value
-              let-filter="filterCallback"
-            >
-              <p-dropdown
-                [ngModel]="value"
-                [options]="years"
-                (onChange)="filter($event.value)"
-                placeholder="Select Year"
-                [showClear]="true"
-                optionLabel="year"
-                optionValue="year"
-                [style]="{ 'min-width': '10rem' }"
-                [panelStyle]="{ 'min-width': '12rem' }"
-                styleClass="year-dropdown"
-                [panelStyleClass]="'year-dropdown-panel'"
-                appendTo="body "
-              />
-            </ng-template>
-          </p-columnFilter>
-        </div>
-      </th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-summary>
-    <tr
-      class="clickable-row"
-      (click)="showDialog(summary.user_id, summary.year)"
-    >
-      <td>{{ summary.user_id.full_name }}</td>
-      <td style="text-align: center">{{ summary.score }}</td>
-      <td style="text-align: center">{{ summary.user_id.position }}</td>
-      <td style="text-align: center">
-        {{ summary.user_id.division?.division_name ?? "Unknown" }}
-      </td>
-      <td style="text-align: center">{{ summary.year }}</td>
-    </tr>
-  </ng-template>
-</p-table>
-
+                <p-dropdown
+                  [ngModel]="value"
+                  [options]="divisions"
+                  (onChange)="filter($event.value)"
+                  placeholder="Select Division"
+                  [showClear]="true"
+                  optionLabel="division_name"
+                  optionValue="division_name"
+                  [style]="{ 'min-width': '14rem' }"
+                  appendTo="body"
+                >
+                </p-dropdown>
+              </ng-template>
+            </p-columnFilter>
+          </div>
+        </th>
+        <th style="width: 25%; text-align: center">
+          <div class="flex flex-column align-items-center gap-2">
+            <span>Year</span>
+            <p-columnFilter field="year" matchMode="equals" [showMenu]="false">
+              <ng-template
+                pTemplate="filter"
+                let-value
+                let-filter="filterCallback"
+              >
+                <p-dropdown
+                  [ngModel]="value"
+                  [options]="years"
+                  (onChange)="filter($event.value)"
+                  placeholder="Select Year"
+                  [showClear]="true"
+                  optionLabel="year"
+                  optionValue="year"
+                  [style]="{ 'min-width': '10rem' }"
+                  [panelStyle]="{ 'min-width': '12rem' }"
+                  styleClass="year-dropdown"
+                  [panelStyleClass]="'year-dropdown-panel'"
+                  appendTo="body "
+                />
+              </ng-template>
+            </p-columnFilter>
+          </div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-summary>
+      <tr
+        class="clickable-row"
+        (click)="showDialog(summary.user_id, summary.year)"
+      >
+        <td>{{ summary.user_id.full_name }}</td>
+        <td style="text-align: center">{{ summary.score }}</td>
+        <td style="text-align: center">{{ summary.user_id.position }}</td>
+        <td style="text-align: center">
+          {{ summary.user_id.division?.division_name ?? "Unknown" }}
+        </td>
+        <td style="text-align: center">{{ summary.year }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
 <p-dialog
   [header]="selectedUser.full_name + ' Details '"
   [modal]="true"

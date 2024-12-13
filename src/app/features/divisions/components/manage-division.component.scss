@@ -4,3 +4,11 @@ btn-modal {
 :host ::ng-deep .custom-header {
   text-align: center;
 }
+:host ::ng-deep {
+  .p-datatable-header {
+    border-radius: 8px;
+  }
+  .p-paginator {
+    border-radius: 8px;
+  }
+}

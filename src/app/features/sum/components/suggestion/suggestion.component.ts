@@ -74,7 +74,9 @@ export class SuggestionComponent implements OnInit {
             title: 'Success',
             text: 'Suggestion created successfully',
           });
-          window.location.reload();
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         },
         error: (err) => {
           console.error('Error creating suggestion: ', err);

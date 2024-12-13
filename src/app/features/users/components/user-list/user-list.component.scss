@@ -7,3 +7,11 @@ td {
   align-items: center;
   text-align: center;
 }
+:host ::ng-deep {
+  .p-datatable-header {
+    border-radius: 8px;
+  }
+  .p-paginator {
+    border-radius: 8px;
+  }
+}
