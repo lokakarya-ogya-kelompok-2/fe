@@ -42,6 +42,7 @@ export class EmpDevPlanComponent implements OnInit {
   devPlans: DevPlan[] = [];
   empDevPlans: { [key: string]: EmpDevPlanRequest[] } = {};
   userId: string = '';
+  submissible: boolean = false;
   constructor(
     private empDevPlanService: EmpDevPlanService,
     private devPlanService: DevPlanService,
@@ -63,6 +64,7 @@ export class EmpDevPlanComponent implements OnInit {
         if (!this.empDevPlans[empDevPlan.dev_plan.id]) {
           this.empDevPlans[empDevPlan.dev_plan.id] = [];
         }
+        this.submissible ||= empDevPlan.id == undefined;
         this.empDevPlans[empDevPlan.dev_plan.id].push({
           id: empDevPlan.id,
           assessment_year: empDevPlan.assessment_year,
@@ -90,10 +92,12 @@ export class EmpDevPlanComponent implements OnInit {
     this.empDevPlans[key].push({
       assessment_year: this.currentYear,
     } as EmpDevPlanRequest);
+    this.checkSubmissible();
   }
 
   removeField(key: string, ix: number) {
     this.empDevPlans[key] = this.empDevPlans[key].filter((_, i) => i !== ix);
+    this.checkSubmissible();
   }
 
   onSubmit() {
@@ -144,5 +148,11 @@ export class EmpDevPlanComponent implements OnInit {
         });
       }
     });
+  }
+
+  checkSubmissible() {
+    this.submissible = Object.values(this.empDevPlans)
+      .flat()
+      .some((req) => req.id == undefined);
   }
 }
