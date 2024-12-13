@@ -80,7 +80,6 @@ export class EmpAchievementComponent implements OnInit {
   notSubmissible = false;
   constructor(
     private empAchievementService: EmpAchievementService,
-    private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private userService: UserService,
     private achievementService: AchievementService

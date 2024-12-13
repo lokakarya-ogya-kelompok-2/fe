@@ -9,6 +9,11 @@
   </p-card>
 </div>
 <app-user-information />
+@if (devPlans.length == 0) {
+<div class="flex justify-content-center align-items-center">
+  <h1>No Development Plans Available</h1>
+</div>
+} @else {
 <form #empDevPlanForm="ngForm" class="card m-4">
   @for (devPlan of devPlans; track devPlan.id) {
   <div class="inner-card w-full">
@@ -63,9 +68,10 @@
       icon="pi pi-check"
       (onClick)="onSubmit()"
       severity="primary"
-      [disabled]="empDevPlanForm.invalid"
+      [disabled]="empDevPlanForm.invalid || !submissible"
     />
   </div>
 </form>
 
 <p-toast position="bottom-right" />
+}
