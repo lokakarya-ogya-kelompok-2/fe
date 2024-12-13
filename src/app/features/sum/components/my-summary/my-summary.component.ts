@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
+import { DropdownModule } from 'primeng/dropdown';
 import { TokenService } from '../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { UserInformationComponent } from '../../../emp/user-information/components/user-information/user-information.component';
@@ -16,6 +18,8 @@ import { SummaryComponent } from '../summary/summary.component';
     UserInformationComponent,
     SuggestionComponent,
     CardModule,
+    DropdownModule,
+    FormsModule,
   ],
   templateUrl: './my-summary.component.html',
   styleUrl: './my-summary.component.scss',
@@ -23,7 +27,12 @@ import { SummaryComponent } from '../summary/summary.component';
 export class MySummaryComponent implements OnInit {
   userId: string = '';
   currentYear = new Date().getFullYear();
+  selectedPeriod: any = null;
   hasAccessToSuggestion: boolean = true;
+  years = Array.from({ length: 11 }, (_, i) => {
+    const year = new Date().getFullYear() - 5 + i;
+    return { name: year.toString(), value: year.toString() };
+  });
 
   constructor(
     private readonly tokenSvc: TokenService,

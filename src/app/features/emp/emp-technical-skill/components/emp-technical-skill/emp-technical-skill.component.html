@@ -15,7 +15,7 @@
   <div class="inner-card w-full">
     <div class="mb-4">
       <h2 class="text-xl font-bold mb-3 text-center">
-        {{ technicalSkill.technical_skill }}
+        {{ technicalSkill.technical_skill }}<span class="text-red-600">*</span>
       </h2>
 
       @for (inputForm of empTechnicalSkills[technicalSkill.id]; track $index) {
