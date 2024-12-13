@@ -1,54 +1,61 @@
 <app-navbar [includeUserAction]="false" />
+<div class="bg-container pt-4 flex align-items-center justify-content-center">
+  <div class="container mx-auto relative" style="max-width: 580px">
+    <div class="surface-card p-4 shadow-2 border-round-2xl backdrop-blur-sm">
+      <div class="flex flex-column align-items-center gap-3">
+        <!-- Avatar Section -->
+        <div>
+          <p-avatar
+            [label]="getInitial(tokenPayload.full_name, 2)"
+            styleClass="mr-2"
+            size="xlarge"
+            [style]="{ width: '150px', height: '150px' }"
+            shape="circle"
+          />
+        </div>
 
-<div class="center">
-  <div
-    style="
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-    "
-  >
-    <p-avatar
-      [label]="getInitial(tokenPayload.full_name, 2)"
-      styleClass="mr-2"
-      size="xlarge"
-      [style]="{ width: '150px', height: '150px' }"
-      shape="circle"
-    />
-    <h1>Welcome, {{ tokenPayload.full_name }}</h1>
-    <div
-      class="flex gap-2 flex-wrap justify-content-center animate-scale-in animation-delay-300"
-    >
-      @for (role of currentUser.roles; track role.id) {
-      <p-chip
-        [label]="role.role_name"
-        styleClass="font-semibold"
-        [style]="{
-          backgroundColor: 'var(--primary-color)',
-          color: 'white'
-        }"
-      />
-      }
-    </div>
-    <div class="card">
-      <p-megaMenu
-        [model]="items"
-        [style]="{ 'border-radius': '1rem', display: 'flex', }"
-        styleClass="p-4 surface-0"
-      >
-        <ng-template pTemplate="item" let-item>
-          <a
-            *ngIf="item.root"
-            pRipple
-            class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
-            style="border-radius: 2rem; border: 3px"
+        <!-- Welcome Text -->
+        <h1 class="text-4xl font-bold text-900">
+          Welcome, {{ tokenPayload.full_name }}
+        </h1>
+
+        <!-- Role Chips -->
+        <div
+          class="flex gap-2 flex-wrap justify-content-center animate-scale-in animation-delay-300"
+        >
+          @for (role of currentUser.roles; track role.id) {
+          <p-chip
+            [label]="role.role_name"
+            styleClass="font-semibold"
+            [style]="{
+              backgroundColor: 'var(--primary-color)',
+              color: 'white'
+            }"
+          />
+          }
+        </div>
+
+        <!-- Menu Section -->
+        <div class="w-full">
+          <p-megaMenu
+            [model]="items"
+            [style]="{ 'border-radius': '1rem', display: 'flex' }"
+            styleClass="p-3 surface-0 shadow-1"
           >
-            <i [ngClass]="item.icon"></i>
-            <span class="ml-2">{{ item.label }}</span>
-          </a>
-        </ng-template>
-      </p-megaMenu>
+            <ng-template pTemplate="item" let-item>
+              <a
+                *ngIf="item.root"
+                pRipple
+                class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase hover:surface-200 transition-colors transition-duration-150"
+                style="border-radius: 2rem"
+              >
+                <i [ngClass]="item.icon"></i>
+                <span class="ml-2">{{ item.label }}</span>
+              </a>
+            </ng-template>
+          </p-megaMenu>
+        </div>
+      </div>
     </div>
   </div>
 </div>
