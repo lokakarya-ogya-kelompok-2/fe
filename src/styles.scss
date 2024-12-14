@@ -3,3 +3,7 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 @import "primeflex/primeflex.css";
+
+.z-9999 {
+  z-index: 9999 !important;
+}

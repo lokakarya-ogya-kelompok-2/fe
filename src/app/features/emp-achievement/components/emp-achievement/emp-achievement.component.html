@@ -10,7 +10,6 @@
     </div>
   </p-card>
 </div>
-<app-user-information />
 <div class="inner-card" style="max-width: 1148px; margin: 0 auto">
   <p-table
     #userTable
@@ -72,30 +71,34 @@
   </p-table>
 </div>
 <p-dialog
-  [header]="selectedUser.full_name + ' Achievement'"
+  [header]="selectedUser.full_name + '\'s Achievement'"
   [modal]="true"
   [(visible)]="visible"
   [maximizable]="true"
-  class="absolute z-5"
+  class="absolute"
   appendTo="body"
   [style]="{ width: '90vw', maxWidth: '45%' }"
 >
-  <!-- =0 -->
-  @if(groupedAchievements.length == 0) {
+  @if(groupAchievements.length == 0) {
   <div class="flex justify-content-center">
-    <p-message
-      text="Achievement data for this user is empty"
-      severity="error"
-    />
+    <p-message text="No Achievement Data Available!" severity="error" />
   </div>
   } @else {
   <div class="achievement-groups">
     <p-accordion [multiple]="true">
       <form #achievementForm="ngForm">
         <p-accordionTab
-          *ngFor="let group of groupedAchievements"
+          *ngFor="let group of groupAchievements"
           [header]="group.group_name"
         >
+          @if(!group.achievements || group.achievements.length == 0) {
+          <div class="flex justify-content-center">
+            <p-message
+              text="No achievement found for this group!"
+              severity="error"
+            />
+          </div>
+          } @else {
           <div class="p-4">
             <div class="mb-4" *ngFor="let achievement of group.achievements">
               <div class="flex align-items-center justify-content-between">
@@ -192,13 +195,14 @@
               <p-divider></p-divider>
             </div>
           </div>
+          }
         </p-accordionTab>
         <p-button
           type="submit"
           (onClick)="createEmpAchievement()"
           label="Submit"
           class="flex mt-4 ml-3"
-          [disabled]="notSubmissible || achievementForm.invalid"
+          [disabled]="!submissible || achievementForm.invalid"
         />
       </form>
     </p-accordion>

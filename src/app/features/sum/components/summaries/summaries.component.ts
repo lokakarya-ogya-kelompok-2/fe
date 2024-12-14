@@ -14,7 +14,6 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
-import { DialogType } from '../../../../shared/types';
 import { User } from '../../../users/models/user';
 import { Summary } from '../../models/summary';
 import { SummaryService } from '../../services/summary.service';
@@ -54,8 +53,6 @@ export class SummariesComponent implements OnInit {
   dialogHeader: string = '';
   selectedUser: User = {} as User;
   selectedYear: number = new Date().getFullYear();
-  dialogType = DialogType;
-  currentDialogType: DialogType = DialogType.ADD;
   isSuggestionsLoading: boolean = false;
 
   constructor(private readonly summaryService: SummaryService) {}

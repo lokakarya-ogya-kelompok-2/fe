@@ -36,7 +36,7 @@ export class SummaryComponent implements OnChanges {
   constructor(private readonly summarySvc: SummaryService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['userId'] && this.userId) {
+    if ((changes['userId'] && this.userId) || changes['year']) {
       this.percentage = 0.0;
       this.summarySvc.calculateSummary(this.userId, this.year).subscribe({
         next: (data) => {

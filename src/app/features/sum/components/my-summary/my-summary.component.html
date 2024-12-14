@@ -7,7 +7,7 @@
           Employee Achievements Assessment
         </h2>
         <p-dropdown
-          [(ngModel)]="selectedPeriod"
+          [(ngModel)]="selectedYear"
           [options]="years"
           placeholder="Select Year"
           styleClass="year-dropdown"
@@ -20,8 +20,8 @@
     </div>
   </p-card>
 </div>
-<app-user-information [year]="selectedPeriod" />
-<app-summary [userId]="userId" [year]="selectedPeriod" />
-@if (hasAccessToSuggestion) {
+<app-user-information [year]="selectedYear" />
+<app-summary [userId]="userId" [year]="selectedYear" />
+@if (hasAccessToSuggestion && currentYear == selectedYear) {
 <app-suggestion />
 }

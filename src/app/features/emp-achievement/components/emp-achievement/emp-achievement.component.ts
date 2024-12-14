@@ -16,17 +16,16 @@ import { MessageModule } from 'primeng/message';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
+import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { Achievement } from '../../../achievement/model/achievement';
-import { AchievementService } from '../../../achievement/services/achievement.service';
 import { UserInformationComponent } from '../../../emp/user-information/components/user-information/user-information.component';
+import { GroupAchievement } from '../../../group-achievement/model/group-achievement';
+import { GroupAchievementService } from '../../../group-achievement/services/group-achievement.service';
 import { User } from '../../../users/models/user';
 import { UserService } from '../../../users/services/user.service';
-import {
-  EmpAchievement,
-  EmpAchievementRequest,
-} from '../../models/emp-achievement';
+import { EmpAchievementRequest } from '../../models/emp-achievement';
 import { EmpAchievementService } from '../../services/emp-achievement.service';
 interface GroupedAchievement {
   group_name: string;
@@ -68,55 +67,20 @@ interface GroupedAchievement {
 export class EmpAchievementComponent implements OnInit {
   loading: boolean = false;
   visible: boolean = false;
-  editVisible: boolean = false;
-  detailVisible: boolean = false;
   empAchievementRequests: { [key: string]: EmpAchievementRequest } = {};
-  editData: EmpAchievement = {} as EmpAchievement;
-  dataDetail: EmpAchievement = {} as EmpAchievement;
   users: User[] = [];
-  userDropdown: User[] = [];
-  achievementData: Achievement[] = [];
   selectedUser: User = {} as User;
-  groupedAchievements: GroupedAchievement[] = [];
   currentYear = new Date().getFullYear();
-  notSubmissible = false;
-  selectedPeriod: any = null;
+  submissible = false;
+  groupAchievements: GroupAchievement[] = [];
   constructor(
     private empAchievementService: EmpAchievementService,
     private messageService: MessageService,
     private userService: UserService,
-    private achievementService: AchievementService
+    private groupAchievementSvc: GroupAchievementService
   ) {}
   ngOnInit(): void {
     this.getAllUser();
-  }
-
-  getAllAchievement(): void {
-    this.achievementService.getAchievements().subscribe({
-      next: (data) => {
-        this.achievementData = data.content;
-        this.achievementData.forEach((empAc) => {
-          this.empAchievementRequests[empAc.id] = {
-            assessment_year: this.currentYear,
-          } as EmpAchievementRequest;
-        });
-        console.log(this.achievementData);
-      },
-      error: (err) => {
-        console.error('Error fetching achievement:', err);
-      },
-      complete: () => {
-        this.groupedAchievements = Array.from(
-          new Set(this.achievementData.map((a) => a.group_id.group_name))
-        ).map((groupName) => ({
-          group_name: groupName,
-          achievements: this.achievementData.filter(
-            (a) => a.group_id.group_name === groupName
-          ),
-        }));
-        this.getAllEmpAchievement();
-      },
-    });
   }
 
   getAllUser(): void {
@@ -124,7 +88,6 @@ export class EmpAchievementComponent implements OnInit {
     this.userService.list().subscribe({
       next: (data) => {
         this.users = data.content;
-        console.log(this.users, 'ini user');
         this.loading = false;
       },
       error: (err) => {
@@ -133,55 +96,50 @@ export class EmpAchievementComponent implements OnInit {
       },
     });
   }
-  getAllEmpAchievement() {
-    this.empAchievementService
-      .getByUserIdAndYear(this.selectedUser.id, this.currentYear)
-      .subscribe({
-        next: (data) => {
-          this.loading = false;
-          data.content.forEach((empAc) => {
-            this.notSubmissible ||= empAc.id == undefined;
-            this.empAchievementRequests[empAc.achievement_id.id] = {
-              ...this.empAchievementRequests[empAc.achievement_id.id],
-              id: empAc.id,
-              notes: empAc.notes || '',
-              score: empAc.score || 0,
-            };
-          });
-        },
-        error: (err) => {
-          console.error('Error fetching emp achievement:', err);
-          this.loading = false;
-        },
-      });
-  }
   createEmpAchievement() {
-    console.log(this.empAchievementRequests, ' INI REQ DATANYA');
-    let reqData: EmpAchievementRequest[] = [];
-    Object.entries(this.empAchievementRequests).forEach(([id, empAcReq]) => {
-      if (!empAcReq.id) {
-        empAcReq.achievement_id = id;
-        empAcReq.user_id = this.selectedUser.id;
-        reqData.push(empAcReq);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'After submitting this form, you will not be able to modify the data. Are you sure you want to proceed?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: {
+        container: ['z-9999'],
+      },
+    }).then((res) => {
+      if (res.isConfirmed) {
+        let reqData: EmpAchievementRequest[] = [];
+        Object.entries(this.empAchievementRequests).forEach(
+          ([id, empAcReq]) => {
+            if (!empAcReq.id) {
+              empAcReq.achievement_id = id;
+              empAcReq.user_id = this.selectedUser.id;
+              reqData.push(empAcReq);
+            }
+          }
+        );
+        this.empAchievementService.createEmpAchievement(reqData).subscribe({
+          next: (data) => {
+            console.log(data);
+            Swal.fire({
+              title: 'emp achievement created!',
+              icon: 'success',
+            });
+            this.visible = false;
+          },
+          error: (err) => {
+            console.error('Error creating emp achievement:', err);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: err.error.message,
+            });
+          },
+        });
       }
-    });
-    this.empAchievementService.createEmpAchievement(reqData).subscribe({
-      next: (data) => {
-        console.log(data);
-        Swal.fire({
-          title: 'emp achievement created!',
-          icon: 'success',
-        });
-        this.visible = false;
-      },
-      error: (err) => {
-        console.error('Error creating emp achievement:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: err.error.message,
-        });
-      },
     });
   }
 
@@ -189,7 +147,36 @@ export class EmpAchievementComponent implements OnInit {
   showDialog(user: User) {
     this.selectedUser = user;
     this.visible = true;
-    this.getAllAchievement();
+    forkJoin({
+      groupAchievements: this.groupAchievementSvc.getGroupAchievements(),
+      empAchievements: this.empAchievementService.getByUserIdAndYear(
+        this.selectedUser.id,
+        this.currentYear
+      ),
+    }).subscribe((data) => {
+      this.groupAchievements = data.groupAchievements.content;
+      this.groupAchievements.forEach((groupAc) => {
+        groupAc.achievements.forEach((ac) => {
+          this.empAchievementRequests[ac.id] = {
+            achievement_id: ac.id,
+            assessment_year: this.currentYear,
+          } as EmpAchievementRequest;
+        });
+      });
+      data.empAchievements.content.forEach((empAc) => {
+        this.empAchievementRequests[empAc.achievement_id.id] = {
+          id: empAc.id,
+          user_id: empAc.user_id.id,
+          notes: empAc.notes,
+          achievement_id: empAc.achievement_id.id,
+          score: empAc.score,
+          assessment_year: empAc.assessment_year,
+        };
+      });
+      this.submissible = Object.values(this.empAchievementRequests)
+        .flat()
+        .some((empAcReq) => !empAcReq.id);
+    });
   }
 
   onGlobalFilter(table: Table, event: Event) {
