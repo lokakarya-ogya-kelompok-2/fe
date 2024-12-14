@@ -38,6 +38,10 @@
         <td>{{ user.join_date | date : "mediumDate" }}</td>
       </tr>
       <tr>
+        <th class="text-left"><strong>Created By</strong></th>
+        <td>{{ user.created_by?.full_name || "Unknown" }}</td>
+      </tr>
+      <tr>
         <th class="text-left"><strong>Status</strong></th>
         <td>
           <p-tag [severity]="user.enabled ? 'success' : 'danger'">

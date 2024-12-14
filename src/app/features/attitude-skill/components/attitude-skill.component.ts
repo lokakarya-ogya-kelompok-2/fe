@@ -17,7 +17,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { GroupAttitudeSkill } from '../../group-attitude-skill/models/group-attitude-skill';
-import { ManageGroupAttitudeSkillService } from '../../group-attitude-skill/services/manage-group-attitude-skill.service';
+import { GroupAttitudeSkillService } from '../../group-attitude-skill/services/group-attitude-skill.service';
 import { AttitudeSkill, AttitudeSkillRequest } from '../models/attitude-skill';
 import { AttitudeSkillService } from '../services/attitude-skill.service';
 @Component({
@@ -52,7 +52,7 @@ export class AttitudeSkillComponent implements OnInit {
   detailVisible: boolean = false;
   editData: AttitudeSkill = {} as AttitudeSkill;
   newAttitudeSkill: AttitudeSkillRequest = {
-    enabled: false,
+    enabled: true,
   } as AttitudeSkillRequest;
   checked: boolean = false;
   groupAttitudeSkillDropdown: GroupAttitudeSkill[] = [];
@@ -67,7 +67,7 @@ export class AttitudeSkillComponent implements OnInit {
     private attitudeSkillService: AttitudeSkillService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private readonly groupAttitudeSkillService: ManageGroupAttitudeSkillService
+    private readonly groupAttitudeSkillService: GroupAttitudeSkillService
   ) {}
 
   ngOnInit(): void {

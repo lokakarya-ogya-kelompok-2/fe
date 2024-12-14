@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
@@ -32,6 +33,7 @@ import { EmpDevPlanService } from '../../services/emp-dev-plan.service';
     ToastModule,
     InputTextModule,
     CardModule,
+    FloatLabelModule,
   ],
   templateUrl: './emp-dev-plan.component.html',
   styleUrl: './emp-dev-plan.component.scss',
@@ -108,7 +110,8 @@ export class EmpDevPlanComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit it!',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
         this.messageSvc.clear();

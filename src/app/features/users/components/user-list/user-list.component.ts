@@ -113,7 +113,6 @@ export class UserListComponent implements OnInit {
   }
 
   toggleDialog(value: boolean) {
-    console.log('DIPANGGIL', value, ' INIIIIIIIII');
     this.visible = value;
   }
 

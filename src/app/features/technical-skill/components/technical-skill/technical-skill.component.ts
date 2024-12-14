@@ -132,16 +132,13 @@ export class TechnicalSkillComponent {
         console.error('Error updating technical skill:', err);
         Swal.fire({
           icon: 'error',
-          title: 'Failed Updating Technical Skill',
+          title: 'Failed to Update Technical Skill',
           text: err.error.message,
         });
       },
     });
   }
   confirmDelete(event: Event, key: string) {
-    console.log('masuk');
-    console.log(event.target);
-    console.log(key);
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Do you want to delete this record?',
@@ -173,13 +170,6 @@ export class TechnicalSkillComponent {
               detail: 'Failed to delete technical skill',
             });
           },
-        });
-      },
-      reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
         });
       },
     });

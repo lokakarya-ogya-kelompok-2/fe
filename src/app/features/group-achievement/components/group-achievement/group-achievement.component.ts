@@ -158,36 +158,26 @@ export class GroupAchievementComponent implements OnInit {
         console.log('delete data');
         this.groupAchievementService.deleteGroupAttitudeSkills(key).subscribe({
           next: (data) => {
-            console.log(data);
             Swal.fire({
               title: 'Group deleted!',
               icon: 'success',
               text: data.message,
             });
-            console.log('Data deleted successfully');
             this.getGroupAchievements();
           },
           error: (err) => {
             console.error('Error deleting group achievement:', err);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'error',
-              detail: 'Failed to delete group achievement',
+            Swal.fire({
+              title: 'Failed to delete group!',
+              icon: 'error',
+              text: err.error.message,
             });
           },
-        });
-      },
-      reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
         });
       },
     });
   }
 
-  //
   showDialog() {
     this.visible = true;
   }

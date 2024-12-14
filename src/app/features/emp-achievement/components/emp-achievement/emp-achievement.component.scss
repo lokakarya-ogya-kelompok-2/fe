@@ -73,48 +73,6 @@
   }
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translate(10px, -50%);
-  }
-  to {
-    opacity: 1;
-    transform: translate(0, -50%);
-  }
-}
-
-:host ::ng-deep {
-  #summaries-table {
-    .p-datatable-tbody {
-      tr {
-        cursor: pointer;
-        transition: all 0.2s ease;
-        position: relative;
-
-        &::after {
-          content: "\e913";
-          font-family: "PrimeIcons";
-          position: absolute;
-          right: 10px;
-          top: 50%;
-          transform: translateY(-50%);
-          color: #2196f3;
-          opacity: 1;
-          font-size: 1rem;
-          animation: fadeIn 0.6s ease;
-        }
-
-        &:hover {
-          background-color: #f0f7ff !important;
-          transform: translateY(-1px);
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-      }
-    }
-  }
-}
-
 :host ::ng-deep .p-dialog {
   max-width: 46% !important;
 }

@@ -26,8 +26,9 @@ import { SummaryComponent } from '../summary/summary.component';
 })
 export class MySummaryComponent implements OnInit {
   userId: string = '';
-  selectedPeriod: number = new Date().getFullYear();
+  selectedYear: number = new Date().getFullYear();
   hasAccessToSuggestion: boolean = true;
+  currentYear = new Date().getFullYear();
   years = Array.from({ length: 5 }, (_, i) => {
     const year = new Date().getFullYear() - i;
     return year;

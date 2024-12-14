@@ -12,7 +12,7 @@ import { TokenService } from '../../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../../shared/components/navbar/navbar.component';
 import { TokenPayload } from '../../../../../shared/types';
 import { GroupAttitudeSkill } from '../../../../group-attitude-skill/models/group-attitude-skill';
-import { ManageGroupAttitudeSkillService } from '../../../../group-attitude-skill/services/manage-group-attitude-skill.service';
+import { GroupAttitudeSkillService } from '../../../../group-attitude-skill/services/group-attitude-skill.service';
 import { User } from '../../../../users/models/user';
 import { UserService } from '../../../../users/services/user.service';
 import { UserInformationComponent } from '../../../user-information/components/user-information/user-information.component';
@@ -59,7 +59,7 @@ export class EmpAttitudeSkillsComponent implements OnInit {
   constructor(
     private tokenService: TokenService,
     private authService: AuthService,
-    private groupAttitudeSkillService: ManageGroupAttitudeSkillService,
+    private groupAttitudeSkillService: GroupAttitudeSkillService,
     private userService: UserService,
     private empAttitudeSkillService: EmpAttitudeSkillsService
   ) {}

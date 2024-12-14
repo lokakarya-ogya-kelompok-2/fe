@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<app-navbar />
 <div class="card">
   <p-card id="card-header">
     <div class="flex justify-content-between align-items-center">
@@ -10,11 +10,9 @@
     </div>
   </p-card>
 </div>
-<app-user-information />
 <div class="inner-card" style="max-width: 1148px; margin: 0 auto">
   <p-table
     #userTable
-    id="summaries-table"
     [scrollable]="true"
     scrollHeight="380px"
     [value]="users"
@@ -33,8 +31,30 @@
     }"
     [style]="{ width: '100%' }"
     [sortField]="'created_at'"
+    [globalFilterFields]="[
+      'full_name',
+      'username',
+      'position',
+      'division.division_name'
+    ]"
     [sortOrder]="-1"
   >
+    <ng-template pTemplate="caption">
+      <div class="flex">
+        <p-iconField iconPosition="left" class="ml-auto">
+          <p-inputIcon>
+            <i class="pi pi-search"></i>
+          </p-inputIcon>
+          <input
+            pInputText
+            type="text"
+            placeholder="Search keyword"
+            (input)="onGlobalFilter(userTable, $event)"
+            [style]="{ 'font-size': '14px' }"
+          />
+        </p-iconField>
+      </div>
+    </ng-template>
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 25%; text-align: center">
@@ -69,33 +89,47 @@
         </td>
       </tr>
     </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4" class="text-center p-4">
+          <div class="flex flex-column align-items-center gap-2">
+            <i class="pi pi-info-circle text-4xl text-primary"></i>
+            <span class="font-semibold text-lg">No employee available</span>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
   </p-table>
 </div>
 <p-dialog
-  [header]="selectedUser.full_name + ' Achievement'"
+  [header]="selectedUser.full_name + '\'s achievement'"
   [modal]="true"
   [(visible)]="visible"
   [maximizable]="true"
-  class="absolute z-5"
+  class="absolute"
   appendTo="body"
   [style]="{ width: '90vw', maxWidth: '45%' }"
 >
-  <!-- =0 -->
-  @if(groupedAchievements.length == 0) {
+  @if(groupAchievements.length == 0) {
   <div class="flex justify-content-center">
-    <p-message
-      text="Achievement data for this user is empty"
-      severity="error"
-    />
+    <p-message text="No Achievement Data Available!" severity="error" />
   </div>
   } @else {
   <div class="achievement-groups">
     <p-accordion [multiple]="true">
       <form #achievementForm="ngForm">
         <p-accordionTab
-          *ngFor="let group of groupedAchievements"
+          *ngFor="let group of groupAchievements"
           [header]="group.group_name"
         >
+          @if(!group.achievements || group.achievements.length == 0) {
+          <div class="flex justify-content-center">
+            <p-message
+              text="No achievement found for this group!"
+              severity="error"
+            />
+          </div>
+          } @else {
           <div class="p-4">
             <div class="mb-4" *ngFor="let achievement of group.achievements">
               <div class="flex align-items-center justify-content-between">
@@ -192,13 +226,14 @@
               <p-divider></p-divider>
             </div>
           </div>
+          }
         </p-accordionTab>
         <p-button
           type="submit"
           (onClick)="createEmpAchievement()"
           label="Submit"
           class="flex mt-4 ml-3"
-          [disabled]="notSubmissible || achievementForm.invalid"
+          [disabled]="!submissible || achievementForm.invalid"
         />
       </form>
     </p-accordion>
