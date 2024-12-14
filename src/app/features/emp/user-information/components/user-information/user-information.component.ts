@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { MenubarModule } from 'primeng/menubar';
 import { AuthService } from '../../../../../core/services/auth.service';
@@ -14,8 +14,8 @@ import { UserService } from '../../../../users/services/user.service';
   styleUrl: './user-information.component.scss',
 })
 export class UserInformationComponent implements OnInit {
+  @Input() year: number = new Date().getFullYear();
   currentUser: User = {} as User;
-  currentYear: number = new Date().getFullYear();
 
   constructor(
     private tokenService: TokenService,
