@@ -20,7 +20,6 @@ import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { Achievement } from '../../../achievement/model/achievement';
-import { UserInformationComponent } from '../../../emp/user-information/components/user-information/user-information.component';
 import { GroupAchievement } from '../../../group-achievement/model/group-achievement';
 import { GroupAchievementService } from '../../../group-achievement/services/group-achievement.service';
 import { User } from '../../../users/models/user';
@@ -49,7 +48,6 @@ interface GroupedAchievement {
     ReactiveFormsModule,
     DropdownModule,
     NavbarComponent,
-    UserInformationComponent,
     AccordionModule,
     DividerModule,
     CardModule,

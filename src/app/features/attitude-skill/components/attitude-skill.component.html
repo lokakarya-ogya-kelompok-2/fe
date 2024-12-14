@@ -393,15 +393,9 @@
           margin: '0'
         }"
       >
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Field</th>
-            <th>Data</th>
-          </tr>
-        </ng-template>
         <ng-template pTemplate="body" let-data>
           <tr>
-            <td>Id</td>
+            <td>ID</td>
             <td>{{ data.id }}</td>
           </tr>
           <tr>
@@ -430,21 +424,26 @@
           </tr>
           <tr>
             <td>Created At</td>
-            <td>{{ data.created_at }}</td>
+            <td>{{ (data.created_at | date : "long") || "Unknown" }}</td>
           </tr>
           <tr>
             <td>Created By</td>
-            <td>{{ data.created_by }}</td>
+            <td>{{ data.created_by?.full_name || "Unknown" }}</td>
           </tr>
           <tr>
             <td>Updated At</td>
-            <td>{{ data.updated_at }}</td>
+            <td>{{ (data.updated_at | date : "long") || "-" }}</td>
           </tr>
           <tr>
             <td>Updated By</td>
-            <td>{{ data.updated_by }}</td>
-          </tr>
-        </ng-template>
+            <td>
+              {{
+                data.updated_by?.full_name ||
+                  (data.updated_at ? "Unknown" : "-")
+              }}
+            </td>
+          </tr></ng-template
+        >
       </p-table>
     </div>
   </p-dialog>

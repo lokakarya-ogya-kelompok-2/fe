@@ -10,6 +10,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
@@ -40,6 +41,7 @@ interface yearOption {
     ChipModule,
     SummaryAndSuggestionsComponent,
     DropdownModule,
+    MultiSelectModule,
   ],
   templateUrl: './summaries.component.html',
   styleUrl: './summaries.component.scss',
@@ -81,9 +83,6 @@ export class SummariesComponent implements OnInit {
         )
           .sort()
           .map((name) => ({ division_name: name }));
-
-        // console.log('Unique divisions:', this.divisions);
-
         this.years = Array.from(
           new Set(
             this.summaries
@@ -101,8 +100,6 @@ export class SummariesComponent implements OnInit {
     this.visible = true;
     this.selectedUser = user;
     this.selectedYear = year;
-    // console.log(userData);
-    console.log('DIALOG VISIBLE: ', this.visible);
   }
 
   onGlobalFilter(table: Table, event: Event) {

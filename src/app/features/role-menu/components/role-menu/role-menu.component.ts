@@ -44,6 +44,8 @@ export class RoleMenuComponent implements OnInit {
   roleMenus: { [key: string]: string[] } = {};
 
   private roleMenuAccessId: string = '';
+  private suggestionMenuId: string = '';
+  private selfSummaryMenuId: string = '';
 
   menuToReadable: { [key: string]: string } = {
     'user#all': 'Manage All Users',
@@ -90,6 +92,10 @@ export class RoleMenuComponent implements OnInit {
         this.menus.forEach((menu) => {
           if (menu.menu_name === 'role-menu#all') {
             this.roleMenuAccessId = menu.id;
+          } else if (menu.menu_name === 'summary#read.self') {
+            this.selfSummaryMenuId = menu.id;
+          } else if (menu.menu_name === 'emp-suggestion#all') {
+            this.suggestionMenuId = menu.id;
           }
         });
       },
@@ -99,6 +105,15 @@ export class RoleMenuComponent implements OnInit {
   menuPageMustBeOwnedByAtLeastOneRole(): boolean {
     return Object.values(this.roleMenus).some((menu) => {
       return menu.includes(this.roleMenuAccessId);
+    });
+  }
+
+  summaryMustBeSelectedIfSuggestionIsSelected(): boolean {
+    return !Object.values(this.roleMenus).some((menu) => {
+      return (
+        menu.includes(this.suggestionMenuId) &&
+        !menu.includes(this.selfSummaryMenuId)
+      );
     });
   }
 

@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<app-navbar />
 <div class="card">
   <p-card id="card-header">
     <div class="flex justify-content-between align-items-center">
@@ -13,7 +13,6 @@
 <div class="inner-card" style="max-width: 1148px; margin: 0 auto">
   <p-table
     #userTable
-    id="summaries-table"
     [scrollable]="true"
     scrollHeight="380px"
     [value]="users"
@@ -32,8 +31,30 @@
     }"
     [style]="{ width: '100%' }"
     [sortField]="'created_at'"
+    [globalFilterFields]="[
+      'full_name',
+      'username',
+      'position',
+      'division.division_name'
+    ]"
     [sortOrder]="-1"
   >
+    <ng-template pTemplate="caption">
+      <div class="flex">
+        <p-iconField iconPosition="left" class="ml-auto">
+          <p-inputIcon>
+            <i class="pi pi-search"></i>
+          </p-inputIcon>
+          <input
+            pInputText
+            type="text"
+            placeholder="Search keyword"
+            (input)="onGlobalFilter(userTable, $event)"
+            [style]="{ 'font-size': '14px' }"
+          />
+        </p-iconField>
+      </div>
+    </ng-template>
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 25%; text-align: center">
@@ -68,10 +89,20 @@
         </td>
       </tr>
     </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4" class="text-center p-4">
+          <div class="flex flex-column align-items-center gap-2">
+            <i class="pi pi-info-circle text-4xl text-primary"></i>
+            <span class="font-semibold text-lg">No employee available</span>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
   </p-table>
 </div>
 <p-dialog
-  [header]="selectedUser.full_name + '\'s Achievement'"
+  [header]="selectedUser.full_name + '\'s achievement'"
   [modal]="true"
   [(visible)]="visible"
   [maximizable]="true"

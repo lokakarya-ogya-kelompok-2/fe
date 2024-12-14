@@ -1,207 +1,183 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
+import { filter } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { TokenService } from '../../../core/services/token.service';
 import { MenuService } from '../../../features/menus/services/menu.service';
-import { UserService } from '../../../features/users/services/user.service';
 import { TokenPayload } from '../../types';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [MenubarModule, ButtonModule, AvatarModule],
+  imports: [MenubarModule, ButtonModule, AvatarModule, CommonModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit {
   @Input() includeUserAction: boolean = true;
-  items: MenuItem[] | undefined;
+  items: MenuItem[] = [
+    {
+      id: 'user',
+      label: 'Users',
+      style: { 'z-index': 3 },
+      items: [
+        {
+          id: 'user#all',
+          label: 'Manage User',
+          routerLink: '/manage-users',
+        },
+        {
+          id: 'user#read',
+          label: 'List User',
+          routerLink: '/users',
+        },
+      ],
+    },
+    {
+      id: 'division#all',
+      label: 'Division',
+      routerLink: '/manage-divisions',
+    },
+    {
+      id: 'role-menu#all',
+      label: 'Menu Access',
+      routerLink: '/manage-role-menu',
+    },
+    {
+      id: 'attitude-skill',
+      label: 'Attitude Skills',
+      style: { 'z-index': 3 },
+      items: [
+        {
+          id: 'group-attitude-skill#all',
+          label: 'Group Attitude Skill',
+          routerLink: '/manage-group-attitude-skills',
+        },
+        {
+          id: 'attitude-skill#all',
+          label: 'Attitude Skill',
+          routerLink: '/manage-attitude-skills',
+        },
+        {
+          id: 'emp-attitude-skill#all',
+          label: 'Employee Attitude Skill',
+          routerLink: '/emp-attitude-skills',
+        },
+      ],
+    },
+    {
+      id: 'technical-skill',
+      label: 'Technical Skills',
+      style: { 'z-index': 3 },
+      routerLinkActive: 'active-route',
+      items: [
+        {
+          id: 'technical-skill#all',
+          label: 'Manage Technical Skills',
+          routerLink: '/manage-technical-skills',
+        },
+        {
+          id: 'emp-technical-skill#all',
+          label: 'Employee Technical Skills',
+          routerLink: '/emp-technical-skill',
+        },
+      ],
+    },
+    {
+      id: 'dev-plan',
+      label: 'Development Plans',
+      items: [
+        {
+          id: 'dev-plan#all',
+          label: 'Manage Dev Plan',
+          routerLink: '/manage-dev-plans',
+        },
+        {
+          id: 'emp-dev-plan#all',
+          label: 'Employee Dev Plan',
+          routerLink: '/emp-dev-plans',
+        },
+      ],
+    },
+    {
+      id: 'achievement',
+      label: 'Achievements',
+      style: { 'z-index': 3 },
+      items: [
+        {
+          id: 'group-achievement#all',
+          label: 'Group achievement',
+          routerLink: '/manage-group-achievements',
+        },
+        {
+          id: 'achievement#all',
+          label: 'Achievement',
+          routerLink: '/manage-achievements',
+        },
+        {
+          id: 'emp-achievement#all',
+          label: 'Employee Achievement',
+          routerLink: ['/manage-emp-achievements'],
+        },
+      ],
+    },
+    {
+      id: 'summary',
+      label: 'Summary',
+      style: { 'z-index': 3 },
+      routerLinkActive: 'active-route',
+      items: [
+        {
+          id: 'summary#read',
+          label: 'Read Summaries',
+          routerLink: '/summaries',
+        },
+        {
+          id: 'summary#read.self',
+          label: 'My Summary',
+          routerLink: '/my-summary',
+        },
+      ],
+    },
+  ];
   tokenPayload: TokenPayload = {} as TokenPayload;
   menu: Set<string> = new Set();
 
   constructor(
     readonly authService: AuthService,
     private tokenService: TokenService,
-    private readonly userSvc: UserService,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.getToken();
     this.getMenuById();
-
-    this.items = [
-      {
-        id: 'user',
-        label: 'Users',
-        style: { 'z-index': 3 },
-        items: [
-          {
-            id: 'user#all',
-            label: 'Manage User',
-            routerLink: '/manage-users',
-            routerLinkActiveOptions: { exact: true },
-          },
-          {
-            id: 'user#read',
-            label: 'List User',
-            routerLink: '/users',
-            routerLinkActiveOptions: { exact: true },
-          },
-        ],
-      },
-      // {
-      //   id: 'user#all',
-      //   label: 'User',
-      //   routerLink: '/manage-users',
-      //   routerLinkActiveOptions: { exact: true },
-      // },
-      {
-        id: 'division#all',
-        label: 'Division',
-        routerLink: '/manage-divisions',
-        routerLinkActiveOptions: { exact: true },
-        routerLinkActive: 'active-route',
-      },
-      {
-        id: 'role-menu#all',
-        label: 'Menu Access',
-        routerLink: '/manage-role-menu',
-        routerLinkActiveOptions: { exact: true },
-        routerLinkActive: 'active-route',
-      },
-      {
-        id: 'attitude-skill',
-        label: 'Attitude Skills',
-        style: { 'z-index': 3 },
-        routerLinkActiveOptions: { exact: true },
-        routerLinkActive: 'active-route',
-        items: [
-          {
-            id: 'group-attitude-skill#all',
-            label: 'Group Attitude kill',
-            routerLink: '/manage-group-attitude-skills',
-            routerLinkActiveOptions: { exact: true },
-            routerLinkActive: 'active-route',
-          },
-          {
-            id: 'attitude-skill#all',
-            label: 'Attitude skill',
-            routerLink: '/manage-attitude-skills',
-            routerLinkActiveOptions: { exact: true },
-            routerLinkActive: 'active-route',
-          },
-          {
-            id: 'emp-attitude-skill#all',
-            label: 'Employee Attitude Skill',
-            routerLink: '/emp-attitude-skills',
-            routerLinkActive: 'active-route',
-          },
-        ],
-      },
-      {
-        id: 'technical-skill',
-        label: 'Technical Skills',
-        style: { 'z-index': 3 },
-        routerLinkActive: 'active-route',
-        items: [
-          {
-            id: 'technical-skill#all',
-            label: 'Manage Technical Skills',
-            routerLink: '/manage-technical-skills',
-            routerLinkActiveOptions: { exact: true },
-            routerLinkActive: 'active-route',
-          },
-          {
-            id: 'emp-technical-skill#all',
-            label: 'Employee Technical Skills',
-            routerLink: '/emp-technical-skill',
-            routerLinkActiveOptions: { exact: true },
-            routerLinkActive: 'active-route',
-          },
-        ],
-      },
-      {
-        id: 'dev-plan',
-        label: 'Development Plans',
-        routerLinkActiveOptions: { exact: true },
-        routerLinkActive: 'active-route',
-        items: [
-          {
-            id: 'dev-plan#all',
-            label: 'Manage Dev Plan',
-            routerLink: '/manage-dev-plans',
-            routerLinkActive: 'active-route',
-          },
-          {
-            id: 'emp-dev-plan#all',
-            label: 'Employee Dev Plan',
-            routerLink: '/emp-dev-plans',
-            routerLinkActive: 'active-route',
-          },
-        ],
-      },
-      {
-        id: 'achievement',
-        label: 'Achievements',
-        style: { 'z-index': 3 },
-        routerLinkActiveOptions: { exact: true },
-        routerLinkActive: 'active-route',
-        items: [
-          {
-            id: 'group-achievement#all',
-            label: 'Group achievement',
-            routerLink: '/manage-group-achievements',
-            routerLinkActiveOptions: { exact: true },
-            routerLinkActive: 'active-route',
-          },
-          {
-            id: 'achievement#all',
-            label: 'Achievement',
-            routerLink: '/manage-achievements',
-            routerLinkActiveOptions: { exact: true },
-            routerLinkActive: 'active-route',
-          },
-          {
-            id: 'emp-achievement#all',
-            label: 'Emp achievement',
-            routerLink: ['/manage-emp-achievements'],
-            routerLinkActiveOptions: { exact: true },
-            routerLinkActive: 'active-route',
-          },
-        ],
-      },
-      {
-        id: 'summary',
-        label: 'Summary',
-        style: { 'z-index': 3 },
-        routerLinkActive: 'active-route',
-        items: [
-          {
-            id: 'summary#read',
-            label: 'Read Summaries',
-            routerLink: '/summaries',
-            routerLinkActiveOptions: { exact: true },
-            routerLinkActive: 'active-route',
-          },
-          {
-            id: 'summary#read.self',
-            label: 'My Summary',
-            routerLink: '/my-summary',
-            routerLinkActiveOptions: { exact: true },
-            routerLinkActive: 'active-route',
-          },
-        ],
-      },
-      // {
-      //   label: 'Logout',
-      //   icon: 'pi pi-sign-out',
-      //   routerLink: '/login',
-      //   style: { 'margin-left': '40px', color: 'red' },
-      // },
-    ];
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.updateActiveStates();
+      });
+    this.updateActiveStates();
+  }
+  updateActiveStates(): void {
+    const currentUrl = this.router.url;
+    this.items.forEach((item) => {
+      if (item.items) {
+        const isActive = item.items.some((subItem) =>
+          currentUrl.includes(subItem.routerLink)
+        );
+        item['styleClass'] = isActive ? 'navbar-link-active' : '';
+      } else {
+        item['styleClass'] = currentUrl.includes(item.routerLink)
+          ? 'navbar-link-active'
+          : '';
+      }
+    });
   }
 
   getToken(): void {

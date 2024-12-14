@@ -10,7 +10,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class ManageGroupAttitudeSkillService {
+export class GroupAttitudeSkillService {
   private Api = 'http://localhost:8080/group-attitude-skills';
   constructor(private http: HttpClient) {}
   getGroupAttitudeSkills(): Observable<Response<GroupAttitudeSkill[]>> {
@@ -18,18 +18,21 @@ export class ManageGroupAttitudeSkillService {
   }
   createGroupAttitudeSkills(
     groupAttitudeSkill: GroupAttitudeSkillRequest
-  ): Observable<any> {
-    return this.http.post<GroupAttitudeSkill>(this.Api, groupAttitudeSkill);
+  ): Observable<Response<GroupAttitudeSkill>> {
+    return this.http.post<Response<GroupAttitudeSkill>>(
+      this.Api,
+      groupAttitudeSkill
+    );
   }
   updateGroupAttitudeSkills(
     groupAttitudeSkill: GroupAttitudeSkill
-  ): Observable<any> {
-    return this.http.put<GroupAttitudeSkill>(
+  ): Observable<Response<GroupAttitudeSkill>> {
+    return this.http.put<Response<GroupAttitudeSkill>>(
       `${this.Api}/${groupAttitudeSkill.id}`,
       groupAttitudeSkill
     );
   }
-  deleteGroupAttitudeSkills(id: string): Observable<any> {
-    return this.http.delete(`${this.Api}/${id}`);
+  deleteGroupAttitudeSkills(id: string): Observable<Response<void>> {
+    return this.http.delete<Response<void>>(`${this.Api}/${id}`);
   }
 }

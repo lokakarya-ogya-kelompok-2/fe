@@ -19,7 +19,7 @@ import {
   GroupAttitudeSkill,
   GroupAttitudeSkillRequest,
 } from '../models/group-attitude-skill';
-import { ManageGroupAttitudeSkillService } from '../services/manage-group-attitude-skill.service';
+import { GroupAttitudeSkillService } from '../services/group-attitude-skill.service';
 
 @Component({
   selector: 'app-manage-group-attitude-skill',
@@ -38,25 +38,21 @@ import { ManageGroupAttitudeSkillService } from '../services/manage-group-attitu
     CheckboxModule,
     FormsModule,
     NavbarComponent,
-    // ReactiveFormsModule,
     ToggleButtonModule,
   ],
-  providers: [
-    ManageGroupAttitudeSkillService,
-    ConfirmationService,
-    MessageService,
-  ],
+  providers: [GroupAttitudeSkillService, ConfirmationService, MessageService],
   templateUrl: './manage-group-attitude-skill.component.html',
   styleUrl: './manage-group-attitude-skill.component.scss',
 })
 export class ManageGroupAttitudeSkillComponent {
-  datas: any[] = [];
+  data: GroupAttitudeSkill[] = [];
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
   detailVisible: boolean = false;
-  newGroupAttitudeSkill: GroupAttitudeSkillRequest =
-    {} as GroupAttitudeSkillRequest;
+  newGroupAttitudeSkill: GroupAttitudeSkillRequest = {
+    enabled: true,
+  } as GroupAttitudeSkillRequest;
   editGroupAttitudeSkill: GroupAttitudeSkillRequest =
     {} as GroupAttitudeSkillRequest;
   checked: boolean = false;
@@ -73,7 +69,7 @@ export class ManageGroupAttitudeSkillComponent {
     this.editData.enabled = false;
   }
   constructor(
-    private manageGroupAttitudeSkillService: ManageGroupAttitudeSkillService,
+    private groupAttitudeSkillService: GroupAttitudeSkillService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {}
@@ -87,9 +83,9 @@ export class ManageGroupAttitudeSkillComponent {
   }
 
   getAllData(): void {
-    this.manageGroupAttitudeSkillService.getGroupAttitudeSkills().subscribe({
+    this.groupAttitudeSkillService.getGroupAttitudeSkills().subscribe({
       next: (data) => {
-        this.datas = data.content;
+        this.data = data.content;
         this.loading = false;
         console.log('Data fetched:', data.content);
       },
@@ -101,7 +97,7 @@ export class ManageGroupAttitudeSkillComponent {
 
   createGroupAttitudeSkill(): void {
     console.log(JSON.stringify(this.newGroupAttitudeSkill) + ' INIIIII');
-    this.manageGroupAttitudeSkillService
+    this.groupAttitudeSkillService
       .createGroupAttitudeSkills(this.newGroupAttitudeSkill)
       .subscribe({
         next: (data) => {
@@ -126,7 +122,7 @@ export class ManageGroupAttitudeSkillComponent {
   updateGroupAttitudeSkill(): void {
     console.log('edittt');
 
-    this.manageGroupAttitudeSkillService
+    this.groupAttitudeSkillService
       .updateGroupAttitudeSkills(this.editData)
       .subscribe({
         next: (data) => {
@@ -162,7 +158,7 @@ export class ManageGroupAttitudeSkillComponent {
       key: key,
 
       accept: () => {
-        this.manageGroupAttitudeSkillService
+        this.groupAttitudeSkillService
           .deleteGroupAttitudeSkills(key)
           .subscribe({
             next: (data) => {
