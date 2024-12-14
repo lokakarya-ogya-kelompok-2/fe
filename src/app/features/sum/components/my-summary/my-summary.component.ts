@@ -26,12 +26,11 @@ import { SummaryComponent } from '../summary/summary.component';
 })
 export class MySummaryComponent implements OnInit {
   userId: string = '';
-  currentYear = new Date().getFullYear();
-  selectedPeriod: any = null;
+  selectedPeriod: number = new Date().getFullYear();
   hasAccessToSuggestion: boolean = true;
-  years = Array.from({ length: 11 }, (_, i) => {
-    const year = new Date().getFullYear() - 5 + i;
-    return { name: year.toString(), value: year.toString() };
+  years = Array.from({ length: 5 }, (_, i) => {
+    const year = new Date().getFullYear() - i;
+    return year;
   });
 
   constructor(

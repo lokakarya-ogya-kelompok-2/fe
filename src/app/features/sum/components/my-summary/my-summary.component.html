@@ -9,20 +9,19 @@
         <p-dropdown
           [(ngModel)]="selectedPeriod"
           [options]="years"
-          optionLabel="name"
           placeholder="Select Year"
+          styleClass="year-dropdown"
           [style]="{
             'min-width': '100px'
           }"
-          styleClass="year-dropdown"
         >
         </p-dropdown>
       </div>
     </div>
   </p-card>
 </div>
-<app-user-information />
-<app-summary [userId]="userId" />
+<app-user-information [year]="selectedPeriod" />
+<app-summary [userId]="userId" [year]="selectedPeriod" />
 @if (hasAccessToSuggestion) {
 <app-suggestion />
 }
