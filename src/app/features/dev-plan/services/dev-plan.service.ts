@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { Response } from '../../../shared/models/response';
-import { DevPlan, DevPlanRequest } from '../models/dev-plan';
+import { toHttpParam } from '../../../shared/utils/query-param';
+import { DevPlan, DevPlanQueryParam, DevPlanRequest } from '../models/dev-plan';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +13,11 @@ export class DevPlanService {
   private Api = `${environment.baseApiURL}/dev-plans`;
   constructor(private http: HttpClient) {}
 
-  getAllDevPlan(): Observable<Response<DevPlan[]>> {
-    return this.http.get<Response<DevPlan[]>>(this.Api);
+  getAllDevPlan(
+    param: DevPlanQueryParam = {}
+  ): Observable<Response<DevPlan[]>> {
+    const params = toHttpParam(param);
+    return this.http.get<Response<DevPlan[]>>(this.Api, { params });
   }
   createDevPlan(devPlanRequest: DevPlanRequest): Observable<DevPlan> {
     return this.http.post<DevPlan>(this.Api, devPlanRequest);

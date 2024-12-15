@@ -18,5 +18,5 @@ export interface Status {
 }
 
 export interface QueryParam {
-  [key: string]: string | boolean | number | undefined;
+  [key: string]: string | boolean | number | undefined | Date;
 }
