@@ -90,15 +90,21 @@ export class AchievementComponent implements OnInit {
     });
   }
   getAchievement(): void {
-    this.achievementService.getAchievements().subscribe({
-      next: (data) => {
-        this.Datas = data.content;
-        this.Datas.forEach((data) => {
-          this.expandedRows[data.group_id.group_name] = true;
-        });
-        this.loading = false;
-      },
-    });
+    this.achievementService
+      .getAchievements({
+        with_group: true,
+        with_created_by: true,
+        with_updated_by: true,
+      })
+      .subscribe({
+        next: (data) => {
+          this.Datas = data.content;
+          this.Datas.forEach((data) => {
+            this.expandedRows[data.group_id.group_name] = true;
+          });
+          this.loading = false;
+        },
+      });
   }
   createAchievement(): void {
     this.achievementService.createAchievement(this.newAchievement).subscribe({
