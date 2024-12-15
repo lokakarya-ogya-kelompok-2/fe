@@ -16,3 +16,7 @@ export interface Status {
   value: boolean;
   severity: string;
 }
+
+export interface QueryParam {
+  [key: string]: string | boolean | number | undefined | Date;
+}

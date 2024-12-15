@@ -69,20 +69,25 @@ export class DevPlanComponent implements OnInit {
   }
 
   getAllDevPlan(): void {
-    this.devPlanService.getAllDevPlan().subscribe({
-      next: (data) => {
-        this.data = data.content;
-        this.loading = false;
-        console.log(this.data);
-      },
-      error: (err) => {
-        console.error('Error fetch dev plan:', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Failed Fetching Dev Plan',
-        });
-      },
-    });
+    this.devPlanService
+      .getAllDevPlan({
+        with_created_by: true,
+        with_updated_by: true,
+      })
+      .subscribe({
+        next: (data) => {
+          this.data = data.content;
+          this.loading = false;
+          console.log(this.data);
+        },
+        error: (err) => {
+          console.error('Error fetch dev plan:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed Fetching Dev Plan',
+          });
+        },
+      });
   }
   createDevPlan(): void {
     this.devPlanService.createDevPlan(this.newDevPlan).subscribe({

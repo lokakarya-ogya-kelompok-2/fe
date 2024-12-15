@@ -89,20 +89,26 @@ export class AttitudeSkillComponent implements OnInit {
 
   getAttitudeSkill(): void {
     this.loading = true;
-    this.attitudeSkillService.getAttitudeSkills().subscribe({
-      next: (data) => {
-        this.Datas = data.content;
-        this.Datas.forEach((data) => {
-          this.expandedRows[data.group_id.group_name] = true;
-        });
-        this.loading = false;
-        console.log(this.Datas);
-      },
-      error: (err) => {
-        console.error('Error fetching attitude skill:', err);
-        this.loading = false;
-      },
-    });
+    this.attitudeSkillService
+      .getAttitudeSkills({
+        with_group: true,
+        with_created_by: true,
+        with_updated_by: true,
+      })
+      .subscribe({
+        next: (data) => {
+          this.Datas = data.content;
+          this.Datas.forEach((data) => {
+            this.expandedRows[data.group_id.group_name] = true;
+          });
+          this.loading = false;
+          console.log(this.Datas);
+        },
+        error: (err) => {
+          console.error('Error fetching attitude skill:', err);
+          this.loading = false;
+        },
+      });
   }
   createAttitudeSkill(): void {
     this.attitudeSkillService
