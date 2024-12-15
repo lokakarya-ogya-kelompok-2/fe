@@ -146,7 +146,9 @@ export class EmpAchievementComponent implements OnInit {
     this.selectedUser = user;
     this.visible = true;
     forkJoin({
-      groupAchievements: this.groupAchievementSvc.getGroupAchievements(),
+      groupAchievements: this.groupAchievementSvc.getGroupAchievements({
+        with_achievements: true,
+      }),
       empAchievements: this.empAchievementService.getByUserIdAndYear(
         this.selectedUser.id,
         this.currentYear

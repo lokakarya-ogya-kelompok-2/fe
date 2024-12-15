@@ -74,8 +74,7 @@ export class GroupAchievementComponent implements OnInit {
 
   constructor(
     private groupAchievementService: GroupAchievementService,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -83,13 +82,18 @@ export class GroupAchievementComponent implements OnInit {
   }
 
   getGroupAchievements(): void {
-    this.groupAchievementService.getGroupAchievements().subscribe({
-      next: (data) => {
-        this.datas = data.content;
-        console.log(this.datas);
-        this.loading = false;
-      },
-    });
+    this.groupAchievementService
+      .getGroupAchievements({
+        with_created_by: true,
+        with_updated_by: true,
+      })
+      .subscribe({
+        next: (data) => {
+          this.datas = data.content;
+          console.log(this.datas);
+          this.loading = false;
+        },
+      });
   }
   createGroupAchievements(): void {
     this.groupAchievementService
