@@ -10,3 +10,9 @@ export interface TokenPayload extends JwtPayload {
   username: string;
   full_name: string;
 }
+
+export interface Status {
+  label: string;
+  value: boolean;
+  severity: string;
+}
