@@ -40,7 +40,7 @@
           <input
             pInputText
             type="text"
-            placeholder="Search keyword"
+            placeholder="Search by group name"
             (input)="onGlobalFilter(groupAttitudeSkillTable, $event)"
             [style]="{ 'font-size': '14px' }"
           />
@@ -49,32 +49,70 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr style="text-align: center">
-        <th style="width: 45%; text-align: center">Group Name</th>
+        <th style="width: 45%; text-align: center">
+          <div
+            class="flex align-items-center justify-content-center gap-2 mb-5"
+          >
+            Group Name
+            <div style="height: 2.3rem"></div>
+          </div>
+        </th>
         <th style="width: 15%; text-align: center" pSortableColumn="percentage">
-          Weight <p-sortIcon field="percentage" />
+          <div
+            class="flex align-items-center justify-content-center gap-2 mb-5"
+          >
+            Weight <p-sortIcon field="percentage" />
+            <div style="height: 2.3rem"></div>
+          </div>
         </th>
         <th style="width: 20%; text-align: center">
-          <p-columnFilter field="enabled" matchMode="equals" [showMenu]="false">
-            <ng-template
-              pTemplate="filter"
-              let-value
-              let-filter="filterCallback"
+          <div class="flex flex-column justify-content-center gap-2">
+            <span>Enabled</span>
+            <p-columnFilter
+              field="enabled"
+              matchMode="equals"
+              [showMenu]="false"
+              styleClass="flex align-items-center justify-content-center w-full"
             >
-              <p-dropdown
-                [ngModel]="value"
-                [options]="statuses"
-                (onChange)="filter($event.value)"
-                placeholder="Status"
-                [showClear]="true"
+              <ng-template
+                pTemplate="filter"
+                let-value
+                let-filter="filterCallback"
               >
-                <ng-template let-option pTemplate="item">
-                  <p-tag [value]="option.label" [severity]="option.severity" />
-                </ng-template>
-              </p-dropdown>
-            </ng-template>
-          </p-columnFilter>
+                <p-dropdown
+                  [ngModel]="value"
+                  [options]="statuses"
+                  (onChange)="filter($event.value)"
+                  placeholder="Status"
+                  [showClear]="true"
+                  [style]="{
+                    'min-width': '10rem',
+                    'font-size': '14px',
+
+                  }"
+                  [panelStyle]="{ 'min-width': '10rem' }"
+                  styleClass="year-dropdown"
+                  appendTo="body"
+                >
+                  <ng-template late let-option pTemplate="item">
+                    <p-tag
+                      [value]="option.label"
+                      [severity]="option.severity"
+                    />
+                  </ng-template>
+                </p-dropdown>
+              </ng-template>
+            </p-columnFilter>
+          </div>
         </th>
-        <th style="width: 25%; text-align: center">Action</th>
+        <th style="width: 25%; text-align: center">
+          <div
+            class="flex align-items-center justify-content-center gap-2 mb-5"
+          >
+            Action
+            <div style="height: 2.3rem"></div>
+          </div>
+        </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-data>

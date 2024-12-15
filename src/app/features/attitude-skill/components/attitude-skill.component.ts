@@ -164,7 +164,6 @@ export class AttitudeSkillComponent implements OnInit {
       key: key,
       accept: () => {
         console.log('delete data');
-
         this.attitudeSkillService.deleteAttitudeSkill(key).subscribe({
           next: (data) => {
             console.log(data);
@@ -184,13 +183,6 @@ export class AttitudeSkillComponent implements OnInit {
               detail: 'Failed to delete attitude skill',
             });
           },
-        });
-      },
-      reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
         });
       },
     });

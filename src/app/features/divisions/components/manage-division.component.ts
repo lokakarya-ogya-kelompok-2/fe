@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { Division, DivisionRequest } from '../models/division';
 import { ManageDivisionService } from '../services/manage-division.service';
+
 @Component({
   selector: 'app-manage-division',
   standalone: true,
@@ -156,13 +157,6 @@ export class ManageDivisionComponent implements OnInit {
               detail: 'Failed to delete division',
             });
           },
-        });
-      },
-      reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
         });
       },
     });

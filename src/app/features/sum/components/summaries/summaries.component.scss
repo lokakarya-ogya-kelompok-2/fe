@@ -81,3 +81,31 @@
     border-radius: 8px;
   }
 }
+
+:host ::ng-deep {
+  .year-dropdown {
+    .p-multiselect-label {
+      padding: 0.4rem 0.75rem; // Reduced padding
+      font-size: 14px;
+    }
+
+    .p-multiselect-trigger {
+      width: 2.5rem; // Reduced trigger width
+    }
+  }
+
+  .year-dropdown-panel {
+    .p-multiselect-panel {
+      min-width: 10rem !important;
+      font-size: 14px;
+
+      .p-multiselect-items {
+        padding: 0.25rem 0;
+
+        .p-multiselect-item {
+          padding: 0.4rem 0.75rem;
+        }
+      }
+    }
+  }
+}

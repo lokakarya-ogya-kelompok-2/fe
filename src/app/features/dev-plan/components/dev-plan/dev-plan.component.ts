@@ -144,7 +144,6 @@ export class DevPlanComponent implements OnInit {
       key: key,
       accept: () => {
         console.log('delete data');
-
         this.devPlanService.deleteDevPlan(key).subscribe({
           next: (data) => {
             console.log(data);
@@ -164,13 +163,6 @@ export class DevPlanComponent implements OnInit {
               detail: 'Failed to delete dev plan',
             });
           },
-        });
-      },
-      reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
         });
       },
     });
