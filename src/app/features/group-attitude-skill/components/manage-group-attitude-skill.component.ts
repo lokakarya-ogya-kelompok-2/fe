@@ -187,14 +187,15 @@ export class ManageGroupAttitudeSkillComponent {
               });
               this.getAllData();
             },
+            error: (err) => {
+              console.error('Error deleting group attitude skill:', err);
+              Swal.fire({
+                icon: 'error',
+                title: 'Failed to delete group attitude skill',
+                text: err.error.message,
+              });
+            },
           });
-      },
-      reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
-        });
       },
     });
   }

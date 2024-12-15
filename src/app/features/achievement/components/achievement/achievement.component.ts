@@ -179,13 +179,6 @@ export class AchievementComponent implements OnInit {
           },
         });
       },
-      reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
-        });
-      },
     });
   }
 

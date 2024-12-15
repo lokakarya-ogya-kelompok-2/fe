@@ -55,7 +55,7 @@ export class SummariesComponent implements OnInit {
   selectedUser: User = {} as User;
   selectedYear: number = new Date().getFullYear();
   isSuggestionsLoading: boolean = false;
-
+  value: any[] = [];
   constructor(private readonly summaryService: SummaryService) {}
 
   ngOnInit(): void {

@@ -19,7 +19,7 @@
       'table-layout': 'fixed'
     }"
     [style]="{ width: '100%' }"
-    [globalFilterFields]="['group_name', 'percentage']"
+    [globalFilterFields]="['group_name', 'enabled']"
     [sortField]="'created_at'"
     [sortOrder]="-1"
   >
@@ -39,7 +39,7 @@
           <input
             pInputText
             type="text"
-            placeholder="Search keyword"
+            placeholder="Search by group name, enabled"
             (input)="onGlobalFilter(groupAchievementTable, $event)"
             [style]="{ 'font-size': '14px' }"
           />

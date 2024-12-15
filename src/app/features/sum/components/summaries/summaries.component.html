@@ -40,7 +40,7 @@
           <input
             pInputText
             type="text"
-            placeholder="Search keyword"
+            placeholder="Search by full name, username, email, position, division, year"
             (input)="onGlobalFilter(summariesTable, $event)"
             [style]="{ 'font-size': '14px' }"
           />
@@ -77,30 +77,42 @@
           </div>
         </th>
         <th style="width: 25%; text-align: center">
-          <div class="flex flex-column align-items-center gap-2">
+          <div
+            class="flex flex-column align-items-center justify-content-center gap-2"
+          >
             <span>Division</span>
             <p-columnFilter
               field="user_id.division.division_name"
               matchMode="in"
               [showMenu]="false"
+              styleClass="flex align-items-center justify-content-center w-full"
             >
               <ng-template
                 pTemplate="filter"
                 let-value
                 let-filter="filterCallback"
               >
-                <p-multiSelect
-                  [maxSelectedLabels]="1"
-                  [ngModel]="value"
-                  [options]="divisions"
-                  (onChange)="filter($event.value)"
-                  placeholder="Select Division"
-                  [showClear]="true"
-                  optionLabel="division_name"
-                  optionValue="division_name"
-                  [style]="{ 'min-width': '14rem' }"
-                  appendTo="body"
-                />
+                <div class="flex justify-content-center w-full">
+                  <p-multiSelect
+                    [maxSelectedLabels]="1"
+                    [ngModel]="value"
+                    [options]="divisions"
+                    (onChange)="filter($event.value)"
+                    placeholder="Select Division"
+                    [showClear]="true"
+                    optionLabel="division_name"
+                    optionValue="division_name"
+                    [style]="{
+                      'min-width': '12rem',
+                      'font-size': '14px',
+                      '--p-multiselect-label-padding': '0.4rem 0.75rem'
+                    }"
+                    [panelStyle]="{ 'min-width': '12rem' }"
+                    styleClass="year-dropdown"
+                    [panelStyleClass]="'year-dropdown-panel'"
+                    appendTo="body"
+                  />
+                </div>
               </ng-template>
             </p-columnFilter>
           </div>

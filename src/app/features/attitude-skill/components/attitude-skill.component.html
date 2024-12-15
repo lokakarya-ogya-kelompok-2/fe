@@ -42,7 +42,7 @@
           <input
             pInputText
             type="text"
-            placeholder="Search keyword"
+            placeholder="Search by attitude skill, group name and enabled"
             (input)="onGlobalFilter(attitudeSkillTable, $event)"
             [style]="{ 'font-size': '14px' }"
           />
@@ -128,9 +128,9 @@
         <td colspan="4" class="text-center p-4">
           <div class="flex flex-column align-items-center gap-2">
             <i class="pi pi-info-circle text-4xl text-primary"></i>
-            <span class="font-semibold text-lg"
-              >No attitude skills data available</span
-            >
+            <span class="font-semibold text-lg">
+              No attitude skills data available
+            </span>
           </div>
         </td>
       </tr>
