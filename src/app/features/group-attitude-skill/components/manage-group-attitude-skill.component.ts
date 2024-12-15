@@ -100,16 +100,21 @@ export class ManageGroupAttitudeSkillComponent {
   }
 
   getAllData(): void {
-    this.groupAttitudeSkillService.getGroupAttitudeSkills().subscribe({
-      next: (data) => {
-        this.data = data.content;
-        this.loading = false;
-        console.log('Data fetched:', data.content);
-      },
-      error: (err) => {
-        console.error('Error fetching data:', err);
-      },
-    });
+    this.groupAttitudeSkillService
+      .getGroupAttitudeSkills({
+        with_created_by: true,
+        with_updated_by: true,
+      })
+      .subscribe({
+        next: (data) => {
+          this.data = data.content;
+          this.loading = false;
+          console.log('Data fetched:', data.content);
+        },
+        error: (err) => {
+          console.error('Error fetching data:', err);
+        },
+      });
   }
 
   createGroupAttitudeSkill(): void {

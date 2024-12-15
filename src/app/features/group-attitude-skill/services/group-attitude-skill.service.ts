@@ -1,9 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 import { Response } from '../../../shared/models/response';
+import { toHttpParam } from '../../../shared/utils/query-param';
 import {
   GroupAttitudeSkill,
+  GroupAttitudeSkillQueryParam,
   GroupAttitudeSkillRequest,
 } from '../models/group-attitude-skill';
 
@@ -11,16 +14,22 @@ import {
   providedIn: 'root',
 })
 export class GroupAttitudeSkillService {
-  private Api = 'http://localhost:8080/group-attitude-skills';
+  private groupAttitudeSkillApiUrl = `${environment.baseApiURL}/group-attitude-skills`;
   constructor(private http: HttpClient) {}
-  getGroupAttitudeSkills(): Observable<Response<GroupAttitudeSkill[]>> {
-    return this.http.get<Response<GroupAttitudeSkill[]>>(this.Api);
+  getGroupAttitudeSkills(
+    param: GroupAttitudeSkillQueryParam = {}
+  ): Observable<Response<GroupAttitudeSkill[]>> {
+    const params = toHttpParam(param);
+    return this.http.get<Response<GroupAttitudeSkill[]>>(
+      this.groupAttitudeSkillApiUrl,
+      { params }
+    );
   }
   createGroupAttitudeSkills(
     groupAttitudeSkill: GroupAttitudeSkillRequest
   ): Observable<Response<GroupAttitudeSkill>> {
     return this.http.post<Response<GroupAttitudeSkill>>(
-      this.Api,
+      this.groupAttitudeSkillApiUrl,
       groupAttitudeSkill
     );
   }
@@ -28,11 +37,13 @@ export class GroupAttitudeSkillService {
     groupAttitudeSkill: GroupAttitudeSkill
   ): Observable<Response<GroupAttitudeSkill>> {
     return this.http.put<Response<GroupAttitudeSkill>>(
-      `${this.Api}/${groupAttitudeSkill.id}`,
+      `${this.groupAttitudeSkillApiUrl}/${groupAttitudeSkill.id}`,
       groupAttitudeSkill
     );
   }
   deleteGroupAttitudeSkills(id: string): Observable<Response<void>> {
-    return this.http.delete<Response<void>>(`${this.Api}/${id}`);
+    return this.http.delete<Response<void>>(
+      `${this.groupAttitudeSkillApiUrl}/${id}`
+    );
   }
 }

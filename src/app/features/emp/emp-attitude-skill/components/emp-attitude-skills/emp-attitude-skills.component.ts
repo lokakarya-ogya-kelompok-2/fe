@@ -93,22 +93,26 @@ export class EmpAttitudeSkillsComponent implements OnInit {
           });
         },
         complete: () => {
-          this.groupAttitudeSkillService.getGroupAttitudeSkills().subscribe({
-            next: (data) => {
-              this.groupAttitudeSkills = data.content;
-              this.groupAttitudeSkills.forEach((group) => {
-                group.attitude_skills?.forEach((attitudeSkill) => {
-                  if (!this.empAttitudeSkills[attitudeSkill.id]) {
-                    this.empAttitudeSkills[attitudeSkill.id] = {
-                      attitude_skill_id: attitudeSkill.id,
-                      assessment_year: this.currentYear,
-                    } as EmpAttitudeSkillRequest;
-                  }
+          this.groupAttitudeSkillService
+            .getGroupAttitudeSkills({
+              with_attitude_skills: true,
+            })
+            .subscribe({
+              next: (data) => {
+                this.groupAttitudeSkills = data.content;
+                this.groupAttitudeSkills.forEach((group) => {
+                  group.attitude_skills?.forEach((attitudeSkill) => {
+                    if (!this.empAttitudeSkills[attitudeSkill.id]) {
+                      this.empAttitudeSkills[attitudeSkill.id] = {
+                        attitude_skill_id: attitudeSkill.id,
+                        assessment_year: this.currentYear,
+                      } as EmpAttitudeSkillRequest;
+                    }
+                  });
                 });
-              });
-            },
-            complete: () => {},
-          });
+              },
+              complete: () => {},
+            });
         },
       });
   }
