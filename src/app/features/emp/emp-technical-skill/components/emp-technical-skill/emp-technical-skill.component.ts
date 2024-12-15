@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
@@ -31,6 +32,7 @@ import { EmpTechnicalSkillService } from '../../services/emp-technical-skill.ser
     ToastModule,
     CommonModule,
     CardModule,
+    FloatLabelModule,
   ],
   templateUrl: './emp-technical-skill.component.html',
   styleUrl: './emp-technical-skill.component.scss',
@@ -138,7 +140,8 @@ export class EmpTechnicalSkillComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit it!',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
         let empTechnicalSkillsReq: EmpTechnicalSkillReq[] = [];

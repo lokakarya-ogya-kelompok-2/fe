@@ -42,7 +42,7 @@ import { DevPlanService } from '../../services/dev-plan.service';
   styleUrl: './dev-plan.component.scss',
 })
 export class DevPlanComponent implements OnInit {
-  datas: any[] = [];
+  data: DevPlan[] = [];
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
@@ -71,9 +71,9 @@ export class DevPlanComponent implements OnInit {
   getAllDevPlan(): void {
     this.devPlanService.getAllDevPlan().subscribe({
       next: (data) => {
-        this.datas = data.content;
+        this.data = data.content;
         this.loading = false;
-        console.log(this.datas);
+        console.log(this.data);
       },
       error: (err) => {
         console.error('Error fetch dev plan:', err);

@@ -28,20 +28,36 @@
 
       @for (inputForm of empDevPlans[devPlan.id]; track $index) {
       <div class="p-2 mb-2 border-1 border-round surface-border">
-        <div class="flex flex-column md:flex-row gap-3 align-items-center">
+        <div class="flex flex-column md:flex-row gap-3 align-items-center mt-4">
           <div class="flex-1">
-            <input
-              type="text"
-              pInputText
-              class="w-full"
-              [(ngModel)]="empDevPlans[devPlan.id][$index].detail"
-              [name]="'detail_' + devPlan.id + '_' + $index"
-              placeholder="Enter details"
-              [style]="{ '::placeholder': { color: 'red' } }"
-              [disabled]="empDevPlans[devPlan.id][$index].id != undefined"
-              required
-            />
-            <small class="text-red-600 ml-1">*</small>
+            <p-floatLabel>
+              <input
+                type="text"
+                pInputText
+                class="w-full"
+                [(ngModel)]="empDevPlans[devPlan.id][$index].detail"
+                [name]="'detail_' + devPlan.id + '_' + $index"
+                placeholder="Enter details"
+                [style]="{ '::placeholder': { color: 'red' } }"
+                [disabled]="empDevPlans[devPlan.id][$index].id != undefined"
+                #detailInput="ngModel"
+                required
+              />
+              <label [for]="'detail_' + devPlan.id + '_' + $index"
+                >Detail@if (!empDevPlans[devPlan.id][$index].id) {
+                <small class="text-red-600 ml-1">*</small>
+                }</label
+              >
+            </p-floatLabel>
+            @if (detailInput.invalid && (detailInput.dirty ||
+            detailInput.touched)) {
+            <small
+              class="p-error block mt-1"
+              *ngIf="detailInput.errors?.['required']"
+            >
+              Detail is required
+            </small>
+            }
           </div>
           <div class="flex gap-2" style="min-width: 2.5rem">
             @if (empDevPlans[devPlan.id][$index].id == undefined) {
