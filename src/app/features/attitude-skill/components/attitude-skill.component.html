@@ -18,12 +18,7 @@
       'border-radius': '8px',
       'table-layout': 'fixed'
     }"
-    [globalFilterFields]="[
-      'id',
-      'attitude_skill',
-      'group_id.group_name',
-      'enabled'
-    ]"
+    [globalFilterFields]="['attitude_skill', 'group_id.group_name', 'enabled']"
     [style]="{ width: '100%' }"
     [sortField]="'created_at'"
     [sortOrder]="-1"
