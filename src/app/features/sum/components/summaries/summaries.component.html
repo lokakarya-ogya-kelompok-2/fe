@@ -1,7 +1,7 @@
 <app-navbar />
 <div class="card surface-0 shadow-2 border-round-2xl" style="margin: 1rem">
   <p-table
-    #userTable
+    #summariesTable
     id="summaries-table"
     [scrollable]="true"
     scrollHeight="380px"
@@ -22,8 +22,10 @@
     [style]="{ width: '100%' }"
     [globalFilterFields]="[
       'user_id.full_name',
+      'iser_id.username',
+      'user_id.email',
       'user_id.position',
-      'user_id.division.division_name',
+      'user_id.division',
       'year'
     ]"
     [sortField]="'created_at'"
@@ -39,7 +41,7 @@
             pInputText
             type="text"
             placeholder="Search keyword"
-            (input)="onGlobalFilter(userTable, $event)"
+            (input)="onGlobalFilter(summariesTable, $event)"
             [style]="{ 'font-size': '14px' }"
           />
         </p-iconField>

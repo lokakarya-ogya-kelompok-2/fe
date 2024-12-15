@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { GalleriaModule } from 'primeng/galleria';
+import { ImageModule } from 'primeng/image';
 import { InputTextModule } from 'primeng/inputtext';
 import { SplitterModule } from 'primeng/splitter';
 import Swal from 'sweetalert2';
@@ -11,7 +12,6 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { LoginService } from '../../services/login.service';
 import { LoginRequest } from '../models/login';
 import { PhotoService } from '../services/photoService';
-
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -22,6 +22,7 @@ import { PhotoService } from '../services/photoService';
     FormsModule,
     SplitterModule,
     GalleriaModule,
+    ImageModule,
   ],
   providers: [PhotoService],
   templateUrl: './login.component.html',

@@ -1,38 +1,34 @@
-<div class="flex flex-column md:flex-row">
-  <div>
-    <p-galleria
-      [value]="images"
-      [showIndicators]="false"
-      [showItemNavigatorsOnHover]="true"
-      [showItemNavigators]="true"
-      [responsiveOptions]="responsiveOptions"
-      [containerStyle]="{ 'max-width': '640px', height: '100px' }"
-    >
-      <ng-template pTemplate="item" let-item>
-        <img
-          [src]="item.itemImageSrc"
-          style="
-            width: 100%;
-            height: 495px;
-            display: block;
-            border-radius: 5px 5px 0px 0px;
-          "
-        />
-      </ng-template>
-      <ng-template pTemplate="thumbnail" let-item>
-        <div
-          class="grid grid-nogutter justify-content-center"
-          style="border-radius: 0px 0px 5px 5px"
-        >
-          <img [src]="item.thumbnailImageSrc" style="display: block" />
-        </div>
-      </ng-template>
-    </p-galleria>
+<div
+  class="flex flex-column md:flex-row"
+  style="height: 100vh; overflow: hidden"
+>
+  <!-- Left side with image -->
+  <div class="flex align-items-center justify-content-center" style="flex: 1">
+    <p-image
+      src="../../../../../assets/img/img5.jpeg"
+      alt="Modern Office Space"
+      [preview]="false"
+      width="807"
+      [style]="{
+        'max-width': '600px',
+        'max-height': '80vh',
+        width: '100%',
+        'border-radius': '8px',
+        'object-fit': 'cover'
+      }"
+    />
   </div>
+
+  <!-- Divider -->
   <div>
-    <p-divider layout="vertical"></p-divider>
+    <p-divider
+      layout="vertical"
+      [style]="{ margin: '0', padding: '0' }"
+    ></p-divider>
   </div>
-  <div class="right-part">
+
+  <!-- Right side with form -->
+  <div class="right-part" style="flex: 1; overflow-y: auto">
     <div class="card">
       <div class="surface-card">
         <h1>Employee Appraisal Login</h1>

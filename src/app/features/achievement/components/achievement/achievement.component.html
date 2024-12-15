@@ -19,13 +19,7 @@
       'table-layout': 'fixed'
     }"
     [style]="{ width: '100%' }"
-    [globalFilterFields]="[
-      'id',
-      'achievement',
-      'group_id.group_name',
-      'percentage',
-      'enabled'
-    ]"
+    [globalFilterFields]="['achievement', 'group_id.group_name', 'enabled']"
     [sortField]="'created_at'"
     [sortOrder]="-1"
     rowGroupMode="subheader"
