@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { Response } from '../../../shared/models/response';
-import { toQueryString } from '../../../shared/utils/query-param';
+import { toHttpParam } from '../../../shared/utils/query-param';
 import {
   AttitudeSkill,
   AttitudeSkillQueryParam,
@@ -19,7 +19,7 @@ export class AttitudeSkillService {
   getAttitudeSkills(
     param: AttitudeSkillQueryParam = {}
   ): Observable<Response<AttitudeSkill[]>> {
-    const params = toQueryString(param);
+    const params = toHttpParam(param);
     return this.http.get<Response<AttitudeSkill[]>>(this.attitudeSkillApiUrl, {
       params,
     });

@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { QueryParam } from '../types';
 
-export const toQueryString = <T extends QueryParam>(param: T) => {
+export const toHttpParam = <T extends QueryParam>(param: T) => {
   let params = new HttpParams();
   Object.keys(param).forEach((key) => {
     if (param[key] !== undefined && param[key] !== null) {
