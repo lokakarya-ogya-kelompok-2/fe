@@ -94,6 +94,7 @@ export class UserListComponent implements OnInit {
 
   showDialog(dialogType: DialogType, userData: User = {} as User) {
     this.toggleDialog(true);
+    console.log('DIALOG DIALOG MUNCULLAH KAU', dialogType);
     this.currentDialogType = dialogType;
     switch (dialogType) {
       case DialogType.ADD:

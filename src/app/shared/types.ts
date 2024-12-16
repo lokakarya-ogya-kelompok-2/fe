@@ -18,5 +18,12 @@ export interface Status {
 }
 
 export interface QueryParam {
-  [key: string]: string | boolean | number | undefined | Date;
+  [key: string]:
+    | string
+    | boolean
+    | number
+    | undefined
+    | Date
+    | string[]
+    | number[];
 }

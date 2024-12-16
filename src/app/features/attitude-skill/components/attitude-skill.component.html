@@ -127,7 +127,12 @@
                 expanded ? 'pi-chevron-down' : 'pi-chevron-right'
               ]"
             ></i>
-            <span class="font-bold text-xl text-primary">
+            <span
+              class="font-bold text-xl"
+              [ngClass]="
+                data.group_id.enabled ? ['text-green-700'] : ['text-red-700']
+              "
+            >
               {{ data.group_id.group_name }}
             </span>
           </div>
@@ -258,10 +263,8 @@
           <p-dropdown
             [options]="groupAttitudeSkillDropdown"
             [(ngModel)]="newAttitudeSkill.group_id"
-            name="group_name"
-            optionLabel="group_name"
-            optionValue="id"
-            placeholder="Select a group name"
+            name="groupAttitudeSkill"
+            placeholder="Select a group attitude"
             required
             #groupDropdown="ngModel"
             styleClass="w-full"
@@ -373,11 +376,9 @@
           <p-dropdown
             [options]="groupAttitudeSkillDropdown"
             [(ngModel)]="editData.group_id"
-            optionLabel="group_name"
-            optionValue="id"
-            placeholder="Select a group name"
+            placeholder="Select a group attitude"
             required
-            name="group name"
+            name="groupAttitude"
             styleClass="w-full"
             #editGroupDropdown="ngModel"
             appendTo="body"

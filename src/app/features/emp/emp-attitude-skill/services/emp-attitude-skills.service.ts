@@ -1,9 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
 import { Response } from '../../../../shared/models/response';
+import { toHttpParam } from '../../../../shared/utils/query-param';
 import {
   EmpAttitudeSkill,
+  EmpAttitudeSkillQueryParam,
   EmpAttitudeSkillRequest,
 } from '../models/emp-attitude-skill';
 
@@ -11,13 +14,14 @@ import {
   providedIn: 'root',
 })
 export class EmpAttitudeSkillsService {
-  private Api = 'http://localhost:8080/emp-attitude-skills';
+  private Api = `${environment.baseApiURL}/emp-attitude-skills`;
   constructor(private http: HttpClient) {}
-  // get
-  // create
 
-  getEmpAttitudeSkill(): Observable<any> {
-    return this.http.get<any>(this.Api);
+  getEmpAttitudeSkill(
+    param: EmpAttitudeSkillQueryParam = {}
+  ): Observable<Response<EmpAttitudeSkill[]>> {
+    const params = toHttpParam(param);
+    return this.http.get<Response<EmpAttitudeSkill[]>>(this.Api, { params });
   }
 
   createEmpAttitudeSkill(
@@ -26,15 +30,6 @@ export class EmpAttitudeSkillsService {
     return this.http.post<EmpAttitudeSkill[]>(
       `${this.Api}/bulk-create`,
       empAttitudeSkillRequest
-    );
-  }
-
-  getByUserIdAndYear(
-    userId: string,
-    year: number
-  ): Observable<Response<EmpAttitudeSkill[]>> {
-    return this.http.get<Response<EmpAttitudeSkill[]>>(
-      `${this.Api}?user_ids=${userId}&years=${year}`
     );
   }
 }

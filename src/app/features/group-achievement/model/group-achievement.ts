@@ -22,6 +22,7 @@ export interface GroupAchievementQueryParam extends QueryParam {
   max_weight?: number;
   enabled_only?: boolean;
   with_achievements?: boolean;
+  with_enabled_child_only?: boolean;
   with_created_by?: boolean;
   with_updated_by?: boolean;
 }
