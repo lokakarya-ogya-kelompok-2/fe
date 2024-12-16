@@ -84,6 +84,12 @@
                 Please select a skill level
               </small>
             </div>
+            @if(!empTechnicalSkills[technicalSkill.id][$index].id){
+            <i
+              class="pi pi-info-circle text-blue-500 ml-2"
+              [pTooltip]="tooltipContent"
+            ></i>
+            }
           </div>
           <div class="flex gap-2" style="min-width: 2.5rem">
             @if (empTechnicalSkills[technicalSkill.id][$index].id == undefined)
@@ -123,3 +129,13 @@
 </form>
 
 <p-toast position="bottom-right" />
+
+<ng-template #tooltipContent>
+  <div class="flex align-items-center">
+    <ul>
+      <li *ngFor="let skill of skillLevels">
+        <b>Level {{ skill.level }}:</b> {{ skill.description }}
+      </li>
+    </ul>
+  </div>
+</ng-template>
