@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -17,7 +17,6 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { Status } from '../../../shared/types';
-import { GroupAttitudeSkill } from '../../group-attitude-skill/models/group-attitude-skill';
 import { GroupAttitudeSkillService } from '../../group-attitude-skill/services/group-attitude-skill.service';
 import { AttitudeSkill, AttitudeSkillRequest } from '../models/attitude-skill';
 import { AttitudeSkillService } from '../services/attitude-skill.service';
@@ -56,7 +55,9 @@ export class AttitudeSkillComponent implements OnInit {
     enabled: true,
   } as AttitudeSkillRequest;
   checked: boolean = false;
-  groupAttitudeSkillDropdown: GroupAttitudeSkill[] = [];
+  groupAttitudeSkillDropdown: SelectItem[] = [
+    { label: 'Select a group attitude', value: '', disabled: true },
+  ];
   dataDetail: AttitudeSkill = {} as AttitudeSkill;
   expandedRows: { [key: string]: boolean } = {};
   statuses: Status[] = [
@@ -90,9 +91,13 @@ export class AttitudeSkillComponent implements OnInit {
   getGroupAttitudeSkill(): void {
     this.groupAttitudeSkillService.getGroupAttitudeSkills().subscribe({
       next: (data) => {
-        this.groupAttitudeSkillDropdown = data.content;
-
-        console.log(this.groupAttitudeSkillDropdown);
+        data.content.forEach((group) => {
+          this.groupAttitudeSkillDropdown.push({
+            label: group.group_name,
+            value: group.id,
+            disabled: !group.enabled,
+          });
+        });
       },
       error: (err) => {
         console.error('Error fetching group attitude skill:', err);

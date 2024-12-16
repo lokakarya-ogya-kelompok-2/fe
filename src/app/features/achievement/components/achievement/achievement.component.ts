@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -62,7 +62,13 @@ export class AchievementComponent implements OnInit {
   } as AchievementRequest;
   checked: boolean = false;
   dataDetail: Achievement = {} as Achievement;
-  groupAchievementDropdown: any = [];
+  groupAchievementDropdown: SelectItem[] = [
+    {
+      label: 'Select an achievement group',
+      value: '',
+      disabled: true,
+    },
+  ];
   statuses: Status[] = [
     {
       label: 'Enabled',
@@ -97,7 +103,13 @@ export class AchievementComponent implements OnInit {
   getGroupAchievement(): void {
     this.groupAchievementService.getGroupAchievements().subscribe({
       next: (data) => {
-        this.groupAchievementDropdown = data.content;
+        data.content.forEach((group) => {
+          this.groupAchievementDropdown.push({
+            label: group.group_name,
+            value: group.id,
+            disabled: !group.enabled,
+          });
+        });
         console.log(this.groupAchievementDropdown);
       },
     });
