@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
@@ -15,6 +16,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { Status } from '../../../../shared/types';
 import {
   TechnicalSkill,
   TechnicalSKillRequest,
@@ -40,6 +42,7 @@ import { TechnicalSkillService } from '../../services/technical-skill.service';
     CheckboxModule,
     NavbarComponent,
     ToggleButtonModule,
+    DropdownModule,
   ],
   providers: [
     TechnicalSkillService,
@@ -62,6 +65,18 @@ export class TechnicalSkillComponent {
   editData: TechnicalSkill = {} as TechnicalSkill;
   dataDetail: TechnicalSkill = {} as TechnicalSkill;
   checked: boolean = false;
+  statuses: Status[] = [
+    {
+      label: 'Enabled',
+      value: true,
+      severity: 'success',
+    },
+    {
+      label: 'Disabled',
+      value: false,
+      severity: 'danger',
+    },
+  ];
 
   resetForm(): void {
     this.newTechnicalSkill.technical_skill = '';

@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
@@ -15,6 +16,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { Status } from '../../../../shared/types';
 import {
   GroupAchievement,
   GroupAchievementRequest,
@@ -39,6 +41,7 @@ import { GroupAchievementService } from '../../services/group-achievement.servic
     CheckboxModule,
     NavbarComponent,
     ToggleButtonModule,
+    DropdownModule,
   ],
   providers: [
     GroupAchievementService,
@@ -62,6 +65,18 @@ export class GroupAchievementComponent implements OnInit {
   editGroupAchievement: GroupAchievement = {} as GroupAchievement;
   editData: GroupAchievement = {} as GroupAchievement;
   dataDetail: GroupAchievement = {} as GroupAchievement;
+  statuses: Status[] = [
+    {
+      label: 'Enabled',
+      value: true,
+      severity: 'success',
+    },
+    {
+      label: 'Disabled',
+      value: false,
+      severity: 'danger',
+    },
+  ];
 
   resetForm(): void {
     this.newGroupAchievement.group_name = '';

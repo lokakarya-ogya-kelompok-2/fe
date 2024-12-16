@@ -6,3 +6,24 @@
     border-radius: 8px;
   }
 }
+:host ::ng-deep {
+  .year-dropdown {
+    .p-dropdown-label {
+      padding: 0.4rem 0.75rem;
+      font-size: 14px;
+    }
+    .p-dropdown-trigger {
+      width: 2.5rem;
+    }
+  }
+}
+:host ::ng-deep {
+  .p-column-filter {
+    .p-column-filter-clear-button {
+      visibility: visible !important;
+      opacity: 1 !important;
+      position: absolute;
+      right: -30px;
+    }
+  }
+}
