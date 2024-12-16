@@ -42,23 +42,23 @@ export class EmpTechnicalSkillComponent implements OnInit {
   readonly skillLevels = [
     {
       level: 1,
-      description: 'Berpengetahuan',
+      description: 'Knowledgeable',
     },
     {
       level: 2,
-      description: 'Memahami (Pernah mengikuti training)',
+      description: 'Understanding (Has attended training)',
     },
     {
       level: 3,
-      description: 'Praktisi (Pernah handle project)',
+      description: 'Practitioner (Has handled projects)',
     },
     {
       level: 4,
-      description: 'Advance (Mampu sharing knowledge)',
+      description: 'Advanced (Able to share knowledge)',
     },
     {
       level: 5,
-      description: 'Ahli (Mampu memberikan solusi dan konsultasi)',
+      description: 'Expert (Able to provide solutions and consultancy)',
     },
   ];
   private readonly currentYear: number = new Date().getFullYear();
