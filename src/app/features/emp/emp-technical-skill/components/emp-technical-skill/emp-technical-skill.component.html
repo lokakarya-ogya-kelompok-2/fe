@@ -14,6 +14,9 @@
   @for (technicalSkill of technicalSkills; track technicalSkill.id) {
   <div class="inner-card w-full">
     <div class="mb-4">
+      <h2 class="text-xl font-bold mb-3 text-center">
+        {{ technicalSkill.technical_skill }}
+      </h2>
       @for (inputForm of empTechnicalSkills[technicalSkill.id]; track $index) {
       <div class="p-2 mb-2 border-1 border-round surface-border">
         <div class="flex flex-column md:flex-row gap-3 align-items-center mt-4">
