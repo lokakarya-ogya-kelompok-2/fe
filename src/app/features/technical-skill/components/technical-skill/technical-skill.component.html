@@ -19,7 +19,7 @@
       'table-layout': 'fixed'
     }"
     [style]="{ width: '100%' }"
-    [globalFilterFields]="['technical_skill', 'enabled']"
+    [globalFilterFields]="['technical_skill']"
     [sortField]="'created_at'"
     [sortOrder]="-1"
   >
@@ -57,7 +57,7 @@
         </th>
         <th style="width: 15%; text-align: center">
           <div class="flex flex-column justify-content-center gap-2">
-            <span> Enabled </span>
+            <span> Status </span>
             <p-columnFilter
               field="enabled"
               matchMode="equals"
@@ -112,7 +112,7 @@
         </td>
         <td [style]="{ padding: '0.5rem', 'text-align': 'center' }">
           <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
-            {{ data.enabled === true ? "True" : "False" }}
+            {{ data.enabled === true ? "Enable" : "Disable" }}
           </p-tag>
         </td>
         <td
