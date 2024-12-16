@@ -61,20 +61,20 @@
                   [disabled]="this.empAttitudeSkills[skill.id].id != undefined"
                   [style]="{ width: '230px' }"
                 />
-                <div
-                  *ngIf="
-                    scoreDropdown.invalid &&
-                    (scoreDropdown.dirty || scoreDropdown.touched)
-                  "
-                  class="error-message"
+              </div>
+              <div
+                *ngIf="
+                  scoreDropdown.invalid &&
+                  (scoreDropdown.dirty || scoreDropdown.touched)
+                "
+                class="error-message"
+              >
+                <small
+                  class="p-error block mt-1"
+                  *ngIf="scoreDropdown.errors?.['required']"
                 >
-                  <small
-                    class="p-error block mt-1"
-                    *ngIf="scoreDropdown.errors?.['required']"
-                  >
-                    Please select a score
-                  </small>
-                </div>
+                  Please select a score
+                </small>
               </div>
             </td>
           </tr>
