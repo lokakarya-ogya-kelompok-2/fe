@@ -146,11 +146,15 @@ export class EmpAchievementComponent implements OnInit {
     this.selectedUser = user;
     this.visible = true;
     forkJoin({
-      groupAchievements: this.groupAchievementSvc.getGroupAchievements(),
-      empAchievements: this.empAchievementService.getByUserIdAndYear(
-        this.selectedUser.id,
-        this.currentYear
-      ),
+      groupAchievements: this.groupAchievementSvc.getGroupAchievements({
+        with_achievements: true,
+        enabled_only: true,
+        with_enabled_child_only: true,
+      }),
+      empAchievements: this.empAchievementService.getAllEmpAchievements({
+        user_ids: [this.selectedUser.id],
+        years: [this.currentYear],
+      }),
     }).subscribe((data) => {
       this.groupAchievements = data.groupAchievements.content;
       this.groupAchievements.forEach((groupAc) => {

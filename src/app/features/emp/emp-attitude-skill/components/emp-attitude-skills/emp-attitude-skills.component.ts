@@ -6,6 +6,7 @@ import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
+import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { TokenService } from '../../../../../core/services/token.service';
@@ -54,7 +55,7 @@ export class EmpAttitudeSkillsComponent implements OnInit {
   ];
   newEmpAttitudeSkill: EmpAttitudeSkillRequest = {} as EmpAttitudeSkillRequest;
   empAttitudeSkills: { [key: string]: EmpAttitudeSkillRequest } = {};
-  notSubmisisble: boolean = false;
+  submissible: boolean = false;
 
   constructor(
     private tokenService: TokenService,
@@ -67,50 +68,54 @@ export class EmpAttitudeSkillsComponent implements OnInit {
   ngOnInit(): void {
     this.getToken();
     this.getUser();
-    this.empAttitudeSkillService
-      .getByUserIdAndYear(this.jwtPayload.sub!, this.currentYear)
-      .subscribe({
-        next: (data) => {
-          data.content.forEach((empAttitudeSkill) => {
-            this.notSubmisisble ||= empAttitudeSkill.id == undefined;
-            this.empAttitudeSkills[empAttitudeSkill.attitude_skill.id] = {
-              id: empAttitudeSkill.id,
-              score: empAttitudeSkill.score,
-              attitude_skill_id: empAttitudeSkill.attitude_skill.id,
-              assessment_year: empAttitudeSkill.assessment_year,
-            };
+    forkJoin({
+      empAttitudeSkills: this.empAttitudeSkillService.getEmpAttitudeSkill({
+        user_ids: [this.jwtPayload.sub!],
+        years: [this.currentYear],
+        enabled_only: true,
+      }),
+      groupAttitudeSkills:
+        this.groupAttitudeSkillService.getGroupAttitudeSkills({
+          enabled_only: true,
+          with_attitude_skills: true,
+          with_enabled_child_only: true,
+        }),
+    }).subscribe({
+      next: (data) => {
+        data.empAttitudeSkills.content.forEach((empAttitudeSkill) => {
+          this.empAttitudeSkills[empAttitudeSkill.attitude_skill.id] = {
+            id: empAttitudeSkill.id,
+            score: empAttitudeSkill.score,
+            attitude_skill_id: empAttitudeSkill.attitude_skill.id,
+            assessment_year: empAttitudeSkill.assessment_year,
+          };
+        });
+        this.groupAttitudeSkills = data.groupAttitudeSkills.content;
+        this.groupAttitudeSkills.forEach((group) => {
+          group.attitude_skills?.forEach((attitudeSkill) => {
+            if (!this.empAttitudeSkills[attitudeSkill.id]) {
+              this.empAttitudeSkills[attitudeSkill.id] = {
+                attitude_skill_id: attitudeSkill.id,
+                assessment_year: this.currentYear,
+              } as EmpAttitudeSkillRequest;
+            }
           });
-          console.log(
-            this.empAttitudeSkills,
-            'INI LIST OF CURRENT EMPLOYEES AS'
-          );
-        },
-        error: (err) => {
-          console.error('Error Fetching employee attitude skill:', err);
-          Swal.fire({
-            icon: 'error',
-            title: 'Failed to fetch employee attitude skill',
-          });
-        },
-        complete: () => {
-          this.groupAttitudeSkillService.getGroupAttitudeSkills().subscribe({
-            next: (data) => {
-              this.groupAttitudeSkills = data.content;
-              this.groupAttitudeSkills.forEach((group) => {
-                group.attitude_skills?.forEach((attitudeSkill) => {
-                  if (!this.empAttitudeSkills[attitudeSkill.id]) {
-                    this.empAttitudeSkills[attitudeSkill.id] = {
-                      attitude_skill_id: attitudeSkill.id,
-                      assessment_year: this.currentYear,
-                    } as EmpAttitudeSkillRequest;
-                  }
-                });
-              });
-            },
-            complete: () => {},
-          });
-        },
-      });
+          this.submissible = Object.values(this.empAttitudeSkills)
+            .flat()
+            .some((empAs) => empAs.id === undefined);
+        });
+      },
+      error: (err) => {
+        console.error(
+          'Error fetching empAttitudeSkill/groupAttitudeSkill: ',
+          err
+        );
+        Swal.fire({
+          icon: 'error',
+          title: err.error.message,
+        });
+      },
+    });
   }
 
   createEmpAttitudeSkill(): void {

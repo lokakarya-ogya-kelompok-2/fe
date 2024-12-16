@@ -99,7 +99,7 @@
     <p-button
       label="Submit"
       type="submit"
-      [disabled]="empAttitudeSkillForm.invalid && !notSubmisisble"
+      [disabled]="empAttitudeSkillForm.invalid || !submissible"
     />
   </div>
 </form>

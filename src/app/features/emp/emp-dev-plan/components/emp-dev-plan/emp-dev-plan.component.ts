@@ -66,7 +66,6 @@ export class EmpDevPlanComponent implements OnInit {
         if (!this.empDevPlans[empDevPlan.dev_plan.id]) {
           this.empDevPlans[empDevPlan.dev_plan.id] = [];
         }
-        this.submissible ||= empDevPlan.id == undefined;
         this.empDevPlans[empDevPlan.dev_plan.id].push({
           id: empDevPlan.id,
           assessment_year: empDevPlan.assessment_year,
@@ -84,6 +83,7 @@ export class EmpDevPlanComponent implements OnInit {
           ];
         }
       });
+      this.checkSubmissible();
     });
   }
 

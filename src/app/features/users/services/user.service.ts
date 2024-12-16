@@ -3,7 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { Response } from '../../../shared/models/response';
-import { ChangePasswordReq, User, UserReq } from '../models/user';
+import { toHttpParam } from '../../../shared/utils/query-param';
+import {
+  ChangePasswordReq,
+  User,
+  UserQueryParam,
+  UserReq,
+} from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +18,9 @@ export class UserService {
   private readonly baseUserUrl = `${environment.baseApiURL}/users`;
   constructor(private readonly httpClient: HttpClient) {}
 
-  list(): Observable<Response<User[]>> {
-    return this.httpClient.get<Response<User[]>>(this.baseUserUrl);
+  list(param: UserQueryParam = {}): Observable<Response<User[]>> {
+    const params = toHttpParam(param);
+    return this.httpClient.get<Response<User[]>>(this.baseUserUrl, { params });
   }
 
   getById(id: string): Observable<Response<User>> {

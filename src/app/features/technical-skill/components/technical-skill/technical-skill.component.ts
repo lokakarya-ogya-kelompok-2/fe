@@ -60,7 +60,7 @@ export class TechnicalSkillComponent {
   editVisible: boolean = false;
   detailVisible: boolean = false;
   newTechnicalSkill: TechnicalSKillRequest = {
-    enabled: false,
+    enabled: true,
   } as TechnicalSKillRequest;
   editData: TechnicalSkill = {} as TechnicalSkill;
   dataDetail: TechnicalSkill = {} as TechnicalSkill;
@@ -93,20 +93,25 @@ export class TechnicalSkillComponent {
   }
 
   getAllTechnicalSkills(): void {
-    this.technicalSkillService.getAllTechnicalSkills().subscribe({
-      next: (data) => {
-        this.datas = data.content;
-        this.loading = false;
-        console.log(this.datas);
-      },
-      error: (err) => {
-        console.error('Error Fetching dev plan:', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Failed Fetching Dev Plan',
-        });
-      },
-    });
+    this.technicalSkillService
+      .getAllTechnicalSkills({
+        with_created_by: true,
+        with_updated_by: true,
+      })
+      .subscribe({
+        next: (data) => {
+          this.datas = data.content;
+          this.loading = false;
+          console.log(this.datas);
+        },
+        error: (err) => {
+          console.error('Error Fetching dev plan:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed Fetching Dev Plan',
+          });
+        },
+      });
   }
   createTechnicalSkill(): void {
     this.technicalSkillService

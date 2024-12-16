@@ -69,7 +69,7 @@
   <ng-template pTemplate="body" let-user>
     <tr
       [style]="{ padding: '0.5rem' }"
-      (click)="showDialog(dialogType.DETAIL, user)"
+      (click)="withActionButtons ? null : showDialog(dialogType.DETAIL, user)"
       [class]="withActionButtons ? '' : 'clickable-row'"
     >
       <td [style]="{ padding: '0.5rem' }">{{ user.full_name }}</td>

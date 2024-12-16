@@ -63,16 +63,22 @@ export class UserListComponent implements OnInit {
 
   loadUsers() {
     this.isLoading = true;
-    this.userSvc.list().subscribe({
-      next: (data) => {
-        this.users = data.content;
-        this.isLoading = false;
-        console.log(this.users);
-      },
-      error: (err) => {
-        console.error('Error fetching user:', err);
-      },
-    });
+    this.userSvc
+      .list({
+        with_roles: true,
+        with_created_by: true,
+        with_updated_by: true,
+      })
+      .subscribe({
+        next: (data) => {
+          this.users = data.content;
+          this.isLoading = false;
+          console.log(this.users);
+        },
+        error: (err) => {
+          console.error('Error fetching user:', err);
+        },
+      });
   }
 
   ngOnInit(): void {
@@ -88,6 +94,7 @@ export class UserListComponent implements OnInit {
 
   showDialog(dialogType: DialogType, userData: User = {} as User) {
     this.toggleDialog(true);
+    console.log('DIALOG DIALOG MUNCULLAH KAU', dialogType);
     this.currentDialogType = dialogType;
     switch (dialogType) {
       case DialogType.ADD:
