@@ -16,6 +16,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { Status } from '../../../../shared/types';
 import { GroupAchievementService } from '../../../group-achievement/services/group-achievement.service';
 import { Achievement, AchievementRequest } from '../../model/achievement';
 import { AchievementService } from '../../services/achievement.service';
@@ -62,6 +63,18 @@ export class AchievementComponent implements OnInit {
   checked: boolean = false;
   dataDetail: Achievement = {} as Achievement;
   groupAchievementDropdown: any = [];
+  statuses: Status[] = [
+    {
+      label: 'Enabled',
+      value: true,
+      severity: 'success',
+    },
+    {
+      label: 'Disabled',
+      value: false,
+      severity: 'danger',
+    },
+  ];
 
   expandedRows: { [key: string]: boolean } = {};
   resetForm(): void {

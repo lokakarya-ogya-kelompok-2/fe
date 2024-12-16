@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
@@ -15,6 +16,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { Status } from '../../../../shared/types';
 import { DevPlan, DevPlanRequest } from '../../models/dev-plan';
 import { DevPlanService } from '../../services/dev-plan.service';
 @Component({
@@ -36,6 +38,7 @@ import { DevPlanService } from '../../services/dev-plan.service';
     CheckboxModule,
     NavbarComponent,
     ToggleButtonModule,
+    DropdownModule,
   ],
   providers: [DevPlanService, ConfirmationService, MessageService, FormsModule],
   templateUrl: './dev-plan.component.html',
@@ -53,7 +56,18 @@ export class DevPlanComponent implements OnInit {
   editData: DevPlan = {} as DevPlan;
   dataDetail: DevPlan = {} as DevPlan;
   checked: boolean = false;
-
+  statuses: Status[] = [
+    {
+      label: 'Enabled',
+      value: true,
+      severity: 'success',
+    },
+    {
+      label: 'Disabled',
+      value: false,
+      severity: 'danger',
+    },
+  ];
   resetForm(): void {
     this.newDevPlan.plan = '';
     this.newDevPlan.enabled = false;

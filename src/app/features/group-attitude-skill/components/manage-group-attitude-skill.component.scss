@@ -20,9 +20,10 @@
 :host ::ng-deep {
   .p-column-filter {
     .p-column-filter-clear-button {
-      // display: block !important;
       visibility: visible !important;
       opacity: 1 !important;
+      right: -30px;
+      position: absolute;
     }
   }
 }

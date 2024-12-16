@@ -48,9 +48,61 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 60%; text-align: center">Plan</th>
-        <th style="width: 15%; text-align: center">Enabled</th>
-        <th style="width: 25%; text-align: center">Action</th>
+        <th style="width: 60%; text-align: center">
+          <div
+            class="flex align-items-center justify-content-center gap-2 mb-5"
+          >
+            Plan
+            <div style="height: 2.4rem"></div>
+          </div>
+        </th>
+        <th style="width: 15%; text-align: center">
+          <div class="flex flex-column justify-content-center gap-2">
+            <span> Enabled </span>
+            <p-columnFilter
+              field="enabled"
+              matchMode="equals"
+              [showMenu]="false"
+              styleClass="flex align-items-center justify-content-center w-full"
+            >
+              <ng-template
+                pTemplate="filter"
+                let-value
+                let-filter="filterCallback"
+              >
+                <p-dropdown
+                  [ngModel]="value"
+                  [options]="statuses"
+                  (onChange)="filter($event.value)"
+                  placeholder="Status"
+                  [showClear]="true"
+                  [style]="{
+                'min-width': '10rem',
+                'font-size': '14px',
+
+              }"
+                  [panelStyle]="{ 'min-width': '10rem' }"
+                  styleClass="year-dropdown"
+                  appendTo="body"
+                >
+                  <ng-template late let-option pTemplate="item">
+                    <p-tag
+                      [value]="option.label"
+                      [severity]="option.severity"
+                    />
+                  </ng-template>
+                </p-dropdown>
+              </ng-template>
+            </p-columnFilter>
+          </div>
+        </th>
+        <th style="width: 25%; text-align: center">
+          <div
+            class="flex align-items-center justify-content-center gap-2 mb-5"
+          >
+            Action
+          </div>
+        </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-data>

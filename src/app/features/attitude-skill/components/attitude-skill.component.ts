@@ -16,6 +16,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
+import { Status } from '../../../shared/types';
 import { GroupAttitudeSkill } from '../../group-attitude-skill/models/group-attitude-skill';
 import { GroupAttitudeSkillService } from '../../group-attitude-skill/services/group-attitude-skill.service';
 import { AttitudeSkill, AttitudeSkillRequest } from '../models/attitude-skill';
@@ -58,6 +59,18 @@ export class AttitudeSkillComponent implements OnInit {
   groupAttitudeSkillDropdown: GroupAttitudeSkill[] = [];
   dataDetail: AttitudeSkill = {} as AttitudeSkill;
   expandedRows: { [key: string]: boolean } = {};
+  statuses: Status[] = [
+    {
+      label: 'Enabled',
+      value: true,
+      severity: 'success',
+    },
+    {
+      label: 'Disabled',
+      value: false,
+      severity: 'danger',
+    },
+  ];
   resetForm(): void {
     this.newAttitudeSkill.attitude_skill = '';
     this.newAttitudeSkill.enabled = false;
