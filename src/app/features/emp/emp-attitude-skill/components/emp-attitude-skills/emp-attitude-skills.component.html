@@ -47,20 +47,29 @@
             </td>
             <td class="text-center">
               <div class="dropdown-container">
-                <p-dropdown
-                  [options]="scoreCategory"
-                  [(ngModel)]="this.empAttitudeSkills[skill.id].score"
-                  optionLabel="category"
-                  optionValue="score"
-                  placeholder="Select score category"
-                  class="custom-dropdown"
-                  required
-                  [name]="'score-' + skill.id"
-                  #scoreDropdown="ngModel"
-                  appendTo="body"
-                  [disabled]="this.empAttitudeSkills[skill.id].id != undefined"
-                  [style]="{ width: '230px' }"
-                />
+                <div class="">
+                  <p-dropdown
+                    [options]="scoreCategories"
+                    [(ngModel)]="empAttitudeSkills[skill.id].score"
+                    optionLabel="category"
+                    optionValue="score"
+                    placeholder="Select score category"
+                    class="custom-dropdown"
+                    required
+                    [name]="'score-' + skill.id"
+                    #scoreDropdown="ngModel"
+                    appendTo="body"
+                    [disabled]="empAttitudeSkills[skill.id].id != undefined"
+                    [style]="{ width: '230px' }"
+                  />
+                  <div style="display: inline-block; width: 24px">
+                    <i
+                      *ngIf="!empAttitudeSkills[skill.id].id"
+                      class="pi pi-info-circle text-blue-500 ml-2"
+                      [pTooltip]="tooltipContent"
+                    ></i>
+                  </div>
+                </div>
               </div>
               <div
                 *ngIf="
@@ -103,3 +112,13 @@
     />
   </div>
 </form>
+
+<ng-template #tooltipContent>
+  <div class="flex align-items-center">
+    <ul>
+      <li *ngFor="let sc of scoreCategories">
+        <b>{{ sc.category }}:</b> {{ sc.score }}
+      </li>
+    </ul>
+  </div>
+</ng-template>

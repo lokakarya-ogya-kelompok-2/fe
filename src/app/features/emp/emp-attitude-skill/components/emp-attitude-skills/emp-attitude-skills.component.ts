@@ -6,6 +6,7 @@ import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
+import { TooltipModule } from 'primeng/tooltip';
 import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../../../core/services/auth.service';
@@ -19,7 +20,7 @@ import { UserService } from '../../../../users/services/user.service';
 import { UserInformationComponent } from '../../../user-information/components/user-information/user-information.component';
 import { EmpAttitudeSkillRequest } from '../../models/emp-attitude-skill';
 import { EmpAttitudeSkillsService } from '../../services/emp-attitude-skills.service';
-interface scoreCategory {
+interface ScoreCategory {
   category: string;
   score: number;
 }
@@ -37,6 +38,7 @@ interface scoreCategory {
     CardModule,
     UserInformationComponent,
     DividerModule,
+    TooltipModule,
   ],
   templateUrl: './emp-attitude-skills.component.html',
   styleUrl: './emp-attitude-skills.component.scss',
@@ -46,7 +48,7 @@ export class EmpAttitudeSkillsComponent implements OnInit {
   groupAttitudeSkills: GroupAttitudeSkill[] = [];
   userLogin: User = {} as User;
   currentYear: number = new Date().getFullYear();
-  scoreCategory: scoreCategory[] = [
+  scoreCategories: ScoreCategory[] = [
     { category: 'Excellent', score: 100 },
     { category: 'Good', score: 80 },
     { category: 'Fair', score: 60 },

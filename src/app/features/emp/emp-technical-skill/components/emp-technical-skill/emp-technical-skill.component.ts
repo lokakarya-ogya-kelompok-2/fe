@@ -9,6 +9,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 import Swal from 'sweetalert2';
 import { TokenService } from '../../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../../shared/components/navbar/navbar.component';
@@ -33,6 +34,7 @@ import { EmpTechnicalSkillService } from '../../services/emp-technical-skill.ser
     CommonModule,
     CardModule,
     FloatLabelModule,
+    TooltipModule
   ],
   templateUrl: './emp-technical-skill.component.html',
   styleUrl: './emp-technical-skill.component.scss',
