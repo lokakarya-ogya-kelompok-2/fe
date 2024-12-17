@@ -124,22 +124,22 @@ export class EmpDevPlanComponent implements OnInit {
             userInput.dev_plan_id = devPlanId;
             userInput.assessment_year = this.currentYear;
             empDevPlanRequest.push(userInput);
-            console.log(empDevPlanRequest, 'ini request emp dev plan');
           });
         });
-        console.log(this.devPlans, 'DEV PLANS');
 
         this.empDevPlanService.insertBulk(empDevPlanRequest).subscribe({
           next: (data) => {
-            console.log(data);
-            this.messageSvc.add({
-              severity: 'success',
-              summary: 'Add',
-              detail: 'New Dev Plan Added!',
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'New Dev Plan Added!',
+              showConfirmButton: true,
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
             });
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
           },
           error: (err) => {
             this.messageSvc.add({

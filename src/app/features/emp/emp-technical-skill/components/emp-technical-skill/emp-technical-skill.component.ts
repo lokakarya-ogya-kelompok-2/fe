@@ -80,9 +80,7 @@ export class EmpTechnicalSkillComponent implements OnInit {
       .getByUserIdAndYear(this.userId, this.currentYear)
       .subscribe({
         next: (data) => {
-          console.log(data.content);
           data.content.forEach((empTechSkill) => {
-            console.log(empTechSkill);
             if (!this.empTechnicalSkills[empTechSkill.technical_skill.id]) {
               this.empTechnicalSkills[empTechSkill.technical_skill.id] = [];
             }
@@ -94,9 +92,7 @@ export class EmpTechnicalSkillComponent implements OnInit {
               score: empTechSkill.score,
               detail: empTechSkill.detail,
             });
-            console.log(this.empTechnicalSkills);
           });
-          console.log(this.empTechnicalSkills, 'after atas');
         },
         complete: () => {
           this.techSkillSvc.getAllTechnicalSkills().subscribe({

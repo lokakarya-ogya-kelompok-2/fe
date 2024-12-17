@@ -92,7 +92,6 @@ export class DevPlanComponent implements OnInit {
         next: (data) => {
           this.data = data.content;
           this.loading = false;
-          console.log(this.data);
         },
         error: (err) => {
           console.error('Error fetch dev plan:', err);
@@ -106,7 +105,6 @@ export class DevPlanComponent implements OnInit {
   createDevPlan(): void {
     this.devPlanService.createDevPlan(this.newDevPlan).subscribe({
       next: (data) => {
-        console.log(data);
         Swal.fire({
           title: 'Dev Plan created!',
           icon: 'success',
@@ -128,7 +126,6 @@ export class DevPlanComponent implements OnInit {
   updateDevPlan(): void {
     this.devPlanService.updateDevPlan(this.editData).subscribe({
       next: () => {
-        console.log(this.editData);
         Swal.fire({
           title: 'Dev Plan updated!',
           icon: 'success',
@@ -148,9 +145,6 @@ export class DevPlanComponent implements OnInit {
   }
 
   confirmDelete(event: Event, key: string) {
-    console.log('masuk');
-    console.log(event.target);
-    console.log(key);
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Do you want to delete this record?',
@@ -162,16 +156,14 @@ export class DevPlanComponent implements OnInit {
       rejectIcon: 'none',
       key: key,
       accept: () => {
-        console.log('delete data');
         this.devPlanService.deleteDevPlan(key).subscribe({
           next: (data) => {
-            console.log(data);
             Swal.fire({
               title: 'Dev Plan deleted!',
               icon: 'success',
               text: data.message,
             });
-            console.log('Data deleted successfully');
+
             this.getAllDevPlan();
           },
           error: (err) => {
@@ -192,12 +184,10 @@ export class DevPlanComponent implements OnInit {
   showEditDialog(data: any) {
     this.editVisible = true;
     this.editData = { ...data };
-    console.log(this.editData, 'from dialog button');
   }
   showDialogDetail(data: any) {
     this.detailVisible = true;
     this.dataDetail = data;
-    console.log(this.dataDetail);
   }
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
