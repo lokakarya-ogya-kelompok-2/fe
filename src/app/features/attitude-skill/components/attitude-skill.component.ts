@@ -141,10 +141,10 @@ export class AttitudeSkillComponent implements OnInit {
           this.getAttitudeSkill();
         },
         error: (err) => {
-          console.error('Error updating attitude skill:', err);
+          console.error('Error creating attitude skill:', err);
           Swal.fire({
             icon: 'error',
-            title: 'Failed Updating Attitude Skill',
+            title: 'Failed to create attitude skill',
             text: err.error.message,
           });
         },
@@ -163,7 +163,7 @@ export class AttitudeSkillComponent implements OnInit {
         console.error('Error updating attitude skill: ', err);
         Swal.fire({
           icon: 'error',
-          title: 'Failed Updating Attitude Skill',
+          title: 'Failed to update attitude skill',
           text: err.error.message,
         });
       },
