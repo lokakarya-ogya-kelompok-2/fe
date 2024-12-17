@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
+import { ConfirmationService, SelectItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -43,12 +43,7 @@ import { AchievementService } from '../../services/achievement.service';
   ],
   templateUrl: './achievement.component.html',
   styleUrl: './achievement.component.scss',
-  providers: [
-    AchievementService,
-    ConfirmationService,
-    MessageService,
-    FormsModule,
-  ],
+  providers: [AchievementService, ConfirmationService, FormsModule],
 })
 export class AchievementComponent implements OnInit {
   Datas: Achievement[] = [];
@@ -91,8 +86,7 @@ export class AchievementComponent implements OnInit {
   constructor(
     private groupAchievementService: GroupAchievementService,
     private achievementService: AchievementService,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -110,7 +104,9 @@ export class AchievementComponent implements OnInit {
             disabled: !group.enabled,
           });
         });
-        console.log(this.groupAchievementDropdown);
+      },
+      error: (err) => {
+        console.error('Error fetching group achievements: ', err);
       },
     });
   }
@@ -133,8 +129,7 @@ export class AchievementComponent implements OnInit {
   }
   createAchievement(): void {
     this.achievementService.createAchievement(this.newAchievement).subscribe({
-      next: (data) => {
-        console.log(data);
+      next: (_) => {
         Swal.fire({
           title: 'Achievement created!',
           icon: 'success',
@@ -155,7 +150,6 @@ export class AchievementComponent implements OnInit {
   updateAchievement(): void {
     this.achievementService.updateAchievement(this.editData).subscribe({
       next: (data) => {
-        console.log(data);
         Swal.fire({
           title: 'Achievement updated!',
           icon: 'success',
@@ -174,9 +168,6 @@ export class AchievementComponent implements OnInit {
   }
 
   confirmDelete(event: Event, key: string) {
-    console.log('masuk');
-    console.log(event.target);
-    console.log(key);
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Do you want to delete this record?',
@@ -188,24 +179,21 @@ export class AchievementComponent implements OnInit {
       rejectIcon: 'none',
       key: key,
       accept: () => {
-        console.log('delete data');
         this.achievementService.deleteAchievement(key).subscribe({
           next: (data) => {
-            console.log(data);
             Swal.fire({
               title: 'Achievement deleted!',
               icon: 'success',
               text: data.message,
             });
-            console.log('Data deleted successfully');
             this.getAchievement();
           },
           error: (err) => {
             console.error('Error deleting achievement:', err);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'error',
-              detail: 'Failed to delete achievement',
+            Swal.fire({
+              title: 'Failed to delete achievement!',
+              icon: 'error',
+              text: err.error.message,
             });
           },
         });
@@ -220,12 +208,10 @@ export class AchievementComponent implements OnInit {
     this.editVisible = true;
     this.editData = { ...data };
     this.editData.group_id = data.group_id.id;
-    console.log(data, 'from dialog button');
   }
   showDialogDetail(data: any) {
     this.detailVisible = true;
     this.dataDetail = data;
-    console.log(this.dataDetail);
   }
 
   onGlobalFilter(table: Table, event: Event) {

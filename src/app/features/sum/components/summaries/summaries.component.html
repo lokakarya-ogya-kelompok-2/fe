@@ -20,14 +20,7 @@
       'table-layout': 'fixed'
     }"
     [style]="{ width: '100%' }"
-    [globalFilterFields]="[
-      'user_id.full_name',
-      'iser_id.username',
-      'user_id.email',
-      'user_id.position',
-      'user_id.division',
-      'year'
-    ]"
+    [globalFilterFields]="['user_id.full_name', 'user_id.position']"
     [sortField]="'created_at'"
     [sortOrder]="-1"
   >
@@ -40,7 +33,7 @@
           <input
             pInputText
             type="text"
-            placeholder="Search by full name, username, email, position, division, year"
+            placeholder="Search by full name/position"
             (input)="onGlobalFilter(summariesTable, $event)"
             [style]="{ 'font-size': '14px' }"
           />
@@ -96,12 +89,10 @@
                   <p-multiSelect
                     [maxSelectedLabels]="1"
                     [ngModel]="value"
-                    [options]="divisions"
+                    [options]="divisionNames"
                     (onChange)="filter($event.value)"
                     placeholder="Select Division"
                     [showClear]="true"
-                    optionLabel="division_name"
-                    optionValue="division_name"
                     [style]="{
                       'min-width': '12rem',
                       'font-size': '14px',
@@ -132,8 +123,6 @@
                   (onChange)="filter($event.value)"
                   placeholder="Select Year"
                   [showClear]="true"
-                  optionLabel="year"
-                  optionValue="year"
                   [style]="{ 'min-width': '10rem' }"
                   [panelStyle]="{ 'min-width': '12rem' }"
                   styleClass="year-dropdown"

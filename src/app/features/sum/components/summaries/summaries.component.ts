@@ -18,9 +18,7 @@ import { User } from '../../../users/models/user';
 import { Summary } from '../../models/summary';
 import { SummaryService } from '../../services/summary.service';
 import { SummaryAndSuggestionsComponent } from '../summary-and-suggestions/summary-and-suggestions.component';
-interface yearOption {
-  year: number;
-}
+
 @Component({
   selector: 'app-summaries',
   standalone: true,
@@ -47,8 +45,8 @@ interface yearOption {
 })
 export class SummariesComponent implements OnInit {
   summaries: Summary[] = [];
-  divisions: any[] = [];
-  years: yearOption[] = [];
+  divisionNames: string[] = [];
+  years: number[] = [];
   isLoading: boolean = true;
   visible: boolean = false;
   dialogHeader: string = '';
@@ -70,27 +68,19 @@ export class SummariesComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error fetching user:', err);
+        console.error('Error fetching summaries:', err);
       },
       complete: () => {
-        this.divisions = Array.from(
-          new Set(
+        this.divisionNames = [
+          ...new Set(
             this.summaries
               .map((summary) => summary.user_id.division?.division_name)
               .filter((name) => name != null)
-          )
-        )
-          .sort()
-          .map((name) => ({ division_name: name }));
-        this.years = Array.from(
-          new Set(
-            this.summaries
-              .map((summary) => summary?.year)
-              .filter((year) => year != null)
-          )
-        )
-          .sort()
-          .map((year) => ({ year }));
+          ),
+        ].sort();
+        this.years = [
+          ...new Set(this.summaries.map((summary) => summary.year)),
+        ].sort();
       },
     });
   }
