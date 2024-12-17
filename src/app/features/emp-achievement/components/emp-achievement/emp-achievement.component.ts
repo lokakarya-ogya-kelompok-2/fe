@@ -122,7 +122,7 @@ export class EmpAchievementComponent implements OnInit {
         this.empAchievementService.createEmpAchievement(reqData).subscribe({
           next: () => {
             Swal.fire({
-              title: 'emp achievement created!',
+              title: 'Emp achievement created!',
               icon: 'success',
             }).then((result) => {
               if (result.isConfirmed) {
@@ -133,10 +133,10 @@ export class EmpAchievementComponent implements OnInit {
           },
           error: (err) => {
             console.error('Error creating emp achievement:', err);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: err.error.message,
+            Swal.fire({
+              title: 'Failed to create emp achievement!',
+              icon: 'error',
+              text: err.error.message,
             });
           },
         });
@@ -157,29 +157,37 @@ export class EmpAchievementComponent implements OnInit {
         user_ids: [this.selectedUser.id],
         years: [this.currentYear],
       }),
-    }).subscribe((data) => {
-      this.groupAchievements = data.groupAchievements.content;
-      this.groupAchievements.forEach((groupAc) => {
-        groupAc.achievements.forEach((ac) => {
-          this.empAchievementRequests[ac.id] = {
-            achievement_id: ac.id,
-            assessment_year: this.currentYear,
-          } as EmpAchievementRequest;
+    }).subscribe({
+      next: (data) => {
+        this.groupAchievements = data.groupAchievements.content;
+        this.groupAchievements.forEach((groupAc) => {
+          groupAc.achievements.forEach((ac) => {
+            this.empAchievementRequests[ac.id] = {
+              achievement_id: ac.id,
+              assessment_year: this.currentYear,
+            } as EmpAchievementRequest;
+          });
         });
-      });
-      data.empAchievements.content.forEach((empAc) => {
-        this.empAchievementRequests[empAc.achievement_id.id] = {
-          id: empAc.id,
-          user_id: empAc.user_id.id,
-          notes: empAc.notes,
-          achievement_id: empAc.achievement_id.id,
-          score: empAc.score,
-          assessment_year: empAc.assessment_year,
-        };
-      });
-      this.submissible = Object.values(this.empAchievementRequests)
-        .flat()
-        .some((empAcReq) => !empAcReq.id);
+        data.empAchievements.content.forEach((empAc) => {
+          this.empAchievementRequests[empAc.achievement_id.id] = {
+            id: empAc.id,
+            user_id: empAc.user_id.id,
+            notes: empAc.notes,
+            achievement_id: empAc.achievement_id.id,
+            score: empAc.score,
+            assessment_year: empAc.assessment_year,
+          };
+        });
+        this.submissible = Object.values(this.empAchievementRequests)
+          .flat()
+          .some((empAcReq) => !empAcReq.id);
+      },
+      error: (err) => {
+        console.error(
+          'Error fetching group achievements/emp achievements: ',
+          err
+        );
+      },
     });
   }
 
