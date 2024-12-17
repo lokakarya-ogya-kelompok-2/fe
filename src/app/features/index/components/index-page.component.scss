@@ -56,3 +56,10 @@ body {
   margin: 0 !important;
   padding: 0 !important;
 }
+
+:host ::ng-deep {
+  .p-divider.p-divider-horizontal {
+    margin: 0.5rem 0;
+    padding: 0;
+  }
+}

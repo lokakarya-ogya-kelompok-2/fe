@@ -60,7 +60,9 @@ export class EmpDevPlanComponent implements OnInit {
         this.userId,
         this.currentYear
       ),
-      devPlans: this.devPlanService.getAllDevPlan(),
+      devPlans: this.devPlanService.getAllDevPlan({
+        enabled_only: true,
+      }),
     }).subscribe(({ empDevPlans, devPlans }) => {
       empDevPlans.content.forEach((empDevPlan) => {
         if (!this.empDevPlans[empDevPlan.dev_plan.id]) {
@@ -132,14 +134,19 @@ export class EmpDevPlanComponent implements OnInit {
         this.empDevPlanService.insertBulk(empDevPlanRequest).subscribe({
           next: (data) => {
             console.log(data);
-            this.messageSvc.add({
-              severity: 'success',
-              summary: 'Add',
-              detail: 'New Dev Plan Added!',
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'New Dev Plan Added!',
+              showConfirmButton: true,
+
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
             });
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
           },
           error: (err) => {
             this.messageSvc.add({
