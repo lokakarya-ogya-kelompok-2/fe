@@ -24,7 +24,11 @@ export class AuthService {
     const token = this.tokenService.getToken();
     if (token) {
       const jwtPayload = jwtDecode(token);
-      return jwtPayload.exp! > Date.now() / 1000;
+      if (jwtPayload.exp! > Date.now() / 1000) {
+        return true;
+      }
+      this.tokenService.removeToken();
+      this.isAuthenticatedSubject.next(false);
     }
     return false;
   }
