@@ -186,6 +186,9 @@ export class NavbarComponent implements OnInit {
     if (token && this.authService.isAuthenticated()) {
       this.tokenPayload = this.tokenService.decodeToken(token);
     }
+    if (!this.authService.isAuthenticated()) {
+      this.authService.logout();
+    }
   }
   getMenuById(): void {
     this.menuService.getMenuByUserId(this.tokenPayload?.sub!).subscribe({
