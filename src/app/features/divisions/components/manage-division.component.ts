@@ -71,18 +71,15 @@ export class ManageDivisionComponent implements OnInit {
       next: (data) => {
         this.datas = data.content;
         this.loading = false;
-        console.log('Data fetched:', data);
       },
       error: (err) => {
-        console.error('Error fetching data:', err);
+        console.error('Error fetching divisions:', err);
       },
     });
   }
   createDivision(): void {
-    // console.log(this.newDivision);
     this.manageDivisionService.createDivision(this.newDivision).subscribe({
       next: (data) => {
-        console.log(data);
         Swal.fire({
           title: 'Division created!',
           icon: 'success',
@@ -101,10 +98,8 @@ export class ManageDivisionComponent implements OnInit {
     });
   }
   updateDivision(): void {
-    console.log('editt');
     this.manageDivisionService.updateDivision(this.editData).subscribe({
       next: (data) => {
-        console.log(data);
         Swal.fire({
           title: 'Division updated!',
           icon: 'success',
@@ -112,7 +107,7 @@ export class ManageDivisionComponent implements OnInit {
         this.getAllDivisions();
       },
       error: (err) => {
-        console.error('Error updating division:', err);
+        console.error('Error updating division: ', err);
         Swal.fire({
           icon: 'error',
           title: 'Update Division Failed',
@@ -122,9 +117,6 @@ export class ManageDivisionComponent implements OnInit {
     });
   }
   confirmDelete(event: Event, key: string) {
-    console.log('masuk');
-    console.log(event.target);
-    console.log(key);
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Do you want to delete this record?',
@@ -136,17 +128,13 @@ export class ManageDivisionComponent implements OnInit {
       rejectIcon: 'none',
       key: key,
       accept: () => {
-        console.log('delete data');
-
         this.manageDivisionService.deleteDivision(key).subscribe({
           next: (data) => {
-            console.log(data);
             Swal.fire({
               title: 'Division deleted!',
               icon: 'success',
               text: data.message,
             });
-            console.log('Data deleted successfully');
             this.getAllDivisions();
           },
           error: (err) => {
@@ -161,19 +149,16 @@ export class ManageDivisionComponent implements OnInit {
       },
     });
   }
-  // modal
   showDialog() {
     this.visible = true;
   }
   showEditDialog(data: any) {
     this.editVisible = true;
     this.editData = { ...data };
-    console.log(this.editData, 'from dialog button');
   }
   showDialogDetail(data: any) {
     this.detailVisible = true;
     this.dataDetail = data;
-    console.log(this.dataDetail);
   }
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');

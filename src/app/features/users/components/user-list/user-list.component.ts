@@ -75,7 +75,7 @@ export class UserListComponent implements OnInit {
           this.isLoading = false;
         },
         error: (err) => {
-          console.error('Error fetching user:', err);
+          console.error('Error fetching user: ', err);
         },
       });
   }
@@ -93,7 +93,6 @@ export class UserListComponent implements OnInit {
 
   showDialog(dialogType: DialogType, userData: User = {} as User) {
     this.toggleDialog(true);
-    console.log('DIALOG DIALOG MUNCULLAH KAU', dialogType);
     this.currentDialogType = dialogType;
     switch (dialogType) {
       case DialogType.ADD:
@@ -116,7 +115,6 @@ export class UserListComponent implements OnInit {
 
   onSubmit() {
     this.loadUsers();
-    // this.visible = false;
   }
 
   toggleDialog(value: boolean) {
@@ -124,7 +122,6 @@ export class UserListComponent implements OnInit {
   }
 
   onDelete(event: Event, key: string) {
-    console.log(event.target);
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Do you want to delete this record?',
@@ -145,13 +142,15 @@ export class UserListComponent implements OnInit {
             });
             this.loadUsers();
           },
+          error: (err) => {
+            console.error('Error deleting user: ', err);
+          },
         });
       },
     });
   }
 
   showToast(message: Message) {
-    console.log('ADAADADADADA', message);
     this.messageService.clear();
     this.messageService.add(message);
   }
