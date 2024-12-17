@@ -34,7 +34,7 @@ import { EmpTechnicalSkillService } from '../../services/emp-technical-skill.ser
     CommonModule,
     CardModule,
     FloatLabelModule,
-    TooltipModule
+    TooltipModule,
   ],
   templateUrl: './emp-technical-skill.component.html',
   styleUrl: './emp-technical-skill.component.scss',
@@ -165,12 +165,14 @@ export class EmpTechnicalSkillComponent implements OnInit {
             Swal.fire({
               title: 'Emp Technical Skill created!',
               icon: 'success',
+            }).then((res) => {
+              if (res.isConfirmed) {
+                window.location.reload();
+              }
             });
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
           },
           error: (err) => {
+            console.error('Failed to insert employee technical skill: ', err);
             Swal.fire({
               icon: 'error',
               title: 'Failed to create employee technical skill',

@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MessageModule } from 'primeng/message';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
+import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { Menu } from '../../../menus/models/menu';
 import { MenuService } from '../../../menus/services/menu.service';
@@ -70,9 +70,7 @@ export class RoleMenuComponent implements OnInit {
   constructor(
     private readonly roleService: RoleService,
     private readonly menuService: MenuService,
-    private readonly roleMenuService: RoleMenuService,
-    private readonly messageService: MessageService,
-    private readonly router: Router
+    private readonly roleMenuService: RoleMenuService
   ) {}
 
   ngOnInit(): void {
@@ -119,26 +117,24 @@ export class RoleMenuComponent implements OnInit {
 
   onSubmit() {
     this.isLoading = true;
-    this.messageService.clear();
 
     this.roleMenuService.update(this.roleMenus).subscribe({
-      next: (data) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: data.message,
-        });
+      next: (_) => {
         this.isLoading = false;
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        Swal.fire({
+          title: 'Role Menu updated sucessfuly!',
+          icon: 'success',
+        }).then((res) => {
+          if (res.isConfirmed) {
+            window.location.reload();
+          }
+        });
       },
       error: (err) => {
-        this.messageService.add({
-          severity: 'danger',
-          summary: 'Failed',
-          detail: err.data.message,
-          life: 3000,
+        console.error('Error updating role-menu: ', err);
+        Swal.fire({
+          title: 'Failed to update role menu!',
+          icon: 'error',
         });
         this.isLoading = false;
       },
