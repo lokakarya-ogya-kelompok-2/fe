@@ -120,11 +120,14 @@ export class EmpAchievementComponent implements OnInit {
           }
         );
         this.empAchievementService.createEmpAchievement(reqData).subscribe({
-          next: (data) => {
-            console.log(data);
+          next: () => {
             Swal.fire({
               title: 'emp achievement created!',
               icon: 'success',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
             });
             this.visible = false;
           },
@@ -141,7 +144,6 @@ export class EmpAchievementComponent implements OnInit {
     });
   }
 
-  // modal
   showDialog(user: User) {
     this.selectedUser = user;
     this.visible = true;
