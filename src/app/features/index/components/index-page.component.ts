@@ -103,9 +103,6 @@ export class IndexPageComponent implements OnInit {
     if (token && this.authService.isAuthenticated()) {
       this.tokenPayload = this.tokenService.decodeToken(token);
     }
-    if (!this.authService.isAuthenticated()) {
-      this.authService.logout();
-    }
   }
 
   onChangePasswordSubmit() {
