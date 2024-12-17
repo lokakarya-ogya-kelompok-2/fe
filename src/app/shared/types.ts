@@ -4,6 +4,7 @@ export enum DialogType {
   ADD = 1,
   UPDATE = 2,
   DETAIL = 3,
+  CHANGE_PASSWORD = 4,
 }
 
 export interface TokenPayload extends JwtPayload {

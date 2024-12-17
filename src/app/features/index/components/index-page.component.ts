@@ -14,7 +14,8 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../../core/services/auth.service';
 import { TokenService } from '../../../core/services/token.service';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
-import { TokenPayload } from '../../../shared/types';
+import { DialogType, TokenPayload } from '../../../shared/types';
+import { UserDetailComponent } from '../../users/components/user-detail/user-detail.component';
 import { ChangePasswordReq, User } from '../../users/models/user';
 import { UserService } from '../../users/services/user.service';
 
@@ -33,11 +34,14 @@ import { UserService } from '../../users/services/user.service';
     AvatarModule,
     NavbarComponent,
     ChipModule,
+    UserDetailComponent,
   ],
   templateUrl: './index-page.component.html',
   styleUrl: './index-page.component.scss',
 })
 export class IndexPageComponent implements OnInit {
+  dialogType = DialogType;
+  currentDialogType: DialogType = this.dialogType.CHANGE_PASSWORD;
   dialogVisible: boolean = false;
   formData: ChangePasswordReq = {} as ChangePasswordReq;
   isChangePasswordBtnLoading: boolean = false;
@@ -51,6 +55,11 @@ export class IndexPageComponent implements OnInit {
     private readonly userSvc: UserService
   ) {}
 
+  showDialog(dialogType: DialogType) {
+    this.currentDialogType = dialogType;
+    this.dialogVisible = true;
+  }
+
   ngOnInit(): void {
     this.getToken();
     this.userSvc.getById(this.tokenPayload.sub!).subscribe({
@@ -63,11 +72,19 @@ export class IndexPageComponent implements OnInit {
     });
     this.items = [
       {
+        label: 'Profile',
+        root: true,
+        icon: 'pi pi-user',
+        command: () => {
+          this.showDialog(DialogType.DETAIL);
+        },
+      },
+      {
         label: 'Change Password',
         root: true,
         icon: 'pi pi-key',
         command: () => {
-          this.dialogVisible = true;
+          this.showDialog(DialogType.CHANGE_PASSWORD);
         },
       },
       {
