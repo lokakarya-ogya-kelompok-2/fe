@@ -39,14 +39,17 @@
         <div class="w-full">
           <p-megaMenu
             [model]="items"
-            [style]="{ 'border-radius': '1rem', display: 'flex' }"
+            [style]="{
+              'border-radius': '1rem',
+              display: 'flex',
+            }"
             styleClass="p-3 surface-0 shadow-1"
           >
             <ng-template pTemplate="item" let-item>
               <a
                 *ngIf="item.root"
                 pRipple
-                class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase hover:surface-200 transition-colors transition-duration-150"
+                class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-xs uppercase hover:surface-200 transition-colors transition-duration-150"
                 style="border-radius: 2rem"
               >
                 <i [ngClass]="item.icon"></i>
@@ -63,10 +66,18 @@
 <p-dialog
   [(visible)]="dialogVisible"
   [modal]="true"
-  header="Change Password"
+  [header]="
+    currentDialogType == dialogType.CHANGE_PASSWORD
+      ? 'Change Password'
+      : currentDialogType == dialogType.DETAIL
+      ? currentUser.full_name + '\'s profile'
+      : 'Mbuh'
+  "
   styleClass="w-full sm:w-10 md:w-8 lg:w-6"
   [style]="{ width: '500px' }"
 >
+  @if (currentDialogType == dialogType.CHANGE_PASSWORD) {
+
   <form
     (submit)="onChangePasswordSubmit()"
     #changePasswordForm="ngForm"
@@ -157,4 +168,7 @@
       </div>
     </div>
   </form>
+  } @else {
+  <app-user-detail [userData]="currentUser" />
+  }
 </p-dialog>

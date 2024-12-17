@@ -1,21 +1,30 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
 import { Response } from '../../../../shared/models/response';
-import { EmpDevPlan, EmpDevPlanRequest } from '../models/emp-dev-plan';
+import { toHttpParam } from '../../../../shared/utils/query-param';
+import {
+  EmpDevPlan,
+  EmpDevPlanQueryParam,
+  EmpDevPlanRequest,
+} from '../models/emp-dev-plan';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmpDevPlanService {
-  private Api = 'http://localhost:8080/emp-dev-plans';
+  private Api = `${environment.baseApiURL}/emp-dev-plans`;
   constructor(private http: HttpClient) {}
 
-  getAllEmpDevPlans(): Observable<any> {
-    return this.http.get<any>(this.Api);
+  getAllEmpDevPlans(
+    param: EmpDevPlanQueryParam = {}
+  ): Observable<Response<EmpDevPlan[]>> {
+    const params = toHttpParam(param);
+    return this.http.get<Response<EmpDevPlan[]>>(this.Api, { params });
   }
-  createEmpDevPlan(): Observable<any> {
-    return this.http.post<any>(this.Api, {});
+  createEmpDevPlan(data: EmpDevPlanRequest): Observable<Response<EmpDevPlan>> {
+    return this.http.post<Response<EmpDevPlan>>(this.Api, data);
   }
 
   insertBulk(data: EmpDevPlanRequest[]): Observable<Response<EmpDevPlan[]>> {

@@ -104,7 +104,7 @@ export class UserFormComponent implements OnInit, OnChanges {
         this.divisions = data.content;
       },
       error: (err) => {
-        console.log('ERROR ON DIVISION FETCH ' + err);
+        console.error('Error fetching divisions: ', err);
       },
       complete: () => {
         this.isDivisionLoading = false;
@@ -116,7 +116,7 @@ export class UserFormComponent implements OnInit, OnChanges {
         this.roles = data.content;
       },
       error: (err) => {
-        console.log('ERROR ON ROLE FETCH ' + err);
+        console.error('Error fetching roles: ', err);
       },
     });
   }
@@ -127,26 +127,26 @@ export class UserFormComponent implements OnInit, OnChanges {
       this.userSvc.update(this.formData).subscribe({
         next: (_) => {
           this.submit.emit();
+          this.submitBtnLoading = false;
+          this.toggleDialog.emit(false);
           Swal.fire({
             title: 'User Updated!',
             icon: 'success',
+          }).then((res) => {
+            if (res.isConfirmed) {
+              window.location.reload();
+            }
           });
-          this.submitBtnLoading = false;
-          this.toggleDialog.emit(false);
-          setTimeout(() => {
-            window.location.reload();
-          }, 750);
         },
         error: (err) => {
-          console.log('ERROR ON UPDATE USER');
           this.submitBtnLoading = false;
+          console.error('Error updating user: ', err);
           Swal.fire({
             icon: 'error',
             title: 'Failed to update user',
             text: err.error.message,
           });
         },
-        complete: () => {},
       });
     } else {
       this.userSvc.add(this.formData).subscribe({
@@ -160,7 +160,7 @@ export class UserFormComponent implements OnInit, OnChanges {
           this.toggleDialog.emit(false);
         },
         error: (err) => {
-          console.log('ERROR ON ADD USER: ' + err);
+          console.error('Error adding user: ', err);
           this.submitBtnLoading = false;
           Swal.fire({
             icon: 'error',
@@ -168,7 +168,6 @@ export class UserFormComponent implements OnInit, OnChanges {
             text: err.error.message,
           });
         },
-        complete: () => {},
       });
     }
   }
@@ -209,6 +208,9 @@ export class UserFormComponent implements OnInit, OnChanges {
                 }
               },
             });
+          },
+          error: (err) => {
+            console.error('Error reset user password: ', err);
           },
         });
       },
