@@ -53,7 +53,7 @@ import { GroupAchievementService } from '../../services/group-achievement.servic
   styleUrl: './group-achievement.component.scss',
 })
 export class GroupAchievementComponent implements OnInit {
-  datas: any[] = [];
+  data: GroupAchievement[] = [];
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
@@ -104,9 +104,11 @@ export class GroupAchievementComponent implements OnInit {
       })
       .subscribe({
         next: (data) => {
-          this.datas = data.content;
-          console.log(this.datas);
+          this.data = data.content;
           this.loading = false;
+        },
+        error: (err) => {
+          console.error('Error fetching group achievements: ', err);
         },
       });
   }
@@ -114,8 +116,7 @@ export class GroupAchievementComponent implements OnInit {
     this.groupAchievementService
       .createGroupAchievement(this.newGroupAchievement)
       .subscribe({
-        next: (data) => {
-          console.log(data);
+        next: (_) => {
           Swal.fire({
             title: 'Group Achievement created!',
             icon: 'success',
@@ -137,8 +138,7 @@ export class GroupAchievementComponent implements OnInit {
     this.groupAchievementService
       .updateGroupAttitudeSkills(this.editData)
       .subscribe({
-        next: (data) => {
-          console.log('Data updated:', data);
+        next: (_) => {
           Swal.fire({
             title: 'Group Achievement updated!',
             icon: 'success',
@@ -150,7 +150,7 @@ export class GroupAchievementComponent implements OnInit {
           this.editVisible = false;
         },
         error: (err) => {
-          console.error('Error updating data:', err);
+          console.error('Error updating group achievement:', err);
           Swal.fire({
             icon: 'error',
             title: 'Failed to update group achievement',
@@ -160,9 +160,6 @@ export class GroupAchievementComponent implements OnInit {
       });
   }
   confirmDelete(event: Event, key: string) {
-    console.log('masuk');
-    console.log(event.target);
-    console.log(key);
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Do you want to delete this record?',
@@ -174,7 +171,6 @@ export class GroupAchievementComponent implements OnInit {
       rejectIcon: 'none',
       key: key,
       accept: () => {
-        console.log('delete data');
         this.groupAchievementService.deleteGroupAttitudeSkills(key).subscribe({
           next: (data) => {
             Swal.fire({
@@ -187,7 +183,7 @@ export class GroupAchievementComponent implements OnInit {
           error: (err) => {
             console.error('Error deleting group achievement:', err);
             Swal.fire({
-              title: 'Failed to delete group!',
+              title: 'Failed to delete group achievement!',
               icon: 'error',
               text: err.error.message,
             });
@@ -203,12 +199,10 @@ export class GroupAchievementComponent implements OnInit {
   showEditDialog(data: any) {
     this.editVisible = true;
     this.editData = { ...data };
-    console.log(this.editData, 'from dialog button');
   }
   showDialogDetail(data: any) {
     this.detailVisible = true;
     this.dataDetail = data;
-    console.log(this.dataDetail);
   }
 
   onGlobalFilter(table: Table, event: Event) {

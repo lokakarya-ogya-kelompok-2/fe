@@ -164,6 +164,7 @@ export class NavbarComponent implements OnInit {
       });
     this.updateActiveStates();
   }
+
   updateActiveStates(): void {
     const currentUrl = this.router.url;
     this.items.forEach((item) => {
@@ -184,7 +185,6 @@ export class NavbarComponent implements OnInit {
     const token = this.tokenService.getToken();
     if (token && this.authService.isAuthenticated()) {
       this.tokenPayload = this.tokenService.decodeToken(token);
-      console.log(this.tokenPayload, 'ini token payload');
     }
   }
   getMenuById(): void {
@@ -206,8 +206,9 @@ export class NavbarComponent implements OnInit {
           }
           return this.menu.has(item.id!);
         });
-        console.log(this.menu, 'USER MENUS');
-        console.log(this.items, 'NAVBAR MENUS');
+      },
+      error: (err) => {
+        console.error('Error fetching user menu: ', err);
       },
     });
   }

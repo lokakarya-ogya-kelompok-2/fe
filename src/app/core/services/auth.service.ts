@@ -26,6 +26,7 @@ export class AuthService {
       const jwtPayload = jwtDecode(token);
       return jwtPayload.exp! > Date.now() / 1000;
     }
+    this.logout();
     return false;
   }
 

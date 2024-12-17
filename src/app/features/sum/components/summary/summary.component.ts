@@ -58,7 +58,7 @@ export class SummaryComponent implements OnChanges {
             }, this.summary.score) || this.summary.score;
         },
         error: (err) => {
-          console.error('Error fetching summary: ', err);
+          console.error('Error calculating user summary: ', err);
         },
       });
     }
