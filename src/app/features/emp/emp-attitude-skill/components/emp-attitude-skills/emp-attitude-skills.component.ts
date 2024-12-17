@@ -138,14 +138,15 @@ export class EmpAttitudeSkillsComponent implements OnInit {
             )
           )
           .subscribe({
-            next: (data) => {
+            next: () => {
               Swal.fire({
                 title: 'Emp Attitude Skill created!',
                 icon: 'success',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.reload();
+                }
               });
-              setTimeout(() => {
-                window.location.reload();
-              }, 1000);
             },
             error: (err) => {
               console.error('Error creating employee attitude skill:', err);

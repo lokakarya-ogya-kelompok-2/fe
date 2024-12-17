@@ -87,8 +87,7 @@ export class ManageGroupAttitudeSkillComponent {
   }
   constructor(
     private groupAttitudeSkillService: GroupAttitudeSkillService,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private confirmationService: ConfirmationService
   ) {}
 
   onGlobalFilter(table: Table, event: Event) {

@@ -124,21 +124,16 @@ export class EmpDevPlanComponent implements OnInit {
             userInput.dev_plan_id = devPlanId;
             userInput.assessment_year = this.currentYear;
             empDevPlanRequest.push(userInput);
-            console.log(empDevPlanRequest, 'ini request emp dev plan');
           });
         });
-        console.log(this.devPlans, 'DEV PLANS');
 
         this.empDevPlanService.insertBulk(empDevPlanRequest).subscribe({
           next: (data) => {
-            console.log(data);
-
             Swal.fire({
               icon: 'success',
               title: 'Success',
               text: 'New Dev Plan Added!',
               showConfirmButton: true,
-
               confirmButtonText: 'Ok',
             }).then((result) => {
               if (result.isConfirmed) {

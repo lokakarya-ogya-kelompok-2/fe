@@ -133,7 +133,6 @@ export class AttitudeSkillComponent implements OnInit {
       .createAttitudeSkill(this.newAttitudeSkill)
       .subscribe({
         next: (data) => {
-          console.log(data);
           Swal.fire({
             title: 'Attitude Skill created!',
             icon: 'success',
@@ -152,10 +151,8 @@ export class AttitudeSkillComponent implements OnInit {
       });
   }
   updateAttitudeSkill(): void {
-    console.log(this.editData + ' INI');
     this.attitudeSkillService.updateAttitudeSkill(this.editData).subscribe({
       next: (data) => {
-        console.log(data);
         Swal.fire({
           title: 'Attitude skill updated!',
           icon: 'success',
@@ -163,7 +160,7 @@ export class AttitudeSkillComponent implements OnInit {
         this.getAttitudeSkill();
       },
       error: (err) => {
-        console.error('Error updating attitude skill:', err);
+        console.error('Error updating attitude skill: ', err);
         Swal.fire({
           icon: 'error',
           title: 'Failed Updating Attitude Skill',
@@ -173,9 +170,6 @@ export class AttitudeSkillComponent implements OnInit {
     });
   }
   confirmDelete(event: Event, key: string) {
-    console.log('masuk');
-    console.log(event.target);
-    console.log(key);
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Do you want to delete this record?',
@@ -190,17 +184,15 @@ export class AttitudeSkillComponent implements OnInit {
         console.log('delete data');
         this.attitudeSkillService.deleteAttitudeSkill(key).subscribe({
           next: (data) => {
-            console.log(data);
             Swal.fire({
               title: 'Attitude skill deleted!',
               icon: 'success',
               text: data.message,
             });
-            console.log('Data deleted successfully');
             this.getAttitudeSkill();
           },
           error: (err) => {
-            console.error('Error deleting attitude skill:', err);
+            console.error('Error deleting attitude skill: ', err);
             this.messageService.add({
               severity: 'error',
               summary: 'error',
@@ -219,12 +211,10 @@ export class AttitudeSkillComponent implements OnInit {
     this.editVisible = true;
     this.editData = { ...data };
     this.editData.group_id = data.group_id.id;
-    console.log(data, 'from dialog button');
   }
   showDialogDetail(data: any) {
     this.detailVisible = true;
     this.dataDetail = data;
-    console.log(this.dataDetail);
   }
 
   onGlobalFilter(table: Table, event: Event) {
