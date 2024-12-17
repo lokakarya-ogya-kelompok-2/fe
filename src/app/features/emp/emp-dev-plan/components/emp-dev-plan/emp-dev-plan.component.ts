@@ -56,10 +56,10 @@ export class EmpDevPlanComponent implements OnInit {
     this.userId = this.tokenSvc.decodeToken(this.tokenSvc.getToken()!).sub!;
 
     forkJoin({
-      empDevPlans: this.empDevPlanService.getByUserIdAndYear(
-        this.userId,
-        this.currentYear
-      ),
+      empDevPlans: this.empDevPlanService.getAllEmpDevPlans({
+        user_ids: [this.userId],
+        years: [this.currentYear],
+      }),
       devPlans: this.devPlanService.getAllDevPlan(),
     }).subscribe(({ empDevPlans, devPlans }) => {
       empDevPlans.content.forEach((empDevPlan) => {
