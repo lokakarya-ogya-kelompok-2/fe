@@ -59,7 +59,8 @@
             }
           </div>
           <div class="flex gap-2" style="min-width: 2.5rem">
-            @if (empDevPlans[devPlan.id][$index].id == undefined) {
+            @if (empDevPlans[devPlan.id].length > 1 &&
+            empDevPlans[devPlan.id][$index].id == undefined) {
             <p-button
               icon="pi pi-trash"
               severity="danger"
