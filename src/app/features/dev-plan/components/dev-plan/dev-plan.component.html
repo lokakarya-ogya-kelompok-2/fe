@@ -226,12 +226,7 @@
           severity="secondary"
           (onClick)="visible = false"
         />
-        <p-button
-          label="Save"
-          (onClick)="visible = false"
-          type="submit"
-          [disabled]="devPlanForm.invalid"
-        />
+        <p-button label="Save" type="submit" [disabled]="devPlanForm.invalid" />
       </div>
     </form>
   </p-dialog>
@@ -307,7 +302,6 @@
         />
         <p-button
           label="Save"
-          (onClick)="editVisible = false"
           type="submit"
           [disabled]="updateDevPlanForm.invalid"
         />

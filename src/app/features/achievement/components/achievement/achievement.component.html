@@ -51,7 +51,7 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 45%; text-align: center">
+        <th style="width: 60%; text-align: center">
           <div
             class="flex align-items-center justify-content-center gap-2 mb-5"
           >
@@ -293,7 +293,6 @@
         />
         <p-button
           label="Save"
-          (onClick)="visible = false"
           type="submit"
           [disabled]="achievementForm.invalid"
         />
@@ -402,7 +401,6 @@
         />
         <p-button
           label="Save"
-          (onClick)="editVisible = false; updateAchievement()"
           type="submit"
           [disabled]="updateAchievementForm.invalid"
         />

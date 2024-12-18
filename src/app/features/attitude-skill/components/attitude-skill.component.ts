@@ -162,6 +162,7 @@ export class AttitudeSkillComponent implements OnInit {
           icon: 'success',
         });
         this.getAttitudeSkill();
+        this.visible = false;
       },
       error: (err) => {
         console.error('Error updating attitude skill: ', err);
@@ -169,6 +170,9 @@ export class AttitudeSkillComponent implements OnInit {
           icon: 'error',
           title: 'Failed to update attitude skill',
           text: err.error.message,
+          customClass: {
+            container: 'z-9999',
+          },
         });
       },
     });
