@@ -117,13 +117,13 @@ export class TechnicalSkillComponent {
       .createTechnicalSkill(this.newTechnicalSkill)
       .subscribe({
         next: () => {
-          this.visible = false;
           Swal.fire({
             title: 'Technical skill created!',
             icon: 'success',
           });
           this.resetForm();
           this.getAllTechnicalSkills();
+          this.visible = false;
         },
         error: (err) => {
           console.error('Error creating technical skill:', err);
@@ -131,6 +131,9 @@ export class TechnicalSkillComponent {
             icon: 'error',
             title: 'Failed Creating Technical Skill',
             text: err.error.message,
+            customClass: {
+              container: 'z-9999',
+            },
           });
         },
       });
@@ -151,6 +154,9 @@ export class TechnicalSkillComponent {
           icon: 'error',
           title: 'Failed Updating Technical Skill',
           text: err.error.message,
+          customClass: {
+            container: 'z-9999',
+          },
         });
       },
     });
