@@ -18,7 +18,6 @@ import { EmpSuggestionService } from '../../services/emp-suggestion.service';
 export class SuggestionComponent implements OnInit {
   loading: boolean = false;
   suggestions: string[] = [''];
-  userId: string = '';
   currentYear: number = new Date().getFullYear();
   empSuggestionRequests: EmpSuggestionRequest[] = [];
   tokenPayload: TokenPayload = {} as TokenPayload;
@@ -43,7 +42,6 @@ export class SuggestionComponent implements OnInit {
     }
   }
   createSuggestion() {
-    console.log(this.empSuggestionRequests);
     let suggestionData: EmpSuggestionRequest[] = [];
     const hasEmptySuggestion = this.empSuggestionRequests.some(
       (req) => !req.suggestion || req.suggestion.trim() === ''
@@ -68,7 +66,6 @@ export class SuggestionComponent implements OnInit {
       .createSuggestion(this.empSuggestionRequests)
       .subscribe({
         next: (data) => {
-          console.log(data);
           Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -82,15 +79,16 @@ export class SuggestionComponent implements OnInit {
           console.error('Error creating suggestion: ', err);
         },
       });
-    console.log(this.empSuggestionRequests);
   }
   getAllEmpSuggestions() {
     this.empSuggestionService
-      .getByUserIdAndYear(this.tokenPayload.sub!, this.currentYear)
+      .list({
+        user_ids: [this.tokenPayload.sub!],
+        years: [this.currentYear],
+      })
       .subscribe({
         next: (data) => {
           this.loading = false;
-          console.log('THERE ARE ' + data.content.length + ' ITEMS');
           data.content.forEach((empSuggestion) => {
             this.empSuggestionRequests.push({
               id: empSuggestion.id,
@@ -104,7 +102,6 @@ export class SuggestionComponent implements OnInit {
               suggestion: '',
             } as EmpSuggestionRequest);
           }
-          console.log(data);
         },
         error: (err) => {
           console.error('Error fetching emp suggestions:', err);
