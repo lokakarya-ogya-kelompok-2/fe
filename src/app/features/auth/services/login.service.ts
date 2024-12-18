@@ -13,7 +13,6 @@ export class LoginService {
   constructor(private readonly httpClient: HttpClient) {}
 
   login(data: LoginRequest): Observable<Response<LoginResponse>> {
-    console.log('Logging In, URL: ', this.authUrl);
     return this.httpClient.post<Response<LoginResponse>>(
       this.authUrl + '/login',
       data

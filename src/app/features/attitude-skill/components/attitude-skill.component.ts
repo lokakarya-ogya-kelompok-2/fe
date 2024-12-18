@@ -120,7 +120,6 @@ export class AttitudeSkillComponent implements OnInit {
             this.expandedRows[data.group_id.group_name] = true;
           });
           this.loading = false;
-          console.log(this.Datas);
         },
         error: (err) => {
           console.error('Error fetching attitude skill:', err);
@@ -189,7 +188,6 @@ export class AttitudeSkillComponent implements OnInit {
       rejectIcon: 'none',
       key: key,
       accept: () => {
-        console.log('delete data');
         this.attitudeSkillService.deleteAttitudeSkill(key).subscribe({
           next: (data) => {
             Swal.fire({

@@ -200,12 +200,10 @@ export class TechnicalSkillComponent {
   showEditDialog(data: any) {
     this.editVisible = true;
     this.editData = { ...data };
-    console.log(this.editData, 'from dialog button');
   }
   showDialogDetail(data: any) {
     this.detailVisible = true;
     this.dataDetail = data;
-    console.log(this.dataDetail);
   }
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
