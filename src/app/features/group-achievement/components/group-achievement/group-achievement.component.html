@@ -201,6 +201,7 @@
             name="group_name"
             maxlength="100"
             type="text"
+            pattern=".*\S.*"
             #groupName="ngModel"
           />
           <div
@@ -208,9 +209,9 @@
           >
             <small
               class="p-error block mt-1"
-              *ngIf="groupName.errors?.['required']"
+              *ngIf="groupName.errors?.['required'] || groupName.errors?.['pattern']"
             >
-              Group name is required
+              Group name can't be empty!
             </small>
             <small
               class="p-error block mt-1"
@@ -322,6 +323,7 @@
             required
             maxlength="100"
             name="group_name"
+            pattern=".*\S.*"
             #editGroupName="ngModel"
           />
           <div
@@ -332,9 +334,9 @@
           >
             <small
               class="p-error block mt-1"
-              *ngIf="editGroupName.errors?.['required']"
+              *ngIf="editGroupName.errors?.['required'] || editGroupName.errors?.['pattern']"
             >
-              Group name is required
+              Group name can't be empty!
             </small>
             <small
               class="p-error block mt-1"

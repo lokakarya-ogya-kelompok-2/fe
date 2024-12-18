@@ -91,6 +91,7 @@
               required
               maxlength="30"
               #username="ngModel"
+              pattern="^[a-zA-Z0-9._]+$"
               class="w-full"
             />
             <label for="username">
@@ -104,6 +105,12 @@
             >
               Username is required
             </small>
+            @if(username.errors?.['pattern']) {
+            <small class="p-error block mt-1"
+              >Username can only contain alphanumeric characters, underscores,
+              and dots</small
+            >
+            }
             <small
               class="p-error block mt-1"
               *ngIf="username.errors?.['maxlength']"

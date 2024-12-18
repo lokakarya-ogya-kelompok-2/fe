@@ -185,6 +185,7 @@
             [(ngModel)]="newDevPlan.plan"
             required
             maxlength="100"
+            pattern=".*\S.*"
             name="plan"
             #planInput="ngModel"
           />
@@ -193,9 +194,9 @@
           >
             <small
               class="p-error block mt-1"
-              *ngIf="planInput.errors?.['required']"
+              *ngIf="planInput.errors?.['required'] || planInput.errors?.['pattern']"
             >
-              Plan is required
+              Plan name can't be empty!
             </small>
             <small
               class="p-error block mt-1"
@@ -255,6 +256,7 @@
             autocomplete="off"
             required
             maxlength="100"
+            pattern=".*\S.*"
             name="dev_plan"
             #editPlanInput="ngModel"
           />
@@ -266,9 +268,9 @@
           >
             <small
               class="p-error block mt-1"
-              *ngIf="editPlanInput.errors?.['required']"
+              *ngIf="editPlanInput.errors?.['required'] || editPlanInput.errors?.['pattern']"
             >
-              Plan is required
+              Plan name can't be empty!
             </small>
             <small
               class="p-error block mt-1"

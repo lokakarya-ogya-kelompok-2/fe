@@ -196,6 +196,7 @@
                         rows="3"
                         class="w-full"
                         #notesInput="ngModel"
+                        pattern=".*\S.*"
                         [disabled]="
                           empAchievementRequests[achievement.id].id != undefined
                         "
@@ -208,9 +209,9 @@
                       >
                         <small
                           class="p-error block mt-1"
-                          *ngIf="notesInput.errors?.['required']"
+                          *ngIf="notesInput.errors?.['required'] || notesInput.errors?.['pattern']"
                         >
-                          Notes is required
+                          Notes can't be empty!
                         </small>
                         <small
                           class="p-error block mt-1"

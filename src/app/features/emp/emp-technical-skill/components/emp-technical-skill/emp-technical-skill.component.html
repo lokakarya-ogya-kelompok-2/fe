@@ -35,6 +35,7 @@
                   empTechnicalSkills[technicalSkill.id][$index].id != undefined
                 "
                 required
+                pattern=".*\S.*"
                 #detailInput="ngModel"
               />
               <label [for]="'detail_' + technicalSkill.id + '_' + $index">
@@ -50,9 +51,9 @@
             >
               <small
                 class="p-error block mt-1"
-                *ngIf="detailInput.errors?.['required']"
+                *ngIf="detailInput.errors?.['required'] || detailInput.errors?.['pattern']"
               >
-                Detail is required
+                Detail can't be empty!
               </small>
             </div>
           </div>
