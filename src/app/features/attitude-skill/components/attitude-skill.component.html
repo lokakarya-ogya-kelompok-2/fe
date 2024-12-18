@@ -217,6 +217,7 @@
             [(ngModel)]="newAttitudeSkill.attitude_skill"
             required
             name="attitude_skill"
+            pattern=".*\S.*"
             maxlength="100"
             #attitudeSkill="ngModel"
           />
@@ -226,12 +227,12 @@
               (attitudeSkill.dirty || attitudeSkill.touched)
             "
           >
-            <small
-              class="p-error block mt-1"
-              *ngIf="attitudeSkill.errors?.['required']"
-            >
-              Attitude skill name is required
+            @if (attitudeSkill.errors?.['pattern'] ||
+            attitudeSkill.errors?.['required']) {
+            <small class="p-error block mt-1">
+              Attitude skill name can't be empty!
             </small>
+            }
             <small
               class="p-error block mt-1"
               *ngIf="attitudeSkill.errors?.['maxlength']"
@@ -329,6 +330,7 @@
             autocomplete="off"
             required
             name="attitude_skill"
+            pattern=".*\S.*"
             maxlength="100"
             #editAttitudeSkill="ngModel"
           />
@@ -338,12 +340,12 @@
               (editAttitudeSkill.dirty || editAttitudeSkill.touched)
             "
           >
-            <small
-              class="p-error block mt-1"
-              *ngIf="editAttitudeSkill.errors?.['required']"
-            >
-              Attitude skill name is required
+            @if (editAttitudeSkill.errors?.['required'] ||
+            editAttitudeSkill.errors?.['pattern']) {
+            <small class="p-error block mt-1">
+              Attitude skill name can't be empty!
             </small>
+            }
             <small
               class="p-error block mt-1"
               *ngIf="editAttitudeSkill.errors?.['maxlength']"

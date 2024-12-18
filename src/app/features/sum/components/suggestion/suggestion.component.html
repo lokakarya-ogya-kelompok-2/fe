@@ -22,6 +22,7 @@
                 required
                 maxlength="200"
                 #textArea="ngModel"
+                pattern=".*\S.*"
                 [disabled]="empSuggestionRequests[i].id != undefined"
               ></textarea>
               <p-button
@@ -38,9 +39,9 @@
             >
               <small
                 class="p-error block mt-1"
-                *ngIf="textArea.errors?.['required']"
+                *ngIf="textArea.errors?.['required'] || textArea.errors?.['pattern']"
               >
-                Suggestion is required
+                Suggestion can't be empty!
               </small>
               <small
                 class="p-error block mt-1"

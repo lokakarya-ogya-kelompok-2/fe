@@ -213,6 +213,7 @@
             [(ngModel)]="newAchievement.achievement"
             required
             maxlength="100"
+            pattern=".*\S.*"
             name="achievement"
             #achievementInput="ngModel"
           />
@@ -224,9 +225,9 @@
           >
             <small
               class="p-error block mt-1"
-              *ngIf="achievementInput.errors?.['required']"
+              *ngIf="achievementInput.errors?.['required'] || achievementInput.errors?.['pattern']"
             >
-              Achievement is required
+              Achievement name can't be empty!
             </small>
             <small
               class="p-error block mt-1"
@@ -321,6 +322,7 @@
             autocomplete="off"
             required
             maxlength="100"
+            pattern=".*\S.*"
             name="achievement"
             #editAchievement="ngModel"
           />
@@ -332,9 +334,9 @@
           >
             <small
               class="p-error block mt-1"
-              *ngIf="editAchievement.errors?.['required']"
+              *ngIf="editAchievement.errors?.['required'] || editAchievement.errors?.['pattern']"
             >
-              Achievement is required
+              Achievement can't be empty!
             </small>
             <small
               class="p-error block mt-1"

@@ -191,6 +191,7 @@
             [(ngModel)]="newTechnicalSkill.technical_skill"
             required
             name="technical_skill"
+            pattern=".*\S.*"
             maxlength="100"
             #technicalSkill="ngModel"
           />
@@ -202,9 +203,9 @@
           >
             <small
               class="p-error block mt-1"
-              *ngIf="technicalSkill.errors?.['required']"
+              *ngIf="technicalSkill.errors?.['required'] || technicalSkill.errors?.['pattern']"
             >
-              Technical skill is required
+              Technical skill can't be empty!
             </small>
             <small
               class="p-error block mt-1"
@@ -265,6 +266,7 @@
             pInputText
             id="Technical Skill"
             class="w-full"
+            pattern=".*\S.*"
             autocomplete="off"
             required
             name="technical_skill"
@@ -279,9 +281,9 @@
           >
             <small
               class="p-error block mt-1"
-              *ngIf="editTechnicalSkill.errors?.['required']"
+              *ngIf="editTechnicalSkill.errors?.['required'] || editTechnicalSkill.errors?.['pattern']"
             >
-              Technical skill is required
+              Technical skill name can't be empty!
             </small>
             <small
               class="p-error block mt-1"
