@@ -19,8 +19,8 @@
       </h2>
       @for (inputForm of empTechnicalSkills[technicalSkill.id]; track $index) {
       <div class="p-2 mb-2 border-1 border-round surface-border">
-        <div class="flex flex-column md:flex-row gap-3 align-items-center mt-4">
-          <div class="flex-1">
+        <div class="flex flex-column md:flex-row gap-2 align-items-start mt-4">
+          <div class="flex-1" style="min-height: 70px">
             <p-floatLabel>
               <input
                 type="text"
@@ -37,10 +37,10 @@
                 required
                 #detailInput="ngModel"
               />
-              <label [for]="'detail_' + technicalSkill.id + '_' + $index"
-                >Detail@if (!empTechnicalSkills[technicalSkill.id][$index].id) {
-                <small class="text-red-500">*</small>}</label
-              >
+              <label [for]="'detail_' + technicalSkill.id + '_' + $index">
+                Detail@if (!empTechnicalSkills[technicalSkill.id][$index].id) {
+                <small class="text-red-500">*</small>}
+              </label>
             </p-floatLabel>
             <div
               *ngIf="
@@ -56,7 +56,7 @@
               </small>
             </div>
           </div>
-          <div class="flex-1">
+          <div class="flex-1" style="min-height: 70px">
             <p-dropdown
               [options]="skillLevels"
               [(ngModel)]="empTechnicalSkills[technicalSkill.id][$index].score"
@@ -91,7 +91,7 @@
               </small>
             </div>
           </div>
-          <div class="flex gap-2" style="min-width: 2.5rem">
+          <div class="flex" style="min-width: 2.5rem">
             @if (empTechnicalSkills[technicalSkill.id][$index].id == undefined)
             {
             <p-button
