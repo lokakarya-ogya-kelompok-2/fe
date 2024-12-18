@@ -23,4 +23,5 @@ export interface EmpDevPlanQueryParam extends QueryParam {
   years?: number[];
   with_created_by?: boolean;
   with_updated_by?: boolean;
+  enabled_only?: boolean;
 }

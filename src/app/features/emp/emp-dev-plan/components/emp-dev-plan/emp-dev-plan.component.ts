@@ -59,8 +59,11 @@ export class EmpDevPlanComponent implements OnInit {
       empDevPlans: this.empDevPlanService.getAllEmpDevPlans({
         user_ids: [this.userId],
         years: [this.currentYear],
+        enabled_only: true,
       }),
-      devPlans: this.devPlanService.getAllDevPlan(),
+      devPlans: this.devPlanService.getAllDevPlan({
+        enabled_only: true,
+      }),
     }).subscribe(({ empDevPlans, devPlans }) => {
       empDevPlans.content.forEach((empDevPlan) => {
         if (!this.empDevPlans[empDevPlan.dev_plan.id]) {
