@@ -196,6 +196,7 @@
           <input
             [(ngModel)]="newGroupAttitudeSkill.group_name"
             pInputText
+            pattern=".*\S.*"
             id="Group name"
             class="w-full"
             autocomplete="off"
@@ -207,12 +208,12 @@
           <div
             *ngIf="groupName.invalid && (groupName.dirty || groupName.touched)"
           >
-            <small
-              class="p-error block mt-1"
-              *ngIf="groupName.errors?.['required']"
-            >
-              Group name is required
+            @if (groupName.errors?.['required'] ||
+            groupName.errors?.['pattern']) {
+            <small class="p-error block mt-1">
+              Group name can't be empty!
             </small>
+            }
             <small
               class="p-error block mt-1"
               *ngIf="groupName.errors?.['maxlength']"
@@ -279,7 +280,6 @@
         />
         <p-button
           label="Save"
-          (onClick)="visible = false"
           type="submit"
           [disabled]="groupAttitudeSkillForm.invalid"
         />
@@ -309,6 +309,7 @@
         <div class="flex-auto">
           <input
             [(ngModel)]="editData.group_name"
+            pattern=".*\S.*"
             pInputText
             id="Group Name"
             class="w-full"
@@ -324,12 +325,12 @@
               (editGroupName.dirty || editGroupName.touched)
             "
           >
-            <small
-              class="p-error block mt-1"
-              *ngIf="editGroupName.errors?.['required']"
-            >
-              Group name is required
+            @if (editGroupName.errors?.['required'] ||
+            editGroupName.errors?.['pattern']) {
+            <small class="p-error block mt-1">
+              Group name can't be empty!
             </small>
+            }
             <small
               class="p-error block mt-1"
               *ngIf="editGroupName.errors?.['maxlength']"
@@ -407,7 +408,6 @@
         <p-button
           label="Save"
           type="submit"
-          (onClick)="editVisible = false"
           [disabled]="updateGroupAttitudeSkillForm.invalid"
         />
       </div>
