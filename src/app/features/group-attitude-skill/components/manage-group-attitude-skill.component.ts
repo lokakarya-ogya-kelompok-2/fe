@@ -108,27 +108,25 @@ export class ManageGroupAttitudeSkillComponent {
         next: (data) => {
           this.data = data.content;
           this.loading = false;
-          console.log('Data fetched:', data.content);
         },
         error: (err) => {
-          console.error('Error fetching data:', err);
+          console.error('Error fetching group attitude:', err);
         },
       });
   }
 
   createGroupAttitudeSkill(): void {
-    console.log(JSON.stringify(this.newGroupAttitudeSkill) + ' INIIIII');
     this.groupAttitudeSkillService
       .createGroupAttitudeSkills(this.newGroupAttitudeSkill)
       .subscribe({
         next: (data) => {
-          console.log('Data created:', data);
           Swal.fire({
             title: 'Group attitude skill created!',
             icon: 'success',
           });
           this.resetForm();
           this.getAllData();
+          this.visible = false;
         },
         error: (err) => {
           console.error('Error creating group attitude skill:', err);
@@ -136,24 +134,25 @@ export class ManageGroupAttitudeSkillComponent {
             icon: 'error',
             title: 'Failed creating group attitude skill',
             text: err.error.message,
+            customClass: {
+              container: 'z-9999',
+            },
           });
         },
       });
   }
   updateGroupAttitudeSkill(): void {
-    console.log('edittt');
-
     this.groupAttitudeSkillService
       .updateGroupAttitudeSkills(this.editData)
       .subscribe({
         next: (data) => {
-          console.log('Data updated:', data);
           Swal.fire({
             title: 'Group attitude skill updated!',
             icon: 'success',
           });
           this.getAllData();
           this.resetEditForm();
+          this.editVisible = false;
         },
         error: (err) => {
           console.error('Error updating group attitude skill:', err);
@@ -161,12 +160,14 @@ export class ManageGroupAttitudeSkillComponent {
             icon: 'error',
             title: 'Failed Updating Group Attitude Skill',
             text: err.error.message,
+            customClass: {
+              container: 'z-9999',
+            },
           });
         },
       });
   }
   confirmDelete(event: Event, key: string) {
-    console.log(event.target);
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Do you want to delete this record?',
@@ -183,7 +184,6 @@ export class ManageGroupAttitudeSkillComponent {
           .deleteGroupAttitudeSkills(key)
           .subscribe({
             next: (data) => {
-              console.log(data);
               Swal.fire({
                 title: 'Group Attitude Skill deleted!',
                 icon: 'success',
@@ -209,11 +209,13 @@ export class ManageGroupAttitudeSkillComponent {
   showEditDialog(data: GroupAttitudeSkill) {
     this.editVisible = true;
     this.editData = { ...data };
-    console.log(this.editData);
   }
   showDialogDetail(data: any) {
     this.detailVisible = true;
     this.dataDetail = data;
-    console.log(this.dataDetail);
+  }
+
+  stringify(obj: Object) {
+    return JSON.stringify(obj);
   }
 }

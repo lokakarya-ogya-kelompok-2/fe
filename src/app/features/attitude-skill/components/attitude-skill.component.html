@@ -61,13 +61,6 @@
           </div>
         </th>
         <th style="width: 15%; text-align: center">
-          <div
-            class="flex align-items-center justify-content-center gap-2 mb-6"
-          >
-            Weight
-          </div>
-        </th>
-        <th style="width: 15%; text-align: center">
           <div class="flex flex-column justify-content-center gap-2 mb-2">
             <span> Status </span>
             <p-columnFilter
@@ -133,7 +126,8 @@
                 data.group_id.enabled ? ['text-green-700'] : ['text-red-700']
               "
             >
-              {{ data.group_id.group_name }}
+              {{ data.group_id.group_name }} (weight:
+              {{ data.group_id.percentage }})
             </span>
           </div>
         </td>
@@ -142,9 +136,6 @@
     <ng-template pTemplate="rowexpansion" let-data>
       <tr [style]="{ padding: '0.5rem' }">
         <td [style]="{ padding: '0.5rem' }">{{ data.attitude_skill }}</td>
-        <td [style]="{ padding: '0.5rem', 'text-align': 'center' }">
-          {{ data.group_id.percentage }}
-        </td>
         <td [style]="{ padding: '0.5rem', 'text-align': 'center' }">
           <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
             {{ data.enabled === true ? "Enabled" : "Disabled" }}
