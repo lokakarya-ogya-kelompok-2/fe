@@ -136,6 +136,7 @@ export class AchievementComponent implements OnInit {
         });
         this.resetForm();
         this.getAchievement();
+        this.visible = false;
       },
       error: (err) => {
         console.error('Error creating achievement:', err);
@@ -143,6 +144,9 @@ export class AchievementComponent implements OnInit {
           icon: 'error',
           title: 'Failed to create achievement',
           text: err.error.message,
+          customClass: {
+            container: 'z-9999',
+          },
         });
       },
     });
@@ -155,6 +159,7 @@ export class AchievementComponent implements OnInit {
           icon: 'success',
         });
         this.getAchievement();
+        this.editVisible = false;
       },
       error: (err) => {
         console.error('Error updating achievement:', err);
@@ -162,6 +167,9 @@ export class AchievementComponent implements OnInit {
           icon: 'error',
           title: 'Failed Updating Achievement',
           text: err.error.message,
+          customClass: {
+            container: 'z-9999',
+          },
         });
       },
     });

@@ -67,15 +67,20 @@ export class ManageDivisionComponent implements OnInit {
   }
 
   getAllDivisions(): void {
-    this.manageDivisionService.getAllDivisions().subscribe({
-      next: (data) => {
-        this.datas = data.content;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Error fetching divisions:', err);
-      },
-    });
+    this.manageDivisionService
+      .getAllDivisions({
+        with_created_by: true,
+        with_updated_by: true,
+      })
+      .subscribe({
+        next: (data) => {
+          this.datas = data.content;
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error('Error fetching divisions:', err);
+        },
+      });
   }
   createDivision(): void {
     this.manageDivisionService.createDivision(this.newDivision).subscribe({

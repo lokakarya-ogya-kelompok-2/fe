@@ -119,6 +119,9 @@ export class DevPlanComponent implements OnInit {
           icon: 'error',
           title: 'Failed Creating Dev Plan',
           text: err.error.message,
+          customClass: {
+            container: 'z-9999',
+          },
         });
       },
     });
@@ -139,6 +142,9 @@ export class DevPlanComponent implements OnInit {
           icon: 'error',
           title: 'Failed Updating Dev Plan',
           text: err.error.message,
+          customClass: {
+            container: 'z-9999',
+          },
         });
       },
     });
