@@ -123,6 +123,7 @@ export class GroupAchievementComponent implements OnInit {
           });
           this.resetForm();
           this.getGroupAchievements();
+          this.visible = false;
         },
         error: (err) => {
           console.error('Error creating group achievement:', err);

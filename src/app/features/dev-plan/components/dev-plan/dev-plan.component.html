@@ -19,7 +19,7 @@
       'table-layout': 'fixed'
     }"
     [style]="{ width: '100%' }"
-    [globalFilterFields]="['plan', 'enabled']"
+    [globalFilterFields]="['plan']"
     [sortField]="'created_at'"
     [sortOrder]="-1"
   >
@@ -39,7 +39,7 @@
           <input
             pInputText
             type="text"
-            placeholder="Search by plan, enabled"
+            placeholder="Search by plan"
             (input)="onGlobalFilter(devPlanTable, $event)"
             [style]="{ 'font-size': '14px' }"
           />

@@ -79,13 +79,14 @@ export class ManageDivisionComponent implements OnInit {
   }
   createDivision(): void {
     this.manageDivisionService.createDivision(this.newDivision).subscribe({
-      next: (data) => {
+      next: () => {
         Swal.fire({
           title: 'Division created!',
           icon: 'success',
         });
         this.resetForm();
         this.getAllDivisions();
+        this.visible = false;
       },
       error: (err) => {
         console.error('Error creating division:', err);
@@ -93,6 +94,9 @@ export class ManageDivisionComponent implements OnInit {
           icon: 'error',
           title: 'Failed to create division',
           text: err.error.message,
+          customClass: {
+            container: 'z-9999',
+          },
         });
       },
     });
@@ -105,6 +109,7 @@ export class ManageDivisionComponent implements OnInit {
           icon: 'success',
         });
         this.getAllDivisions();
+        this.editVisible = false;
       },
       error: (err) => {
         console.error('Error updating division: ', err);
@@ -112,6 +117,9 @@ export class ManageDivisionComponent implements OnInit {
           icon: 'error',
           title: 'Update Division Failed',
           text: err.error.message,
+          customClass: {
+            container: 'z-9999',
+          },
         });
       },
     });

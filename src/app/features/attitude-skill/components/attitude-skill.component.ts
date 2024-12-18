@@ -139,6 +139,7 @@ export class AttitudeSkillComponent implements OnInit {
           });
           this.resetForm();
           this.getAttitudeSkill();
+          this.visible = false;
         },
         error: (err) => {
           console.error('Error creating attitude skill:', err);
@@ -146,6 +147,9 @@ export class AttitudeSkillComponent implements OnInit {
             icon: 'error',
             title: 'Failed to create attitude skill',
             text: err.error.message,
+            customClass: {
+              container: 'z-9999',
+            },
           });
         },
       });
