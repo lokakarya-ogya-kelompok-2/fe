@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 import { Division, DivisionRequest } from '../models/division';
 @Injectable({
   providedIn: 'root',
 })
 export class ManageDivisionService {
-  private Api = 'http://localhost:8080/divisions';
+  private Api = `${environment.baseApiURL}/divisions`;
   constructor(private http: HttpClient) {}
   getAllDivisions(): Observable<any> {
     return this.http.get<any>(this.Api);

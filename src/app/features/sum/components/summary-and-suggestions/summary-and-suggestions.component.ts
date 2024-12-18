@@ -24,7 +24,10 @@ export class SummaryAndSuggestionsComponent implements OnChanges {
     if (changes['userId'] || changes['year']) {
       this.isLoading = true;
       this.suggestionSvc
-        .getByUserIdAndYear(this.userId!, this.year!)
+        .list({
+          user_ids: [this.userId!],
+          years: [this.year!],
+        })
         .subscribe({
           next: (data) => {
             this.suggestions = data.content;

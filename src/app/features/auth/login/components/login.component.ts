@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -28,22 +28,14 @@ import { PhotoService } from '../services/photoService';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   loginData: LoginRequest = {} as LoginRequest;
-  images: any[] | undefined;
   private router = inject(Router);
   constructor(
     private readonly loginSvc: LoginService,
-    private readonly authSvc: AuthService,
-    private photoService: PhotoService
+    private readonly authSvc: AuthService
   ) {}
 
-  ngOnInit() {
-    this.photoService.getImages().then((images) => {
-      this.images = images;
-      console.log(this.images);
-    });
-  }
   responsiveOptions: any[] = [
     {
       breakpoint: '1024px',
@@ -66,7 +58,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/']);
       },
       error: (err) => {
-        console.error('Login error:', err);
+        console.error('Error logging in: ', err);
         Swal.fire({
           icon: 'error',
           title: 'Oops...',

@@ -4,4 +4,5 @@ export interface Response<T> {
   timestamp: number;
   content: T;
   message: string;
+  total_rows: number;
 }
