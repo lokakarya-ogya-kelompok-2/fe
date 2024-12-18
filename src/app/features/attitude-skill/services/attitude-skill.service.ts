@@ -33,7 +33,6 @@ export class AttitudeSkillService {
     );
   }
   updateAttitudeSkill(attitudeSkill: AttitudeSkill): Observable<AttitudeSkill> {
-    console.log(attitudeSkill.id, 'ini dari service');
     return this.http.put<AttitudeSkill>(
       `${this.attitudeSkillApiUrl}/${attitudeSkill.id}`,
       attitudeSkill

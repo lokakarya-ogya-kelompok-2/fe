@@ -31,7 +31,6 @@ export class ManageDivisionService {
     );
   }
   deleteDivision(id: string): Observable<Response<void>> {
-    console.log(id, 'ini dari service');
     return this.http.delete<Response<void>>(`${this.Api}/${id}`);
   }
 }
