@@ -129,6 +129,7 @@
             autocomplete="off"
             [(ngModel)]="newDivision.division_name"
             required
+            pattern=".*\S.*"
             maxlength="50"
             name="Division_name"
             #divisionName="ngModel"
@@ -140,7 +141,7 @@
               (divisionName.dirty || divisionName.touched)
             "
           >
-            Division name is required
+            Division name can't be empty!
           </small>
         </div>
       </div>
@@ -184,6 +185,7 @@
             name="Division_name"
             class="w-full"
             autocomplete="off"
+            pattern=".*\S.*"
             required
             maxlength="50"
             #editDivisionName="ngModel"
@@ -195,7 +197,7 @@
               (editDivisionName.dirty || editDivisionName.touched)
             "
           >
-            Division name is required
+            Division name can't be empty!
           </small>
         </div>
       </div>

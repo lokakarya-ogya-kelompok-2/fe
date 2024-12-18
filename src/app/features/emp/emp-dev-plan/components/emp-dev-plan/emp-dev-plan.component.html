@@ -40,6 +40,7 @@
                 [style]="{ '::placeholder': { color: 'red' } }"
                 [disabled]="empDevPlans[devPlan.id][$index].id != undefined"
                 #detailInput="ngModel"
+                pattern=".*\S.*"
                 required
               />
               <label [for]="'detail_' + devPlan.id + '_' + $index"
@@ -52,9 +53,9 @@
             detailInput.touched)) {
             <small
               class="p-error block mt-1"
-              *ngIf="detailInput.errors?.['required']"
+              *ngIf="detailInput.errors?.['required'] || detailInput.errors?.['pattern']"
             >
-              Detail is required
+              Detail can't be empty!
             </small>
             }
           </div>
