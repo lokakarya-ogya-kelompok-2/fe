@@ -42,6 +42,20 @@
         <td>{{ user.created_by?.full_name || "Unknown" }}</td>
       </tr>
       <tr>
+        <th class="text-left"><strong>Created At</strong></th>
+        <td>{{ (user.created_at | date : "long") || "Unknown" }}</td>
+      </tr>
+      <tr>
+        <th class="text-left"><strong>Updated By</strong></th>
+        <td>
+          {{ user.updated_at ? user.updated_by?.full_name || "Unknown" : "-" }}
+        </td>
+      </tr>
+      <tr>
+        <th class="text-left"><strong>Updated At</strong></th>
+        <td>{{ (user.updated_at | date : "long") || "-" }}</td>
+      </tr>
+      <tr>
         <th class="text-left"><strong>Status</strong></th>
         <td>
           <p-tag [severity]="user.enabled ? 'success' : 'danger'">
