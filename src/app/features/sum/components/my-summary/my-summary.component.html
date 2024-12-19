@@ -21,7 +21,12 @@
   </p-card>
 </div>
 <app-user-information [year]="selectedYear" />
-<app-summary [userId]="userId" [year]="selectedYear" />
-@if (hasAccessToSuggestion && currentYear == selectedYear) {
+<app-summary
+  [userId]="userId"
+  [year]="selectedYear"
+  (assSumAvailable)="assSumAvail($event)"
+/>
+@if (hasAccessToSuggestion && currentYear == selectedYear &&
+assessmentSummaryAvailable) {
 <app-suggestion />
 }
