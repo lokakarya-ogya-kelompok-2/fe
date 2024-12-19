@@ -28,6 +28,7 @@ export class MySummaryComponent implements OnInit {
   userId: string = '';
   selectedYear: number = new Date().getFullYear();
   hasAccessToSuggestion: boolean = true;
+  assessmentSummaryAvailable: boolean = true;
   currentYear = new Date().getFullYear();
   years = Array.from({ length: 5 }, (_, i) => {
     const year = new Date().getFullYear() - i;
@@ -52,5 +53,9 @@ export class MySummaryComponent implements OnInit {
         console.error('Error fetching user menu: ', err);
       },
     });
+  }
+
+  assSumAvail(val: boolean) {
+    this.assessmentSummaryAvailable = val;
   }
 }

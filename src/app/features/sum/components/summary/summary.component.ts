@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { MessageModule } from 'primeng/message';
 import { EmpAchievement } from '../../../emp-achievement/models/emp-achievement';
 import { EmpAttitudeSkill } from '../../../emp/emp-attitude-skill/models/emp-attitude-skill';
@@ -19,6 +26,7 @@ import { TableComponent } from '../table/table.component';
 export class SummaryComponent implements OnChanges {
   @Input() userId: string = '';
   @Input() year = new Date().getFullYear();
+  @Output() assSumAvailable = new EventEmitter<boolean>(false);
   groupAttitudeSkills: GroupAttitudeSkill[] = [];
   groupAchievements: GroupAchievement[] = [];
   currentUserAttitudeSkillsGroupedByGroupId: {
@@ -41,6 +49,7 @@ export class SummaryComponent implements OnChanges {
       this.summarySvc.calculateSummary(this.userId, this.year).subscribe({
         next: (data) => {
           this.assessmentSummaryAvailable = data.success;
+          this.assSumAvailable.emit(this.assessmentSummaryAvailable);
           this.summary = data.content;
           this.summary.achievements?.forEach((item) => {
             this.percentage += item.weight;
