@@ -3,8 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { Response } from '../../../../shared/models/response';
+import { toHttpParam } from '../../../../shared/utils/query-param';
 import {
   EmpTechnicalSkill,
+  EmpTechnicalSkillQueryParam,
   EmpTechnicalSkillReq,
 } from '../models/emp-technical-skill';
 
@@ -36,12 +38,12 @@ export class EmpTechnicalSkillService {
     return this.httpClient.delete<Response<void>>(`${this.baseApiUrl}/${id}`);
   }
 
-  getByUserIdAndYear(
-    userId: string,
-    year: number
+  list(
+    param: EmpTechnicalSkillQueryParam
   ): Observable<Response<EmpTechnicalSkill[]>> {
-    return this.httpClient.get<Response<EmpTechnicalSkill[]>>(
-      `${this.baseApiUrl}?user_ids=${userId}&years=${year}`
-    );
+    const params = toHttpParam(param);
+    return this.httpClient.get<Response<EmpTechnicalSkill[]>>(this.baseApiUrl, {
+      params,
+    });
   }
 }

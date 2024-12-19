@@ -77,7 +77,11 @@ export class EmpTechnicalSkillComponent implements OnInit {
     this.userId = this.tokenSvc.decodeToken(this.tokenSvc.getToken()!).sub!;
 
     this.empTechSkillSvc
-      .getByUserIdAndYear(this.userId, this.currentYear)
+      .list({
+        user_ids: [this.userId],
+        years: [this.currentYear],
+        enabled_only: true,
+      })
       .subscribe({
         next: (data) => {
           data.content.forEach((empTechSkill) => {
@@ -95,24 +99,28 @@ export class EmpTechnicalSkillComponent implements OnInit {
           });
         },
         complete: () => {
-          this.techSkillSvc.getAllTechnicalSkills().subscribe({
-            next: (data) => {
-              this.technicalSkills = data.content;
-              this.technicalSkills.forEach((groupTechSkill) => {
-                if (!this.empTechnicalSkills[groupTechSkill.id]) {
-                  this.empTechnicalSkills[groupTechSkill.id] = [
-                    {} as EmpTechnicalSkillReq,
-                  ];
-                }
-              });
-              this.technicalSkills.sort(
-                (a, b) => b.created_at.getTime() - a.created_at.getTime()
-              );
-            },
-            error: (err) => {
-              console.error(`error on fetching technical skills: ${err}`);
-            },
-          });
+          this.techSkillSvc
+            .getAllTechnicalSkills({
+              enabled_only: true,
+            })
+            .subscribe({
+              next: (data) => {
+                this.technicalSkills = data.content;
+                this.technicalSkills.forEach((groupTechSkill) => {
+                  if (!this.empTechnicalSkills[groupTechSkill.id]) {
+                    this.empTechnicalSkills[groupTechSkill.id] = [
+                      {} as EmpTechnicalSkillReq,
+                    ];
+                  }
+                });
+                this.technicalSkills.sort(
+                  (a, b) => b.created_at.getTime() - a.created_at.getTime()
+                );
+              },
+              error: (err) => {
+                console.error(`error on fetching technical skills: ${err}`);
+              },
+            });
         },
       });
   }

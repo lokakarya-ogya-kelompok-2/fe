@@ -152,10 +152,13 @@ export class ManageDivisionComponent implements OnInit {
           },
           error: (err) => {
             console.error('Error deleting division:', err);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'error',
-              detail: 'Failed to delete division',
+            Swal.fire({
+              icon: 'error',
+              title: 'Delete Division Failed',
+              text: err.error.message,
+              customClass: {
+                container: 'z-9999',
+              },
             });
           },
         });

@@ -1,4 +1,5 @@
 import { ResponseContentMeta } from '../../../../shared/models/response-content-meta';
+import { QueryParam } from '../../../../shared/types';
 import { TechnicalSkill } from '../../../technical-skill/models/technical-skill';
 import { User } from '../../../users/models/user';
 
@@ -17,4 +18,11 @@ export interface EmpTechnicalSkill extends ResponseContentMeta {
   detail: string;
   score: number;
   assessment_year: number;
+}
+
+export interface EmpTechnicalSkillQueryParam extends QueryParam {
+  user_ids?: string[];
+  years?: number[];
+  with_created_by?: boolean;
+  with_updated_by?: boolean;
 }
