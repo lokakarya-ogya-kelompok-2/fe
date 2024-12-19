@@ -8,11 +8,12 @@ import { DialogModule } from 'primeng/dialog';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { Table, TableModule } from 'primeng/table';
+import { Table, TableModule, TablePageEvent } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
 import { TokenService } from '../../../../core/services/token.service';
+import { Response } from '../../../../shared/models/response';
 import { DialogType } from '../../../../shared/types';
 import { userToReq } from '../../../../shared/utils/mapper';
 import { User, UserReq } from '../../models/user';
@@ -43,7 +44,7 @@ import { UserFormComponent } from '../user-form/user-form.component';
 })
 export class UserListComponent implements OnInit {
   @Input() withActionButtons: boolean = true;
-  users: User[] = [];
+  data: Response<User[]> = {} as Response<User[]>;
   isLoading: boolean = true;
   visible: boolean = false;
   dialogHeader: string = '';
@@ -54,6 +55,10 @@ export class UserListComponent implements OnInit {
   dialogType = DialogType;
   currentDialogType: DialogType = DialogType.ADD;
   currentUserId: string = '';
+  searchQuery: string = '';
+  first: number = 0;
+  rows: number = 5;
+
   constructor(
     private readonly userSvc: UserService,
     private confirmationService: ConfirmationService,
@@ -61,17 +66,26 @@ export class UserListComponent implements OnInit {
     private readonly tokenSvc: TokenService
   ) {}
 
+  pageChange(event: TablePageEvent) {
+    this.first = event.first;
+    this.rows = event.rows;
+    this.loadUsers();
+  }
+
   loadUsers() {
     this.isLoading = true;
     this.userSvc
       .list({
+        page_number: this.first / this.rows + 1,
+        page_size: this.rows,
+        any_contains: this.searchQuery,
         with_roles: true,
         with_created_by: true,
         with_updated_by: true,
       })
       .subscribe({
         next: (data) => {
-          this.users = data.content;
+          this.data = data;
           this.isLoading = false;
         },
         error: (err) => {
@@ -114,6 +128,9 @@ export class UserListComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.currentDialogType == this.dialogType.ADD) {
+      this.first = 0;
+    }
     this.loadUsers();
   }
 

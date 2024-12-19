@@ -11,8 +11,6 @@ export interface DivisionRequest {
 }
 
 export interface DivisionQueryParam extends QueryParam {
-  page_number?: number;
-  page_size?: number;
   name_contains?: string;
   with_created_by?: boolean;
   with_updated_by?: boolean;

@@ -2,12 +2,17 @@
   #userTable
   [scrollable]="true"
   scrollHeight="345px"
-  [value]="users"
+  [value]="data.content"
   dataKey="id"
   [rows]="10"
-  [rowsPerPageOptions]="[10, 20, 50]"
+  [rowsPerPageOptions]="[5, 10, 15]"
   [loading]="isLoading"
   [paginator]="true"
+  lazy="true"
+  [totalRecords]="data.total_records"
+  (onPage)="pageChange($event)"
+  [first]="first"
+  [rows]="rows"
   [tableStyle]="{
     'min-width': '50rem',
     'text-align': 'center',
@@ -17,15 +22,6 @@
     'table-layout': 'fixed'
   }"
   [style]="{ width: '100%' }"
-  [globalFilterFields]="[
-    'full_name',
-    'username',
-    'email_address',
-    'position',
-    'division.division_name'
-  ]"
-  [sortField]="'created_at'"
-  [sortOrder]="-1"
 >
   <ng-template pTemplate="caption">
     <div class="flex">
@@ -46,9 +42,10 @@
         </p-inputIcon>
         <input
           pInputText
+          [(ngModel)]="searchQuery"
           type="text"
           placeholder="Search by full name, username, email, position, division"
-          (input)="onGlobalFilter(userTable, $event)"
+          (keydown.enter)="loadUsers()"
           [style]="{ 'font-size': '14px' }"
         />
       </p-iconField>
