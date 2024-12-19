@@ -149,6 +149,7 @@ export class NavbarComponent implements OnInit {
   tokenPayload: TokenPayload = {} as TokenPayload;
   menu: Set<string> = new Set();
   currentUser: User = {} as User;
+  userInitial: string = '';
 
   constructor(
     readonly authService: AuthService,
@@ -170,6 +171,7 @@ export class NavbarComponent implements OnInit {
     this.userSvc.getById(this.tokenPayload.sub!).subscribe({
       next: (data) => {
         this.currentUser = data.content;
+        this.userInitial = this.getInitial(this.currentUser.full_name, 2);
       },
       error: (err) => {
         console.error('Failed to fetch current user: ', err);
