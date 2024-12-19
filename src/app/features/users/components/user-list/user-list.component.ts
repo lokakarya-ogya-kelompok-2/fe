@@ -130,6 +130,7 @@ export class UserListComponent implements OnInit {
   onSubmit() {
     if (this.currentDialogType == this.dialogType.ADD) {
       this.first = 0;
+      this.searchQuery = '';
     }
     this.loadUsers();
   }
