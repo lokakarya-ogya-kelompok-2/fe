@@ -4,12 +4,18 @@
     #divisionTable
     [scrollable]="true"
     scrollHeight="345px"
-    [value]="datas"
+    [value]="data.content"
     dataKey="id"
-    [rows]="10"
+    [rows]="rows"
     [loading]="loading"
     [paginator]="true"
-    [rowsPerPageOptions]="[10, 25, 50]"
+    [first]="first"
+    (onPage)="pageChange($event)"
+    showCurrentPageReport="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} records"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [totalRecords]="data.total_records"
+    [lazy]="true"
     [tableStyle]="{
       'min-width': '50rem',
       'text-align': 'center',
@@ -18,7 +24,6 @@
       'table-layout': 'fixed',
     }"
     [style]="{ width: '100%' }"
-    [globalFilterFields]="['division_name']"
     [sortField]="'created_at'"
     [sortOrder]="-1"
   >
@@ -39,7 +44,8 @@
             pInputText
             type="text"
             placeholder="Search by division name"
-            (input)="onGlobalFilter(divisionTable, $event)"
+            (keydown.enter)="getDivisions()"
+            [(ngModel)]="divisionNameContains"
             [style]="{ 'font-size': '14px' }"
           />
         </p-iconField>

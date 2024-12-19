@@ -4,5 +4,8 @@ export interface Response<T> {
   timestamp: number;
   content: T;
   message: string;
-  total_rows: number;
+  page_number: number;
+  page_size: number;
+  total_pages: number;
+  total_records: number;
 }
