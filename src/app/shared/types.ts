@@ -27,4 +27,6 @@ export interface QueryParam {
     | Date
     | string[]
     | number[];
+  page_number?: number;
+  page_size?: number;
 }
