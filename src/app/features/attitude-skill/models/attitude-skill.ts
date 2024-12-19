@@ -16,6 +16,7 @@ export interface AttitudeSkillRequest {
 }
 
 export interface AttitudeSkillQueryParam extends QueryParam {
+  any_contains?: string;
   name_contains?: string;
   enabled_only?: boolean;
   with_group?: boolean;
