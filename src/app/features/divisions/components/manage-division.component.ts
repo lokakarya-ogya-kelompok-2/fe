@@ -8,11 +8,12 @@ import { DialogModule } from 'primeng/dialog';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { Table, TableModule } from 'primeng/table';
+import { Table, TableModule, TablePageEvent } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
+import { Response } from '../../../shared/models/response';
 import { Division, DivisionRequest } from '../models/division';
 import { ManageDivisionService } from '../services/manage-division.service';
 
@@ -44,7 +45,7 @@ import { ManageDivisionService } from '../services/manage-division.service';
   styleUrl: './manage-division.component.scss',
 })
 export class ManageDivisionComponent implements OnInit {
-  datas: any[] = [];
+  data: Response<Division[]> = {} as Response<Division[]>;
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
@@ -52,29 +53,40 @@ export class ManageDivisionComponent implements OnInit {
   newDivision: DivisionRequest = {} as DivisionRequest;
   editData: Division = {} as Division;
   dataDetail: Division = {} as Division;
+  first = 0;
+  divisionNameContains = '';
+  rows = 5;
+
+  pageChange(event: TablePageEvent) {
+    this.first = event.first;
+    this.rows = event.rows;
+    this.getDivisions();
+  }
 
   resetForm(): void {
     this.newDivision.division_name = '';
   }
   constructor(
     private manageDivisionService: ManageDivisionService,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
-    this.getAllDivisions();
+    this.getDivisions();
   }
 
-  getAllDivisions(): void {
+  getDivisions(): void {
     this.manageDivisionService
       .getAllDivisions({
+        name_contains: this.divisionNameContains,
         with_created_by: true,
         with_updated_by: true,
+        page_number: this.first / this.rows + 1,
+        page_size: this.rows,
       })
       .subscribe({
         next: (data) => {
-          this.datas = data.content;
+          this.data = data;
           this.loading = false;
         },
         error: (err) => {
@@ -90,7 +102,8 @@ export class ManageDivisionComponent implements OnInit {
           icon: 'success',
         });
         this.resetForm();
-        this.getAllDivisions();
+        this.first = 0;
+        this.getDivisions();
         this.visible = false;
       },
       error: (err) => {
@@ -113,7 +126,7 @@ export class ManageDivisionComponent implements OnInit {
           title: 'Division updated!',
           icon: 'success',
         });
-        this.getAllDivisions();
+        this.getDivisions();
         this.editVisible = false;
       },
       error: (err) => {
@@ -148,7 +161,7 @@ export class ManageDivisionComponent implements OnInit {
               icon: 'success',
               text: data.message,
             });
-            this.getAllDivisions();
+            this.getDivisions();
           },
           error: (err) => {
             console.error('Error deleting division:', err);
