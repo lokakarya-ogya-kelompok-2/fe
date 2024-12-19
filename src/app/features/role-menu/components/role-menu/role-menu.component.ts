@@ -74,15 +74,19 @@ export class RoleMenuComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.roleService.list().subscribe({
-      next: (data) => {
-        this.roles = data.content;
-        this.roles.forEach((role) => {
-          this.roleMenus[role.id] = role.menus!.map((menu) => menu.id);
-        });
-        this.isFetching = false;
-      },
-    });
+    this.roleService
+      .list({
+        with_menus: true,
+      })
+      .subscribe({
+        next: (data) => {
+          this.roles = data.content;
+          this.roles.forEach((role) => {
+            this.roleMenus[role.id] = role.menus!.map((menu) => menu.id);
+          });
+          this.isFetching = false;
+        },
+      });
 
     this.menuService.list().subscribe({
       next: (data) => {

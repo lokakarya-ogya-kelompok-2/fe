@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { Response } from '../../../shared/models/response';
-import { Summary } from '../models/summary';
+import { toHttpParam } from '../../../shared/utils/query-param';
+import { Summary, SummaryQueryParam } from '../models/summary';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +13,9 @@ export class SummaryService {
   private Api = `${environment.baseApiURL}/assessment-summaries`;
   constructor(private http: HttpClient) {}
 
-  getAllSummary(): Observable<Response<Summary[]>> {
-    return this.http.get<Response<Summary[]>>(this.Api);
+  getAllSummary(param: SummaryQueryParam): Observable<Response<Summary[]>> {
+    const params = toHttpParam(param);
+    return this.http.get<Response<Summary[]>>(this.Api, { params });
   }
 
   calculateSummary(
