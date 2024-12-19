@@ -10,12 +10,13 @@ import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { Table, TableModule } from 'primeng/table';
+import { TableModule, TablePageEvent } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
+import { Response } from '../../../shared/models/response';
 import { Status } from '../../../shared/types';
 import {
   GroupAttitudeSkill,
@@ -48,7 +49,7 @@ import { GroupAttitudeSkillService } from '../services/group-attitude-skill.serv
   styleUrl: './manage-group-attitude-skill.component.scss',
 })
 export class ManageGroupAttitudeSkillComponent {
-  data: GroupAttitudeSkill[] = [];
+  data: Response<GroupAttitudeSkill[]> = {} as Response<GroupAttitudeSkill[]>;
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
@@ -61,6 +62,9 @@ export class ManageGroupAttitudeSkillComponent {
   checked: boolean = false;
   editData: GroupAttitudeSkill = {} as GroupAttitudeSkill;
   dataDetail: GroupAttitudeSkill = {} as GroupAttitudeSkill;
+  first = 0;
+  rows = 5;
+  searchQuery = '';
 
   statuses: Status[] = [
     {
@@ -90,23 +94,28 @@ export class ManageGroupAttitudeSkillComponent {
     private confirmationService: ConfirmationService
   ) {}
 
-  onGlobalFilter(table: Table, event: Event) {
-    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  pageChange(event: TablePageEvent) {
+    this.first = event.first;
+    this.rows = event.rows;
+    this.getGroupAttitudeSkills();
   }
 
   ngOnInit(): void {
-    this.getAllData();
+    this.getGroupAttitudeSkills();
   }
 
-  getAllData(): void {
+  getGroupAttitudeSkills(): void {
     this.groupAttitudeSkillService
       .getGroupAttitudeSkills({
+        name_contains: this.searchQuery,
+        page_number: this.first / this.rows + 1,
+        page_size: this.rows,
         with_created_by: true,
         with_updated_by: true,
       })
       .subscribe({
         next: (data) => {
-          this.data = data.content;
+          this.data = data;
           this.loading = false;
         },
         error: (err) => {
@@ -125,7 +134,9 @@ export class ManageGroupAttitudeSkillComponent {
             icon: 'success',
           });
           this.resetForm();
-          this.getAllData();
+          this.first = 0;
+          this.searchQuery = '';
+          this.getGroupAttitudeSkills();
           this.visible = false;
         },
         error: (err) => {
@@ -150,7 +161,7 @@ export class ManageGroupAttitudeSkillComponent {
             title: 'Group attitude skill updated!',
             icon: 'success',
           });
-          this.getAllData();
+          this.getGroupAttitudeSkills();
           this.resetEditForm();
           this.editVisible = false;
         },
@@ -189,7 +200,7 @@ export class ManageGroupAttitudeSkillComponent {
                 icon: 'success',
                 text: data.message,
               });
-              this.getAllData();
+              this.getGroupAttitudeSkills();
             },
             error: (err) => {
               console.error('Error deleting group attitude skill:', err);
