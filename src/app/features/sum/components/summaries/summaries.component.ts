@@ -13,8 +13,10 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
+import { TokenService } from '../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { User } from '../../../users/models/user';
+import { UserService } from '../../../users/services/user.service';
 import { Summary } from '../../models/summary';
 import { SummaryService } from '../../services/summary.service';
 import { SummaryAndSuggestionsComponent } from '../summary-and-suggestions/summary-and-suggestions.component';
@@ -54,15 +56,37 @@ export class SummariesComponent implements OnInit {
   selectedYear: number = new Date().getFullYear();
   isSuggestionsLoading: boolean = false;
   value: any[] = [];
-  constructor(private readonly summaryService: SummaryService) {}
+  currentUser: User = {} as User;
+  constructor(
+    private readonly summaryService: SummaryService,
+    private readonly userSvc: UserService,
+    private readonly tokenSvc: TokenService
+  ) {}
 
   ngOnInit(): void {
-    this.loadSummary();
+    const tokenPayload = this.tokenSvc.decodeToken(this.tokenSvc.getToken()!);
+    this.userSvc.getById(tokenPayload.sub!).subscribe({
+      next: (data) => {
+        this.currentUser = data.content;
+      },
+      error: (err) => {
+        console.error('Failed to gget current user: ', err);
+      },
+      complete: () => {
+        this.loadSummary();
+      },
+    });
   }
 
   loadSummary() {
     this.isLoading = true;
-    this.summaryService.getAllSummary().subscribe({
+    let filter = {};
+    if (!this.currentUser.roles?.some((role) => role.role_name == 'HR')) {
+      filter = {
+        division_ids: [this.currentUser.division!.id],
+      };
+    }
+    this.summaryService.getAllSummary(filter).subscribe({
       next: (data) => {
         this.summaries = data.content;
         this.isLoading = false;
@@ -81,6 +105,7 @@ export class SummariesComponent implements OnInit {
         this.years = [
           ...new Set(this.summaries.map((summary) => summary.year)),
         ].sort();
+        console.log(this.summaries, 'INI DATA SUMMARY');
       },
     });
   }
