@@ -9,6 +9,8 @@ import { filter } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { TokenService } from '../../../core/services/token.service';
 import { MenuService } from '../../../features/menus/services/menu.service';
+import { User } from '../../../features/users/models/user';
+import { UserService } from '../../../features/users/services/user.service';
 import { TokenPayload } from '../../types';
 @Component({
   selector: 'app-navbar',
@@ -146,11 +148,13 @@ export class NavbarComponent implements OnInit {
   ];
   tokenPayload: TokenPayload = {} as TokenPayload;
   menu: Set<string> = new Set();
+  currentUser: User = {} as User;
 
   constructor(
     readonly authService: AuthService,
     private tokenService: TokenService,
     private menuService: MenuService,
+    private readonly userSvc: UserService,
     private router: Router
   ) {}
 
@@ -163,6 +167,14 @@ export class NavbarComponent implements OnInit {
         this.updateActiveStates();
       });
     this.updateActiveStates();
+    this.userSvc.getById(this.tokenPayload.sub!).subscribe({
+      next: (data) => {
+        this.currentUser = data.content;
+      },
+      error: (err) => {
+        console.error('Failed to fetch current user: ', err);
+      },
+    });
   }
 
   updateActiveStates(): void {

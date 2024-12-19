@@ -67,7 +67,7 @@ export class IndexPageComponent implements OnInit {
         this.currentUser = data.content;
       },
       error: (err) => {
-        console.error('Error fetching user: ', err);
+        console.error('Error fetching current user: ', err);
       },
     });
     this.items = [
