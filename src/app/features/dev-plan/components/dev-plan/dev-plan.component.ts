@@ -10,12 +10,13 @@ import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { Table, TableModule } from 'primeng/table';
+import { Table, TableModule, TablePageEvent } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { Response } from '../../../../shared/models/response';
 import { Status } from '../../../../shared/types';
 import { DevPlan, DevPlanRequest } from '../../models/dev-plan';
 import { DevPlanService } from '../../services/dev-plan.service';
@@ -45,7 +46,7 @@ import { DevPlanService } from '../../services/dev-plan.service';
   styleUrl: './dev-plan.component.scss',
 })
 export class DevPlanComponent implements OnInit {
-  data: DevPlan[] = [];
+  data: Response<DevPlan[]> = {} as Response<DevPlan[]>;
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
@@ -68,9 +69,19 @@ export class DevPlanComponent implements OnInit {
       severity: 'danger',
     },
   ];
+  first = 0;
+  rows = 5;
+  searchQuery = '';
+
+  pageChange(event: TablePageEvent) {
+    this.first = event.first;
+    this.rows = event.rows;
+    this.getDevPlans();
+  }
+
   resetForm(): void {
     this.newDevPlan.plan = '';
-    this.newDevPlan.enabled = false;
+    this.newDevPlan.enabled = true;
   }
   constructor(
     private devPlanService: DevPlanService,
@@ -79,18 +90,21 @@ export class DevPlanComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getAllDevPlan();
+    this.getDevPlans();
   }
 
-  getAllDevPlan(): void {
+  getDevPlans(): void {
     this.devPlanService
       .getAllDevPlan({
         with_created_by: true,
         with_updated_by: true,
+        name_contains: this.searchQuery,
+        page_number: this.first / this.rows + 1,
+        page_size: this.rows,
       })
       .subscribe({
         next: (data) => {
-          this.data = data.content;
+          this.data = data;
           this.loading = false;
         },
         error: (err) => {
@@ -109,7 +123,9 @@ export class DevPlanComponent implements OnInit {
           title: 'Dev Plan created!',
           icon: 'success',
         });
-        this.getAllDevPlan();
+        this.first = 0;
+        this.searchQuery = '';
+        this.getDevPlans();
         this.resetForm();
         this.visible = false;
       },
@@ -133,7 +149,7 @@ export class DevPlanComponent implements OnInit {
           title: 'Dev Plan updated!',
           icon: 'success',
         });
-        this.getAllDevPlan();
+        this.getDevPlans();
         this.editVisible = false;
       },
       error: (err) => {
@@ -170,7 +186,7 @@ export class DevPlanComponent implements OnInit {
               text: data.message,
             });
 
-            this.getAllDevPlan();
+            this.getDevPlans();
           },
           error: (err) => {
             console.error('Error deleting dev plan:', err);
