@@ -4,12 +4,13 @@
     #groupAttitudeSkillTable
     [scrollable]="true"
     scrollHeight="345px"
-    [value]="data"
+    [value]="data.content"
     dataKey="id"
-    [rows]="10"
+    [first]="first"
+    [rows]="rows"
     [loading]="loading"
     [paginator]="true"
-    [rowsPerPageOptions]="[10, 25, 50]"
+    [rowsPerPageOptions]="[5, 10, 15]"
     [tableStyle]="{
       'min-width': '50rem',
       'text-align': 'center',
@@ -20,9 +21,9 @@
       'table-layout': 'fixed'
     }"
     [style]="{ width: '100%' }"
-    [globalFilterFields]="['group_name']"
-    [sortField]="'created_at'"
-    [sortOrder]="-1"
+    lazy="true"
+    [totalRecords]="data.total_records"
+    (onPage)="pageChange($event)"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -40,8 +41,9 @@
           <input
             pInputText
             type="text"
+            [(ngModel)]="searchQuery"
             placeholder="Search by group name"
-            (input)="onGlobalFilter(groupAttitudeSkillTable, $event)"
+            (keydown.enter)="getGroupAttitudeSkills()"
             [style]="{ 'font-size': '14px' }"
           />
         </p-iconField>

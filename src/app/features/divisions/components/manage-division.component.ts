@@ -54,7 +54,7 @@ export class ManageDivisionComponent implements OnInit {
   editData: Division = {} as Division;
   dataDetail: Division = {} as Division;
   first = 0;
-  divisionNameContains = '';
+  searchQuery = '';
   rows = 5;
 
   pageChange(event: TablePageEvent) {
@@ -78,7 +78,7 @@ export class ManageDivisionComponent implements OnInit {
   getDivisions(): void {
     this.manageDivisionService
       .getAllDivisions({
-        name_contains: this.divisionNameContains,
+        name_contains: this.searchQuery,
         with_created_by: true,
         with_updated_by: true,
         page_number: this.first / this.rows + 1,
@@ -103,6 +103,7 @@ export class ManageDivisionComponent implements OnInit {
         });
         this.resetForm();
         this.first = 0;
+        this.searchQuery = '';
         this.getDivisions();
         this.visible = false;
       },
