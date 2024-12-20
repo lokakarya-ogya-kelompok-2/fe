@@ -51,9 +51,15 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 60%; text-align: center">Achievement</th>
-        <th style="width: 15%; text-align: center">Status</th>
-        <th style="width: 25%; text-align: center">Action</th>
+        <th class="font-bold text-lg" style="width: 60%; text-align: center">
+          Achievement
+        </th>
+        <th class="font-bold text-lg" style="width: 15%; text-align: center">
+          Status
+        </th>
+        <th class="font-bold text-lg" style="width: 25%; text-align: center">
+          Action
+        </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="groupheader" let-data let-expanded="expanded">
@@ -68,7 +74,7 @@
               ]"
             ></i>
             <span
-              class="font-bold text-xl"
+              class="font-bold text-lg"
               [ngClass]="
                 data.group_id.enabled ? ['text-green-700'] : ['text-red-700']
               "
@@ -82,7 +88,9 @@
     </ng-template>
     <ng-template pTemplate="rowexpansion" let-data>
       <tr [style]="{ padding: '0.5rem' }">
-        <td [style]="{ padding: '0.5rem' }">{{ data.achievement }}</td>
+        <td class="text-base" [style]="{ padding: '0.5rem' }">
+          {{ data.achievement }}
+        </td>
         <td [style]="{ padding: '0.5rem', 'text-align': 'center' }">
           <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
             {{ data.enabled === true ? "Enabled" : "Disabled" }}
