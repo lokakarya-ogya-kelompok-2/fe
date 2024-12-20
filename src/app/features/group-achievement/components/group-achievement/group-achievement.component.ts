@@ -10,12 +10,13 @@ import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { Table, TableModule } from 'primeng/table';
+import { Table, TableModule, TablePageEvent } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { Response } from '../../../../shared/models/response';
 import { Status } from '../../../../shared/types';
 import {
   GroupAchievement,
@@ -53,7 +54,7 @@ import { GroupAchievementService } from '../../services/group-achievement.servic
   styleUrl: './group-achievement.component.scss',
 })
 export class GroupAchievementComponent implements OnInit {
-  data: GroupAchievement[] = [];
+  data: Response<GroupAchievement[]> = {} as Response<GroupAchievement[]>;
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
@@ -77,14 +78,20 @@ export class GroupAchievementComponent implements OnInit {
       severity: 'danger',
     },
   ];
+  first = 0;
+  rows = 5;
+  searchQuery = '';
 
   resetForm(): void {
     this.newGroupAchievement.group_name = '';
     this.newGroupAchievement.percentage = 0;
-    this.newGroupAchievement.enabled = false;
+    this.newGroupAchievement.enabled = true;
   }
-  resetEditForm(): void {
-    this.editData.group_name = '';
+
+  pageChange(event: TablePageEvent) {
+    this.first = event.first;
+    this.rows = event.rows;
+    this.getGroupAchievements();
   }
 
   constructor(
@@ -101,10 +108,13 @@ export class GroupAchievementComponent implements OnInit {
       .getGroupAchievements({
         with_created_by: true,
         with_updated_by: true,
+        name_contains: this.searchQuery,
+        page_number: this.first / this.rows + 1,
+        page_size: this.rows,
       })
       .subscribe({
         next: (data) => {
-          this.data = data.content;
+          this.data = data;
           this.loading = false;
         },
         error: (err) => {
@@ -121,6 +131,8 @@ export class GroupAchievementComponent implements OnInit {
             title: 'Group Achievement created!',
             icon: 'success',
           });
+          this.first = 0;
+          this.searchQuery = '';
           this.resetForm();
           this.getGroupAchievements();
           this.visible = false;

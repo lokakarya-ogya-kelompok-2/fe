@@ -10,12 +10,13 @@ import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { Table, TableModule } from 'primeng/table';
+import { Table, TableModule, TablePageEvent } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { Response } from '../../../../shared/models/response';
 import { Status } from '../../../../shared/types';
 import { GroupAchievementService } from '../../../group-achievement/services/group-achievement.service';
 import { Achievement, AchievementRequest } from '../../model/achievement';
@@ -46,7 +47,7 @@ import { AchievementService } from '../../services/achievement.service';
   providers: [AchievementService, ConfirmationService, FormsModule],
 })
 export class AchievementComponent implements OnInit {
-  Datas: Achievement[] = [];
+  data: Response<Achievement[]> = {} as Response<Achievement[]>;
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
@@ -76,12 +77,21 @@ export class AchievementComponent implements OnInit {
       severity: 'danger',
     },
   ];
+  searchQuery = '';
+  first = 0;
+  rows = 5;
 
   expandedRows: { [key: string]: boolean } = {};
   resetForm(): void {
     this.newAchievement.achievement = '';
-    this.newAchievement.enabled = false;
+    this.newAchievement.enabled = true;
     this.newAchievement.group_id = '';
+  }
+
+  pageChange(event: TablePageEvent) {
+    this.first = event.first;
+    this.rows = event.rows;
+    this.getAchievements();
   }
   constructor(
     private groupAchievementService: GroupAchievementService,
@@ -90,7 +100,7 @@ export class AchievementComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getAchievement();
+    this.getAchievements();
     this.getGroupAchievement();
   }
 
@@ -110,17 +120,20 @@ export class AchievementComponent implements OnInit {
       },
     });
   }
-  getAchievement(): void {
+  getAchievements(): void {
     this.achievementService
       .getAchievements({
+        any_contains: this.searchQuery,
         with_group: true,
         with_created_by: true,
         with_updated_by: true,
+        page_number: this.first / this.rows + 1,
+        page_size: this.rows,
       })
       .subscribe({
         next: (data) => {
-          this.Datas = data.content;
-          this.Datas.forEach((data) => {
+          this.data = data;
+          this.data.content.forEach((data) => {
             this.expandedRows[data.group_id.group_name] = true;
           });
           this.loading = false;
@@ -135,7 +148,9 @@ export class AchievementComponent implements OnInit {
           icon: 'success',
         });
         this.resetForm();
-        this.getAchievement();
+        this.first = 0;
+        this.searchQuery = '';
+        this.getAchievements();
         this.visible = false;
       },
       error: (err) => {
@@ -158,7 +173,7 @@ export class AchievementComponent implements OnInit {
           title: 'Achievement updated!',
           icon: 'success',
         });
-        this.getAchievement();
+        this.getAchievements();
         this.editVisible = false;
       },
       error: (err) => {
@@ -194,7 +209,7 @@ export class AchievementComponent implements OnInit {
               icon: 'success',
               text: data.message,
             });
-            this.getAchievement();
+            this.getAchievements();
           },
           error: (err) => {
             console.error('Error deleting achievement:', err);

@@ -16,6 +16,7 @@ export interface AchievementRequest {
 }
 
 export interface AchievementQueryParam extends QueryParam {
+  any_contains?: string;
   name_contains?: string;
   enabled_only?: boolean;
   with_group?: boolean;
