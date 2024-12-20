@@ -31,6 +31,9 @@ export interface Summary extends ResponseContentMeta {
 }
 
 export interface SummaryQueryParam extends QueryParam {
+  sort_column?: string;
+  sort_mode?: string;
+  any_contains?: string;
   user_ids?: string[];
   division_ids?: string[];
   years?: number[];

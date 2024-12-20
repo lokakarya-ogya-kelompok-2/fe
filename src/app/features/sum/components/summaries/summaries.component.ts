@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { FilterMetadata } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -10,14 +11,24 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { Table, TableModule } from 'primeng/table';
+import {
+  Table,
+  TableLazyLoadEvent,
+  TableModule,
+  TablePageEvent,
+} from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
+import { firstValueFrom } from 'rxjs';
+import Swal from 'sweetalert2';
 import { TokenService } from '../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { Response } from '../../../../shared/models/response';
+import { Division } from '../../../divisions/models/division';
+import { ManageDivisionService } from '../../../divisions/services/manage-division.service';
 import { User } from '../../../users/models/user';
 import { UserService } from '../../../users/services/user.service';
-import { Summary } from '../../models/summary';
+import { Summary, SummaryQueryParam } from '../../models/summary';
 import { SummaryService } from '../../services/summary.service';
 import { SummaryAndSuggestionsComponent } from '../summary-and-suggestions/summary-and-suggestions.component';
 
@@ -46,66 +57,94 @@ import { SummaryAndSuggestionsComponent } from '../summary-and-suggestions/summa
   styleUrl: './summaries.component.scss',
 })
 export class SummariesComponent implements OnInit {
-  summaries: Summary[] = [];
-  divisionNames: string[] = [];
-  years: number[] = [];
+  data: Response<Summary[]> = {} as Response<Summary[]>;
+  divisions: Division[] = [];
+  years = Array.from({ length: 5 }, (_, i) => {
+    const year = new Date().getFullYear() - i;
+    return year;
+  });
   isLoading: boolean = true;
   visible: boolean = false;
   dialogHeader: string = '';
   selectedUser: User = {} as User;
   selectedYear: number = new Date().getFullYear();
   isSuggestionsLoading: boolean = false;
-  value: any[] = [];
+  selectedDivisions: Division[] = [];
   currentUser: User = {} as User;
+  first = 0;
+  rows = 5;
+  searchQuery = '';
+
+  isHR: boolean = false;
+
   constructor(
     private readonly summaryService: SummaryService,
     private readonly userSvc: UserService,
-    private readonly tokenSvc: TokenService
+    private readonly tokenSvc: TokenService,
+    private readonly divisionSvc: ManageDivisionService
   ) {}
 
-  ngOnInit(): void {
-    const tokenPayload = this.tokenSvc.decodeToken(this.tokenSvc.getToken()!);
-    this.userSvc.getById(tokenPayload.sub!).subscribe({
-      next: (data) => {
-        this.currentUser = data.content;
-      },
-      error: (err) => {
-        console.error('Failed to gget current user: ', err);
-      },
-      complete: () => {
-        this.loadSummary();
-      },
-    });
+  pageChange(event: TablePageEvent) {
+    this.first = event.first;
+    this.rows = event.rows;
   }
 
-  loadSummary() {
+  async ngOnInit(): Promise<void> {
+    const tokenPayload = this.tokenSvc.decodeToken(this.tokenSvc.getToken()!);
+    let data = await firstValueFrom(this.userSvc.getById(tokenPayload.sub!));
+    try {
+      this.currentUser = data.content;
+      this.isHR = this.currentUser.roles.some(
+        (role) => role.role_name.toLowerCase() == 'hr'
+      );
+    } catch (err) {
+      console.error('Failed to get current user: ', err);
+    }
+    if (this.isHR) {
+      let data = await firstValueFrom(this.divisionSvc.getAllDivisions());
+      try {
+        this.divisions = data.content;
+      } catch (err) {
+        console.error('Failed to get divisions: ', err);
+      }
+    }
+  }
+
+  async getAssessmentSummaries(event: TableLazyLoadEvent) {
+    await this.ngOnInit();
     this.isLoading = true;
-    let filter = {};
-    if (!this.currentUser.roles?.some((role) => role.role_name == 'HR')) {
+    let filter = {
+      page_number: (event?.first || 0) / (event?.rows || 5) + 1,
+      page_size: event?.rows || 5,
+      any_contains: event.globalFilter,
+      years: [(event.filters?.['year'] as FilterMetadata)?.value],
+      sort_column: event.sortField,
+      sort_mode: event.sortOrder == -1 ? 'desc' : 'asc',
+    } as SummaryQueryParam;
+    if (!this.isHR) {
       filter = {
+        ...filter,
         division_ids: [this.currentUser.division!.id],
+      };
+    } else {
+      filter = {
+        ...filter,
+        division_ids: (event.filters?.['division_ids'] as FilterMetadata)
+          ?.value,
       };
     }
     this.summaryService.getAllSummary(filter).subscribe({
       next: (data) => {
-        this.summaries = data.content;
+        this.data = data;
         this.isLoading = false;
       },
       error: (err) => {
+        this.isLoading = false;
         console.error('Error fetching summaries:', err);
-      },
-      complete: () => {
-        this.divisionNames = [
-          ...new Set(
-            this.summaries
-              .map((summary) => summary.user_id.division?.division_name)
-              .filter((name) => name != null)
-          ),
-        ].sort();
-        this.years = [
-          ...new Set(this.summaries.map((summary) => summary.year)),
-        ].sort();
-        console.log(this.summaries, 'INI DATA SUMMARY');
+        Swal.fire({
+          title: 'Failed to fetch summaries',
+          icon: 'error',
+        });
       },
     });
   }
