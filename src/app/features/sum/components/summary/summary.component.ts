@@ -10,6 +10,8 @@ import {
 } from '@angular/core';
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { TokenService } from '../../../../core/services/token.service';
@@ -114,6 +116,12 @@ export class SummaryComponent implements OnChanges, OnInit {
     worksheet.getCell('A1').alignment = { horizontal: 'center' };
     worksheet.getCell('A1').font = { bold: true, size: 14 };
 
+    worksheet.columns = [
+      { header: 'Aspect', key: 'aspect', width: 40 },
+      { header: 'Score', key: 'score', width: 10 },
+      { header: 'Weight', key: 'weight', width: 10 },
+      { header: 'Final Score', key: 'final_score', width: 15 },
+    ];
     // Attitude Skills Section
     worksheet.addRow(['']);
     worksheet.addRow(['ATTITUDE SKILLS']);
@@ -190,8 +198,86 @@ export class SummaryComponent implements OnChanges, OnInit {
       const blob = new Blob([buffer], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
-      const fileName = `Assessment_Summary_${this.year}.xlsx`;
+      const fileName = `Assessment_Summary_${this.currentUser.full_name}_${this.year}.xlsx`;
       saveAs(blob, fileName);
     });
+  }
+
+  exportToPDF() {
+    const doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text('Assessment Summary Report', 14, 22);
+
+    doc.setFontSize(12);
+    doc.text(`Year: ${this.year}`, 14, 30);
+
+    doc.setFontSize(14);
+    doc.text('Attitude Skills', 14, 40);
+
+    const attitudeSkillsData = this.summary.attitude_skills?.map((skill) => [
+      skill.aspect,
+      skill.score,
+      `${parseFloat(skill.weight.toFixed(2))}%`,
+      parseFloat(skill.final_score.toFixed(2)),
+    ]);
+
+    (doc as any).autoTable({
+      head: [['Aspect', 'Score', 'Weight', 'Final Score']],
+      body: attitudeSkillsData,
+      startY: 45,
+      theme: 'grid',
+      columnStyles: {
+        0: { cellWidth: 100 },
+        1: { cellWidth: 25 },
+        2: { cellWidth: 25 },
+        3: { cellWidth: 30 },
+      },
+    });
+
+    const finalY = (doc as any).lastAutoTable.finalY + 10;
+    doc.setFontSize(14);
+    doc.text('Achievements', 14, finalY);
+
+    const achievementsData = this.summary.achievements?.map((achievement) => [
+      achievement.aspect,
+      achievement.score,
+      `${parseFloat(achievement.weight.toFixed(2))}%`,
+      parseFloat(achievement.final_score.toFixed(2)),
+    ]);
+
+    (doc as any).autoTable({
+      head: [['Aspect', 'Score', 'Weight', 'Final Score']],
+      body: achievementsData,
+      startY: finalY + 5,
+      theme: 'grid',
+      columnStyles: {
+        0: { cellWidth: 100 },
+        1: { cellWidth: 25 },
+        2: { cellWidth: 25 },
+        3: { cellWidth: 30 },
+      },
+    });
+
+    const finalY2 = (doc as any).lastAutoTable.finalY + 10;
+
+    const totalData = [
+      ['Total Score:', `${parseFloat(this.summary.score.toFixed(2))}%`],
+      ['Total Weight:', `${this.percentage}%`],
+    ];
+
+    (doc as any).autoTable({
+      body: totalData,
+      startY: finalY2,
+      theme: 'grid',
+      columnStyles: {
+        0: { cellWidth: 25 },
+        1: { cellWidth: 20 },
+      },
+    });
+
+    doc.save(
+      `Assessment_Summary_${this.currentUser.full_name}_${this.year}.pdf`
+    );
   }
 }
