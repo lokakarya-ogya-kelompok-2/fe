@@ -6,7 +6,22 @@
   />
 </div>
 }
-
+<div class="button-export">
+  <p-button
+    icon="pi pi-file-excel"
+    label="Export to Excel"
+    (onClick)="exportToExcel()"
+    severity="success"
+    [disabled]="!assessmentSummaryAvailable"
+  ></p-button>
+  <p-button
+    icon="pi pi-file-pdf"
+    label="Export to pdf"
+    (onClick)="exportToExcel()"
+    severity="warning"
+    [disabled]="!assessmentSummaryAvailable"
+  ></p-button>
+</div>
 <app-table [data]="summary.attitude_skills!" tableHeader="Attitude Skills" />
 <app-table [data]="summary.achievements!" tableHeader="Achievements" />
 

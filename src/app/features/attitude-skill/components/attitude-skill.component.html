@@ -54,60 +54,14 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 60%; text-align: center">
-          <div
-            class="flex align-items-center justify-content-center gap-2 mb-6"
-          >
-            Attitude Skill
-            <div style="height: 2.4rem"></div>
-          </div>
+        <th class="font-bold text-lg" style="width: 60%; text-align: center">
+          Attitude Skill
         </th>
-        <th style="width: 15%; text-align: center">
-          <div class="flex flex-column justify-content-center gap-2 mb-2">
-            <span> Status </span>
-            <p-columnFilter
-              field="enabled"
-              matchMode="equals"
-              [showMenu]="false"
-              styleClass="flex align-items-center justify-content-center w-full"
-            >
-              <ng-template
-                pTemplate="filter"
-                let-value
-                let-filter="filterCallback"
-              >
-                <p-dropdown
-                  [ngModel]="value"
-                  [options]="statuses"
-                  (onChange)="filter($event.value)"
-                  placeholder="Status"
-                  [showClear]="true"
-                  [style]="{
-                  'min-width': '10rem',
-                  'font-size': '14px',
-
-                }"
-                  [panelStyle]="{ 'min-width': '10rem' }"
-                  styleClass="year-dropdown"
-                  appendTo="body"
-                >
-                  <ng-template late let-option pTemplate="item">
-                    <p-tag
-                      [value]="option.label"
-                      [severity]="option.severity"
-                    />
-                  </ng-template>
-                </p-dropdown>
-              </ng-template>
-            </p-columnFilter>
-          </div>
+        <th class="font-bold text-lg" style="width: 15%; text-align: center">
+          Status
         </th>
-        <th style="width: 25%; text-align: center">
-          <div
-            class="flex align-items-center justify-content-center gap-2 mb-6"
-          >
-            Action
-          </div>
+        <th class="font-bold text-lg" style="width: 25%; text-align: center">
+          Action
         </th>
       </tr>
     </ng-template>
@@ -123,7 +77,7 @@
               ]"
             ></i>
             <span
-              class="font-bold text-xl"
+              class="font-bold text-lg"
               [ngClass]="
                 data.group_id.enabled ? ['text-green-700'] : ['text-red-700']
               "
@@ -137,7 +91,9 @@
     </ng-template>
     <ng-template pTemplate="rowexpansion" let-data>
       <tr [style]="{ padding: '0.5rem' }">
-        <td [style]="{ padding: '0.5rem' }">{{ data.attitude_skill }}</td>
+        <td class="text-base" [style]="{ padding: '0.5rem' }">
+          {{ data.attitude_skill }}
+        </td>
         <td [style]="{ padding: '0.5rem', 'text-align': 'center' }">
           <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
             {{ data.enabled === true ? "Enabled" : "Disabled" }}

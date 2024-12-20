@@ -28,11 +28,7 @@
           id="profil"
           routerLinkActive="active-route"
         >
-          <p-avatar
-            [label]="getInitial(currentUser.full_name, 2)"
-            class="mr-2"
-            shape="circle"
-          />
+          <p-avatar [label]="userInitial" class="mr-2" shape="circle" />
           <span class="inline-flex flex-column">
             <span class="font-bold">{{ currentUser.username }}</span>
           </span>

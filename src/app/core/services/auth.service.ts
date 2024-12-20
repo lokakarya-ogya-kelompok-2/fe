@@ -41,6 +41,7 @@ export class AuthService {
   logout() {
     this.tokenService.removeToken();
     this.isAuthenticatedSubject.next(false);
-    this.router.navigate(['/']).then(() => window.location.reload());
+    this.router.navigate(['/']);
+    // then(() => window.location.reload());
   }
 }

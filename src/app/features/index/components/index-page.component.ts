@@ -48,6 +48,7 @@ export class IndexPageComponent implements OnInit {
   items: MegaMenuItem[] | undefined;
   tokenPayload: TokenPayload = {} as TokenPayload;
   currentUser: User = {} as User;
+  userInitial: string = '';
 
   constructor(
     private tokenService: TokenService,
@@ -65,6 +66,7 @@ export class IndexPageComponent implements OnInit {
     this.userSvc.getById(this.tokenPayload.sub!).subscribe({
       next: (data) => {
         this.currentUser = data.content;
+        this.userInitial = this.getInitial(this.currentUser.full_name, 2);
       },
       error: (err) => {
         console.error('Error fetching current user: ', err);
