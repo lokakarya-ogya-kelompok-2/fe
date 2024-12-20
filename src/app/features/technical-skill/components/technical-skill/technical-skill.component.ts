@@ -10,12 +10,13 @@ import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { Table, TableModule } from 'primeng/table';
+import { Table, TableModule, TablePageEvent } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { Response } from '../../../../shared/models/response';
 import { Status } from '../../../../shared/types';
 import {
   TechnicalSkill,
@@ -54,7 +55,7 @@ import { TechnicalSkillService } from '../../services/technical-skill.service';
   styleUrl: './technical-skill.component.scss',
 })
 export class TechnicalSkillComponent {
-  datas: any[] = [];
+  data: Response<TechnicalSkill[]> = {} as Response<TechnicalSkill[]>;
   loading: boolean = true;
   visible: boolean = false;
   editVisible: boolean = false;
@@ -77,11 +78,15 @@ export class TechnicalSkillComponent {
       severity: 'danger',
     },
   ];
+  first = 0;
+  rows = 5;
+  searchQuery = '';
 
   resetForm(): void {
     this.newTechnicalSkill.technical_skill = '';
-    this.newTechnicalSkill.enabled = false;
+    this.newTechnicalSkill.enabled = true;
   }
+
   constructor(
     private technicalSkillService: TechnicalSkillService,
     private confirmationService: ConfirmationService,
@@ -89,18 +94,27 @@ export class TechnicalSkillComponent {
   ) {}
 
   ngOnInit(): void {
-    this.getAllTechnicalSkills();
+    this.getTechnicalSkills();
   }
 
-  getAllTechnicalSkills(): void {
+  pageChange(event: TablePageEvent) {
+    this.first = event.first;
+    this.rows = event.rows;
+    this.getTechnicalSkills();
+  }
+
+  getTechnicalSkills(): void {
     this.technicalSkillService
       .getAllTechnicalSkills({
         with_created_by: true,
         with_updated_by: true,
+        name_contains: this.searchQuery,
+        page_number: this.first / this.rows + 1,
+        page_size: this.rows,
       })
       .subscribe({
         next: (data) => {
-          this.datas = data.content;
+          this.data = data;
           this.loading = false;
         },
         error: (err) => {
@@ -112,6 +126,7 @@ export class TechnicalSkillComponent {
         },
       });
   }
+
   createTechnicalSkill(): void {
     this.technicalSkillService
       .createTechnicalSkill(this.newTechnicalSkill)
@@ -122,7 +137,9 @@ export class TechnicalSkillComponent {
             icon: 'success',
           });
           this.resetForm();
-          this.getAllTechnicalSkills();
+          this.first = 0;
+          this.searchQuery = '';
+          this.getTechnicalSkills();
           this.visible = false;
         },
         error: (err) => {
@@ -146,7 +163,7 @@ export class TechnicalSkillComponent {
           icon: 'success',
           title: 'Technical skill updated!',
         });
-        this.getAllTechnicalSkills();
+        this.getTechnicalSkills();
       },
       error: (err) => {
         console.error('Error updating technical skill:', err);
@@ -180,7 +197,7 @@ export class TechnicalSkillComponent {
               icon: 'success',
               text: data.message,
             });
-            this.getAllTechnicalSkills();
+            this.getTechnicalSkills();
           },
           error: (err) => {
             console.error('Error deleting technical skill:', err);

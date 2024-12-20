@@ -4,9 +4,13 @@
     #technicalSkillTable
     [scrollable]="true"
     scrollHeight="345px"
-    [value]="datas"
+    [value]="data.content"
     dataKey="id"
-    [rows]="10"
+    [rows]="rows"
+    [first]="first"
+    lazy="true"
+    [totalRecords]="data.total_records"
+    (onPage)="pageChange($event)"
     [loading]="loading"
     [paginator]="true"
     [rowsPerPageOptions]="[10, 25, 50]"
@@ -19,9 +23,6 @@
       'table-layout': 'fixed'
     }"
     [style]="{ width: '100%' }"
-    [globalFilterFields]="['technical_skill']"
-    [sortField]="'created_at'"
-    [sortOrder]="-1"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -39,8 +40,9 @@
           <input
             pInputText
             type="text"
-            placeholder="Search by technical skill"
-            (input)="onGlobalFilter(technicalSkillTable, $event)"
+            [(ngModel)]="searchQuery"
+            placeholder="Search by technical skill name"
+            (keydown.enter)="getTechnicalSkills()"
             [style]="{ 'font-size': '14px' }"
           />
         </p-iconField>
