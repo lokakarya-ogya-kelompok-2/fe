@@ -4,9 +4,13 @@
     #devPlanTable
     [scrollable]="true"
     scrollHeight="345px"
-    [value]="data"
+    [value]="data.content"
     dataKey="id"
-    [rows]="10"
+    [rows]="rows"
+    [first]="first"
+    lazy="true"
+    [totalRecords]="data.total_records"
+    (onPage)="pageChange($event)"
     [loading]="loading"
     [paginator]="true"
     [rowsPerPageOptions]="[10, 25, 50]"
@@ -19,9 +23,6 @@
       'table-layout': 'fixed'
     }"
     [style]="{ width: '100%' }"
-    [globalFilterFields]="['plan']"
-    [sortField]="'created_at'"
-    [sortOrder]="-1"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -39,8 +40,9 @@
           <input
             pInputText
             type="text"
+            [(ngModel)]="searchQuery"
             placeholder="Search by plan"
-            (input)="onGlobalFilter(devPlanTable, $event)"
+            (keydown.enter)="getDevPlans()"
             [style]="{ 'font-size': '14px' }"
           />
         </p-iconField>
