@@ -3,14 +3,17 @@
   <p-table
     #summariesTable
     id="summaries-table"
+    lazy="true"
     [scrollable]="true"
     scrollHeight="380px"
-    [value]="summaries"
-    dataKey="id"
-    [rows]="10"
-    [rowsPerPageOptions]="[10, 20, 50]"
+    (onLazyLoad)="getAssessmentSummaries($event)"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [totalRecords]="data.total_records"
+    [first]="first"
+    [rows]="rows"
     [loading]="isLoading"
     [paginator]="true"
+    [value]="data.content"
     [tableStyle]="{
       'min-width': '50rem',
       'text-align': 'center',
@@ -20,9 +23,6 @@
       'table-layout': 'fixed'
     }"
     [style]="{ width: '100%' }"
-    [globalFilterFields]="['user_id.full_name', 'user_id.position']"
-    [sortField]="'created_at'"
-    [sortOrder]="-1"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -34,8 +34,8 @@
             pInputText
             type="text"
             placeholder="Search by full name/position"
-            (input)="onGlobalFilter(summariesTable, $event)"
             [style]="{ 'font-size': '14px' }"
+            (keydown.enter)="onGlobalFilter(summariesTable, $event)"
           />
         </p-iconField>
       </div>
@@ -44,13 +44,13 @@
       <tr>
         <th
           style="width: 25%; text-align: center"
-          pSortableColumn="user_id.full_name"
+          pSortableColumn="user.fullName"
         >
           <div
             class="flex align-items-center justify-content-center gap-2 mb-5"
           >
             <span>Full Name</span>
-            <p-sortIcon field="user_id.full_name" />
+            <p-sortIcon field="user.fullName" />
             <div style="height: 2.3rem"></div>
           </div>
         </th>
@@ -74,8 +74,9 @@
             class="flex flex-column align-items-center justify-content-center gap-2"
           >
             <span>Division</span>
+            @if (isHR) {
             <p-columnFilter
-              field="user_id.division.division_name"
+              field="division_ids"
               matchMode="in"
               [showMenu]="false"
               styleClass="flex align-items-center justify-content-center w-full"
@@ -88,8 +89,10 @@
                 <div class="flex justify-content-center w-full">
                   <p-multiSelect
                     [maxSelectedLabels]="1"
-                    [ngModel]="value"
-                    [options]="divisionNames"
+                    [ngModel]="selectedDivisions"
+                    [options]="divisions"
+                    optionLabel="division_name"
+                    optionValue="id"
                     (onChange)="filter($event.value)"
                     placeholder="Select Division"
                     [showClear]="true"
@@ -106,6 +109,9 @@
                 </div>
               </ng-template>
             </p-columnFilter>
+            } @else {
+            <div style="height: 1.75rem"></div>
+            }
           </div>
         </th>
         <th style="width: 25%; text-align: center">
