@@ -24,6 +24,7 @@ import Swal from 'sweetalert2';
 import { TokenService } from '../../../../core/services/token.service';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { Response } from '../../../../shared/models/response';
+import { Direction } from '../../../../shared/types';
 import { Division } from '../../../divisions/models/division';
 import { ManageDivisionService } from '../../../divisions/services/manage-division.service';
 import { User } from '../../../users/models/user';
@@ -119,7 +120,7 @@ export class SummariesComponent implements OnInit {
       any_contains: event.globalFilter,
       years: [(event.filters?.['year'] as FilterMetadata)?.value],
       sort_column: event.sortField,
-      sort_mode: event.sortOrder == -1 ? 'desc' : 'asc',
+      sort_mode: event.sortOrder == -1 ? Direction.DESC : Direction.ASC,
     } as SummaryQueryParam;
     if (!this.isHR) {
       filter = {
