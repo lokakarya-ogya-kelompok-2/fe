@@ -224,6 +224,7 @@ export class NavbarComponent implements OnInit {
           'emp-attitude-skill#all',
           'emp-technical-skill#all',
           'emp-dev-plan#all',
+          'summary#read.self',
         ]);
         data.content.map((menu) => {
           if (assessmentMenus.has(menu.menu_name)) {
