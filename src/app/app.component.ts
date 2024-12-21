@@ -8,6 +8,7 @@ import { ManageDivisionComponent } from './features/divisions/components/manage-
 import { EmpAchievementComponent } from './features/emp-achievement/components/emp-achievement/emp-achievement.component';
 import { EmpAttitudeSkillsComponent } from './features/emp/emp-attitude-skill/components/emp-attitude-skills/emp-attitude-skills.component';
 import { EmpDevPlanComponent } from './features/emp/emp-dev-plan/components/emp-dev-plan/emp-dev-plan.component';
+import { EmployeeAssessmentsComponent } from './features/employee-assessments/employee-assessments.component';
 import { GroupAchievementComponent } from './features/group-achievement/components/group-achievement/group-achievement.component';
 import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-skill/components/manage-group-attitude-skill.component';
 import { IndexPageComponent } from './features/index/components/index-page.component';
@@ -44,6 +45,7 @@ import { TechnicalSkillComponent } from './features/technical-skill/components/t
     SummariesComponent,
     MySummaryComponent,
     RouterModule,
+    EmployeeAssessmentsComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

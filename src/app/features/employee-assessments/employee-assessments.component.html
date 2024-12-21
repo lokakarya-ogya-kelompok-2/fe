@@ -1,0 +1,123 @@
+<app-navbar />
+@if (!isLoading) {
+<div class="card flex justify-content-center">
+  <p-stepper>
+    @if (this.stepperItems.get("emp-attitude-skill#all")) {
+    <p-stepperPanel header="Attitude Skill Assessments">
+      <ng-template
+        pTemplate="content"
+        let-nextCallback="nextCallback"
+        let-index="index"
+      >
+        @if (this.firstItemId != this.lastItemId) {
+        <div class="flex pt-4 justify-content-end">
+          <p-button
+            label="Next"
+            icon="pi pi-arrow-right"
+            iconPos="right"
+            (onClick)="nextCallback.emit()"
+          />
+        </div>
+        }
+        <div class="flex flex-column h-12rem">
+          <app-emp-attitude-skills />
+        </div>
+      </ng-template>
+    </p-stepperPanel>
+    } @if (this.stepperItems.get("emp-technical-skill#all")) {
+    <p-stepperPanel header="Technical Skill Assessment">
+      <ng-template
+        pTemplate="content"
+        let-prevCallback="prevCallback"
+        let-nextCallback="nextCallback"
+        let-index="index"
+      >
+        <div
+          class="flex pt-4"
+          [ngClass]="
+            this.firstItemId == 'emp-technical-skill#all'
+              ? 'justify-content-end'
+              : 'justify-content-between'
+          "
+        >
+          @if (this.firstItemId != 'emp-technical-skill#all') {
+          <p-button
+            label="Back"
+            icon="pi pi-arrow-left"
+            (onClick)="prevCallback.emit()"
+          />
+          } @if(this.lastItemId != 'emp-technical-skill#all') {
+          <p-button
+            label="Next"
+            icon="pi pi-arrow-right"
+            iconPos="right"
+            (onClick)="nextCallback.emit()"
+          />
+          }
+        </div>
+        <div class="flex flex-column h-12rem">
+          <app-emp-technical-skill></app-emp-technical-skill>
+        </div>
+      </ng-template>
+    </p-stepperPanel>
+    } @if (this.stepperItems.get("emp-dev-plan#all")) {
+    <p-stepperPanel header="Development Plan Assessment">
+      <ng-template
+        pTemplate="content"
+        let-prevCallback="prevCallback"
+        let-nextCallback="nextCallback"
+        let-index="index"
+      >
+        <div
+          class="flex pt-4"
+          [ngClass]="
+            this.firstItemId == 'emp-dev-plan#all'
+              ? 'justify-content-end'
+              : 'justify-content-between'
+          "
+        >
+          @if (this.firstItemId != 'emp-dev-plan#all') {
+          <p-button
+            label="Back"
+            icon="pi pi-arrow-left"
+            (onClick)="prevCallback.emit()"
+          />
+          } @if(this.lastItemId != 'emp-dev-plan#all') {
+          <p-button
+            label="Next"
+            icon="pi pi-arrow-right"
+            iconPos="right"
+            (onClick)="nextCallback.emit()"
+          />
+          }
+        </div>
+        <div class="flex flex-column h-12rem">
+          <app-emp-dev-plan />
+        </div>
+        <div class="flex pt-4 justify-content-start"></div>
+      </ng-template>
+    </p-stepperPanel>
+    } @if (this.stepperItems.get("summary#read.self")) {
+    <p-stepperPanel header="My Summary">
+      <ng-template
+        pTemplate="content"
+        let-prevCallback="prevCallback"
+        let-index="index"
+      >
+        @if(this.firstItemId != this.lastItemId) {
+        <p-button
+          label="Back"
+          icon="pi pi-arrow-left"
+          (onClick)="prevCallback.emit()"
+        />
+        }
+        <div class="flex flex-column h-12rem">
+          <app-my-summary />
+        </div>
+        <div class="flex pt-4 justify-content-start"></div>
+      </ng-template>
+    </p-stepperPanel>
+    }
+  </p-stepper>
+</div>
+}
