@@ -19,8 +19,10 @@ export const roleMenuGuard: CanActivateFn = async (route, state) => {
     router.navigate(['/not-found']);
     return false;
   }
-  const requiredPermission = route.data['permission'];
-  const hasAccess = menus.some((menu) => menu.menu_name === requiredPermission);
+  const requiredPermission = route.data['permissions'] as string[];
+  const hasAccess = menus.some((menu) =>
+    requiredPermission.includes(menu.menu_name)
+  );
   if (!hasAccess) {
     router.navigate(['/not-found']);
   }
