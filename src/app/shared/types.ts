@@ -33,6 +33,6 @@ export interface QueryParam {
     | number[];
   page_number?: number;
   page_size?: number;
-  sort_column?: string;
-  sort_mode?: Direction;
+  sort_field?: string;
+  sort_direction?: Direction;
 }

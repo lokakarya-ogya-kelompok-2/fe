@@ -86,30 +86,22 @@ export class ManageGroupAttitudeSkillComponent {
     this.newGroupAttitudeSkill.enabled = true;
   }
 
-  ngOnInit() {
-    this.groupAttitudeSkillService.getGroupAttitudeSkills().subscribe({
-      next: (data) => {
-        this.data = data;
-        this.loading = false;
-      },
-    });
-  }
-
   constructor(
     private groupAttitudeSkillService: GroupAttitudeSkillService,
     private confirmationService: ConfirmationService
   ) {}
 
   getGroupAttitudeSkills(event: TableLazyLoadEvent): void {
+    this.loading = true;
     this.groupAttitudeSkillService
       .getGroupAttitudeSkills({
         name_contains: event.globalFilter as string,
-        page_number: (event.first || 0) / (event.rows || 5) + 1,
-        page_size: event.rows || 5,
         with_created_by: true,
         with_updated_by: true,
-        sort_column: (event.sortField as string) || 'createdAt',
-        sort_mode:
+        page_number: (event?.first || 0) / (event?.rows || 5) + 1,
+        page_size: event?.rows || 5,
+        sort_field: (event.sortField as string) || 'createdAt',
+        sort_direction:
           event.sortField == undefined
             ? Direction.DESC
             : event.sortOrder == 1
@@ -163,6 +155,7 @@ export class ManageGroupAttitudeSkillComponent {
             icon: 'success',
           });
           this.editVisible = false;
+          this.table?.reset();
         },
         error: (err) => {
           console.error('Error updating group attitude skill:', err);

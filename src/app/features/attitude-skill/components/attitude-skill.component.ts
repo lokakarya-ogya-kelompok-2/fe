@@ -10,14 +10,14 @@ import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { Table, TableModule, TablePageEvent } from 'primeng/table';
+import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { Response } from '../../../shared/models/response';
-import { Status } from '../../../shared/types';
+import { Direction, Status } from '../../../shared/types';
 import { GroupAttitudeSkillService } from '../../group-attitude-skill/services/group-attitude-skill.service';
 import { AttitudeSkill, AttitudeSkillRequest } from '../models/attitude-skill';
 import { AttitudeSkillService } from '../services/attitude-skill.service';
@@ -90,16 +90,10 @@ export class AttitudeSkillComponent implements OnInit {
     private readonly groupAttitudeSkillService: GroupAttitudeSkillService
   ) {}
 
-  pageChange(event: TablePageEvent) {
-    this.first = event.first;
-    this.rows = event.rows;
-    this.getAttitudeSkills();
-  }
-
   ngOnInit(): void {
     this.getGroupAttitudeSkill();
-    this.getAttitudeSkills();
   }
+
   getGroupAttitudeSkill(): void {
     this.groupAttitudeSkillService.getGroupAttitudeSkills().subscribe({
       next: (data) => {
@@ -117,16 +111,23 @@ export class AttitudeSkillComponent implements OnInit {
     });
   }
 
-  getAttitudeSkills(): void {
+  getAttitudeSkills(event: TableLazyLoadEvent): void {
     this.loading = true;
     this.attitudeSkillService
       .getAttitudeSkills({
-        any_contains: this.searchQuery,
-        page_number: this.first / this.rows + 1,
-        page_size: this.rows,
+        any_contains: event.globalFilter as string,
         with_group: true,
         with_created_by: true,
         with_updated_by: true,
+        page_number: (event.first || 0) / (event.rows || 5) + 1,
+        page_size: event.rows || 5,
+        sort_field: (event.sortField as string) || 'createdAt',
+        sort_direction:
+          event.sortField == undefined
+            ? Direction.DESC
+            : event.sortOrder == 1
+            ? Direction.ASC
+            : Direction.DESC,
       })
       .subscribe({
         next: (data) => {
@@ -154,7 +155,6 @@ export class AttitudeSkillComponent implements OnInit {
           this.first = 0;
           this.searchQuery = '';
           this.resetForm();
-          this.getAttitudeSkills();
           this.visible = false;
         },
         error: (err) => {
@@ -177,7 +177,6 @@ export class AttitudeSkillComponent implements OnInit {
           title: 'Attitude skill updated!',
           icon: 'success',
         });
-        this.getAttitudeSkills();
         this.visible = false;
       },
       error: (err) => {
@@ -212,7 +211,6 @@ export class AttitudeSkillComponent implements OnInit {
               icon: 'success',
               text: data.message,
             });
-            this.getAttitudeSkills();
           },
           error: (err) => {
             console.error('Error deleting attitude skill: ', err);

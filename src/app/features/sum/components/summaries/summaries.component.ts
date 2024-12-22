@@ -115,12 +115,17 @@ export class SummariesComponent implements OnInit {
     await this.ngOnInit();
     this.isLoading = true;
     let filter = {
-      page_number: (event?.first || 0) / (event?.rows || 5) + 1,
-      page_size: event?.rows || 5,
       any_contains: event.globalFilter,
       years: [(event.filters?.['year'] as FilterMetadata)?.value],
-      sort_column: event.sortField,
-      sort_mode: event.sortOrder == -1 ? Direction.DESC : Direction.ASC,
+      page_number: (event?.first || 0) / (event?.rows || 5) + 1,
+      page_size: event?.rows || 5,
+      sort_field: (event.sortField as string) || 'createdAt',
+      sort_direction:
+        event.sortField == undefined
+          ? Direction.DESC
+          : event.sortOrder == 1
+          ? Direction.ASC
+          : Direction.DESC,
     } as SummaryQueryParam;
     if (!this.isHR) {
       filter = {

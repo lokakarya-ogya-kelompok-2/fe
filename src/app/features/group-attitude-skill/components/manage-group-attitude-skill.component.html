@@ -21,10 +21,10 @@
       'table-layout': 'fixed'
     }"
     [style]="{ width: '100%' }"
-  >
-    <!-- lazy="true"
     [totalRecords]="data.total_records"
-    (onLazyLoad)="this.getGroupAttitudeSkills($event)" -->
+    (onLazyLoad)="getGroupAttitudeSkills($event)"
+    lazy="true"
+  >
     <ng-template pTemplate="caption">
       <div class="flex">
         <p-button
@@ -50,7 +50,9 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr style="text-align: center">
-        <th style="width: 45%; text-align: center">Group Name</th>
+        <th style="width: 45%; text-align: center" pSortableColumn="groupName">
+          Group Name <p-sortIcon field="groupName" #percentageSortIcon />
+        </th>
         <th style="width: 15%; text-align: center" pSortableColumn="percentage">
           Weight <p-sortIcon field="percentage" #percentageSortIcon />
         </th>

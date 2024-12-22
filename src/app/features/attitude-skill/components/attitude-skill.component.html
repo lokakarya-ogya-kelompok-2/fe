@@ -11,6 +11,7 @@
     lazy="true"
     [totalRecords]="data.total_records"
     [loading]="loading"
+    (onLazyLoad)="getAttitudeSkills($event)"
     [paginator]="true"
     [rowsPerPageOptions]="[5, 10, 15]"
     [tableStyle]="{
@@ -21,7 +22,6 @@
       'border-radius': '8px',
       'table-layout': 'fixed'
     }"
-    (onPage)="pageChange($event)"
     [style]="{ width: '100%' }"
     groupRowsBy="group_id.group_name"
     rowGroupMode="subheader"
@@ -45,8 +45,7 @@
             type="text"
             placeholder="Search by attitude skill and group name "
             class="typingPlaceholder"
-            [(ngModel)]="searchQuery"
-            (keydown.enter)="getAttitudeSkills()"
+            (keydown.enter)="onGlobalFilter(attitudeSkillTable, $event)"
             [style]="{ 'font-size': '14px' }"
           />
         </p-iconField>
