@@ -53,17 +53,11 @@
         <th style="width: 45%; text-align: center">Group Name</th>
         <th style="width: 15%; text-align: center">Weight</th>
         <th style="width: 15%; text-align: center">Status</th>
-        <th style="width: 25%; text-align: center">
-          <div
-            class="flex align-items-center justify-content-center gap-2 mb-5"
-          >
-            Action
-          </div>
-        </th>
+        <th style="width: 25%; text-align: center">Action</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-data>
-      <tr [style]="{ padding: '0.5rem' }">
+      <tr [style]="{ padding: '0.5rem', 'font-size': '15px' }">
         <td [style]="{ padding: '0.5rem' }">{{ data.group_name }}</td>
         <td [style]="{ padding: '0.5rem', 'text-align': 'center' }">
           {{ data.percentage }}

@@ -15,3 +15,9 @@ td {
     border-radius: 8px;
   }
 }
+
+:host ::ng-deep {
+  .p-datatable .p-datatable-thead > tr > th {
+    font-size: 16px;
+  }
+}

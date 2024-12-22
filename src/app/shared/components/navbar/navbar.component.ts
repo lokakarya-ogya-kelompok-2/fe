@@ -64,11 +64,6 @@ export class NavbarComponent implements OnInit {
           label: 'Attitude Skill',
           routerLink: '/manage-attitude-skills',
         },
-        // {
-        //   id: 'emp-attitude-skill#all',
-        //   label: 'Employee Attitude Skill',
-        //   routerLink: '/emp-attitude-skills',
-        // },
       ],
     },
     {
@@ -82,11 +77,6 @@ export class NavbarComponent implements OnInit {
           label: 'Manage Technical Skills',
           routerLink: '/manage-technical-skills',
         },
-        // {
-        //   id: 'emp-technical-skill#all',
-        //   label: 'Employee Technical Skills',
-        //   routerLink: '/emp-technical-skill',
-        // },
       ],
     },
     {
@@ -98,11 +88,6 @@ export class NavbarComponent implements OnInit {
           label: 'Manage Dev Plan',
           routerLink: '/manage-dev-plans',
         },
-        // {
-        //   id: 'emp-dev-plan#all',
-        //   label: 'Employee Dev Plan',
-        //   routerLink: '/emp-dev-plans',
-        // },
       ],
     },
     {
@@ -128,38 +113,13 @@ export class NavbarComponent implements OnInit {
       ],
     },
     { id: 'summary#read', label: 'Summaries', routerLink: '/summaries' },
-    // {
-    //   id: 'summary',
-    //   label: 'Summary',
-    //   style: { 'z-index': 3 },
-    //   routerLinkActive: 'active-route',
-    //   items: [
-    //     {
-    //       id: 'summary#read',
-    //       label: 'Read Summaries',
-    //       routerLink: '/summaries',
-    //     },
-    //     {
-    //       id: 'summary#read.self',
-    //       label: 'My Summary',
-    //       routerLink: '/my-summary',
-    //     },
-    //   ],
-    // },
+
     {
       id: 'employee-assessment',
       label: 'Assessment',
       style: { 'z-index': 3 },
       routerLinkActive: 'active-route',
       routerLink: '/employee-assessments',
-      // items: [
-      //   {
-      //     id: 'summary#read',
-      //     label: 'Read Summaries',
-      //     routerLink: '/summaries',
-      //   },
-
-      // ],
     },
   ];
   tokenPayload: TokenPayload = {} as TokenPayload;

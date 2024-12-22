@@ -12,8 +12,9 @@ btn-modal {
     border-radius: 8px;
   }
 }
+
 :host ::ng-deep {
-  .division-dialog {
-    z-index: 900 !important; // Lower than SweetAlert (1000)
+  .p-datatable .p-datatable-thead > tr > th {
+    font-size: 16px;
   }
 }
