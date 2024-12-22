@@ -11,8 +11,8 @@
     [paginator]="true"
     [rowsPerPageOptions]="[5, 10, 15]"
     lazy="true"
+    (onLazyLoad)="getGroupAchievements($event)"
     [first]="first"
-    (onPage)="pageChange($event)"
     [totalRecords]="data.total_records"
     [tableStyle]="{
       'min-width': '50rem',
@@ -41,8 +41,7 @@
             pInputText
             type="text"
             placeholder="Search by group name"
-            [(ngModel)]="searchQuery"
-            (keydown.enter)="getGroupAchievements()"
+            (keydown.enter)="onGlobalFilter(groupAchievementTable, $event)"
             [style]="{ 'font-size': '14px' }"
           />
         </p-iconField>
@@ -50,8 +49,14 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 45%; text-align: center">Group Name</th>
-        <th style="width: 15%; text-align: center">Weight</th>
+        <th style="width: 45%; text-align: center" pSortableColumn="groupName">
+          Group Name
+          <p-sortIcon field="groupName" />
+        </th>
+        <th style="width: 15%; text-align: center" pSortableColumn="percentage">
+          Weight
+          <p-sortIcon field="percentage" />
+        </th>
         <th style="width: 15%; text-align: center">Status</th>
         <th style="width: 25%; text-align: center">
           <div
