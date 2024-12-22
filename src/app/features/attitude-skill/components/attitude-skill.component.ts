@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -75,7 +75,8 @@ export class AttitudeSkillComponent implements OnInit {
   ];
   first = 0;
   rows = 5;
-  searchQuery = '';
+  @ViewChild('attitudeSkillTable') table: Table | undefined;
+  isButtonLoading = false;
 
   resetForm(): void {
     this.newAttitudeSkill.attitude_skill = '';
@@ -132,9 +133,16 @@ export class AttitudeSkillComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.data = data;
-          data.content.forEach((data) => {
+          const groupOrder: { [key: string]: number } = {};
+          this.data.content.forEach((data, i) => {
             this.expandedRows[data.group_id.group_name] = true;
+            if (groupOrder[data.group_id.id] == undefined) {
+              groupOrder[data.group_id.id] = i;
+            }
           });
+          this.data.content.sort(
+            (a, b) => groupOrder[a.group_id.id] - groupOrder[b.group_id.id]
+          );
           this.loading = false;
         },
         error: (err) => {
@@ -144,20 +152,22 @@ export class AttitudeSkillComponent implements OnInit {
       });
   }
   createAttitudeSkill(): void {
+    this.isButtonLoading = true;
     this.attitudeSkillService
       .createAttitudeSkill(this.newAttitudeSkill)
       .subscribe({
-        next: (data) => {
+        next: () => {
+          this.isButtonLoading = false;
+          this.table?.reset();
           Swal.fire({
             title: 'Attitude Skill created!',
             icon: 'success',
           });
-          this.first = 0;
-          this.searchQuery = '';
           this.resetForm();
           this.visible = false;
         },
         error: (err) => {
+          this.isButtonLoading = false;
           console.error('Error creating attitude skill:', err);
           Swal.fire({
             icon: 'error',
@@ -171,15 +181,21 @@ export class AttitudeSkillComponent implements OnInit {
       });
   }
   updateAttitudeSkill(): void {
+    this.isButtonLoading = true;
+    this.loading = true;
     this.attitudeSkillService.updateAttitudeSkill(this.editData).subscribe({
-      next: (data) => {
+      next: () => {
+        this.isButtonLoading = false;
+        this.table?.reset();
         Swal.fire({
           title: 'Attitude skill updated!',
           icon: 'success',
         });
-        this.visible = false;
+        this.loading = false;
+        this.editVisible = false;
       },
       error: (err) => {
+        this.isButtonLoading = false;
         console.error('Error updating attitude skill: ', err);
         Swal.fire({
           icon: 'error',
@@ -193,6 +209,7 @@ export class AttitudeSkillComponent implements OnInit {
     });
   }
   confirmDelete(event: Event, key: string) {
+    this.loading = true;
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Do you want to delete this record?',
@@ -206,11 +223,13 @@ export class AttitudeSkillComponent implements OnInit {
       accept: () => {
         this.attitudeSkillService.deleteAttitudeSkill(key).subscribe({
           next: (data) => {
+            this.getAttitudeSkills(this.table?.createLazyLoadMetadata());
             Swal.fire({
               title: 'Attitude skill deleted!',
               icon: 'success',
               text: data.message,
             });
+            this.loading = false;
           },
           error: (err) => {
             console.error('Error deleting attitude skill: ', err);

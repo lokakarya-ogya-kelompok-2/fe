@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, SelectItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -10,14 +10,14 @@ import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { Table, TableModule, TablePageEvent } from 'primeng/table';
+import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { Response } from '../../../../shared/models/response';
-import { Status } from '../../../../shared/types';
+import { Direction, Status } from '../../../../shared/types';
 import { GroupAchievementService } from '../../../group-achievement/services/group-achievement.service';
 import { Achievement, AchievementRequest } from '../../model/achievement';
 import { AchievementService } from '../../services/achievement.service';
@@ -77,9 +77,10 @@ export class AchievementComponent implements OnInit {
       severity: 'danger',
     },
   ];
-  searchQuery = '';
   first = 0;
   rows = 5;
+  @ViewChild('achievementTable') table: Table | undefined;
+  isButtonLoading = false;
 
   expandedRows: { [key: string]: boolean } = {};
   resetForm(): void {
@@ -88,11 +89,6 @@ export class AchievementComponent implements OnInit {
     this.newAchievement.group_id = '';
   }
 
-  pageChange(event: TablePageEvent) {
-    this.first = event.first;
-    this.rows = event.rows;
-    this.getAchievements();
-  }
   constructor(
     private groupAchievementService: GroupAchievementService,
     private achievementService: AchievementService,
@@ -100,7 +96,6 @@ export class AchievementComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getAchievements();
     this.getGroupAchievement();
   }
 
@@ -120,40 +115,55 @@ export class AchievementComponent implements OnInit {
       },
     });
   }
-  getAchievements(): void {
+  getAchievements(event: TableLazyLoadEvent): void {
     this.achievementService
       .getAchievements({
-        any_contains: this.searchQuery,
+        any_contains: event.globalFilter as string,
         with_group: true,
         with_created_by: true,
         with_updated_by: true,
-        page_number: this.first / this.rows + 1,
-        page_size: this.rows,
+        page_number: (event?.first || 0) / (event?.rows || 5) + 1,
+        page_size: event?.rows || 5,
+        sort_field: (event.sortField as string) || 'createdAt',
+        sort_direction:
+          event.sortField == undefined
+            ? Direction.DESC
+            : event.sortOrder == 1
+            ? Direction.ASC
+            : Direction.DESC,
       })
       .subscribe({
         next: (data) => {
           this.data = data;
-          this.data.content.forEach((data) => {
+          const groupOrder: { [key: string]: number } = {};
+          this.data.content.forEach((data, i) => {
             this.expandedRows[data.group_id.group_name] = true;
+            if (groupOrder[data.group_id.id] == undefined) {
+              groupOrder[data.group_id.id] = i;
+            }
           });
+          this.data.content.sort(
+            (a, b) => groupOrder[a.group_id.id] - groupOrder[b.group_id.id]
+          );
           this.loading = false;
         },
       });
   }
   createAchievement(): void {
+    this.isButtonLoading = true;
     this.achievementService.createAchievement(this.newAchievement).subscribe({
       next: (_) => {
+        this.isButtonLoading = false;
+        this.table?.reset();
         Swal.fire({
           title: 'Achievement created!',
           icon: 'success',
         });
         this.resetForm();
-        this.first = 0;
-        this.searchQuery = '';
-        this.getAchievements();
         this.visible = false;
       },
       error: (err) => {
+        this.isButtonLoading = false;
         console.error('Error creating achievement:', err);
         Swal.fire({
           icon: 'error',
@@ -167,16 +177,19 @@ export class AchievementComponent implements OnInit {
     });
   }
   updateAchievement(): void {
+    this.isButtonLoading = true;
     this.achievementService.updateAchievement(this.editData).subscribe({
       next: (data) => {
+        this.isButtonLoading = false;
+        this.table?.reset();
         Swal.fire({
           title: 'Achievement updated!',
           icon: 'success',
         });
-        this.getAchievements();
         this.editVisible = false;
       },
       error: (err) => {
+        this.isButtonLoading = false;
         console.error('Error updating achievement:', err);
         Swal.fire({
           icon: 'error',
@@ -204,12 +217,12 @@ export class AchievementComponent implements OnInit {
       accept: () => {
         this.achievementService.deleteAchievement(key).subscribe({
           next: (data) => {
+            this.getAchievements(this.table?.createLazyLoadMetadata());
             Swal.fire({
               title: 'Achievement deleted!',
               icon: 'success',
               text: data.message,
             });
-            this.getAchievements();
           },
           error: (err) => {
             console.error('Error deleting achievement:', err);

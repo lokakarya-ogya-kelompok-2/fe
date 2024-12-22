@@ -80,8 +80,8 @@ export class GroupAchievementComponent {
   ];
   first = 0;
   rows = 5;
-  searchQuery = '';
   @ViewChild('groupAchievementTable') table: Table | undefined;
+  isButtonLoading = false;
 
   resetForm(): void {
     this.newGroupAchievement.group_name = '';
@@ -121,19 +121,22 @@ export class GroupAchievementComponent {
       });
   }
   createGroupAchievements(): void {
+    this.isButtonLoading = true;
     this.groupAchievementService
       .createGroupAchievement(this.newGroupAchievement)
       .subscribe({
         next: (_) => {
+          this.isButtonLoading = false;
+          this.table?.reset();
           Swal.fire({
             title: 'Group Achievement created!',
             icon: 'success',
           });
-          this.table?.reset();
           this.resetForm();
           this.visible = false;
         },
         error: (err) => {
+          this.isButtonLoading = false;
           console.error('Error creating group achievement:', err);
           Swal.fire({
             icon: 'error',
@@ -144,10 +147,13 @@ export class GroupAchievementComponent {
       });
   }
   updateGroupAchievements(): void {
+    this.isButtonLoading = true;
     this.groupAchievementService
       .updateGroupAttitudeSkills(this.editData)
       .subscribe({
         next: (_) => {
+          this.isButtonLoading = false;
+          this.table?.reset();
           Swal.fire({
             title: 'Group Achievement updated!',
             icon: 'success',
@@ -158,6 +164,7 @@ export class GroupAchievementComponent {
           this.editVisible = false;
         },
         error: (err) => {
+          this.isButtonLoading = false;
           console.error('Error updating group achievement:', err);
           Swal.fire({
             icon: 'error',
@@ -181,6 +188,7 @@ export class GroupAchievementComponent {
       accept: () => {
         this.groupAchievementService.deleteGroupAttitudeSkills(key).subscribe({
           next: (data) => {
+            this.getGroupAchievements(this.table?.createLazyLoadMetadata());
             Swal.fire({
               title: 'Group deleted!',
               icon: 'success',

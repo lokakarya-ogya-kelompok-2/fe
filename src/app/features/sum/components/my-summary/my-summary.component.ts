@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { TokenService } from '../../../../core/services/token.service';
-import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { UserInformationComponent } from '../../../emp/user-information/components/user-information/user-information.component';
 import { MenuService } from '../../../menus/services/menu.service';
 import { SuggestionComponent } from '../suggestion/suggestion.component';
@@ -13,7 +12,6 @@ import { SummaryComponent } from '../summary/summary.component';
   selector: 'app-my-summary',
   standalone: true,
   imports: [
-    NavbarComponent,
     SummaryComponent,
     UserInformationComponent,
     SuggestionComponent,

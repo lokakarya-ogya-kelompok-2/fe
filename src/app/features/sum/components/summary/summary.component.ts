@@ -14,6 +14,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TokenService } from '../../../../core/services/token.service';
 import { EmpAchievement } from '../../../emp-achievement/models/emp-achievement';
 import { EmpAttitudeSkill } from '../../../emp/emp-attitude-skill/models/emp-attitude-skill';
@@ -27,7 +28,13 @@ import { TableComponent } from '../table/table.component';
 @Component({
   selector: 'app-summary',
   standalone: true,
-  imports: [TableComponent, CommonModule, MessageModule, ButtonModule],
+  imports: [
+    TableComponent,
+    CommonModule,
+    MessageModule,
+    ButtonModule,
+    ProgressSpinnerModule,
+  ],
   templateUrl: './summary.component.html',
   styleUrl: './summary.component.scss',
 })
@@ -49,6 +56,7 @@ export class SummaryComponent implements OnChanges, OnInit {
   percentage: number = 0.0;
   summary: Summary = {} as Summary;
   currentUser: User = {} as User;
+  isLoading = true;
 
   constructor(
     private readonly summarySvc: SummaryService,
@@ -60,7 +68,6 @@ export class SummaryComponent implements OnChanges, OnInit {
     this.userSvc.getById(jwtPayload.sub!).subscribe({
       next: (data) => {
         this.currentUser = data.content;
-        console.log(this.currentUser);
       },
       error: (err) => {
         console.error('Error getting current user: ', err);
@@ -69,6 +76,7 @@ export class SummaryComponent implements OnChanges, OnInit {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if ((changes['userId'] && this.userId) || changes['year']) {
+      this.isLoading = true;
       this.percentage = 0.0;
       this.summarySvc.calculateSummary(this.userId, this.year).subscribe({
         next: (data) => {
@@ -89,8 +97,10 @@ export class SummaryComponent implements OnChanges, OnInit {
             this.summary.achievements?.reduce((acc, curr) => {
               return acc + curr.final_score;
             }, this.summary.score) || this.summary.score;
+          this.isLoading = false;
         },
         error: (err) => {
+          this.isLoading = false;
           console.error('Error calculating user summary: ', err);
         },
       });

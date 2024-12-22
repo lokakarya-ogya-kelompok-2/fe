@@ -65,7 +65,7 @@ export class ManageGroupAttitudeSkillComponent {
   dataDetail: GroupAttitudeSkill = {} as GroupAttitudeSkill;
   first = 0;
   rows = 5;
-  searchQuery = '';
+  buttonLoading = false;
 
   statuses: Status[] = [
     {
@@ -120,10 +120,12 @@ export class ManageGroupAttitudeSkillComponent {
   }
 
   createGroupAttitudeSkill(): void {
+    this.buttonLoading = true;
     this.groupAttitudeSkillService
       .createGroupAttitudeSkills(this.newGroupAttitudeSkill)
       .subscribe({
         next: (data) => {
+          this.buttonLoading = false;
           Swal.fire({
             title: 'Group attitude skill created!',
             icon: 'success',
@@ -146,15 +148,17 @@ export class ManageGroupAttitudeSkillComponent {
       });
   }
   updateGroupAttitudeSkill(): void {
+    this.buttonLoading = true;
     this.groupAttitudeSkillService
       .updateGroupAttitudeSkills(this.editData)
       .subscribe({
         next: (data) => {
+          this.buttonLoading = false;
+          this.editVisible = false;
           Swal.fire({
             title: 'Group attitude skill updated!',
             icon: 'success',
           });
-          this.editVisible = false;
           this.table?.reset();
         },
         error: (err) => {
@@ -187,6 +191,7 @@ export class ManageGroupAttitudeSkillComponent {
           .deleteGroupAttitudeSkills(key)
           .subscribe({
             next: (data) => {
+              this.getGroupAttitudeSkills(this.table?.createLazyLoadMetadata());
               Swal.fire({
                 title: 'Group Attitude Skill deleted!',
                 icon: 'success',
