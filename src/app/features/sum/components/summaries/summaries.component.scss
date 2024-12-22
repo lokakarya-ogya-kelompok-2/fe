@@ -51,7 +51,6 @@
 :host ::ng-deep {
   .p-column-filter {
     .p-column-filter-clear-button {
-      // display: block !important;
       visibility: visible !important;
       opacity: 1 !important;
     }
@@ -85,12 +84,12 @@
 :host ::ng-deep {
   .year-dropdown {
     .p-multiselect-label {
-      padding: 0.4rem 0.75rem; // Reduced padding
+      padding: 0.4rem 0.75rem;
       font-size: 14px;
     }
 
     .p-multiselect-trigger {
-      width: 2.5rem; // Reduced trigger width
+      width: 2.5rem;
     }
   }
 
@@ -107,5 +106,10 @@
         }
       }
     }
+  }
+}
+:host ::ng-deep {
+  .p-datatable .p-datatable-thead > tr > th {
+    font-size: 16px;
   }
 }

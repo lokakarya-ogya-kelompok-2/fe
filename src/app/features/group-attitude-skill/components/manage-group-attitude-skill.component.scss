@@ -25,3 +25,9 @@
     }
   }
 }
+
+:host ::ng-deep {
+  .p-datatable .p-datatable-thead > tr > th {
+    font-size: 16px;
+  }
+}

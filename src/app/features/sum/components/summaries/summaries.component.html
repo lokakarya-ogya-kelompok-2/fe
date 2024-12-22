@@ -138,6 +138,7 @@
     <ng-template pTemplate="body" let-summary>
       <tr
         class="clickable-row"
+        [style]="'font-size: 16px'"
         (click)="showDialog(summary.user_id, summary.year)"
       >
         <td>{{ summary.user_id.full_name }}</td>
@@ -155,7 +156,6 @@
       <tr>
         <td colspan="5" class="text-center p-4">
           <div class="flex flex-column align-items-center gap-2">
-            <i class="pi pi-info-circle text-4xl text-primary"></i>
             <span class="font-semibold text-lg"
               >No assessment summaries data available</span
             >
