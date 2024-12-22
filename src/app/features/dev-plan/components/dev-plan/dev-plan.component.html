@@ -10,7 +10,6 @@
     [first]="first"
     lazy="true"
     [totalRecords]="data.total_records"
-    (onPage)="pageChange($event)"
     [loading]="loading"
     [paginator]="true"
     [rowsPerPageOptions]="[5, 10, 15]"
@@ -23,6 +22,7 @@
       'table-layout': 'fixed'
     }"
     [style]="{ width: '100%' }"
+    (onLazyLoad)="getDevPlans($event)"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -40,9 +40,8 @@
           <input
             pInputText
             type="text"
-            [(ngModel)]="searchQuery"
             placeholder="Search by plan"
-            (keydown.enter)="getDevPlans()"
+            (keydown.enter)="onGlobalFilter(devPlanTable, $event)"
             [style]="{ 'font-size': '14px' }"
           />
         </p-iconField>
@@ -50,7 +49,10 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 60%; text-align: center">Plan</th>
+        <th style="width: 60%; text-align: center" pSortableColumn="plan">
+          Plan
+          <p-sortIcon field="plan" />
+        </th>
         <th style="width: 15%; text-align: center">Status</th>
         <th style="width: 25%; text-align: center">Action</th>
       </tr>
@@ -176,7 +178,12 @@
           severity="secondary"
           (onClick)="visible = false"
         />
-        <p-button label="Save" type="submit" [disabled]="devPlanForm.invalid" />
+        <p-button
+          label="Save"
+          type="submit"
+          [disabled]="devPlanForm.invalid"
+          [loading]="isButtonLoading"
+        />
       </div>
     </form>
   </p-dialog>
@@ -254,6 +261,7 @@
           label="Save"
           type="submit"
           [disabled]="updateDevPlanForm.invalid"
+          [loading]="isButtonLoading"
         />
       </div>
     </form>
