@@ -13,7 +13,7 @@
     [first]="first"
     [totalRecords]="data.total_records"
     lazy="true"
-    (onPage)="pageChange($event)"
+    (onLazyLoad)="getAchievements($event)"
     [tableStyle]="{
       'min-width': '50rem',
       'text-align': 'center',
@@ -44,8 +44,7 @@
             pInputText
             type="text"
             placeholder="Search by achievement and group achievement"
-            [(ngModel)]="searchQuery"
-            (keydown.enter)="getAchievements()"
+            (keydown.enter)="onGlobalFilter(achievementTable, $event)"
             [style]="{ 'font-size': '14px' }"
           />
         </p-iconField>
@@ -249,6 +248,7 @@
         <p-button
           label="Save"
           type="submit"
+          [loading]="isButtonLoading"
           [disabled]="achievementForm.invalid"
         />
       </div>
@@ -357,6 +357,7 @@
         <p-button
           label="Save"
           type="submit"
+          [loading]="isButtonLoading"
           [disabled]="updateAchievementForm.invalid"
         />
       </div>

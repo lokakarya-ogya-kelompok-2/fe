@@ -48,7 +48,7 @@ export const routes: Routes = [
   {
     path: 'users',
     component: UsersReadComponent,
-    // canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard],
     data: {
       permissions: ['user#read'],
     },
@@ -128,17 +128,17 @@ export const routes: Routes = [
   {
     path: 'summaries',
     component: SummariesComponent,
-    // canActivate: [authGuard, roleMenuGuard],
-    // data: {
-    //   permission: 'summary#read',
-    // },
+    canActivate: [authGuard, roleMenuGuard],
+    data: {
+      permissions: ['summary#read'],
+    },
   },
   {
     path: 'manage-role-menu',
     component: RoleMenuComponent,
     canActivate: [authGuard, roleMenuGuard],
     data: {
-      permissions: 'role-menu#all',
+      permissions: ['role-menu#all'],
     },
   },
   {
@@ -179,12 +179,6 @@ export const routes: Routes = [
       ],
     },
   },
-  // {
-  //   path: 'manage',
-  //   component: ManageComponent,
-  //   canActivate: [authGuard],
-  //   children: [],
-  // },
   {
     path: 'not-found',
     component: NotFoundComponent,

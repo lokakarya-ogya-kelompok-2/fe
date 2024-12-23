@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -10,14 +10,14 @@ import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { TableModule, TablePageEvent } from 'primeng/table';
+import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { Response } from '../../../shared/models/response';
-import { Status } from '../../../shared/types';
+import { Direction, Status } from '../../../shared/types';
 import {
   GroupAttitudeSkill,
   GroupAttitudeSkillRequest,
@@ -49,6 +49,7 @@ import { GroupAttitudeSkillService } from '../services/group-attitude-skill.serv
   styleUrl: './manage-group-attitude-skill.component.scss',
 })
 export class ManageGroupAttitudeSkillComponent {
+  @ViewChild('groupAttitudeSkillTable') table: Table | undefined;
   data: Response<GroupAttitudeSkill[]> = {} as Response<GroupAttitudeSkill[]>;
   loading: boolean = true;
   visible: boolean = false;
@@ -64,7 +65,7 @@ export class ManageGroupAttitudeSkillComponent {
   dataDetail: GroupAttitudeSkill = {} as GroupAttitudeSkill;
   first = 0;
   rows = 5;
-  searchQuery = '';
+  buttonLoading = false;
 
   statuses: Status[] = [
     {
@@ -82,36 +83,30 @@ export class ManageGroupAttitudeSkillComponent {
   resetForm(): void {
     this.newGroupAttitudeSkill.group_name = '';
     this.newGroupAttitudeSkill.percentage = 0;
-    this.newGroupAttitudeSkill.enabled = false;
+    this.newGroupAttitudeSkill.enabled = true;
   }
-  resetEditForm(): void {
-    this.editData.group_name = '';
-    this.editData.percentage = 0;
-    this.editData.enabled = false;
-  }
+
   constructor(
     private groupAttitudeSkillService: GroupAttitudeSkillService,
     private confirmationService: ConfirmationService
   ) {}
 
-  pageChange(event: TablePageEvent) {
-    this.first = event.first;
-    this.rows = event.rows;
-    this.getGroupAttitudeSkills();
-  }
-
-  ngOnInit(): void {
-    this.getGroupAttitudeSkills();
-  }
-
-  getGroupAttitudeSkills(): void {
+  getGroupAttitudeSkills(event: TableLazyLoadEvent): void {
+    this.loading = true;
     this.groupAttitudeSkillService
       .getGroupAttitudeSkills({
-        name_contains: this.searchQuery,
-        page_number: this.first / this.rows + 1,
-        page_size: this.rows,
+        name_contains: event.globalFilter as string,
         with_created_by: true,
         with_updated_by: true,
+        page_number: (event?.first || 0) / (event?.rows || 5) + 1,
+        page_size: event?.rows || 5,
+        sort_field: (event.sortField as string) || 'createdAt',
+        sort_direction:
+          event.sortField == undefined
+            ? Direction.DESC
+            : event.sortOrder == 1
+            ? Direction.ASC
+            : Direction.DESC,
       })
       .subscribe({
         next: (data) => {
@@ -125,18 +120,18 @@ export class ManageGroupAttitudeSkillComponent {
   }
 
   createGroupAttitudeSkill(): void {
+    this.buttonLoading = true;
     this.groupAttitudeSkillService
       .createGroupAttitudeSkills(this.newGroupAttitudeSkill)
       .subscribe({
         next: (data) => {
+          this.buttonLoading = false;
           Swal.fire({
             title: 'Group attitude skill created!',
             icon: 'success',
           });
           this.resetForm();
-          this.first = 0;
-          this.searchQuery = '';
-          this.getGroupAttitudeSkills();
+          this.table?.reset();
           this.visible = false;
         },
         error: (err) => {
@@ -153,17 +148,18 @@ export class ManageGroupAttitudeSkillComponent {
       });
   }
   updateGroupAttitudeSkill(): void {
+    this.buttonLoading = true;
     this.groupAttitudeSkillService
       .updateGroupAttitudeSkills(this.editData)
       .subscribe({
         next: (data) => {
+          this.buttonLoading = false;
+          this.editVisible = false;
           Swal.fire({
             title: 'Group attitude skill updated!',
             icon: 'success',
           });
-          this.getGroupAttitudeSkills();
-          this.resetEditForm();
-          this.editVisible = false;
+          this.table?.reset();
         },
         error: (err) => {
           console.error('Error updating group attitude skill:', err);
@@ -195,12 +191,12 @@ export class ManageGroupAttitudeSkillComponent {
           .deleteGroupAttitudeSkills(key)
           .subscribe({
             next: (data) => {
+              this.getGroupAttitudeSkills(this.table?.createLazyLoadMetadata());
               Swal.fire({
                 title: 'Group Attitude Skill deleted!',
                 icon: 'success',
                 text: data.message,
               });
-              this.getGroupAttitudeSkills();
             },
             error: (err) => {
               console.error('Error deleting group attitude skill:', err);
@@ -228,5 +224,9 @@ export class ManageGroupAttitudeSkillComponent {
 
   stringify(obj: Object) {
     return JSON.stringify(obj);
+  }
+
+  onGlobalFilter(table: Table, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }

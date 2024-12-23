@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -10,14 +10,14 @@ import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { Table, TableModule, TablePageEvent } from 'primeng/table';
+import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { Response } from '../../../../shared/models/response';
-import { Status } from '../../../../shared/types';
+import { Direction, Status } from '../../../../shared/types';
 import { DevPlan, DevPlanRequest } from '../../models/dev-plan';
 import { DevPlanService } from '../../services/dev-plan.service';
 @Component({
@@ -71,13 +71,8 @@ export class DevPlanComponent implements OnInit {
   ];
   first = 0;
   rows = 5;
-  searchQuery = '';
-
-  pageChange(event: TablePageEvent) {
-    this.first = event.first;
-    this.rows = event.rows;
-    this.getDevPlans();
-  }
+  isButtonLoading = false;
+  @ViewChild('devPlanTable') table: Table | undefined;
 
   resetForm(): void {
     this.newDevPlan.plan = '';
@@ -88,19 +83,25 @@ export class DevPlanComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {}
-
   ngOnInit(): void {
-    this.getDevPlans();
+    throw new Error('Method not implemented.');
   }
 
-  getDevPlans(): void {
+  getDevPlans(event: TableLazyLoadEvent): void {
     this.devPlanService
       .getAllDevPlan({
         with_created_by: true,
         with_updated_by: true,
-        name_contains: this.searchQuery,
-        page_number: this.first / this.rows + 1,
-        page_size: this.rows,
+        name_contains: event.globalFilter as string,
+        page_number: (event.first || 0) / (event.rows || 5) + 1,
+        page_size: event.rows || 5,
+        sort_field: (event.sortField as string) || 'createdAt',
+        sort_direction:
+          event.sortField == undefined
+            ? Direction.DESC
+            : event.sortOrder == 1
+            ? Direction.ASC
+            : Direction.DESC,
       })
       .subscribe({
         next: (data) => {
@@ -108,6 +109,7 @@ export class DevPlanComponent implements OnInit {
           this.loading = false;
         },
         error: (err) => {
+          this.loading = false;
           console.error('Error fetch dev plan:', err);
           Swal.fire({
             icon: 'error',
@@ -117,19 +119,20 @@ export class DevPlanComponent implements OnInit {
       });
   }
   createDevPlan(): void {
+    this.isButtonLoading = true;
     this.devPlanService.createDevPlan(this.newDevPlan).subscribe({
       next: (data) => {
+        this.isButtonLoading = false;
+        this.table?.reset();
         Swal.fire({
           title: 'Dev Plan created!',
           icon: 'success',
         });
-        this.first = 0;
-        this.searchQuery = '';
-        this.getDevPlans();
         this.resetForm();
         this.visible = false;
       },
       error: (err) => {
+        this.isButtonLoading = false;
         console.error('Error creating dev plan:', err);
         Swal.fire({
           icon: 'error',
@@ -143,16 +146,19 @@ export class DevPlanComponent implements OnInit {
     });
   }
   updateDevPlan(): void {
+    this.isButtonLoading = true;
     this.devPlanService.updateDevPlan(this.editData).subscribe({
       next: () => {
+        this.isButtonLoading = false;
+        this.table?.reset();
         Swal.fire({
           title: 'Dev Plan updated!',
           icon: 'success',
         });
-        this.getDevPlans();
         this.editVisible = false;
       },
       error: (err) => {
+        this.isButtonLoading = false;
         console.error('Error updating dev plan:', err);
         Swal.fire({
           icon: 'error',
@@ -180,13 +186,12 @@ export class DevPlanComponent implements OnInit {
       accept: () => {
         this.devPlanService.deleteDevPlan(key).subscribe({
           next: (data) => {
+            this.getDevPlans(this.table?.createLazyLoadMetadata());
             Swal.fire({
               title: 'Dev Plan deleted!',
               icon: 'success',
               text: data.message,
             });
-
-            this.getDevPlans();
           },
           error: (err) => {
             console.error('Error deleting dev plan:', err);

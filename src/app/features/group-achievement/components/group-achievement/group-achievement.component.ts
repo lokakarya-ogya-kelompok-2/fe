@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -10,14 +10,14 @@ import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { Table, TableModule, TablePageEvent } from 'primeng/table';
+import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { Response } from '../../../../shared/models/response';
-import { Status } from '../../../../shared/types';
+import { Direction, Status } from '../../../../shared/types';
 import {
   GroupAchievement,
   GroupAchievementRequest,
@@ -53,7 +53,7 @@ import { GroupAchievementService } from '../../services/group-achievement.servic
   templateUrl: './group-achievement.component.html',
   styleUrl: './group-achievement.component.scss',
 })
-export class GroupAchievementComponent implements OnInit {
+export class GroupAchievementComponent {
   data: Response<GroupAchievement[]> = {} as Response<GroupAchievement[]>;
   loading: boolean = true;
   visible: boolean = false;
@@ -80,7 +80,8 @@ export class GroupAchievementComponent implements OnInit {
   ];
   first = 0;
   rows = 5;
-  searchQuery = '';
+  @ViewChild('groupAchievementTable') table: Table | undefined;
+  isButtonLoading = false;
 
   resetForm(): void {
     this.newGroupAchievement.group_name = '';
@@ -88,29 +89,26 @@ export class GroupAchievementComponent implements OnInit {
     this.newGroupAchievement.enabled = true;
   }
 
-  pageChange(event: TablePageEvent) {
-    this.first = event.first;
-    this.rows = event.rows;
-    this.getGroupAchievements();
-  }
-
   constructor(
     private groupAchievementService: GroupAchievementService,
     private confirmationService: ConfirmationService
   ) {}
 
-  ngOnInit(): void {
-    this.getGroupAchievements();
-  }
-
-  getGroupAchievements(): void {
+  getGroupAchievements(event: TableLazyLoadEvent): void {
     this.groupAchievementService
       .getGroupAchievements({
+        name_contains: event.globalFilter as string,
         with_created_by: true,
         with_updated_by: true,
-        name_contains: this.searchQuery,
-        page_number: this.first / this.rows + 1,
-        page_size: this.rows,
+        page_number: (event?.first || 0) / (event?.rows || 5) + 1,
+        page_size: event?.rows || 5,
+        sort_field: (event.sortField as string) || 'createdAt',
+        sort_direction:
+          event.sortField == undefined
+            ? Direction.DESC
+            : event.sortOrder == 1
+            ? Direction.ASC
+            : Direction.DESC,
       })
       .subscribe({
         next: (data) => {
@@ -123,21 +121,22 @@ export class GroupAchievementComponent implements OnInit {
       });
   }
   createGroupAchievements(): void {
+    this.isButtonLoading = true;
     this.groupAchievementService
       .createGroupAchievement(this.newGroupAchievement)
       .subscribe({
         next: (_) => {
+          this.isButtonLoading = false;
+          this.table?.reset();
           Swal.fire({
             title: 'Group Achievement created!',
             icon: 'success',
           });
-          this.first = 0;
-          this.searchQuery = '';
           this.resetForm();
-          this.getGroupAchievements();
           this.visible = false;
         },
         error: (err) => {
+          this.isButtonLoading = false;
           console.error('Error creating group achievement:', err);
           Swal.fire({
             icon: 'error',
@@ -148,10 +147,13 @@ export class GroupAchievementComponent implements OnInit {
       });
   }
   updateGroupAchievements(): void {
+    this.isButtonLoading = true;
     this.groupAchievementService
       .updateGroupAttitudeSkills(this.editData)
       .subscribe({
         next: (_) => {
+          this.isButtonLoading = false;
+          this.table?.reset();
           Swal.fire({
             title: 'Group Achievement updated!',
             icon: 'success',
@@ -159,10 +161,10 @@ export class GroupAchievementComponent implements OnInit {
               container: 'custom-swal-container',
             },
           });
-          this.getGroupAchievements();
           this.editVisible = false;
         },
         error: (err) => {
+          this.isButtonLoading = false;
           console.error('Error updating group achievement:', err);
           Swal.fire({
             icon: 'error',
@@ -186,12 +188,13 @@ export class GroupAchievementComponent implements OnInit {
       accept: () => {
         this.groupAchievementService.deleteGroupAttitudeSkills(key).subscribe({
           next: (data) => {
+            this.getGroupAchievements(this.table?.createLazyLoadMetadata());
             Swal.fire({
               title: 'Group deleted!',
               icon: 'success',
               text: data.message,
             });
-            this.getGroupAchievements();
+            this.table?.reset();
           },
           error: (err) => {
             console.error('Error deleting group achievement:', err);

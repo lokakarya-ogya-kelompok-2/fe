@@ -18,6 +18,10 @@ export interface Status {
   severity: string;
 }
 
+export enum Direction {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}
 export interface QueryParam {
   [key: string]:
     | string
@@ -29,4 +33,6 @@ export interface QueryParam {
     | number[];
   page_number?: number;
   page_size?: number;
+  sort_field?: string;
+  sort_direction?: Direction;
 }
