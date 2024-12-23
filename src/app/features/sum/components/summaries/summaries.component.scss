@@ -82,7 +82,7 @@
 }
 
 :host ::ng-deep {
-  .year-dropdown {
+  dropdown {
     .p-multiselect-label {
       padding: 0.4rem 0.75rem;
       font-size: 14px;
@@ -93,7 +93,7 @@
     }
   }
 
-  .year-dropdown-panel {
+  dropdown-panel {
     .p-multiselect-panel {
       min-width: 10rem !important;
       font-size: 14px;
