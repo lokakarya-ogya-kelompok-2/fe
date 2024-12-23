@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build
-        run: ng build -c production
+        run: npm run build -c production
       - name: Cek isinya apa aja
         run: ls -la dist/
       - name: Copy Files
