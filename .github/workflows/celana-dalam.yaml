@@ -2,14 +2,14 @@ name: Celana Dalam
 
 on:
   push:
-    branches: ["celana-dalam"]
-  # pull_request:
-  #   branches: ["main"]
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
 
 jobs:
   angular:
-    name: Angular Build
+    name: Celana Dalam
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the source code
