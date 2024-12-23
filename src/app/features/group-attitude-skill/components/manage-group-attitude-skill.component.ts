@@ -65,7 +65,7 @@ export class ManageGroupAttitudeSkillComponent {
   dataDetail: GroupAttitudeSkill = {} as GroupAttitudeSkill;
   first = 0;
   rows = 5;
-  buttonLoading = false;
+  isButtonLoading = false;
 
   statuses: Status[] = [
     {
@@ -120,21 +120,22 @@ export class ManageGroupAttitudeSkillComponent {
   }
 
   createGroupAttitudeSkill(): void {
-    this.buttonLoading = true;
+    this.isButtonLoading = true;
     this.groupAttitudeSkillService
       .createGroupAttitudeSkills(this.newGroupAttitudeSkill)
       .subscribe({
         next: (data) => {
-          this.buttonLoading = false;
+          this.isButtonLoading = false;
+          this.table?.reset();
           Swal.fire({
             title: 'Group attitude skill created!',
             icon: 'success',
           });
           this.resetForm();
-          this.table?.reset();
           this.visible = false;
         },
         error: (err) => {
+          this.isButtonLoading = false;
           console.error('Error creating group attitude skill:', err);
           Swal.fire({
             icon: 'error',
@@ -148,20 +149,21 @@ export class ManageGroupAttitudeSkillComponent {
       });
   }
   updateGroupAttitudeSkill(): void {
-    this.buttonLoading = true;
+    this.isButtonLoading = true;
     this.groupAttitudeSkillService
       .updateGroupAttitudeSkills(this.editData)
       .subscribe({
         next: (data) => {
-          this.buttonLoading = false;
+          this.isButtonLoading = false;
+          this.table?.reset();
           this.editVisible = false;
           Swal.fire({
             title: 'Group attitude skill updated!',
             icon: 'success',
           });
-          this.table?.reset();
         },
         error: (err) => {
+          this.isButtonLoading = false;
           console.error('Error updating group attitude skill:', err);
           Swal.fire({
             icon: 'error',

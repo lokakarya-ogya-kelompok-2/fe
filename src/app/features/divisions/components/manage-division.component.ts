@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -8,12 +8,13 @@ import { DialogModule } from 'primeng/dialog';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { Table, TableModule, TablePageEvent } from 'primeng/table';
+import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { Response } from '../../../shared/models/response';
+import { Direction } from '../../../shared/types';
 import { Division, DivisionRequest } from '../models/division';
 import { ManageDivisionService } from '../services/manage-division.service';
 
@@ -44,7 +45,7 @@ import { ManageDivisionService } from '../services/manage-division.service';
   templateUrl: './manage-division.component.html',
   styleUrl: './manage-division.component.scss',
 })
-export class ManageDivisionComponent implements OnInit {
+export class ManageDivisionComponent {
   data: Response<Division[]> = {} as Response<Division[]>;
   loading: boolean = true;
   visible: boolean = false;
@@ -54,35 +55,34 @@ export class ManageDivisionComponent implements OnInit {
   editData: Division = {} as Division;
   dataDetail: Division = {} as Division;
   first = 0;
-  searchQuery = '';
   rows = 5;
-
-  pageChange(event: TablePageEvent) {
-    this.first = event.first;
-    this.rows = event.rows;
-    this.getDivisions();
-  }
+  @ViewChild('divisionTable') table: Table | undefined;
+  isButtonLoading = false;
 
   resetForm(): void {
     this.newDivision.division_name = '';
   }
+
   constructor(
     private manageDivisionService: ManageDivisionService,
     private confirmationService: ConfirmationService
   ) {}
 
-  ngOnInit(): void {
-    this.getDivisions();
-  }
-
-  getDivisions(): void {
+  getDivisions(event: TableLazyLoadEvent): void {
     this.manageDivisionService
       .getAllDivisions({
-        name_contains: this.searchQuery,
+        name_contains: event.globalFilter as string,
         with_created_by: true,
         with_updated_by: true,
-        page_number: this.first / this.rows + 1,
-        page_size: this.rows,
+        page_number: (event?.first || 0) / (event?.rows || 5) + 1,
+        page_size: event?.rows || 5,
+        sort_field: (event.sortField as string) || 'createdAt',
+        sort_direction:
+          event.sortField == undefined
+            ? Direction.DESC
+            : event.sortOrder == 1
+            ? Direction.ASC
+            : Direction.DESC,
       })
       .subscribe({
         next: (data) => {
@@ -95,19 +95,20 @@ export class ManageDivisionComponent implements OnInit {
       });
   }
   createDivision(): void {
+    this.isButtonLoading = true;
     this.manageDivisionService.createDivision(this.newDivision).subscribe({
       next: () => {
+        this.isButtonLoading = false;
+        this.table?.reset();
         Swal.fire({
           title: 'Division created!',
           icon: 'success',
         });
         this.resetForm();
-        this.first = 0;
-        this.searchQuery = '';
-        this.getDivisions();
         this.visible = false;
       },
       error: (err) => {
+        this.isButtonLoading = false;
         console.error('Error creating division:', err);
         Swal.fire({
           icon: 'error',
@@ -121,16 +122,19 @@ export class ManageDivisionComponent implements OnInit {
     });
   }
   updateDivision(): void {
+    this.isButtonLoading = true;
     this.manageDivisionService.updateDivision(this.editData).subscribe({
       next: (data) => {
+        this.isButtonLoading = false;
+        this.table?.reset();
         Swal.fire({
           title: 'Division updated!',
           icon: 'success',
         });
-        this.getDivisions();
         this.editVisible = false;
       },
       error: (err) => {
+        this.isButtonLoading = false;
         console.error('Error updating division: ', err);
         Swal.fire({
           icon: 'error',
@@ -162,7 +166,7 @@ export class ManageDivisionComponent implements OnInit {
               icon: 'success',
               text: data.message,
             });
-            this.getDivisions();
+            this.getDivisions(this.table?.createLazyLoadMetadata());
           },
           error: (err) => {
             console.error('Error deleting division:', err);

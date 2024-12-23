@@ -10,12 +10,12 @@
     [loading]="loading"
     [paginator]="true"
     [first]="first"
-    (onPage)="pageChange($event)"
     showCurrentPageReport="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} records"
     [rowsPerPageOptions]="[5, 10, 15]"
     [totalRecords]="data.total_records"
-    [lazy]="true"
+    lazy="true"
+    (onLazyLoad)="getDivisions($event)"
     [tableStyle]="{
       'min-width': '50rem',
       'text-align': 'center',
@@ -44,8 +44,7 @@
             pInputText
             type="text"
             placeholder="Search by division name"
-            (keydown.enter)="getDivisions()"
-            [(ngModel)]="searchQuery"
+            (keydown.enter)="onGlobalFilter(divisionTable, $event)"
             [style]="{ 'font-size': '14px' }"
           />
         </p-iconField>
@@ -53,7 +52,14 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr style="align-items: center">
-        <th style="width: 75%" class="custom-header">Division Name</th>
+        <th
+          style="width: 75%"
+          class="custom-header"
+          pSortableColumn="divisionName"
+        >
+          Division Name
+          <p-sortIcon field="divisionName" />
+        </th>
         <th style="width: 25%" class="custom-header">Action</th>
       </tr>
     </ng-template>
