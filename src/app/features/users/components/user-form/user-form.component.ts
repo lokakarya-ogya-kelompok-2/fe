@@ -9,12 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {
-  Confirmation,
-  ConfirmationService,
-  Message,
-  MessageService,
-} from 'primeng/api';
+import { Confirmation, ConfirmationService, Message } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -85,8 +80,7 @@ export class UserFormComponent implements OnInit, OnChanges {
     private readonly divisionSvc: ManageDivisionService,
     private readonly roleSvc: RoleService,
     private readonly userSvc: UserService,
-    private readonly confirmationSvc: ConfirmationService,
-    private readonly messageSvc: MessageService
+    private readonly confirmationSvc: ConfirmationService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
