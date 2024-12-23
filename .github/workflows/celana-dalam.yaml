@@ -31,7 +31,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
-          source: "*"
+          source: "dist/fe/*"
           target: "/var/www/lokakarya-fe"
 
       - name: Execute Deployment
