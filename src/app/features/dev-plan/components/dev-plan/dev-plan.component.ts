@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -45,7 +45,7 @@ import { DevPlanService } from '../../services/dev-plan.service';
   templateUrl: './dev-plan.component.html',
   styleUrl: './dev-plan.component.scss',
 })
-export class DevPlanComponent implements OnInit {
+export class DevPlanComponent {
   data: Response<DevPlan[]> = {} as Response<DevPlan[]>;
   loading: boolean = true;
   visible: boolean = false;
@@ -83,9 +83,6 @@ export class DevPlanComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {}
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
 
   getDevPlans(event: TableLazyLoadEvent): void {
     this.devPlanService
