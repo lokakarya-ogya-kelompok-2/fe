@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -10,14 +10,19 @@ import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { Table, TableModule, TablePageEvent } from 'primeng/table';
+import {
+  Table,
+  TableLazyLoadEvent,
+  TableModule,
+  TablePageEvent,
+} from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { Response } from '../../../../shared/models/response';
-import { Status } from '../../../../shared/types';
+import { Direction, Status } from '../../../../shared/types';
 import {
   TechnicalSkill,
   TechnicalSKillRequest,
@@ -81,6 +86,8 @@ export class TechnicalSkillComponent {
   first = 0;
   rows = 5;
   searchQuery = '';
+  @ViewChild('name') table: Table | undefined;
+  isButtonLoading = false;
 
   resetForm(): void {
     this.newTechnicalSkill.technical_skill = '';
@@ -93,24 +100,33 @@ export class TechnicalSkillComponent {
     private messageService: MessageService
   ) {}
 
-  ngOnInit(): void {
-    this.getTechnicalSkills();
-  }
+  // ngOnInit(): void {
+  //   this.getTechnicalSkills();
+  // }
 
   pageChange(event: TablePageEvent) {
     this.first = event.first;
     this.rows = event.rows;
-    this.getTechnicalSkills();
+    // this.getTechnicalSkills();
   }
 
-  getTechnicalSkills(): void {
+  getTechnicalSkills(event: TableLazyLoadEvent): void {
     this.technicalSkillService
       .getAllTechnicalSkills({
         with_created_by: true,
         with_updated_by: true,
         name_contains: this.searchQuery,
-        page_number: this.first / this.rows + 1,
-        page_size: this.rows,
+        // page_number: this.first / this.rows + 1,
+        // page_size: this.rows,
+        page_number: (event?.first || 0) / (event?.rows || 5) + 1,
+        page_size: event?.rows || 5,
+        sort_field: (event.sortField as string) || 'createdAt',
+        sort_direction:
+          event.sortField == undefined
+            ? Direction.DESC
+            : event.sortOrder == 1
+            ? Direction.ASC
+            : Direction.DESC,
       })
       .subscribe({
         next: (data) => {
@@ -139,7 +155,8 @@ export class TechnicalSkillComponent {
           this.resetForm();
           this.first = 0;
           this.searchQuery = '';
-          this.getTechnicalSkills();
+          // this.getTechnicalSkills();
+          this.table?.reset();
           this.visible = false;
         },
         error: (err) => {
@@ -163,7 +180,8 @@ export class TechnicalSkillComponent {
           icon: 'success',
           title: 'Technical skill updated!',
         });
-        this.getTechnicalSkills();
+        // this.getTechnicalSkills();
+        this.table?.reset();
       },
       error: (err) => {
         console.error('Error updating technical skill:', err);
@@ -197,7 +215,8 @@ export class TechnicalSkillComponent {
               icon: 'success',
               text: data.message,
             });
-            this.getTechnicalSkills();
+            // this.getTechnicalSkills();
+            this.table?.reset();
           },
           error: (err) => {
             console.error('Error deleting technical skill:', err);

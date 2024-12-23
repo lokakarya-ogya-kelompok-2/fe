@@ -14,6 +14,8 @@
     [loading]="loading"
     [paginator]="true"
     [rowsPerPageOptions]="[5, 10, 15]"
+    lazy="true"
+    (onLazyLoad)="getTechnicalSkills($event)"
     [tableStyle]="{
       'min-width': '50rem',
       'text-align': 'center',
@@ -42,7 +44,7 @@
             type="text"
             [(ngModel)]="searchQuery"
             placeholder="Search by technical skill name"
-            (keydown.enter)="getTechnicalSkills()"
+            (keydown.enter)="onGlobalFilter(technicalSkillTable, $event)"
             [style]="{ 'font-size': '14px' }"
           />
         </p-iconField>
@@ -50,7 +52,10 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 60%; text-align: center">Technical Skill</th>
+        <th style="width: 60%; text-align: center" pSortableColumn="name">
+          Technical Skill
+          <p-sortIcon field="name" />
+        </th>
         <th style="width: 15%; text-align: center">Status</th>
         <th style="width: 25%; text-align: center">Action</th>
       </tr>
