@@ -1,8 +1,8 @@
 name: Celana Dalam
 
 on:
-  # push:
-  #   branches: ["main"]
+  push:
+    branches: ["celana-dalam"]
   # pull_request:
   #   branches: ["main"]
   workflow_dispatch:
