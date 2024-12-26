@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -12,7 +13,6 @@ import { ToastModule } from 'primeng/toast';
 import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { TokenService } from '../../../../../core/services/token.service';
-import { NavbarComponent } from '../../../../../shared/components/navbar/navbar.component';
 import { DevPlan } from '../../../../dev-plan/models/dev-plan';
 import { DevPlanService } from '../../../../dev-plan/services/dev-plan.service';
 import { UserInformationComponent } from '../../../user-information/components/user-information/user-information.component';
@@ -22,7 +22,6 @@ import { EmpDevPlanService } from '../../services/emp-dev-plan.service';
   selector: 'app-emp-dev-plan',
   standalone: true,
   imports: [
-    NavbarComponent,
     UserInformationComponent,
     UserInformationComponent,
     FormsModule,
@@ -49,8 +48,13 @@ export class EmpDevPlanComponent implements OnInit {
     private empDevPlanService: EmpDevPlanService,
     private devPlanService: DevPlanService,
     private readonly tokenSvc: TokenService,
-    private readonly messageSvc: MessageService
+    private readonly messageSvc: MessageService,
+    private readonly router: Router
   ) {}
+
+  reload() {
+    this.router.navigate([this.router.url]);
+  }
 
   ngOnInit(): void {
     this.userId = this.tokenSvc.decodeToken(this.tokenSvc.getToken()!).sub!;
@@ -140,7 +144,7 @@ export class EmpDevPlanComponent implements OnInit {
               confirmButtonText: 'Ok',
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.reload();
+                this.reload();
               }
             });
           },
