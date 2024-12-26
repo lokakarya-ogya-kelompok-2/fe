@@ -11,6 +11,7 @@ export interface User extends ResponseContentMeta {
   join_date: Date;
   position: string;
   enabled: boolean;
+  password_recently_reset: boolean;
   password: string;
   roles: Role[];
   division?: Division;

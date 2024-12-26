@@ -1,3 +1,5 @@
+$lg: 960px !important;
+
 #logout {
   margin-right: 20px;
 }
@@ -62,6 +64,18 @@
           }
         }
       }
+    }
+  }
+}
+
+.mb-width {
+  width: auto;
+}
+
+:host ::ng-deep {
+  @media (max-width: 960px) {
+    .mb-width {
+      width: 100%;
     }
   }
 }
