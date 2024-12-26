@@ -15,15 +15,12 @@ import Swal from 'sweetalert2';
 import { TokenService } from '../../../../../core/services/token.service';
 import { DevPlan } from '../../../../dev-plan/models/dev-plan';
 import { DevPlanService } from '../../../../dev-plan/services/dev-plan.service';
-import { UserInformationComponent } from '../../../user-information/components/user-information/user-information.component';
 import { EmpDevPlanRequest } from '../../models/emp-dev-plan';
 import { EmpDevPlanService } from '../../services/emp-dev-plan.service';
 @Component({
   selector: 'app-emp-dev-plan',
   standalone: true,
   imports: [
-    UserInformationComponent,
-    UserInformationComponent,
     FormsModule,
     TableModule,
     DividerModule,

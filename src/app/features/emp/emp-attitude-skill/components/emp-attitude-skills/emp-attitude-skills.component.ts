@@ -17,7 +17,6 @@ import { GroupAttitudeSkill } from '../../../../group-attitude-skill/models/grou
 import { GroupAttitudeSkillService } from '../../../../group-attitude-skill/services/group-attitude-skill.service';
 import { User } from '../../../../users/models/user';
 import { UserService } from '../../../../users/services/user.service';
-import { UserInformationComponent } from '../../../user-information/components/user-information/user-information.component';
 import { EmpAttitudeSkillRequest } from '../../models/emp-attitude-skill';
 import { EmpAttitudeSkillsService } from '../../services/emp-attitude-skills.service';
 interface ScoreCategory {
@@ -35,7 +34,6 @@ interface ScoreCategory {
     DropdownModule,
     ButtonModule,
     CardModule,
-    UserInformationComponent,
     DividerModule,
     TooltipModule,
   ],
