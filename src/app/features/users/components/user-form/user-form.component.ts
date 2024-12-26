@@ -9,6 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Confirmation, ConfirmationService, Message } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -21,6 +22,7 @@ import { PasswordModule } from 'primeng/password';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import Swal from 'sweetalert2';
+import { TokenService } from '../../../../core/services/token.service';
 import { userToReq } from '../../../../shared/utils/mapper';
 import { Division } from '../../../divisions/models/division';
 import { ManageDivisionService } from '../../../divisions/services/manage-division.service';
@@ -64,6 +66,7 @@ export class UserFormComponent implements OnInit, OnChanges {
   submitBtnLoading: boolean = false;
   formData: UserReq = {} as UserReq;
   resetPasswordLoading: boolean = false;
+  currentUserId: string = '';
 
   statusOptions = [
     {
@@ -80,8 +83,14 @@ export class UserFormComponent implements OnInit, OnChanges {
     private readonly divisionSvc: ManageDivisionService,
     private readonly roleSvc: RoleService,
     private readonly userSvc: UserService,
-    private readonly confirmationSvc: ConfirmationService
+    private readonly confirmationSvc: ConfirmationService,
+    private readonly router: Router,
+    private readonly tokenSvc: TokenService
   ) {}
+
+  reload() {
+    this.router.navigate([this.router.url]);
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['userData']) {
@@ -92,6 +101,9 @@ export class UserFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.currentUserId = this.tokenSvc.decodeToken(
+      this.tokenSvc.getToken()!
+    ).sub!;
     this.isDivisionLoading = true;
     this.divisionSvc.getAllDivisions().subscribe({
       next: (data) => {
@@ -127,8 +139,8 @@ export class UserFormComponent implements OnInit, OnChanges {
             title: 'User Updated!',
             icon: 'success',
           }).then((res) => {
-            if (res.isConfirmed) {
-              window.location.reload();
+            if (res.isConfirmed && this.userData.id === this.currentUserId) {
+              this.reload();
             }
           });
         },

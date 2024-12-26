@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -70,8 +71,13 @@ export class RoleMenuComponent implements OnInit {
   constructor(
     private readonly roleService: RoleService,
     private readonly menuService: MenuService,
-    private readonly roleMenuService: RoleMenuService
+    private readonly roleMenuService: RoleMenuService,
+    private readonly router: Router
   ) {}
+
+  reload() {
+    this.router.navigate([this.router.url]);
+  }
 
   ngOnInit(): void {
     this.roleService
@@ -130,7 +136,7 @@ export class RoleMenuComponent implements OnInit {
           icon: 'success',
         }).then((res) => {
           if (res.isConfirmed) {
-            window.location.reload();
+            this.reload();
           }
         });
       },

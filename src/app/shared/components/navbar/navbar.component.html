@@ -2,7 +2,7 @@
   <div [class]="includeUserAction ? 'navbar-start' : ''"></div>
   <div
     [class]="
-      includeUserAction ? 'navbar-center' : 'w-full flex justify-content-center'
+      includeUserAction ? 'navbar-center' : 'flex justify-content-center'
     "
   >
     <p-menubar
@@ -11,14 +11,15 @@
       [styleClass]="'custom-menubar flex justify-content-center'"
       [style]="{
         'font-size': '14px',
-        'min-width': '100px',
         padding: '0.75rem 0.5rem',
         'justify-content': 'center',
         'margin-top': '8px',
         'margin-bottom': '8px'
       }"
       [autoDisplay]="false"
+      class="mb-width"
     >
+      <!-- class="w-full lg:w-auto" -->
       <ng-template pTemplate="start">
         @if (includeUserAction) {
         <button

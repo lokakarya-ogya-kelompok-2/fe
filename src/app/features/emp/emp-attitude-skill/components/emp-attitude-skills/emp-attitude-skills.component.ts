@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
@@ -11,7 +12,6 @@ import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { TokenService } from '../../../../../core/services/token.service';
-import { NavbarComponent } from '../../../../../shared/components/navbar/navbar.component';
 import { TokenPayload } from '../../../../../shared/types';
 import { GroupAttitudeSkill } from '../../../../group-attitude-skill/models/group-attitude-skill';
 import { GroupAttitudeSkillService } from '../../../../group-attitude-skill/services/group-attitude-skill.service';
@@ -29,7 +29,6 @@ interface ScoreCategory {
   selector: 'app-emp-attitude-skills',
   standalone: true,
   imports: [
-    NavbarComponent,
     CommonModule,
     TableModule,
     FormsModule,
@@ -64,8 +63,13 @@ export class EmpAttitudeSkillsComponent implements OnInit {
     private authService: AuthService,
     private groupAttitudeSkillService: GroupAttitudeSkillService,
     private userService: UserService,
-    private empAttitudeSkillService: EmpAttitudeSkillsService
+    private empAttitudeSkillService: EmpAttitudeSkillsService,
+    private readonly router: Router
   ) {}
+
+  reload() {
+    this.router.navigate([this.router.url]);
+  }
 
   ngOnInit(): void {
     this.getToken();
@@ -144,7 +148,7 @@ export class EmpAttitudeSkillsComponent implements OnInit {
                 icon: 'success',
               }).then((result) => {
                 if (result.isConfirmed) {
-                  window.location.reload();
+                  this.reload();
                 }
               });
             },

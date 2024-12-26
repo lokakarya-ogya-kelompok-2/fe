@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MegaMenuItem } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
@@ -53,7 +54,8 @@ export class IndexPageComponent implements OnInit {
   constructor(
     private tokenService: TokenService,
     readonly authService: AuthService,
-    private readonly userSvc: UserService
+    private readonly userSvc: UserService,
+    private readonly router: Router
   ) {}
 
   showDialog(dialogType: DialogType) {
@@ -117,6 +119,10 @@ export class IndexPageComponent implements OnInit {
           icon: 'success',
           title: 'Success',
           text: 'Password changed successfully!',
+        }).then((res) => {
+          if (res.isConfirmed) {
+            this.router.navigate([this.router.url]);
+          }
         });
       },
       error: (err) => {
@@ -124,6 +130,9 @@ export class IndexPageComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
+          customClass: {
+            container: 'z-9999',
+          },
           text: err.error.message || 'Unknown error occured!',
         });
       },
