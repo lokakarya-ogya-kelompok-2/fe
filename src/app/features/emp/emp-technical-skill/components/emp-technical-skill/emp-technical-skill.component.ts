@@ -15,7 +15,6 @@ import Swal from 'sweetalert2';
 import { TokenService } from '../../../../../core/services/token.service';
 import { TechnicalSkill } from '../../../../technical-skill/models/technical-skill';
 import { TechnicalSkillService } from '../../../../technical-skill/services/technical-skill.service';
-import { UserInformationComponent } from '../../../user-information/components/user-information/user-information.component';
 import { EmpTechnicalSkillReq } from '../../models/emp-technical-skill';
 import { EmpTechnicalSkillService } from '../../services/emp-technical-skill.service';
 
@@ -24,7 +23,6 @@ import { EmpTechnicalSkillService } from '../../services/emp-technical-skill.ser
   standalone: true,
   imports: [
     TableModule,
-    UserInformationComponent,
     InputTextModule,
     FormsModule,
     ButtonModule,

@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
-import { DropdownModule } from 'primeng/dropdown';
+import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 import { TokenService } from '../../../../core/services/token.service';
-import { UserInformationComponent } from '../../../emp/user-information/components/user-information/user-information.component';
 import { MenuService } from '../../../menus/services/menu.service';
 import { SuggestionComponent } from '../suggestion/suggestion.component';
 import { SummaryComponent } from '../summary/summary.component';
@@ -13,7 +12,6 @@ import { SummaryComponent } from '../summary/summary.component';
   standalone: true,
   imports: [
     SummaryComponent,
-    UserInformationComponent,
     SuggestionComponent,
     CardModule,
     DropdownModule,
@@ -23,6 +21,7 @@ import { SummaryComponent } from '../summary/summary.component';
   styleUrl: './my-summary.component.scss',
 })
 export class MySummaryComponent implements OnInit {
+  @Output() onYearChange = new EventEmitter<number>();
   userId: string = '';
   selectedYear: number = new Date().getFullYear();
   hasAccessToSuggestion: boolean = true;
@@ -55,5 +54,9 @@ export class MySummaryComponent implements OnInit {
 
   assSumAvail(val: boolean) {
     this.assessmentSummaryAvailable = val;
+  }
+
+  onChange(event: DropdownChangeEvent) {
+    this.onYearChange.emit(event.value as number);
   }
 }
