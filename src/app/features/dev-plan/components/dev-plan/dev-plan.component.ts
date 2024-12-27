@@ -110,7 +110,7 @@ export class DevPlanComponent {
           console.error('Error fetch dev plan:', err);
           Swal.fire({
             icon: 'error',
-            title: 'Failed Fetching Dev Plan',
+            title: 'Failed to fetch development plans',
           });
         },
       });
