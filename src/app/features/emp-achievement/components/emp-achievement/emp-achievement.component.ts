@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AccordionModule } from 'primeng/accordion';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -73,10 +74,15 @@ export class EmpAchievementComponent implements OnInit {
   groupAchievements: GroupAchievement[] = [];
   constructor(
     private empAchievementService: EmpAchievementService,
-    private messageService: MessageService,
     private userService: UserService,
-    private groupAchievementSvc: GroupAchievementService
+    private groupAchievementSvc: GroupAchievementService,
+    private readonly router: Router
   ) {}
+
+  reload() {
+    this.router.navigate([this.router.url]);
+  }
+
   ngOnInit(): void {
     this.getAllUser();
   }
@@ -126,7 +132,7 @@ export class EmpAchievementComponent implements OnInit {
               icon: 'success',
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.reload();
+                this.reload();
               }
             });
             this.visible = false;

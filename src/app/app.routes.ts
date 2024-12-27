@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { noAuthGuard } from './core/guards/no-auth.guard';
+import { passwordRecentlyResetGuard } from './core/guards/password-recently-reset.guard';
 import { roleMenuGuard } from './core/guards/role-menu.guard';
 import { AchievementComponent } from './features/achievement/components/achievement/achievement.component';
 import { AttitudeSkillComponent } from './features/attitude-skill/components/attitude-skill.component';
@@ -15,7 +16,6 @@ import { EmployeeAssessmentsComponent } from './features/employee-assessments/em
 import { GroupAchievementComponent } from './features/group-achievement/components/group-achievement/group-achievement.component';
 import { ManageGroupAttitudeSkillComponent } from './features/group-attitude-skill/components/manage-group-attitude-skill.component';
 import { IndexPageComponent } from './features/index/components/index-page.component';
-import { MainPageComponent as MenuComponent } from './features/menu/components/main-page.component';
 import { RoleMenuComponent } from './features/role-menu/components/role-menu/role-menu.component';
 import { MySummaryComponent } from './features/sum/components/my-summary/my-summary.component';
 import { SummariesComponent } from './features/sum/components/summaries/summaries.component';
@@ -33,14 +33,9 @@ export const routes: Routes = [
   },
   { path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
   {
-    path: 'menu',
-    component: MenuComponent,
-    canActivate: [authGuard],
-  },
-  {
     path: 'manage-users',
     component: UserManageComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['user#all'],
     },
@@ -48,7 +43,7 @@ export const routes: Routes = [
   {
     path: 'users',
     component: UsersReadComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['user#read'],
     },
@@ -56,7 +51,7 @@ export const routes: Routes = [
   {
     path: 'manage-group-attitude-skills',
     component: ManageGroupAttitudeSkillComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['group-attitude-skill#all'],
     },
@@ -64,7 +59,7 @@ export const routes: Routes = [
   {
     path: 'manage-attitude-skills',
     component: AttitudeSkillComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['attitude-skill#all'],
     },
@@ -72,7 +67,7 @@ export const routes: Routes = [
   {
     path: 'manage-divisions',
     component: ManageDivisionComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['division#all'],
     },
@@ -80,7 +75,7 @@ export const routes: Routes = [
   {
     path: 'manage-achievements',
     component: AchievementComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['achievement#all'],
     },
@@ -88,7 +83,7 @@ export const routes: Routes = [
   {
     path: 'manage-group-achievements',
     component: GroupAchievementComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['group-achievement#all'],
     },
@@ -96,7 +91,7 @@ export const routes: Routes = [
   {
     path: 'manage-dev-plans',
     component: DevPlanComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['dev-plan#all'],
     },
@@ -104,7 +99,7 @@ export const routes: Routes = [
   {
     path: 'manage-technical-skills',
     component: TechnicalSkillComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['technical-skill#all'],
     },
@@ -112,7 +107,7 @@ export const routes: Routes = [
   {
     path: 'manage-emp-achievements',
     component: EmpAchievementComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['emp-achievement#all'],
     },
@@ -120,7 +115,7 @@ export const routes: Routes = [
   {
     path: 'my-summary',
     component: MySummaryComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['summary#read.self'],
     },
@@ -128,7 +123,7 @@ export const routes: Routes = [
   {
     path: 'summaries',
     component: SummariesComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['summary#read'],
     },
@@ -136,7 +131,7 @@ export const routes: Routes = [
   {
     path: 'manage-role-menu',
     component: RoleMenuComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['role-menu#all'],
     },
@@ -144,7 +139,7 @@ export const routes: Routes = [
   {
     path: 'emp-technical-skill',
     component: EmpTechnicalSkillComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['emp-technical-skill#all'],
     },
@@ -152,7 +147,7 @@ export const routes: Routes = [
   {
     path: 'emp-attitude-skills',
     component: EmpAttitudeSkillsComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['emp-attitude-skill#all'],
     },
@@ -160,7 +155,7 @@ export const routes: Routes = [
   {
     path: 'emp-dev-plans',
     component: EmpDevPlanComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: ['emp-dev-plan#all'],
     },
@@ -168,7 +163,7 @@ export const routes: Routes = [
   {
     path: 'employee-assessments',
     component: EmployeeAssessmentsComponent,
-    canActivate: [authGuard, roleMenuGuard],
+    canActivate: [authGuard, roleMenuGuard, passwordRecentlyResetGuard],
     data: {
       permissions: [
         'emp-attitude-skill#all',

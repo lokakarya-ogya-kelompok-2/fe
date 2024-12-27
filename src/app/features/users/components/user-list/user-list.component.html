@@ -10,7 +10,7 @@
   [paginator]="true"
   lazy="true"
   [totalRecords]="data.total_records"
-  (onPage)="pageChange($event)"
+  (onLazyLoad)="loadUsers($event)"
   [first]="first"
   [rows]="rows"
   [tableStyle]="{
@@ -22,6 +22,8 @@
     'table-layout': 'fixed'
   }"
   [style]="{ width: '100%' }"
+  sortField="createdBy"
+  [sortOrder]="-1"
 >
   <ng-template pTemplate="caption">
     <div class="flex">
@@ -42,10 +44,9 @@
         </p-inputIcon>
         <input
           pInputText
-          [(ngModel)]="searchQuery"
           type="text"
           placeholder="Search by full name, username, email, position, division"
-          (keydown.enter)="loadUsers()"
+          (keydown.enter)="onGlobalFilter(userTable, $event)"
           [style]="{ 'font-size': '14px' }"
         />
       </p-iconField>
@@ -53,11 +54,28 @@
   </ng-template>
   <ng-template pTemplate="header">
     <tr>
-      <th class="font-bold" style="width: 20%">Full Name</th>
-      <th class="font-bold" style="width: 10%">Username</th>
-      <th class="font-bold" style="width: 20%">Email</th>
-      <th class="font-bold" style="width: 10%">Position</th>
-      <th class="font-bold" style="width: 15%">Division</th>
+      <th class="font-bold" style="width: 20%" pSortableColumn="fullName">
+        Full Name
+        <p-sortIcon field="fullName" />
+      </th>
+      <th class="font-bold" style="width: 10%" pSortableColumn="username">
+        Username
+        <p-sortIcon field="username" />
+      </th>
+      <th class="font-bold" style="width: 20%" pSortableColumn="emailAddress">
+        Email <p-sortIcon field="emailAddress" />
+      </th>
+      <th class="font-bold" style="width: 10%" pSortableColumn="position">
+        Position
+        <p-sortIcon field="position" />
+      </th>
+      <th
+        class="font-bold"
+        style="width: 15%"
+        pSortableColumn="division.divisionName"
+      >
+        Division <p-sortIcon field="division.divisionName" />
+      </th>
       @if (withActionButtons) {
       <th class="font-bold" style="width: 25%">Action</th>
       }

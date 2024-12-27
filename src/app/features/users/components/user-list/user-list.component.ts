@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, Message, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -8,13 +8,13 @@ import { DialogModule } from 'primeng/dialog';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { Table, TableModule, TablePageEvent } from 'primeng/table';
+import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import Swal from 'sweetalert2';
 import { TokenService } from '../../../../core/services/token.service';
 import { Response } from '../../../../shared/models/response';
-import { DialogType } from '../../../../shared/types';
+import { DialogType, Direction } from '../../../../shared/types';
 import { userToReq } from '../../../../shared/utils/mapper';
 import { User, UserReq } from '../../models/user';
 import { UserService } from '../../services/user.service';
@@ -55,9 +55,9 @@ export class UserListComponent implements OnInit {
   dialogType = DialogType;
   currentDialogType: DialogType = DialogType.ADD;
   currentUserId: string = '';
-  searchQuery: string = '';
   first: number = 0;
   rows: number = 5;
+  @ViewChild('userTable') table: Table | undefined;
 
   constructor(
     private readonly userSvc: UserService,
@@ -66,22 +66,23 @@ export class UserListComponent implements OnInit {
     private readonly tokenSvc: TokenService
   ) {}
 
-  pageChange(event: TablePageEvent) {
-    this.first = event.first;
-    this.rows = event.rows;
-    this.loadUsers();
-  }
-
-  loadUsers() {
+  loadUsers(event: TableLazyLoadEvent) {
     this.isLoading = true;
     this.userSvc
       .list({
-        page_number: this.first / this.rows + 1,
-        page_size: this.rows,
-        any_contains: this.searchQuery,
+        any_contains: event.globalFilter as string,
         with_roles: true,
         with_created_by: true,
         with_updated_by: true,
+        page_number: (event?.first || 0) / (event?.rows || 5) + 1,
+        page_size: event?.rows || 5,
+        sort_field: (event.sortField as string) || 'createdAt',
+        sort_direction:
+          event.sortField == undefined
+            ? Direction.DESC
+            : event.sortOrder == 1
+            ? Direction.ASC
+            : Direction.DESC,
       })
       .subscribe({
         next: (data) => {
@@ -95,7 +96,6 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadUsers();
     this.currentUserId = this.tokenSvc.decodeToken(
       this.tokenSvc.getToken()!
     ).sub!;
@@ -128,11 +128,7 @@ export class UserListComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.currentDialogType == this.dialogType.ADD) {
-      this.first = 0;
-      this.searchQuery = '';
-    }
-    this.loadUsers();
+    this.table?.reset();
   }
 
   toggleDialog(value: boolean) {
@@ -158,10 +154,15 @@ export class UserListComponent implements OnInit {
               icon: 'success',
               text: data.message,
             });
-            this.loadUsers();
+            this.loadUsers(this.table?.createLazyLoadMetadata());
           },
           error: (err) => {
             console.error('Error deleting user: ', err);
+            Swal.fire({
+              title: 'Failed to delete user!',
+              icon: 'error',
+              text: err.error.data.message,
+            });
           },
         });
       },

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import Swal from 'sweetalert2';
@@ -23,8 +24,13 @@ export class SuggestionComponent implements OnInit {
   tokenPayload: TokenPayload = {} as TokenPayload;
   constructor(
     private empSuggestionService: EmpSuggestionService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private readonly router: Router
   ) {}
+
+  reload() {
+    this.router.navigate([this.router.url]);
+  }
 
   ngOnInit(): void {
     this.tokenPayload = this.tokenService.decodeToken(
@@ -72,7 +78,7 @@ export class SuggestionComponent implements OnInit {
             text: 'Suggestion created successfully',
           }).then((res) => {
             if (res.isConfirmed) {
-              window.location.reload();
+              this.reload();
             }
           });
         },

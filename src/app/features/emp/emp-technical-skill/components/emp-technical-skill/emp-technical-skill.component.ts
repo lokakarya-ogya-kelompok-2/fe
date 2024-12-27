@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -12,10 +13,8 @@ import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import Swal from 'sweetalert2';
 import { TokenService } from '../../../../../core/services/token.service';
-import { NavbarComponent } from '../../../../../shared/components/navbar/navbar.component';
 import { TechnicalSkill } from '../../../../technical-skill/models/technical-skill';
 import { TechnicalSkillService } from '../../../../technical-skill/services/technical-skill.service';
-import { UserInformationComponent } from '../../../user-information/components/user-information/user-information.component';
 import { EmpTechnicalSkillReq } from '../../models/emp-technical-skill';
 import { EmpTechnicalSkillService } from '../../services/emp-technical-skill.service';
 
@@ -24,8 +23,6 @@ import { EmpTechnicalSkillService } from '../../services/emp-technical-skill.ser
   standalone: true,
   imports: [
     TableModule,
-    UserInformationComponent,
-    NavbarComponent,
     InputTextModule,
     FormsModule,
     ButtonModule,
@@ -70,8 +67,13 @@ export class EmpTechnicalSkillComponent implements OnInit {
   constructor(
     private readonly empTechSkillSvc: EmpTechnicalSkillService,
     private readonly techSkillSvc: TechnicalSkillService,
-    private readonly tokenSvc: TokenService
+    private readonly tokenSvc: TokenService,
+    private readonly router: Router
   ) {}
+
+  reload() {
+    this.router.navigate([this.router.url]);
+  }
 
   ngOnInit() {
     this.userId = this.tokenSvc.decodeToken(this.tokenSvc.getToken()!).sub!;
@@ -171,7 +173,7 @@ export class EmpTechnicalSkillComponent implements OnInit {
               icon: 'success',
             }).then((res) => {
               if (res.isConfirmed) {
-                window.location.reload();
+                this.reload();
               }
             });
           },
