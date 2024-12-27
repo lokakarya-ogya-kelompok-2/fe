@@ -9,7 +9,7 @@
     [rows]="rows"
     [first]="first"
     lazy="true"
-    [totalRecords]="data.total_records"
+    [totalRecords]="data.page_info?.total_records ?? 0"
     [loading]="loading"
     (onLazyLoad)="getAttitudeSkills($event)"
     [paginator]="true"

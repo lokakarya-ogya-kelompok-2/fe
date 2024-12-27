@@ -115,6 +115,11 @@ export class ManageGroupAttitudeSkillComponent {
         },
         error: (err) => {
           console.error('Error fetching group attitude:', err);
+          this.loading = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed to fetch group attitude skills!',
+          });
         },
       });
   }

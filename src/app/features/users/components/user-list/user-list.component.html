@@ -9,7 +9,7 @@
   [loading]="isLoading"
   [paginator]="true"
   lazy="true"
-  [totalRecords]="data.total_records"
+  [totalRecords]="data.page_info?.total_records ?? 0"
   (onLazyLoad)="loadUsers($event)"
   [first]="first"
   [rows]="rows"

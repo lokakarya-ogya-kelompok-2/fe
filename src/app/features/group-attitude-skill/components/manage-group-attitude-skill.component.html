@@ -21,7 +21,7 @@
       'table-layout': 'fixed'
     }"
     [style]="{ width: '100%' }"
-    [totalRecords]="data.total_records"
+    [totalRecords]="data.page_info?.total_records ?? 0"
     (onLazyLoad)="getGroupAttitudeSkills($event)"
     lazy="true"
   >
@@ -50,11 +50,11 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr style="text-align: center">
-        <th style="width: 45%; text-align: center" pSortableColumn="groupName">
-          Group Name <p-sortIcon field="groupName" #percentageSortIcon />
+        <th style="width: 45%; text-align: center" pSortableColumn="name">
+          Group Name <p-sortIcon field="nam" #percentageSortIcon />
         </th>
-        <th style="width: 15%; text-align: center" pSortableColumn="percentage">
-          Weight <p-sortIcon field="percentage" #percentageSortIcon />
+        <th style="width: 15%; text-align: center" pSortableColumn="weight">
+          Weight <p-sortIcon field="weight" #percentageSortIcon />
         </th>
         <th style="width: 20%; text-align: center">Status</th>
         <th style="width: 25%; text-align: center">Action</th>

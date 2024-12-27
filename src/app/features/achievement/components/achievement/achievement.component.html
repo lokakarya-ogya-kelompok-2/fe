@@ -11,7 +11,7 @@
     [paginator]="true"
     [rowsPerPageOptions]="[5, 10, 15]"
     [first]="first"
-    [totalRecords]="data.total_records"
+    [totalRecords]="data.page_info?.total_records ?? 0"
     lazy="true"
     (onLazyLoad)="getAchievements($event)"
     [tableStyle]="{
