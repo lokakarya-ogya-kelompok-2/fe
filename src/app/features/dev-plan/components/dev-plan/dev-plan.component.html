@@ -9,7 +9,7 @@
     [rows]="rows"
     [first]="first"
     lazy="true"
-    [totalRecords]="data.total_records"
+    [totalRecords]="data.page_info?.total_records ?? 0"
     [loading]="loading"
     [paginator]="true"
     [rowsPerPageOptions]="[5, 10, 15]"
@@ -49,9 +49,9 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 60%; text-align: center" pSortableColumn="plan">
+        <th style="width: 60%; text-align: center" pSortableColumn="name">
           Plan
-          <p-sortIcon field="plan" />
+          <p-sortIcon field="name" />
         </th>
         <th style="width: 15%; text-align: center">Status</th>
         <th style="width: 25%; text-align: center">Action</th>

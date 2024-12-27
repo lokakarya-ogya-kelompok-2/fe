@@ -13,7 +13,7 @@
     lazy="true"
     (onLazyLoad)="getGroupAchievements($event)"
     [first]="first"
-    [totalRecords]="data.total_records"
+    [totalRecords]="data.page_info?.total_records ?? 0"
     [tableStyle]="{
       'min-width': '50rem',
       'text-align': 'center',
@@ -49,13 +49,13 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 45%; text-align: center" pSortableColumn="groupName">
+        <th style="width: 45%; text-align: center" pSortableColumn="name">
           Group Name
-          <p-sortIcon field="groupName" />
+          <p-sortIcon field="name" />
         </th>
-        <th style="width: 15%; text-align: center" pSortableColumn="percentage">
+        <th style="width: 15%; text-align: center" pSortableColumn="weight">
           Weight
-          <p-sortIcon field="percentage" />
+          <p-sortIcon field="weight" />
         </th>
         <th style="width: 15%; text-align: center">Status</th>
         <th style="width: 25%; text-align: center">Action</th>

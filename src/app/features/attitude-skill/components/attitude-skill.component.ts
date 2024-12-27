@@ -148,6 +148,10 @@ export class AttitudeSkillComponent implements OnInit {
         error: (err) => {
           console.error('Error fetching attitude skill:', err);
           this.loading = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed fo fetch attitude skills',
+          });
         },
       });
   }

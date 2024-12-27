@@ -8,7 +8,7 @@
     scrollHeight="380px"
     (onLazyLoad)="getAssessmentSummaries($event)"
     [rowsPerPageOptions]="[5, 10, 15]"
-    [totalRecords]="data.total_records"
+    [totalRecords]="data.page_info?.total_records ?? 0"
     [first]="first"
     [rows]="rows"
     [loading]="isLoading"
