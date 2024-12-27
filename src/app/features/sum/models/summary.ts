@@ -17,6 +17,7 @@ export interface SummaryItem {
   aspect: string;
   score: number;
   weight: number;
+  items: []; //maap masi bingung tipe datanya
   final_score: number;
 }
 
