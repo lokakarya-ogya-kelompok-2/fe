@@ -91,6 +91,11 @@ export class ManageDivisionComponent {
         },
         error: (err) => {
           console.error('Error fetching divisions:', err);
+          this.loading = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed fo fetch divisions',
+          });
         },
       });
   }

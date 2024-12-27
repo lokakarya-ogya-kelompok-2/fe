@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccordionModule } from 'primeng/accordion';
@@ -14,12 +14,14 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
-import { Table, TableModule } from 'primeng/table';
+import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { Response } from '../../../../shared/models/response';
+import { Direction } from '../../../../shared/types';
 import { Achievement } from '../../../achievement/model/achievement';
 import { GroupAchievement } from '../../../group-achievement/model/group-achievement';
 import { GroupAchievementService } from '../../../group-achievement/services/group-achievement.service';
@@ -63,15 +65,18 @@ interface GroupedAchievement {
   templateUrl: './emp-achievement.component.html',
   styleUrl: './emp-achievement.component.scss',
 })
-export class EmpAchievementComponent implements OnInit {
+export class EmpAchievementComponent {
   loading: boolean = false;
   visible: boolean = false;
   empAchievementRequests: { [key: string]: EmpAchievementRequest } = {};
-  users: User[] = [];
+  data: Response<User[]> = {} as Response<User[]>;
   selectedUser: User = {} as User;
   currentYear = new Date().getFullYear();
   submissible = false;
   groupAchievements: GroupAchievement[] = [];
+  first = 0;
+  rows = 5;
+
   constructor(
     private empAchievementService: EmpAchievementService,
     private userService: UserService,
@@ -83,22 +88,36 @@ export class EmpAchievementComponent implements OnInit {
     this.router.navigate([this.router.url]);
   }
 
-  ngOnInit(): void {
-    this.getAllUser();
-  }
-
-  getAllUser(): void {
+  getAllUser(event: TableLazyLoadEvent): void {
     this.loading = true;
-    this.userService.list().subscribe({
-      next: (data) => {
-        this.users = data.content;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Error fetching user:', err);
-        this.loading = false;
-      },
-    });
+    this.userService
+      .list({
+        any_contains: event.globalFilter as string,
+        search_by: ['fullName', 'username', 'position', 'division.name'],
+        page_number: (event?.first || 0) / (event?.rows || 5) + 1,
+        page_size: event?.rows || 5,
+        sort_field: (event.sortField as string) || 'createdAt',
+        sort_direction:
+          event.sortField == undefined
+            ? Direction.DESC
+            : event.sortOrder == 1
+            ? Direction.ASC
+            : Direction.DESC,
+      })
+      .subscribe({
+        next: (data) => {
+          this.data = data;
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error('Error fetching user:', err);
+          this.loading = false;
+          Swal.fire({
+            icon: 'error',
+            text: 'Failed to fetch users!',
+          });
+        },
+      });
   }
   createEmpAchievement() {
     Swal.fire({

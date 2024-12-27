@@ -69,12 +69,8 @@
         Position
         <p-sortIcon field="position" />
       </th>
-      <th
-        class="font-bold"
-        style="width: 15%"
-        pSortableColumn="division.divisionName"
-      >
-        Division <p-sortIcon field="division.divisionName" />
+      <th class="font-bold" style="width: 15%" pSortableColumn="division.name">
+        Division <p-sortIcon field="division.name" />
       </th>
       @if (withActionButtons) {
       <th class="font-bold" style="width: 25%">Action</th>
@@ -144,7 +140,7 @@
   </ng-template>
   <ng-template pTemplate="emptymessage">
     <tr>
-      <td colspan="6" class="text-center p-4">
+      <td colspan="5" class="text-center p-4">
         <div class="flex flex-column align-items-center gap-2">
           <i class="pi pi-info-circle text-4xl text-primary"></i>
           <span class="font-semibold text-lg">No users data available</span>

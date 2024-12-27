@@ -40,6 +40,7 @@ export interface ChangePasswordReq {
 
 export interface UserQueryParam extends QueryParam {
   any_contains?: string;
+  search_by?: string[];
   username_contains?: string;
   name_contains?: string;
   position_contains?: string;
