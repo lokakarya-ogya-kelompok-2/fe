@@ -15,10 +15,11 @@
     #userTable
     [scrollable]="true"
     scrollHeight="380px"
-    [value]="users"
+    [value]="data.content"
     dataKey="id"
-    [rows]="10"
-    [rowsPerPageOptions]="[10, 20, 50]"
+    [rows]="rows"
+    [first]="first"
+    [rowsPerPageOptions]="[5, 10, 15]"
     [loading]="loading"
     [paginator]="true"
     [tableStyle]="{
@@ -30,14 +31,11 @@
       'table-layout': 'fixed'
     }"
     [style]="{ width: '100%' }"
-    [sortField]="'created_at'"
-    [globalFilterFields]="[
-      'full_name',
-      'username',
-      'position',
-      'division.division_name'
-    ]"
+    sortField="createdAt"
     [sortOrder]="-1"
+    lazy="true"
+    (onLazyLoad)="getAllUser($event)"
+    [totalRecords]="data.page_info?.total_records!"
   >
     <ng-template pTemplate="caption">
       <div class="flex">
@@ -49,7 +47,7 @@
             pInputText
             type="text"
             placeholder="Search by full name, username, position, division"
-            (input)="onGlobalFilter(userTable, $event)"
+            (keydown.enter)="onGlobalFilter(userTable, $event)"
             [style]="{ 'font-size': '14px' }"
           />
         </p-iconField>

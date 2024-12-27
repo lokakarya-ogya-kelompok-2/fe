@@ -91,6 +91,11 @@ export class UserListComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error fetching user: ', err);
+          this.isLoading = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed to fetch users',
+          });
         },
       });
   }
