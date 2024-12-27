@@ -1,7 +1,7 @@
 <app-navbar />
 @if (!isLoading) {
 <div class="card flex justify-content-center">
-  <p-stepper>
+  <p-stepper [linear]="true">
     @if (this.stepperItems.get("emp-attitude-skill#all")) {
     <p-stepperPanel header="Attitude Skill Assessments">
       <ng-template
