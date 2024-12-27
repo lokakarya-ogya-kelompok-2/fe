@@ -98,6 +98,7 @@ export class SummaryComponent implements OnChanges, OnInit {
               return acc + curr.final_score;
             }, this.summary.score) || this.summary.score;
           this.isLoading = false;
+          console.log(this.summary);
         },
         error: (err) => {
           this.isLoading = false;
@@ -111,7 +112,6 @@ export class SummaryComponent implements OnChanges, OnInit {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Assessment Summary');
 
-    // Define border style using ExcelJS.BorderStyle
     const borderStyle: Partial<ExcelJS.Borders> = {
       top: { style: 'thin' as ExcelJS.BorderStyle },
       left: { style: 'thin' as ExcelJS.BorderStyle },
@@ -119,7 +119,6 @@ export class SummaryComponent implements OnChanges, OnInit {
       right: { style: 'thin' as ExcelJS.BorderStyle },
     };
 
-    // Add headers
     worksheet.addRow(['ASSESSMENT SUMMARY REPORT']);
     worksheet.addRow(['Year:', this.year]);
     worksheet.mergeCells('A1:D1');
@@ -132,7 +131,7 @@ export class SummaryComponent implements OnChanges, OnInit {
       { header: 'Weight', key: 'weight', width: 10 },
       { header: 'Final Score', key: 'final_score', width: 15 },
     ];
-    // Attitude Skills Section
+
     worksheet.addRow(['']);
     worksheet.addRow(['ATTITUDE SKILLS']);
     const attitudeHeaderRow = worksheet.addRow([
@@ -159,7 +158,6 @@ export class SummaryComponent implements OnChanges, OnInit {
       });
     });
 
-    // Achievements Section
     worksheet.addRow(['']);
     worksheet.addRow(['ACHIEVEMENTS']);
     const achievementHeaderRow = worksheet.addRow([
@@ -188,7 +186,6 @@ export class SummaryComponent implements OnChanges, OnInit {
       });
     });
 
-    // Total Score
     worksheet.addRow(['']);
     const totalScoreRow = worksheet.addRow([
       'Total Score:',
@@ -203,7 +200,6 @@ export class SummaryComponent implements OnChanges, OnInit {
       cell.border = borderStyle;
     });
 
-    // Generate and save file
     workbook.xlsx.writeBuffer().then((buffer) => {
       const blob = new Blob([buffer], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
