@@ -2,7 +2,7 @@
   <div style="max-width: 600px; width: 100%">
     <form #userForm="ngForm" (submit)="onSubmit()">
       <div class="grid pt-4">
-        <div class="col-12 mb-4">
+        <div class="col-12 md:col-6 mb-3">
           <p-floatLabel>
             <input
               pInputText
@@ -41,46 +41,7 @@
             </small>
           </div>
         </div>
-        <div class="col-12 mb-4">
-          <p-floatLabel>
-            <input
-              pInputText
-              type="text"
-              name="position"
-              id="position"
-              [(ngModel)]="formData.position"
-              required
-              maxlength="50"
-              pattern=".*\S+.*"
-              #position="ngModel"
-              class="w-full"
-            />
-            <label for="position">
-              Position<span class="text-red-600">*</span>
-            </label>
-          </p-floatLabel>
-          <div *ngIf="position.invalid && (position.dirty || position.touched)">
-            <small
-              class="p-error block mt-1"
-              *ngIf="position.errors?.['required']"
-            >
-              Position is required
-            </small>
-            <small
-              class="p-error block mt-1"
-              *ngIf="position.errors?.['pattern']"
-            >
-              Position cannot be empty or contain only spaces
-            </small>
-            <small
-              class="p-error block mt-1"
-              *ngIf="position.errors?.['maxlength']"
-            >
-              Position cannot exceed 50 characters
-            </small>
-          </div>
-        </div>
-        <div class="col-12 mb-4">
+        <div class="col-12 md:col-6">
           <p-floatLabel>
             <input
               pInputText
@@ -119,7 +80,7 @@
             </small>
           </div>
         </div>
-        <div class="col-12 mb-4">
+        <div class="col-12 md:col-6 mb-3">
           <p-floatLabel>
             <input
               pInputText
@@ -164,7 +125,7 @@
         </div>
 
         @if (formData.id === null) {
-        <div class="col-12 mb-4">
+        <div class="col-12 md:col-6">
           <p-floatLabel>
             <p-password
               [(ngModel)]="formData.password"
@@ -209,7 +170,7 @@
           </div>
         </div>
         }
-        <div class="col-12 mb-4">
+        <div class="col-12 md:col-6 mb-3">
           <p-floatLabel>
             <p-dropdown
               name="division"
@@ -242,7 +203,7 @@
           </div>
         </div>
 
-        <div class="col-12 mb-4">
+        <div class="col-12 md:col-6 mb-3">
           <p-floatLabel>
             <p-multiSelect
               [options]="roles"
@@ -272,7 +233,46 @@
           </div>
         </div>
 
-        <div class="col-12 mb-4">
+        <div class="col-12 md:col-6">
+          <p-floatLabel>
+            <input
+              pInputText
+              type="text"
+              name="position"
+              id="position"
+              [(ngModel)]="formData.position"
+              required
+              maxlength="50"
+              pattern=".*\S+.*"
+              #position="ngModel"
+              class="w-full"
+            />
+            <label for="position">
+              Position<span class="text-red-600">*</span>
+            </label>
+          </p-floatLabel>
+          <div *ngIf="position.invalid && (position.dirty || position.touched)">
+            <small
+              class="p-error block mt-1"
+              *ngIf="position.errors?.['required']"
+            >
+              Position is required
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="position.errors?.['pattern']"
+            >
+              Position cannot be empty or contain only spaces
+            </small>
+            <small
+              class="p-error block mt-1"
+              *ngIf="position.errors?.['maxlength']"
+            >
+              Position cannot exceed 50 characters
+            </small>
+          </div>
+        </div>
+        <div class="col-12 md:col-6">
           <div class="p-float-label">
             <p-calendar
               [(ngModel)]="formData.join_date"
@@ -281,9 +281,10 @@
               [maxDate]="maxDate"
               required
               #joinDateInput="ngModel"
-              appendTo="body"
               styleClass="w-full"
+              [baseZIndex]="1000"
             />
+            <!-- appendTo="body" -->
             <label for="joinDate"
               >Join Date<span class="text-red-600">*</span></label
             >
