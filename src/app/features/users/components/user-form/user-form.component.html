@@ -175,6 +175,7 @@
               id="password"
               styleClass="w-full"
               inputStyleClass="w-full"
+              [toggleMask]="true"
               #passwordInput="ngModel"
             />
             <label for="password">
@@ -272,19 +273,21 @@
         </div>
 
         <div class="col-12 mb-4">
-          <label for="joinDate">
-            Join Date<span class="text-red-600">*</span>
-          </label>
-          <p-calendar
-            inline="true"
-            [(ngModel)]="formData.join_date"
-            inputId="joinDate"
-            name="joinDate"
-            styleClass="w-full"
-            [maxDate]="maxDate"
-            required
-            #joinDateInput="ngModel"
-          />
+          <div class="p-float-label">
+            <p-calendar
+              [(ngModel)]="formData.join_date"
+              inputId="joinDate"
+              name="joinDate"
+              [maxDate]="maxDate"
+              required
+              #joinDateInput="ngModel"
+              appendTo="body"
+              styleClass="w-full"
+            />
+            <label for="joinDate"
+              >Join Date<span class="text-red-600">*</span></label
+            >
+          </div>
           <div
             *ngIf="
               joinDateInput.invalid &&

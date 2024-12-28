@@ -6,6 +6,7 @@ import { DividerModule } from 'primeng/divider';
 import { GalleriaModule } from 'primeng/galleria';
 import { ImageModule } from 'primeng/image';
 import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
 import { SplitterModule } from 'primeng/splitter';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -23,6 +24,7 @@ import { PhotoService } from '../services/photoService';
     SplitterModule,
     GalleriaModule,
     ImageModule,
+    PasswordModule,
   ],
   providers: [PhotoService],
   templateUrl: './login.component.html',
@@ -30,7 +32,9 @@ import { PhotoService } from '../services/photoService';
 })
 export class LoginComponent {
   loginData: LoginRequest = {} as LoginRequest;
+  // hidePassword: boolean = true;
   private router = inject(Router);
+  value!: string;
   constructor(
     private readonly loginSvc: LoginService,
     private readonly authSvc: AuthService
@@ -67,4 +71,8 @@ export class LoginComponent {
       },
     });
   }
+
+  // togglePassword() {
+  //   this.hidePassword = !this.hidePassword;
+  // }
 }

@@ -5,7 +5,7 @@
     id="summaries-table"
     lazy="true"
     [scrollable]="true"
-    scrollHeight="380px"
+    scrollHeight="340px"
     (onLazyLoad)="getAssessmentSummaries($event)"
     [rowsPerPageOptions]="[5, 10, 15]"
     [totalRecords]="data.page_info?.total_records ?? 0"
@@ -97,7 +97,7 @@
                     placeholder="Select Division"
                     [showClear]="true"
                     [style]="{
-                      'min-width': '12rem',
+                      'min-width': '10rem',
                       'font-size': '14px',
                       '--p-multiselect-label-padding': '0.4rem 0.75rem'
                     }"
@@ -133,7 +133,7 @@
                   [panelStyle]="{ 'min-width': '12rem' }"
                   styleClass="dropdown"
                   [panelStyleClass]="'dropdown-panel'"
-                  appendTo="body "
+                  appendTo="body"
                 />
               </ng-template>
             </p-columnFilter>

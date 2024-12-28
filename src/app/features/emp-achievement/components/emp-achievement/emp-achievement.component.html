@@ -10,7 +10,7 @@
     </div>
   </p-card>
 </div>
-<div class="inner-card" style="max-width: 1148px; margin: 0 auto">
+<div class="inner-card" style="max-width: 1220px; margin: 0 auto">
   <p-table
     #userTable
     [scrollable]="true"
@@ -78,7 +78,11 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-user>
-      <tr class="clickable-row" (click)="showDialog(user)">
+      <tr
+        class="clickable-row"
+        (click)="showDialog(user)"
+        [style]="{ padding: '0.5rem', 'font-size': '15px' }"
+      >
         <td>{{ user.full_name }}</td>
         <td style="text-align: center">{{ user.username }}</td>
         <td style="text-align: center">{{ user.position }}</td>

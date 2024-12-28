@@ -47,25 +47,25 @@
           type="text"
           placeholder="Search by full name, username, email, position, division"
           (keydown.enter)="onGlobalFilter(userTable, $event)"
-          [style]="{ 'font-size': '14px' }"
+          [style]="{ 'font-size': '12px' }"
         />
       </p-iconField>
     </div>
   </ng-template>
   <ng-template pTemplate="header">
     <tr>
-      <th class="font-bold" style="width: 20%" pSortableColumn="fullName">
+      <th class="font-bold" style="width: 18%" pSortableColumn="fullName">
         Full Name
         <p-sortIcon field="fullName" />
       </th>
-      <th class="font-bold" style="width: 10%" pSortableColumn="username">
+      <th class="font-bold" style="width: 12%" pSortableColumn="username">
         Username
         <p-sortIcon field="username" />
       </th>
-      <th class="font-bold" style="width: 20%" pSortableColumn="email">
+      <th class="font-bold" style="width: 18%" pSortableColumn="email">
         Email <p-sortIcon field="email" />
       </th>
-      <th class="font-bold" style="width: 10%" pSortableColumn="position">
+      <th class="font-bold" style="width: 12%" pSortableColumn="position">
         Position
         <p-sortIcon field="position" />
       </th>
