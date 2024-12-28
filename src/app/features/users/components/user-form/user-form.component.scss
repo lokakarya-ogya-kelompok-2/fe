@@ -1,0 +1,25 @@
+:host ::ng-deep {
+  .p-datepicker {
+    .p-datepicker-calendar {
+      font-size: 14px;
+
+      th {
+        padding: 0.2rem;
+        font-size: 12px;
+      }
+
+      td {
+        padding: 0.2rem;
+
+        > span {
+          width: 24px;
+          height: 24px;
+          font-size: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+  }
+}

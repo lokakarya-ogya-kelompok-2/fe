@@ -67,6 +67,7 @@ export class UserFormComponent implements OnInit, OnChanges {
   formData: UserReq = {} as UserReq;
   resetPasswordLoading: boolean = false;
   currentUserId: string = '';
+  date: Date | undefined;
 
   statusOptions = [
     {
