@@ -45,7 +45,7 @@
             type="text"
             placeholder="Search by division name"
             (keydown.enter)="onGlobalFilter(divisionTable, $event)"
-            [style]="{ 'font-size': '14px' }"
+            [style]="{ 'font-size': '12px' }"
           />
         </p-iconField>
       </div>
@@ -123,7 +123,7 @@
     [style]="{ width: '30rem' }"
   >
     <form #divisionForm="ngForm" (submit)="createDivision()">
-      <div class="flex align-items-center gap-6 mb-2">
+      <div class="flex align-items-center gap-6 mb-5">
         <label
           for="Division Name"
           class="font-semibold w-6rem"

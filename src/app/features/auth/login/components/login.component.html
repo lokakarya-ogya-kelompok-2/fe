@@ -27,7 +27,7 @@
 
   <div class="right-part" style="flex: 1; overflow-y: auto">
     <div class="card">
-      <div class="surface-card">
+      <div class="surface-card justify-content-center">
         <h1>Employee Appraisal Login</h1>
         <p id="login-text">
           Hey, Enter your details to get login to your account
@@ -48,7 +48,20 @@
           </div>
           <div class="field">
             <span class="p-float-label">
-              <input
+              <p-password
+                [(ngModel)]="loginData.password"
+                id="password"
+                type="password"
+                name="password"
+                [toggleMask]="true"
+                required
+                minlength="8"
+                maxlength="32"
+                [feedback]="false"
+              />
+              <!-- [style]="{ width: '90%' }"
+                [inputStyle]="{ width: '100%' }" -->
+              <!-- <input
                 id="password"
                 type="password"
                 name="password"
@@ -57,7 +70,7 @@
                 required
                 minlength="8"
                 maxlength="32"
-              />
+              /> -->
               <label for="password">Password</label>
             </span>
           </div>

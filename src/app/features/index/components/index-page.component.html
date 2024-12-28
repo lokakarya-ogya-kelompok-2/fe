@@ -110,6 +110,7 @@
             maxlength="32"
             required
             [(ngModel)]="formData.current_password"
+            [toggleMask]="true"
           />
           <label for="current_password">Current Password</label>
         </p-floatLabel>
@@ -127,6 +128,7 @@
               maxlength="32"
               required
               [(ngModel)]="formData.new_password"
+              toggleMask="true"
             />
             <label for="new_password">New Password</label>
           </p-floatLabel>
@@ -144,6 +146,7 @@
               maxlength="32"
               required
               [(ngModel)]="formData.confirm_new_password"
+              [toggleMask]="true"
             />
             <label for="confirm_password">Confirm New Password</label>
           </p-floatLabel>

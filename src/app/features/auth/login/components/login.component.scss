@@ -24,14 +24,7 @@
   display: flex;
   justify-content: center;
 }
-// .surface-card{
-//     border: 1px solid #ccc;
-//     border-radius: 4px;
-//     padding: 48px;
-//     margin: 8px;
-//     margin-top: 80px;
-//     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-// }
+
 .surface-card h1 {
   text-align: center;
   justify-content: center;
@@ -60,4 +53,10 @@
   margin-top: 50px;
   margin-bottom: 35px;
   opacity: 60%;
+}
+
+:host ::ng-deep {
+  .p-input-icon-right > .p-inputtext {
+    padding-right: 0.6rem;
+  }
 }
