@@ -16,6 +16,13 @@
 }
 <div class="button-export">
   <p-button
+    icon="pi pi-check-circle"
+    label="Export to Excel"
+    (onClick)="functionGaweApruv()"
+    severity="primary"
+    [disabled]="!assessmentSummaryAvailable"
+  ></p-button>
+  <p-button
     icon="pi pi-file-excel"
     label="Export to Excel"
     (onClick)="exportToExcel()"

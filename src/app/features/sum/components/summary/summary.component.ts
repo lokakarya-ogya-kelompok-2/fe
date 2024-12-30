@@ -395,4 +395,8 @@ export class SummaryComponent implements OnChanges, OnInit {
       `Assessment_Summary_${this.currentUser.full_name}_${this.year}.pdf`
     );
   }
+
+  functionGaweApruv() {
+    console.log('apruv');
+  }
 }
