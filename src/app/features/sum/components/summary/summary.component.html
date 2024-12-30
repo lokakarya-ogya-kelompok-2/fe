@@ -17,10 +17,10 @@
 <div class="button-export">
   <p-button
     icon="pi pi-check-circle"
-    label="Export to Excel"
-    (onClick)="functionGaweApruv()"
+    label="Approve"
+    (onClick)="onApprove(summary.id)"
     severity="primary"
-    [disabled]="!assessmentSummaryAvailable"
+    [disabled]="summary.approval_status == 1"
   ></p-button>
   <p-button
     icon="pi pi-file-excel"

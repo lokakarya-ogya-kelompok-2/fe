@@ -15,6 +15,7 @@ import 'jspdf-autotable';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import Swal from 'sweetalert2';
 import { TokenService } from '../../../../core/services/token.service';
 import { EmpAchievement } from '../../../emp-achievement/models/emp-achievement';
 import { EmpAttitudeSkill } from '../../../emp/emp-attitude-skill/models/emp-attitude-skill';
@@ -57,6 +58,7 @@ export class SummaryComponent implements OnChanges, OnInit {
   summary: Summary = {} as Summary;
   currentUser: User = {} as User;
   isLoading = true;
+  showApproveButton: boolean = false;
 
   constructor(
     private readonly summarySvc: SummaryService,
@@ -68,43 +70,51 @@ export class SummaryComponent implements OnChanges, OnInit {
     this.userSvc.getById(jwtPayload.sub!).subscribe({
       next: (data) => {
         this.currentUser = data.content;
+        this.showApproveButton = this.currentUser.roles.some(
+          (role) => role.role_name.toLowerCase() == 'svp'
+        );
       },
       error: (err) => {
         console.error('Error getting current user: ', err);
       },
     });
   }
+
+  fetchAssessmentSummary() {
+    this.isLoading = true;
+    this.percentage = 0.0;
+    this.summarySvc.calculateSummary(this.userId, this.year).subscribe({
+      next: (data) => {
+        this.assessmentSummaryAvailable = data.success;
+        this.assSumAvailable.emit(this.assessmentSummaryAvailable);
+        this.summary = data.content;
+        this.summary.achievements?.forEach((item) => {
+          this.percentage += item.weight;
+        });
+        this.summary.attitude_skills?.forEach((item) => {
+          this.percentage += item.weight;
+        });
+        this.summary.score =
+          this.summary.attitude_skills?.reduce((acc, curr) => {
+            return acc + curr.final_score;
+          }, 0) || 0;
+        this.summary.score =
+          this.summary.achievements?.reduce((acc, curr) => {
+            return acc + curr.final_score;
+          }, this.summary.score) || this.summary.score;
+        this.isLoading = false;
+        console.log(this.summary);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.error('Error calculating user summary: ', err);
+      },
+    });
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if ((changes['userId'] && this.userId) || changes['year']) {
-      this.isLoading = true;
-      this.percentage = 0.0;
-      this.summarySvc.calculateSummary(this.userId, this.year).subscribe({
-        next: (data) => {
-          this.assessmentSummaryAvailable = data.success;
-          this.assSumAvailable.emit(this.assessmentSummaryAvailable);
-          this.summary = data.content;
-          this.summary.achievements?.forEach((item) => {
-            this.percentage += item.weight;
-          });
-          this.summary.attitude_skills?.forEach((item) => {
-            this.percentage += item.weight;
-          });
-          this.summary.score =
-            this.summary.attitude_skills?.reduce((acc, curr) => {
-              return acc + curr.final_score;
-            }, 0) || 0;
-          this.summary.score =
-            this.summary.achievements?.reduce((acc, curr) => {
-              return acc + curr.final_score;
-            }, this.summary.score) || this.summary.score;
-          this.isLoading = false;
-          console.log(this.summary);
-        },
-        error: (err) => {
-          this.isLoading = false;
-          console.error('Error calculating user summary: ', err);
-        },
-      });
+      this.fetchAssessmentSummary();
     }
   }
 
@@ -396,7 +406,46 @@ export class SummaryComponent implements OnChanges, OnInit {
     );
   }
 
-  functionGaweApruv() {
-    console.log('apruv');
+  onApprove(id: string) {
+    Swal.fire({
+      icon: 'question',
+      title: 'U Sure? ',
+      customClass: {
+        container: 'z-9999',
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        this.summarySvc.approve(id).subscribe({
+          next: (data) => {
+            Swal.fire({
+              customClass: {
+                container: 'z-9999',
+              },
+              icon: 'success',
+              title: 'Approved!',
+              text: data.message,
+            }).then((res) => {
+              if (res.isConfirmed) {
+                this.fetchAssessmentSummary();
+              }
+            });
+          },
+          error: (err) => {
+            console.error('Error approving assessment summary: ', err);
+            Swal.fire({
+              customClass: {
+                container: 'z-9999',
+              },
+              icon: 'error',
+              title: 'Failed to approve',
+              text: err.error.message,
+            });
+          },
+        });
+      }
+    });
   }
 }
