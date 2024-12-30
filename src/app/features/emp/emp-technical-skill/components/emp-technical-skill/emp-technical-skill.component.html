@@ -13,8 +13,9 @@
   </p-card>
 </div>
 
-<form #technicalSkillForm="ngForm" class="card">
-  @for (technicalSkill of technicalSkills; track technicalSkill.id) {
+
+@for (technicalSkill of technicalSkills; track technicalSkill.id) {
+<form #technicalSkillForm="ngForm" class="card m-4 p-4">
   <div class="inner-card w-full">
     <div class="mb-4">
       <h2 class="text-xl font-bold mb-3 text-center">
@@ -90,8 +91,8 @@
             </div>
           </div>
           <div class="flex" style="min-width: 2.5rem">
-            @if (empTechnicalSkills[technicalSkill.id][$index].id == undefined)
-            {
+            @if (empTechnicalSkills[technicalSkill.id].length > 1 &&
+            empTechnicalSkills[technicalSkill.id][$index].id == undefined) {
             <p-button
               icon="pi pi-trash"
               severity="danger"
@@ -103,7 +104,14 @@
       </div>
       }
 
-      <div class="flex justify-content-end mt-3">
+      <div class="flex justify-content-between mt-3">
+        <p-button
+          label="Submit"
+          icon="pi pi-check"
+          (onClick)="onSubmit(technicalSkill.id)"
+          [disabled]="!technicalSkillForm.valid"
+          severity="primary"
+        />
         <p-button
           label="Add New"
           icon="pi pi-plus"
@@ -113,18 +121,8 @@
       </div>
     </div>
   </div>
-  }
-
-  <div class="flex justify-content-center mt-4">
-    <p-button
-      label="Submit"
-      icon="pi pi-check"
-      (onClick)="onSubmit()"
-      [disabled]="!technicalSkillForm.valid"
-      severity="primary"
-    />
-  </div>
 </form>
+}
 
 <p-toast position="bottom-right" />
 

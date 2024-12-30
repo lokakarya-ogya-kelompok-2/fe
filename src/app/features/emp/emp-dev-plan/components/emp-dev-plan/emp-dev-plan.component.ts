@@ -40,7 +40,7 @@ export class EmpDevPlanComponent implements OnInit {
   devPlans: DevPlan[] = [];
   empDevPlans: { [key: string]: EmpDevPlanRequest[] } = {};
   userId: string = '';
-  submissible: boolean = false;
+  submissible: { [key: string]: boolean } = {};
   constructor(
     private empDevPlanService: EmpDevPlanService,
     private devPlanService: DevPlanService,
@@ -54,6 +54,10 @@ export class EmpDevPlanComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fetchEmpDevPlans();
+  }
+
+  fetchEmpDevPlans() {
     this.userId = this.tokenSvc.decodeToken(this.tokenSvc.getToken()!).sub!;
 
     forkJoin({
@@ -87,7 +91,9 @@ export class EmpDevPlanComponent implements OnInit {
           ];
         }
       });
-      this.checkSubmissible();
+      this.devPlans.forEach((devPlan) => {
+        this.checkSubmissible(devPlan.id);
+      });
     });
   }
 
@@ -98,15 +104,15 @@ export class EmpDevPlanComponent implements OnInit {
     this.empDevPlans[key].push({
       assessment_year: this.currentYear,
     } as EmpDevPlanRequest);
-    this.checkSubmissible();
+    this.checkSubmissible(key);
   }
 
   removeField(key: string, ix: number) {
     this.empDevPlans[key] = this.empDevPlans[key].filter((_, i) => i !== ix);
-    this.checkSubmissible();
+    this.checkSubmissible(key);
   }
 
-  onSubmit() {
+  onSubmit(key: string) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'After submitting this form, you will not be able to modify the data. Are you sure you want to proceed?',
@@ -118,17 +124,14 @@ export class EmpDevPlanComponent implements OnInit {
       confirmButtonText: 'Yes',
     }).then((result) => {
       if (result.isConfirmed) {
-        let empDevPlanRequest: EmpDevPlanRequest[] = [];
-        Object.entries(this.empDevPlans).forEach(([devPlanId, userInputs]) => {
-          userInputs.forEach((userInput) => {
-            if (userInput.id) {
-              return;
-            }
-            userInput.dev_plan_id = devPlanId;
-            userInput.assessment_year = this.currentYear;
-            empDevPlanRequest.push(userInput);
+
+        const empDevPlanRequest: EmpDevPlanRequest[] = this.empDevPlans[key]
+          .filter((empDevPlan) => !empDevPlan.dev_plan_id)
+          .map((empDevPlan) => {
+            empDevPlan.dev_plan_id = key;
+            empDevPlan.assessment_year = this.currentYear;
+            return empDevPlan;
           });
-        });
 
         this.empDevPlanService.insertBulk(empDevPlanRequest).subscribe({
           next: () => {
@@ -140,14 +143,16 @@ export class EmpDevPlanComponent implements OnInit {
               confirmButtonText: 'Ok',
             }).then((result) => {
               if (result.isConfirmed) {
-                this.reload();
+                this.empDevPlans = {};
+                this.fetchEmpDevPlans();
               }
             });
           },
           error: (err) => {
+            console.error('Failed to insert employee development plans: ', err);
             this.messageSvc.add({
               severity: 'error',
-              summary: 'Delete',
+              summary: 'Failed to insert employee development plans',
               detail: err.error?.message,
             });
           },
@@ -156,9 +161,9 @@ export class EmpDevPlanComponent implements OnInit {
     });
   }
 
-  checkSubmissible() {
-    this.submissible = Object.values(this.empDevPlans)
-      .flat()
-      .some((req) => req.id == undefined);
+  checkSubmissible(key: string) {
+    this.submissible[key] = this.empDevPlans[key].some(
+      (req) => req.id == undefined
+    );
   }
 }

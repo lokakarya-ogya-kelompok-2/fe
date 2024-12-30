@@ -16,9 +16,9 @@
   <i class="pi pi-info-circle text-6xl text-primary"></i>
   <h1>No Development Plans Available</h1>
 </div>
-} @else {
-<form #empDevPlanForm="ngForm" class="card">
-  @for (devPlan of devPlans; track devPlan.id) {
+
+} @else { @for (devPlan of devPlans; track devPlan.id) {
+<form #empDevPlanForm="ngForm" class="card m-4">
   <div class="inner-card w-full mb-4" style="max-width: 1148px; margin: 0 auto">
     <div class="mb-4">
       <h2 class="text-xl font-bold mb-3 text-center">
@@ -71,7 +71,14 @@
         </div>
       </div>
       }
-      <div class="flex justify-content-end mt-3">
+      <div class="flex justify-content-between mt-3">
+        <p-button
+          label="Submit"
+          icon="pi pi-check"
+          (onClick)="onSubmit(devPlan.id)"
+          severity="primary"
+          [disabled]="empDevPlanForm.invalid || !submissible[devPlan.id]"
+        />
         <p-button
           label="Add Field"
           icon="pi pi-plus"
@@ -81,15 +88,5 @@
       </div>
     </div>
   </div>
-  }
-  <div class="flex justify-content-center mt-4 mb-4">
-    <p-button
-      label="Submit"
-      icon="pi pi-check"
-      (onClick)="onSubmit()"
-      severity="primary"
-      [disabled]="empDevPlanForm.invalid || !submissible"
-    />
-  </div>
 </form>
-}
+} }
