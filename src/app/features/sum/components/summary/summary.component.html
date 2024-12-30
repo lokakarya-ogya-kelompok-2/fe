@@ -30,7 +30,11 @@
     [disabled]="!assessmentSummaryAvailable"
   ></p-button>
 </div>
-<app-table [data]="summary.attitude_skills!" tableHeader="Attitude Skills" />
+<app-table
+  [data]="summary.attitude_skills!"
+  tableHeader="Attitude Skills"
+  [isScoreCategorical]="true"
+/>
 <app-table [data]="summary.achievements!" tableHeader="Achievements" />
 
 <div class="flex justify-content-center w-full py-4">

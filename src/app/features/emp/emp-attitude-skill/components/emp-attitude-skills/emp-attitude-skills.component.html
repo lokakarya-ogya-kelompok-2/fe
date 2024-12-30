@@ -5,6 +5,13 @@
       <h2 class="text-xl font-semibold m-0">
         Employee Attitude Skills Assessment
       </h2>
+      <div style="display: inline-block; width: 24px">
+        <!-- *ngIf="!empAttitudeSkills[skill.id].id" -->
+        <i
+          class="pi pi-info-circle text-blue-500 ml-2"
+          [pTooltip]="tooltipContent"
+        ></i>
+      </div>
     </div>
   </p-card>
 </div>
@@ -62,13 +69,13 @@
                     [disabled]="empAttitudeSkills[skill.id].id != undefined"
                     [style]="{ width: '230px' }"
                   />
-                  <div style="display: inline-block; width: 24px">
+                  <!-- <div style="display: inline-block; width: 24px">
                     <i
                       *ngIf="!empAttitudeSkills[skill.id].id"
                       class="pi pi-info-circle text-blue-500 ml-2"
                       [pTooltip]="tooltipContent"
                     ></i>
-                  </div>
+                  </div> -->
                 </div>
               </div>
               <div

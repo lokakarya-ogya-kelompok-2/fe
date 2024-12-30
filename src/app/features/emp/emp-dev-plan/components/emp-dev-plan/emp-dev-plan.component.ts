@@ -114,11 +114,10 @@ export class EmpDevPlanComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes',
       cancelButtonText: 'No',
+      confirmButtonText: 'Yes',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.messageSvc.clear();
         let empDevPlanRequest: EmpDevPlanRequest[] = [];
         Object.entries(this.empDevPlans).forEach(([devPlanId, userInputs]) => {
           userInputs.forEach((userInput) => {
@@ -132,7 +131,7 @@ export class EmpDevPlanComponent implements OnInit {
         });
 
         this.empDevPlanService.insertBulk(empDevPlanRequest).subscribe({
-          next: (data) => {
+          next: () => {
             Swal.fire({
               icon: 'success',
               title: 'Success',

@@ -5,11 +5,15 @@
       <h2 class="text-xl font-semibold m-0">
         Employee Technical Skills Assessment
       </h2>
+      <i
+        class="pi pi-info-circle text-blue-500 ml-2"
+        [pTooltip]="tooltipContent"
+      ></i>
     </div>
   </p-card>
 </div>
 
-<form #technicalSkillForm="ngForm" class="card m-4 p-4">
+<form #technicalSkillForm="ngForm" class="card">
   @for (technicalSkill of technicalSkills; track technicalSkill.id) {
   <div class="inner-card w-full">
     <div class="mb-4">
@@ -72,12 +76,6 @@
               #skillLevel="ngModel"
               [style]="{ width: '350px' }"
             />
-            @if(!empTechnicalSkills[technicalSkill.id][$index].id){
-            <i
-              class="pi pi-info-circle text-blue-500 ml-2"
-              [pTooltip]="tooltipContent"
-            ></i>
-            }
             <div
               *ngIf="
                 skillLevel.invalid && (skillLevel.dirty || skillLevel.touched)

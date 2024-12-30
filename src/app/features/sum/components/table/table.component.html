@@ -25,9 +25,21 @@
         </tr>
         <tr *ngFor="let child of item.items">
           <td style="padding-left: 2rem; color: green">
-            {{ child.attitude_skill?.attitude_skill }}
+            -
+            {{
+              child.attitude_skill?.attitude_skill ||
+                child.achievement_id?.achievement
+            }}
           </td>
-          <td style="text-align: center; color: green">{{ child.score }}</td>
+          @if (isScoreCategorical) {
+          <td style="text-align: center; color: green">
+            {{ getScoreCategory(child.score) }}
+          </td>
+          } @else {
+          <td style="text-align: center; color: green">
+            {{ child.score }}
+          </td>
+          }
         </tr>
       </ng-template>
     </p-table>
