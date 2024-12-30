@@ -71,19 +71,20 @@
         </div>
       </div>
       }
-      <div class="flex justify-content-between mt-3">
+      <div class="flex justify-content-end mt-3">
+        <p-button
+          label="Add Field"
+          icon="pi pi-plus"
+          (onClick)="addField(devPlan.id)"
+          severity="secondary"
+        />
         <p-button
           label="Submit"
           icon="pi pi-check"
           (onClick)="onSubmit(devPlan.id)"
           severity="primary"
           [disabled]="empDevPlanForm.invalid || !submissible[devPlan.id]"
-        />
-        <p-button
-          label="Add Field"
-          icon="pi pi-plus"
-          (onClick)="addField(devPlan.id)"
-          severity="secondary"
+          [style]="{ 'margin-left': '1rem' }"
         />
       </div>
     </div>
