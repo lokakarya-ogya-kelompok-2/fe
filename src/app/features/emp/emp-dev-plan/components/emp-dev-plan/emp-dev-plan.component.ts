@@ -120,11 +120,11 @@ export class EmpDevPlanComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes',
       cancelButtonText: 'No',
+      confirmButtonText: 'Yes',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.messageSvc.clear();
+
         const empDevPlanRequest: EmpDevPlanRequest[] = this.empDevPlans[key]
           .filter((empDevPlan) => !empDevPlan.dev_plan_id)
           .map((empDevPlan) => {

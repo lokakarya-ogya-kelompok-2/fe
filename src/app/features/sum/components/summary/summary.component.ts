@@ -127,7 +127,7 @@ export class SummaryComponent implements OnChanges, OnInit {
 
     worksheet.columns = [
       { header: 'Aspect', key: 'aspect', width: 40 },
-      { header: 'Score', key: 'score', width: 10 },
+      { header: 'Score', key: 'score', width: 20 },
       { header: 'Weight', key: 'weight', width: 10 },
       { header: 'Final Score', key: 'final_score', width: 15 },
     ];
@@ -156,6 +156,19 @@ export class SummaryComponent implements OnChanges, OnInit {
       dataRow.eachCell((cell) => {
         cell.border = borderStyle;
       });
+
+      if (skill.items && skill.items.length > 0) {
+        skill.items.forEach((item: any) => {
+          const childRow = worksheet.addRow([
+            `    - ${item.attitude_skill.attitude_skill}`,
+            `${item.score} (${this.getScoreCategory(item.score)})`,
+            '',
+            '',
+          ]);
+          childRow.getCell(1).font = { color: { argb: '008000' } };
+          childRow.getCell(2).font = { color: { argb: '008000' } };
+        });
+      }
     });
 
     worksheet.addRow(['']);
@@ -184,6 +197,19 @@ export class SummaryComponent implements OnChanges, OnInit {
       dataRow.eachCell((cell) => {
         cell.border = borderStyle;
       });
+
+      if (achievement.items && achievement.items.length > 0) {
+        achievement.items.forEach((item: any) => {
+          const childRow = worksheet.addRow([
+            `    - ${item.achievement_id.achievement}`,
+            `${item.score} (${this.getScoreCategory(item.score)})`,
+            '',
+            '',
+          ]);
+          childRow.getCell(1).font = { color: { argb: '008000' } };
+          childRow.getCell(2).font = { color: { argb: '008000' } };
+        });
+      }
     });
 
     worksheet.addRow(['']);
@@ -209,6 +235,14 @@ export class SummaryComponent implements OnChanges, OnInit {
     });
   }
 
+  getScoreCategory(score: number): string {
+    if (score >= 80 && score <= 100) return 'Excellent';
+    if (score >= 60 && score < 80) return 'Good';
+    if (score >= 40 && score < 60) return 'Fair';
+    if (score >= 20 && score < 40) return 'Poor';
+    return 'Very Poor';
+  }
+
   exportToPDF() {
     const doc = new jsPDF();
 
@@ -221,12 +255,36 @@ export class SummaryComponent implements OnChanges, OnInit {
     doc.setFontSize(14);
     doc.text('Attitude Skills', 14, 40);
 
-    const attitudeSkillsData = this.summary.attitude_skills?.map((skill) => [
-      skill.aspect,
-      skill.score,
-      `${parseFloat(skill.weight.toFixed(2))}%`,
-      parseFloat(skill.final_score.toFixed(2)),
-    ]);
+    const attitudeSkillsData: any = [];
+    this.summary.attitude_skills?.forEach((skill) => {
+      attitudeSkillsData.push([
+        skill.aspect,
+        skill.score,
+        `${parseFloat(skill.weight.toFixed(2))}%`,
+        parseFloat(skill.final_score.toFixed(2)),
+      ]);
+
+      if (skill.items && skill.items.length > 0) {
+        skill.items.forEach((item: any) => {
+          attitudeSkillsData.push([
+            {
+              text: `    - ${item.attitude_skill.attitude_skill}`,
+              color: 'green',
+              style: 'child',
+            },
+            {
+              text: `${item.score} (${this.getScoreCategory(item.score)})`,
+              color: 'green',
+              style: 'child',
+            },
+            '',
+            '',
+          ]);
+        });
+      }
+    });
+
+    console.log(attitudeSkillsData);
 
     (doc as any).autoTable({
       head: [['Aspect', 'Score', 'Weight', 'Final Score']],
@@ -235,9 +293,23 @@ export class SummaryComponent implements OnChanges, OnInit {
       theme: 'grid',
       columnStyles: {
         0: { cellWidth: 100 },
-        1: { cellWidth: 25 },
+        1: { cellWidth: 35 },
         2: { cellWidth: 25 },
         3: { cellWidth: 30 },
+      },
+
+      didParseCell: (data: any) => {
+        if (
+          data.cell.raw &&
+          typeof data.cell.raw === 'object' &&
+          data.cell.raw.text
+        ) {
+          data.cell.text = data.cell.raw.text;
+
+          if (data.cell.raw.color) {
+            data.cell.styles.textColor = data.cell.raw.color;
+          }
+        }
       },
     });
 
@@ -245,12 +317,36 @@ export class SummaryComponent implements OnChanges, OnInit {
     doc.setFontSize(14);
     doc.text('Achievements', 14, finalY);
 
-    const achievementsData = this.summary.achievements?.map((achievement) => [
-      achievement.aspect,
-      achievement.score,
-      `${parseFloat(achievement.weight.toFixed(2))}%`,
-      parseFloat(achievement.final_score.toFixed(2)),
-    ]);
+    const achievementsData: any = [];
+    this.summary.achievements?.forEach((achievement) => {
+      achievementsData.push([
+        { text: achievement.aspect, style: 'parent' },
+        achievement.score,
+        `${parseFloat(achievement.weight.toFixed(2))}%`,
+        parseFloat(achievement.final_score.toFixed(2)),
+      ]);
+
+      if (achievement.items && achievement.items.length > 0) {
+        achievement.items.forEach((item: any) => {
+          achievementsData.push([
+            {
+              text: `    - ${item.achievement_id.achievement}`,
+              color: 'green',
+              style: 'child',
+            },
+            {
+              text: `${item.score}`,
+              color: 'green',
+              style: 'child',
+            },
+            '',
+            '',
+          ]);
+        });
+      }
+    });
+
+    console.log(achievementsData);
 
     (doc as any).autoTable({
       head: [['Aspect', 'Score', 'Weight', 'Final Score']],
@@ -259,9 +355,22 @@ export class SummaryComponent implements OnChanges, OnInit {
       theme: 'grid',
       columnStyles: {
         0: { cellWidth: 100 },
-        1: { cellWidth: 25 },
+        1: { cellWidth: 35 },
         2: { cellWidth: 25 },
         3: { cellWidth: 30 },
+      },
+      didParseCell: (data: any) => {
+        if (
+          data.cell.raw &&
+          typeof data.cell.raw === 'object' &&
+          data.cell.raw.text
+        ) {
+          data.cell.text = data.cell.raw.text;
+
+          if (data.cell.raw.color) {
+            data.cell.styles.textColor = data.cell.raw.color;
+          }
+        }
       },
     });
 

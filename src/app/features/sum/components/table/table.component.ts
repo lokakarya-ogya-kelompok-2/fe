@@ -12,10 +12,12 @@ import { SummaryItem } from '../../models/summary';
   styleUrl: './table.component.scss',
 })
 export class TableComponent {
+  @Input() isScoreCategorical: boolean = false;
   @Input() data: SummaryItem[] = [];
   // files: any[] = [];
   expandedRows: { [key: string]: boolean } = {};
   @Input() tableHeader: string = '';
+
   ngOnInit() {
     if (this.data) {
       this.data.forEach((item) => {
@@ -23,29 +25,16 @@ export class TableComponent {
       });
     }
   }
-  // ngOnInit() {
-  //   // Mock data
-  //   this.files = [
-  //     {
-  //       data: {
-  //         // rowData
-  //         key: '0',
-  //         group_name: 'Group 1',
-  //         percentage: 30,
-  //         type: 'Group',
-  //       },
-  //       children: [
-  //         {
-  //           key: '0-0',
-  //           group_name: 'Group group',
-  //           percentage: 40,
-  //           type: 'Group',
-  //         },
-  //       ], // rowNode.children
-  //       expanded: false, // rowNode.expanded
-  //       leaf: false, // rowNode.leaf
-  //     },
-  //   ];
-  //   console.log(this.files);
-  // }
+
+  getScoreCategory(score: number): string {
+    if (score >= 80 && score <= 100) return 'Excellent';
+    if (score >= 60 && score < 80) return 'Good';
+    if (score >= 40 && score < 60) return 'Fair';
+    if (score >= 20 && score < 40) return 'Poor';
+    return 'Very Poor';
+  }
+
+  stringify(obj: Object) {
+    return JSON.stringify(obj);
+  }
 }
