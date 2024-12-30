@@ -15,13 +15,15 @@
 </div>
 }
 <div class="button-export">
+  @if (showApproveButton) {
   <p-button
     icon="pi pi-check-circle"
     label="Approve"
     (onClick)="onApprove(summary.id)"
     severity="primary"
     [disabled]="summary.approval_status == 1"
-  ></p-button>
+  />
+  }
   <p-button
     icon="pi pi-file-excel"
     label="Export to Excel"
