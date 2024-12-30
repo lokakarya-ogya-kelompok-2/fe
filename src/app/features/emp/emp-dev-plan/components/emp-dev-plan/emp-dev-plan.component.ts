@@ -149,9 +149,10 @@ export class EmpDevPlanComponent implements OnInit {
             });
           },
           error: (err) => {
+            console.error('Failed to insert employee development plans: ', err);
             this.messageSvc.add({
               severity: 'error',
-              summary: 'Delete',
+              summary: 'Failed to insert employee development plans',
               detail: err.error?.message,
             });
           },

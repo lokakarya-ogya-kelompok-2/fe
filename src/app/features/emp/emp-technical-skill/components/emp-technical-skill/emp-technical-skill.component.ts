@@ -76,6 +76,10 @@ export class EmpTechnicalSkillComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.fetchEmpTechnicalSkills();
+  }
+
+  fetchEmpTechnicalSkills() {
     this.userId = this.tokenSvc.decodeToken(this.tokenSvc.getToken()!).sub!;
 
     this.empTechSkillSvc
@@ -140,7 +144,7 @@ export class EmpTechnicalSkillComponent implements OnInit {
     );
   }
 
-  onSubmit() {
+  onSubmit(key: string) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'After submitting this form, you will not be able to modify the data. Are you sure you want to proceed?',
@@ -152,19 +156,14 @@ export class EmpTechnicalSkillComponent implements OnInit {
       cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
-        let empTechnicalSkillsReq: EmpTechnicalSkillReq[] = [];
-        Object.entries(this.empTechnicalSkills).forEach(
-          ([techSkillId, userInputs]) => {
-            userInputs.forEach((userInput) => {
-              if (userInput.id) {
-                return;
-              }
-              userInput.technical_skill_id = techSkillId;
-              userInput.assessment_year = this.currentYear;
-              empTechnicalSkillsReq.push(userInput);
+        let empTechnicalSkillsReq: EmpTechnicalSkillReq[] =
+          this.empTechnicalSkills[key]
+            .filter((empTechnicalSkill) => !empTechnicalSkill.id)
+            .map((empTechnicalSkill) => {
+              empTechnicalSkill.technical_skill_id = key;
+              empTechnicalSkill.assessment_year = this.currentYear;
+              return empTechnicalSkill;
             });
-          }
-        );
 
         this.empTechSkillSvc.insertBulk(empTechnicalSkillsReq).subscribe({
           next: (_) => {
@@ -173,7 +172,8 @@ export class EmpTechnicalSkillComponent implements OnInit {
               icon: 'success',
             }).then((res) => {
               if (res.isConfirmed) {
-                this.reload();
+                this.empTechnicalSkills = {};
+                this.fetchEmpTechnicalSkills();
               }
             });
           },
@@ -181,7 +181,7 @@ export class EmpTechnicalSkillComponent implements OnInit {
             console.error('Failed to insert employee technical skill: ', err);
             Swal.fire({
               icon: 'error',
-              title: 'Failed to create employee technical skill',
+              title: 'Failed to insert employee technical skill',
               text: err.error.message,
             });
           },
