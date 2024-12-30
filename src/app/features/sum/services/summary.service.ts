@@ -11,19 +11,26 @@ import { Summary, SummaryQueryParam } from '../models/summary';
 })
 export class SummaryService {
   private Api = `${environment.baseApiURL}/assessment-summaries`;
-  constructor(private http: HttpClient) {}
+  constructor(private httpClient: HttpClient) {}
 
   getAllSummary(param: SummaryQueryParam): Observable<Response<Summary[]>> {
     const params = toHttpParam(param);
-    return this.http.get<Response<Summary[]>>(this.Api, { params });
+    return this.httpClient.get<Response<Summary[]>>(this.Api, { params });
   }
 
   calculateSummary(
     userId: string,
     year: number
   ): Observable<Response<Summary>> {
-    return this.http.get<Response<Summary>>(
+    return this.httpClient.get<Response<Summary>>(
       `${this.Api}/calculate/${userId}/${year}`
+    );
+  }
+
+  approve(id: string): Observable<Response<Summary>> {
+    return this.httpClient.put<Response<Summary>>(
+      `${this.Api}/${id}/approve`,
+      null
     );
   }
 }

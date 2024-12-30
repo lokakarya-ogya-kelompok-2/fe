@@ -27,6 +27,7 @@ export interface Summary extends ResponseContentMeta {
   score: number;
   status: number;
   year: number;
+  approval_status: number;
   achievements?: SummaryItem[];
   attitude_skills?: SummaryItem[];
 }
