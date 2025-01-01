@@ -1,0 +1,138 @@
+@if (noAchievements) {
+<div class="flex justify-content-center">
+  <p-message text="No Achievement Data Available!" severity="error" />
+</div>
+} @else {
+<div class="achievement-groups">
+  <p-accordion [multiple]="true" styleClass="mb-4">
+    @for (group of groupAchievements; track group.id) {
+    <p-accordionTab [header]="group.group_name" [ariaExpanded]="false">
+      @if (!isApproved) {
+      <form
+        #achievementForm="ngForm"
+        class="mb-4"
+        (submit)="onSubmit(group.id)"
+      >
+        <div class="grid">
+          <div class="col-12 mb-3">
+            <p-dropdown
+              [(ngModel)]="empAchievementRequests[group.id].achievement_id"
+              [options]="achievementList[group.id]"
+              placeholder="Select an achievement"
+              [name]="group.id + '_achievements'"
+              [disabled]="isEditing[group.id]"
+              required
+              styleClass="w-full"
+            />
+          </div>
+          <div class="col-12 mb-3">
+            <input
+              pInputText
+              [(ngModel)]="empAchievementRequests[group.id].score"
+              type="number"
+              id="score"
+              [name]="group.id + '_score'"
+              required
+              min="0"
+              max="100"
+              class="w-full p-inputtext"
+              placeholder="Enter score (0-100)"
+            />
+          </div>
+          <div class="col-12 mb-3">
+            <textarea
+              [(ngModel)]="empAchievementRequests[group.id].notes"
+              pInputTextarea
+              id="notes"
+              [name]="group.id + '_notes'"
+              required
+              maxlength="100"
+              rows="3"
+              class="w-full"
+              pattern=".*\S.*"
+              placeholder="Enter notes"
+            ></textarea>
+          </div>
+        </div>
+        <div class="flex justify-content-center">
+          <p-button
+            type="submit"
+            [disabled]="achievementForm.invalid"
+            label="Save"
+            styleClass="p-button-primary w-8rem"
+          />
+        </div>
+      </form>
+      }
+      <p-table
+        [value]="empAchievements[group.id]"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        styleClass="p-datatable-striped"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="w-4">Achievement</th>
+            <th class="w-4">Notes</th>
+            <th class="w-2">Score</th>
+            <th class="w-2">Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-empAc>
+          <tr>
+            <td>{{ empAc.achievement_id.achievement }}</td>
+            <td>{{ empAc.notes }}</td>
+            <td>{{ empAc.score }}</td>
+            <td>
+              <div class="flex gap-2">
+                @if (isEditing[group.id]) {
+                <p-button
+                  severity="danger"
+                  icon="pi pi-times"
+                  (onClick)="onCancelEdit(group.id)"
+                  [rounded]="true"
+                  [raised]="true"
+                  [style]="{ height: '40px', width: '40px' }"
+                />
+                } @else {
+                <p-button
+                  severity="success"
+                  icon="pi pi-pen-to-square"
+                  (onClick)="onEdit(group.id, empAc)"
+                  [rounded]="true"
+                  [raised]="true"
+                  [style]="{ height: '40px', width: '40px' }"
+                  [disabled]="isApproved"
+                />
+                }
+                <p-button
+                  severity="danger"
+                  icon="pi pi-trash"
+                  [outlined]="true"
+                  [rounded]="true"
+                  [raised]="true"
+                  (onClick)="onDelete(empAc.id)"
+                  [style]="{ height: '40px', width: '40px' }"
+                  [disabled]="isApproved"
+                />
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="4" class="text-center p-4">
+              <div class="flex flex-column align-items-center gap-2">
+                <i class="pi pi-info-circle text-4xl text-primary"></i>
+                <span class="font-semibold text-lg"
+                  >No employee achievement available</span
+                >
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-accordionTab>
+    }
+  </p-accordion>
+</div>
+}
