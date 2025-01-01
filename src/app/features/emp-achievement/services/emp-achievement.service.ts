@@ -22,23 +22,32 @@ export class EmpAchievementService {
     const params = toHttpParam(param);
     return this.http.get<Response<EmpAchievement[]>>(this.Api, { params });
   }
+
   createEmpAchievement(
-    empAchievement: EmpAchievementRequest[]
-  ): Observable<EmpAchievement[]> {
-    return this.http.post<EmpAchievement[]>(
+    data: EmpAchievementRequest
+  ): Observable<Response<EmpAchievement>> {
+    return this.http.post<Response<EmpAchievement>>(this.Api, data);
+  }
+
+  bulkCreateEmpAchievement(
+    data: EmpAchievementRequest[]
+  ): Observable<Response<EmpAchievement[]>> {
+    return this.http.post<Response<EmpAchievement[]>>(
       `${this.Api}/bulk-create`,
-      empAchievement
+      data
     );
   }
+
   updateEmpAchievement(
-    empAchievement: EmpAchievement
-  ): Observable<EmpAchievement> {
-    return this.http.put<EmpAchievement>(
-      `${this.Api}/${empAchievement.id}`,
-      empAchievement
+    data: EmpAchievementRequest
+  ): Observable<Response<EmpAchievement>> {
+    return this.http.put<Response<EmpAchievement>>(
+      `${this.Api}/${data.id}`,
+      data
     );
   }
-  deleteEmpAchievement(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.Api}/${id}`);
+
+  deleteEmpAchievement(id: string): Observable<Response<void>> {
+    return this.http.delete<Response<void>>(`${this.Api}/${id}`);
   }
 }
