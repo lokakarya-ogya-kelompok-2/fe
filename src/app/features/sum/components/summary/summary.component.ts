@@ -480,7 +480,7 @@ export class SummaryComponent implements OnChanges, OnInit {
       score: data.score,
       assessment_year: data.assessment_year,
     };
-    this.empAttitudeSkillSvc.updateEmpAttitudeSkill(editData).subscribe({
+    this.empAttitudeSkillSvc.update(editData).subscribe({
       next: () => {
         Swal.fire({
           icon: 'success',
