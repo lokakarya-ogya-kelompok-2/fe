@@ -68,7 +68,7 @@ export class MySummaryComponent implements OnInit {
   }
 
   fetchAssessmentSummary() {
-    this.summarySvc.calculateSummary(this.userId, this.currentYear).subscribe({
+    this.summarySvc.calculateSummary(this.userId, this.selectedYear).subscribe({
       next: (data) => {
         this.summary = data.content;
         console.log(this.summary);

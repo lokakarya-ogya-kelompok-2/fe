@@ -33,6 +33,11 @@
           </td>
           @if (isScoreCategorical) {
           <td style="text-align: center; color: green">
+            @if(summaryData.approval_status == 1) {
+            <span style="color: green">{{
+              getScoreCategory(child.score)
+            }}</span>
+            }@else{
             <p-dropdown
               [options]="dropdownScoreCategories"
               [(ngModel)]="child.score"
@@ -45,11 +50,6 @@
               styleClass="p-dropdown-sm"
               appendTo="body"
             >
-              <!-- <ng-template pTemplate="selectedItem">
-                <span style="color: green">{{
-                  getScoreCategory(child.score)
-                }}</span>
-              </ng-template> -->
               <ng-template pTemplate="selectedItem" let-item>
                 <span style="color: green">{{ item.label }}</span>
               </ng-template>
@@ -57,6 +57,7 @@
                 <span>{{ item.label }}</span>
               </ng-template>
             </p-dropdown>
+            }
           </td>
           } @else {
           <td style="text-align: center; color: green">
@@ -64,7 +65,11 @@
           </td>
           }
           <td colspan="2" style="text-align: center">
-            <p-button label="Update" (onClick)="onButtonClick.emit(child)" />
+            <p-button
+              label="Update"
+              (onClick)="onButtonClick.emit(child)"
+              [disabled]="summaryData.approval_status == 1"
+            />
           </td>
         </tr>
       </ng-template>

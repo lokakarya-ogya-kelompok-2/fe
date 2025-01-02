@@ -5,11 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { TreeTableModule } from 'primeng/treetable';
-import { TokenService } from '../../../../core/services/token.service';
-import { EmpAttitudeSkillsService } from '../../../emp/emp-attitude-skill/services/emp-attitude-skills.service';
-import { UserService } from '../../../users/services/user.service';
 import { Summary, SummaryItem } from '../../models/summary';
-import { SummaryService } from '../../services/summary.service';
 
 @Component({
   selector: 'app-table',
@@ -32,27 +28,19 @@ export class TableComponent {
   expandedRows: { [key: string]: boolean } = {};
   @Input() tableHeader: string = '';
   @Input() updateFunction: string = '';
+  @Input() summaryData: Summary = {} as Summary;
   @Output() onButtonClick = new EventEmitter<any>();
   summary: Summary = {} as Summary;
-  constructor(
-    private readonly summarySvc: SummaryService,
-    private readonly tokenSvc: TokenService,
-    private readonly userSvc: UserService,
-    private readonly empAttitudeSkillSvc: EmpAttitudeSkillsService
-  ) {}
+
   ngOnInit() {
     if (this.data) {
       this.data.forEach((item) => {
         this.expandedRows[item.aspect] = false;
       });
     }
+    console.log(this.summaryData, 'asddddddddddddddddddddd');
   }
 
-  // fetchAssessmentSummary() {
-  //   this.summarySvc
-  //     .calculateSummary(this.userId, this.selectedYear)
-  //     .subscribe({});
-  // }
   getScoreCategory(score: number): string {
     if (score >= 80 && score <= 100) return 'Excellent';
     if (score >= 60 && score < 80) return 'Good';
@@ -79,23 +67,4 @@ export class TableComponent {
     console.log(child.id, 'ini id');
     console.log(child.assessment_year, 'ini year');
   }
-
-  // updateAttitudeSkill() {
-  //   console.log('update attitude skill data');
-  // }
-  // updateAchievement() {
-  //   console.log('update achievement data');
-  // }
-
-  // updateChild(
-  //   id: string,
-  //   attitude_skill_id: string,
-  //   year: number,
-  //   score: number
-  // ) {
-  //   console.log(id, 'ini id');
-  //   console.log(attitude_skill_id, 'ini attitude skill id');
-  //   console.log(year, 'ini year');
-  //   console.log(score, 'ini score');
-  // }
 }

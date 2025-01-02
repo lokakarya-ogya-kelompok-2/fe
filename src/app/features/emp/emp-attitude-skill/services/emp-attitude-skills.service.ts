@@ -34,10 +34,10 @@ export class EmpAttitudeSkillsService {
   }
 
   updateEmpAttitudeSkill(
-    empAttitudeSkillRequest: EmpAttitudeSkillRequest[]
-  ): Observable<EmpAttitudeSkill[]> {
-    return this.http.put<EmpAttitudeSkill[]>(
-      `${this.Api}/${empAttitudeSkillRequest[0].id}`,
+    empAttitudeSkillRequest: EmpAttitudeSkillRequest
+  ): Observable<EmpAttitudeSkill> {
+    return this.http.put<EmpAttitudeSkill>(
+      `${this.Api}/${empAttitudeSkillRequest.id}`,
       empAttitudeSkillRequest
     );
   }
