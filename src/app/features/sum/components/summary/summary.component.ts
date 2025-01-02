@@ -8,26 +8,36 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import Swal from 'sweetalert2';
 import { TokenService } from '../../../../core/services/token.service';
-import { Achievement } from '../../../achievement/model/achievement';
-import { AttitudeSkill } from '../../../attitude-skill/models/attitude-skill';
-import { EmpAchievement } from '../../../emp-achievement/models/emp-achievement';
-import { EmpAttitudeSkill } from '../../../emp/emp-attitude-skill/models/emp-attitude-skill';
+import {
+  EmpAchievement,
+  EmpAchievementRequest,
+} from '../../../emp-achievement/models/emp-achievement';
+import { EmpAchievementService } from '../../../emp-achievement/services/emp-achievement.service';
+import {
+  EmpAttitudeSkill,
+  EmpAttitudeSkillRequest,
+} from '../../../emp/emp-attitude-skill/models/emp-attitude-skill';
+import { EmpAttitudeSkillsService } from '../../../emp/emp-attitude-skill/services/emp-attitude-skills.service';
 import { GroupAchievement } from '../../../group-achievement/model/group-achievement';
 import { GroupAttitudeSkill } from '../../../group-attitude-skill/models/group-attitude-skill';
 import { User } from '../../../users/models/user';
 import { UserService } from '../../../users/services/user.service';
-import { Summary } from '../../models/summary';
+import { EmpAchievementFormData, Summary } from '../../models/summary';
 import { SummaryService } from '../../services/summary.service';
 import { TableComponent } from '../table/table.component';
+
 @Component({
   selector: 'app-summary',
   standalone: true,
@@ -37,6 +47,9 @@ import { TableComponent } from '../table/table.component';
     MessageModule,
     ButtonModule,
     ProgressSpinnerModule,
+    DialogModule,
+    FormsModule,
+    InputTextModule,
   ],
   templateUrl: './summary.component.html',
   styleUrl: './summary.component.scss',
@@ -61,11 +74,18 @@ export class SummaryComponent implements OnChanges, OnInit {
   currentUser: User = {} as User;
   isLoading = true;
   showApproveButton: boolean = false;
-
+  visible: boolean = false;
+  empAchievementEditData: EmpAchievement = {} as EmpAchievement;
+  formData: EmpAchievementFormData = {
+    score: 0,
+    notes: '',
+  };
   constructor(
     private readonly summarySvc: SummaryService,
     private readonly tokenSvc: TokenService,
-    private readonly userSvc: UserService
+    private readonly userSvc: UserService,
+    private readonly empAttitudeSkillSvc: EmpAttitudeSkillsService,
+    private readonly empAchievementSvc: EmpAchievementService
   ) {}
   ngOnInit(): void {
     const jwtPayload = this.tokenSvc.decodeToken(this.tokenSvc.getToken()!);
@@ -452,11 +472,90 @@ export class SummaryComponent implements OnChanges, OnInit {
     });
   }
 
-  attitudeSkill(data: AttitudeSkill) {
+  attitudeSkill(data: EmpAttitudeSkill) {
     console.log('attitude skill INI: ', data);
+    const editData: EmpAttitudeSkillRequest = {
+      id: data.id,
+      attitude_skill_id: data.attitude_skill.id,
+      score: data.score,
+      assessment_year: data.assessment_year,
+    };
+    this.empAttitudeSkillSvc.update(editData).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Attitude skill updated successfully',
+          customClass: {
+            container: 'z-10k',
+          },
+        });
+        this.fetchAssessmentSummary();
+      },
+      error: (err) => {
+        console.error('Error updating attitude skill: ', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed to update attitude skill',
+          text: err.error.message,
+          customClass: {
+            container: 'z-10k',
+          },
+        });
+        this.fetchAssessmentSummary();
+      },
+    });
   }
 
-  achievement(data: Achievement) {
+  achievement(data: EmpAchievement) {
+    this.empAchievementEditData = data;
+    this.formData.score = data.score;
+    this.formData.notes = data.notes;
     console.log('achievement INI: ', data);
+    this.visible = true;
+    console.log(this.formData);
+  }
+
+  empAchievementEdit() {
+    console.log('tessssssssssssssss');
+    console.log(this.formData);
+
+    const editData: EmpAchievementRequest = {
+      id: this.empAchievementEditData.id,
+      user_id: this.empAchievementEditData.user_id.id,
+      notes: this.formData.notes,
+      achievement_id: this.empAchievementEditData.achievement_id.id,
+      score: this.formData.score,
+      assessment_year: this.empAchievementEditData.assessment_year,
+    };
+
+    console.log(editData, 'editttttttttttttttttttttt');
+
+    this.empAchievementSvc.updateEmpAchievement(editData).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Achievement updated successfully',
+          customClass: {
+            container: 'z-10k',
+          },
+        });
+        this.visible = false;
+        this.fetchAssessmentSummary();
+      },
+      error: (err) => {
+        console.error('Error updating achievement: ', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed to update achievement',
+          text: err.error.message,
+          customClass: {
+            container: 'z-10k',
+          },
+        });
+        this.fetchAssessmentSummary();
+      },
+    });
   }
 }

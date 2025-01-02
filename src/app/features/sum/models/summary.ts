@@ -41,3 +41,8 @@ export interface SummaryQueryParam extends QueryParam {
   with_updated_by?: boolean;
   approval_status?: number;
 }
+
+export interface EmpAchievementFormData {
+  score: number;
+  notes: string;
+}

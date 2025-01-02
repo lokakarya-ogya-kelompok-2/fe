@@ -20,20 +20,6 @@
     </div>
   </p-card>
 </div>
-<div class="flex justify-content-center">
-  @if(this.summary.approval_status == 0) {
-  <div class="card justify-content-center">
-    <p-message
-      text="Your assessment is pending approval from svp"
-      severity="error"
-    />
-  </div>
-  }@else if(this.summary.approval_status == 1) {
-  <div class="card justify-content-center">
-    <p-message text="Your assessment has been approved" severity="info" />
-  </div>
-  }
-</div>
 <app-summary
   [userId]="userId"
   [year]="selectedYear"
