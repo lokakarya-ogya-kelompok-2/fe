@@ -39,4 +39,5 @@ export interface SummaryQueryParam extends QueryParam {
   years?: number[];
   with_created_by?: boolean;
   with_updated_by?: boolean;
+  approval_status?: number;
 }

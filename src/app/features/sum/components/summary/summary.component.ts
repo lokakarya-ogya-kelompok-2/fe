@@ -17,6 +17,8 @@ import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import Swal from 'sweetalert2';
 import { TokenService } from '../../../../core/services/token.service';
+import { Achievement } from '../../../achievement/model/achievement';
+import { AttitudeSkill } from '../../../attitude-skill/models/attitude-skill';
 import { EmpAchievement } from '../../../emp-achievement/models/emp-achievement';
 import { EmpAttitudeSkill } from '../../../emp/emp-attitude-skill/models/emp-attitude-skill';
 import { GroupAchievement } from '../../../group-achievement/model/group-achievement';
@@ -409,7 +411,8 @@ export class SummaryComponent implements OnChanges, OnInit {
   onApprove(id: string) {
     Swal.fire({
       icon: 'question',
-      title: 'U Sure? ',
+      title:
+        'Are you sure you want to approve this assessment? This action cannot be undone.',
       customClass: {
         container: 'z-9999',
       },
@@ -447,5 +450,13 @@ export class SummaryComponent implements OnChanges, OnInit {
         });
       }
     });
+  }
+
+  attitudeSkill(data: AttitudeSkill) {
+    console.log('attitude skill INI: ', data);
+  }
+
+  achievement(data: Achievement) {
+    console.log('achievement INI: ', data);
   }
 }
