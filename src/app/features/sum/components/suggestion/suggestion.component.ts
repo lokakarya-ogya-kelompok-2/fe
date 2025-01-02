@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import Swal from 'sweetalert2';
@@ -22,15 +21,12 @@ export class SuggestionComponent implements OnInit {
   currentYear: number = new Date().getFullYear();
   empSuggestionRequests: EmpSuggestionRequest[] = [];
   tokenPayload: TokenPayload = {} as TokenPayload;
+  isEditing: { [key: string]: boolean } = {};
+  originalValues: { [key: string]: string } = {};
   constructor(
     private empSuggestionService: EmpSuggestionService,
-    private tokenService: TokenService,
-    private readonly router: Router
+    private tokenService: TokenService
   ) {}
-
-  reload() {
-    this.router.navigate([this.router.url]);
-  }
 
   ngOnInit(): void {
     this.tokenPayload = this.tokenService.decodeToken(
@@ -43,7 +39,45 @@ export class SuggestionComponent implements OnInit {
   }
 
   deleteSuggestion(index: number) {
-    if (this.empSuggestionRequests.length > 1) {
+    const id = this.empSuggestionRequests[index].id;
+    if (id) {
+      Swal.fire({
+        icon: 'question',
+        title: 'Are you sure?',
+        showCancelButton: true,
+        cancelButtonText: 'No',
+        confirmButtonText: 'Yes',
+        customClass: {
+          container: 'z-9999',
+        },
+      }).then((res) => {
+        if (res.isConfirmed) {
+          this.empSuggestionService.delete(id).subscribe({
+            next: (data) => {
+              Swal.fire({
+                icon: 'success',
+                title: 'Delete successful!',
+                text: data.message,
+                customClass: {
+                  container: 'z-9999',
+                },
+              });
+              this.empSuggestionRequests.splice(index, 1);
+            },
+            error: (err) => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Delete failed!',
+                text: err.error.message,
+                customClass: {
+                  container: 'z-9999',
+                },
+              });
+            },
+          });
+        }
+      });
+    } else {
       this.empSuggestionRequests.splice(index, 1);
     }
   }
@@ -63,31 +97,30 @@ export class SuggestionComponent implements OnInit {
       return;
     }
 
-    Object.entries(this.empSuggestionRequests).forEach(([id, data]) => {
-      data.assessment_year = this.currentYear;
-      suggestionData.push(data);
-    });
-
-    this.empSuggestionService
-      .createSuggestion(this.empSuggestionRequests)
-      .subscribe({
-        next: (data) => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: 'Suggestion created successfully',
-          }).then((res) => {
-            if (res.isConfirmed) {
-              this.reload();
-            }
-          });
-        },
-        error: (err) => {
-          console.error('Error creating suggestion: ', err);
-        },
+    suggestionData = this.empSuggestionRequests
+      .filter((empSu) => !empSu.id)
+      .map((empSu) => {
+        empSu.assessment_year = this.currentYear;
+        return empSu;
       });
+
+    this.empSuggestionService.createSuggestion(suggestionData).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Suggestion created successfully',
+        });
+        this.getAllEmpSuggestions();
+      },
+      error: (err) => {
+        console.error('Error creating suggestion: ', err);
+      },
+    });
   }
+
   getAllEmpSuggestions() {
+    this.empSuggestionRequests = [];
     this.empSuggestionService
       .list({
         user_ids: [this.tokenPayload.sub!],
@@ -115,4 +148,45 @@ export class SuggestionComponent implements OnInit {
         },
       });
   }
+
+  update(ix: number) {
+    this.empSuggestionService.update(this.empSuggestionRequests[ix]).subscribe({
+      next: (data) => {
+        Swal.fire({
+          title: 'Update successful!',
+          icon: 'success',
+          text: data.message,
+          customClass: {
+            container: 'z-9999',
+          },
+        });
+        this.empSuggestionRequests[ix].suggestion = data.content.suggestion;
+        this.isEditing[data.content.id] = false;
+      },
+      error: (err) => {
+        Swal.fire({
+          title: 'Update failed!',
+          icon: 'error',
+          text: err.error.message,
+          customClass: {
+            container: 'z-9999',
+          },
+        });
+      },
+    });
+  }
+
+  startEditMode(ix: number) {
+    this.isEditing[this.empSuggestionRequests[ix].id!] = true;
+    this.originalValues[this.empSuggestionRequests[ix].id!] =
+      this.empSuggestionRequests[ix].suggestion;
+  }
+
+  cancelEditMode(ix: number) {
+    this.isEditing[this.empSuggestionRequests[ix].id!] = false;
+    this.empSuggestionRequests[ix].suggestion =
+      this.originalValues[this.empSuggestionRequests[ix].id!];
+  }
+
+  submissible = () => this.empSuggestionRequests.some((empSu) => !empSu.id);
 }

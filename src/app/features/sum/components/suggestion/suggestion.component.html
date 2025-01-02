@@ -6,16 +6,14 @@
   <p-card header="Give your suggestion">
     <form #suggestionForm="ngForm">
       <div class="flex flex-column gap-3">
-        <div
-          *ngFor="let suggestion of empSuggestionRequests; let i = index"
-          class="flex align-items-start gap-2"
-        >
+        @for (suggestion of empSuggestionRequests; track $index) {
+        <div class="flex align-items-start gap-2">
           <div class="card w-full" id="field-area">
             <div class="flex align-items-start gap-2">
               <textarea
-                [(ngModel)]="empSuggestionRequests[i].suggestion"
+                [(ngModel)]="empSuggestionRequests[$index].suggestion"
                 pInputTextarea
-                [name]="'suggestion_' + i"
+                [name]="'suggestion_' + $index"
                 rows="3"
                 class="flex-grow-1"
                 placeholder="Enter your suggestion here..."
@@ -23,16 +21,43 @@
                 maxlength="200"
                 #textArea="ngModel"
                 pattern=".*\S.*"
-                [disabled]="empSuggestionRequests[i].id != undefined"
+                [disabled]="
+                  empSuggestionRequests[$index].id != undefined &&
+                  !isEditing[empSuggestionRequests[$index].id!]
+                "
               ></textarea>
-              <p-button
-                *ngIf="empSuggestionRequests.length > 1"
-                icon="pi pi-trash"
-                severity="danger"
-                (onClick)="deleteSuggestion(i)"
-                pTooltip="Delete suggestion"
-                [disabled]="empSuggestionRequests[i].id != undefined"
-              ></p-button>
+              <div class="w-1 flex justify-content-between">
+                @if (empSuggestionRequests[$index].id) { @if
+                (isEditing[empSuggestionRequests[$index].id!]) {
+                <p-button
+                  icon="pi pi-save"
+                  severity="success"
+                  (onClick)="update($index)"
+                  [disabled]="textArea.invalid"
+                />
+                } @else {
+                <p-button
+                  icon="pi pi-pencil"
+                  severity="success"
+                  (onClick)="startEditMode($index)"
+                />
+                } } @if (empSuggestionRequests[$index].id ||
+                empSuggestionRequests.length > 1) { @if
+                (empSuggestionRequests[$index].id != undefined &&
+                isEditing[empSuggestionRequests[$index].id!]) {
+                <p-button
+                  icon="pi pi-times"
+                  severity="danger"
+                  (onClick)="cancelEditMode($index)"
+                />
+                } @else {
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  (onClick)="deleteSuggestion($index)"
+                />
+                } }
+              </div>
             </div>
             <div
               *ngIf="textArea.invalid && (textArea.dirty || textArea.touched)"
@@ -52,6 +77,7 @@
             </div>
           </div>
         </div>
+        }
         <div class="button flex gap-2 ml-3">
           <p-button
             icon="pi pi-plus"
@@ -65,9 +91,9 @@
             severity="primary"
             type="submit"
             label="Submit Suggestion"
-            [disabled]="suggestionForm.invalid"
+            [disabled]="suggestionForm.invalid || !submissible()"
             (onClick)="createSuggestion()"
-          ></p-button>
+          />
         </div>
       </div>
     </form>
