@@ -8,13 +8,13 @@ import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
-import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { TokenService } from '../../../../../core/services/token.service';
 import { TokenPayload } from '../../../../../shared/types';
 import { GroupAttitudeSkill } from '../../../../group-attitude-skill/models/group-attitude-skill';
 import { GroupAttitudeSkillService } from '../../../../group-attitude-skill/services/group-attitude-skill.service';
+import { SummaryService } from '../../../../sum/services/summary.service';
 import { User } from '../../../../users/models/user';
 import { UserService } from '../../../../users/services/user.service';
 import { EmpAttitudeSkillRequest } from '../../models/emp-attitude-skill';
@@ -52,9 +52,11 @@ export class EmpAttitudeSkillsComponent implements OnInit {
     { category: 'Poor', score: 40 },
     { category: 'Very Poor', score: 20 },
   ];
-  newEmpAttitudeSkill: EmpAttitudeSkillRequest = {} as EmpAttitudeSkillRequest;
   empAttitudeSkills: { [key: string]: EmpAttitudeSkillRequest } = {};
+  isEditable: { [key: string]: boolean } = {};
+  isEditing: { [key: string]: boolean } = {};
   submissible: boolean = false;
+  isApproved: boolean = false;
 
   constructor(
     private tokenService: TokenService,
@@ -62,8 +64,15 @@ export class EmpAttitudeSkillsComponent implements OnInit {
     private groupAttitudeSkillService: GroupAttitudeSkillService,
     private userService: UserService,
     private empAttitudeSkillService: EmpAttitudeSkillsService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly summarySvc: SummaryService
   ) {}
+
+  anyChildUpdatable(id: string) {
+    return Object.values(this.empAttitudeSkills).some(
+      (empAs) => empAs.attitude_skill_id == id && id
+    );
+  }
 
   reload() {
     this.router.navigate([this.router.url]);
@@ -72,54 +81,90 @@ export class EmpAttitudeSkillsComponent implements OnInit {
   ngOnInit(): void {
     this.getToken();
     this.getUser();
-    forkJoin({
-      empAttitudeSkills: this.empAttitudeSkillService.getEmpAttitudeSkill({
+    this.groupAttitudeSkillService
+      .getGroupAttitudeSkills({
+        enabled_only: true,
+        with_attitude_skills: true,
+        with_enabled_child_only: true,
+      })
+      .subscribe({
+        next: (data) => {
+          this.groupAttitudeSkills = data.content;
+        },
+        error: (err) => {
+          console.error('Failed to fetch group attitude skills: ', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed to fetch group attitude skill',
+            text: err.error.message,
+          });
+        },
+        complete: () => {
+          this.fetchEmpAttitudeSkill();
+        },
+      });
+    this.summarySvc
+      .getAllSummary({
+        user_ids: [this.jwtPayload.sub!],
+        years: [this.currentYear],
+        page_number: 1,
+        page_size: 1,
+      })
+      .subscribe({
+        next: (data) => {
+          if (data.content.length > 0) {
+            const firstRow = data.content[0];
+            this.isApproved = firstRow.approval_status == 1;
+          }
+        },
+      });
+  }
+
+  fetchEmpAttitudeSkill() {
+    this.empAttitudeSkillService
+      .getEmpAttitudeSkill({
         user_ids: [this.jwtPayload.sub!],
         years: [this.currentYear],
         enabled_only: true,
-      }),
-      groupAttitudeSkills:
-        this.groupAttitudeSkillService.getGroupAttitudeSkills({
-          enabled_only: true,
-          with_attitude_skills: true,
-          with_enabled_child_only: true,
-        }),
-    }).subscribe({
-      next: (data) => {
-        data.empAttitudeSkills.content.forEach((empAttitudeSkill) => {
-          this.empAttitudeSkills[empAttitudeSkill.attitude_skill.id] = {
-            id: empAttitudeSkill.id,
-            score: empAttitudeSkill.score,
-            attitude_skill_id: empAttitudeSkill.attitude_skill.id,
-            assessment_year: empAttitudeSkill.assessment_year,
-          };
-        });
-        this.groupAttitudeSkills = data.groupAttitudeSkills.content;
-        this.groupAttitudeSkills.forEach((group) => {
-          group.attitude_skills?.forEach((attitudeSkill) => {
-            if (!this.empAttitudeSkills[attitudeSkill.id]) {
-              this.empAttitudeSkills[attitudeSkill.id] = {
-                attitude_skill_id: attitudeSkill.id,
-                assessment_year: this.currentYear,
-              } as EmpAttitudeSkillRequest;
-            }
+      })
+      .subscribe({
+        next: (data) => {
+          data.content.forEach((empAttitudeSkill) => {
+            this.empAttitudeSkills[empAttitudeSkill.attitude_skill.id] = {
+              id: empAttitudeSkill.id,
+              score: empAttitudeSkill.score,
+              attitude_skill_id: empAttitudeSkill.attitude_skill.id,
+              assessment_year: empAttitudeSkill.assessment_year,
+            };
           });
-          this.submissible = Object.values(this.empAttitudeSkills)
-            .flat()
-            .some((empAs) => empAs.id === undefined);
-        });
-      },
-      error: (err) => {
-        console.error(
-          'Error fetching empAttitudeSkill/groupAttitudeSkill: ',
-          err
-        );
-        Swal.fire({
-          icon: 'error',
-          title: err.error.message,
-        });
-      },
-    });
+          this.groupAttitudeSkills.forEach((group) => {
+            group.attitude_skills?.forEach((attitudeSkill) => {
+              if (!this.empAttitudeSkills[attitudeSkill.id]) {
+                this.empAttitudeSkills[attitudeSkill.id] = {
+                  attitude_skill_id: attitudeSkill.id,
+                  assessment_year: this.currentYear,
+                } as EmpAttitudeSkillRequest;
+              }
+              this.isEditable[group.id] = Object.values(
+                this.empAttitudeSkills
+              ).some((empAs) => empAs.attitude_skill_id == attitudeSkill.id);
+            });
+            this.submissible = Object.values(this.empAttitudeSkills).some(
+              (empAs) => empAs.id === undefined
+            );
+          });
+        },
+        error: (err) => {
+          console.error(
+            'Error fetching empAttitudeSkill/groupAttitudeSkill: ',
+            err
+          );
+          Swal.fire({
+            icon: 'error',
+            title: err.error.message,
+          });
+        },
+      });
   }
 
   createEmpAttitudeSkill(): void {
@@ -146,7 +191,7 @@ export class EmpAttitudeSkillsComponent implements OnInit {
                 icon: 'success',
               }).then((result) => {
                 if (result.isConfirmed) {
-                  this.reload();
+                  this.fetchEmpAttitudeSkill();
                 }
               });
             },
@@ -176,6 +221,32 @@ export class EmpAttitudeSkillsComponent implements OnInit {
     if (token && this.authService.isAuthenticated()) {
       this.jwtPayload = this.tokenService.decodeToken(token);
     }
+  }
+
+  onUpdate(data: EmpAttitudeSkillRequest) {
+    this.empAttitudeSkillService.update(data).subscribe({
+      next: (d) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Update successful!',
+          text: d.message,
+        }).then((res) => {
+          if (res.isConfirmed) {
+            this.fetchEmpAttitudeSkill();
+            this.isEditing[data.attitude_skill_id] = false;
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Error updating employee attitude skill: ', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Update failed!',
+          text: err.error.message,
+        });
+        this.isEditing[data.attitude_skill_id] = false;
+      },
+    });
   }
 
   stringify(obj: object) {

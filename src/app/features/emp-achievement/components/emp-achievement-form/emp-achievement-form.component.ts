@@ -45,7 +45,8 @@ export class EmpAchievementFormComponent implements OnInit, OnChanges {
   empAchievementRequests: { [key: string]: EmpAchievementRequest } = {};
   empAchievements: { [key: string]: EmpAchievement[] } = {};
   achievementList: { [key: string]: SelectItem[] } = {};
-  isEditing: { [key: string]: boolean } = {};
+  isEditingGroup: { [key: string]: boolean } = {};
+  isEditingChild: { [key: string]: boolean } = {};
   isApproved: boolean = false;
   noAchievements: boolean = true;
 
@@ -134,7 +135,7 @@ export class EmpAchievementFormComponent implements OnInit, OnChanges {
   }
 
   onSubmit(groupId: string) {
-    if (this.isEditing[groupId]) {
+    if (this.isEditingGroup[groupId]) {
       this.updateEmpAchievement(this.empAchievementRequests[groupId]);
     } else {
       this.createEmpAchievement(this.empAchievementRequests[groupId]);
@@ -202,7 +203,8 @@ export class EmpAchievementFormComponent implements OnInit, OnChanges {
   }
 
   onEdit(groupId: string, empAc: EmpAchievement) {
-    this.isEditing[groupId] = true;
+    this.isEditingGroup[groupId] = true;
+    this.isEditingChild[empAc.id] = true;
     this.empAchievementRequests[groupId] = {
       id: empAc.id,
       achievement_id: empAc.achievement_id.id,
@@ -213,8 +215,9 @@ export class EmpAchievementFormComponent implements OnInit, OnChanges {
     };
   }
 
-  onCancelEdit(groupId: string) {
-    this.isEditing[groupId] = false;
+  onCancelEdit(groupId: string, empAcId: string) {
+    this.isEditingGroup[groupId] = false;
+    this.isEditingChild[empAcId] = false;
     this.empAchievementRequests[groupId] = {} as EmpAchievementRequest;
   }
 
@@ -293,8 +296,11 @@ export class EmpAchievementFormComponent implements OnInit, OnChanges {
   }
 
   resetEditState() {
-    Object.keys(this.isEditing).forEach((groupId) => {
-      this.isEditing[groupId] = false;
+    Object.keys(this.isEditingGroup).forEach((groupId) => {
+      this.isEditingGroup[groupId] = false;
+    });
+    Object.keys(this.isEditingChild).forEach((groupId) => {
+      this.isEditingChild[groupId] = false;
     });
   }
 }
