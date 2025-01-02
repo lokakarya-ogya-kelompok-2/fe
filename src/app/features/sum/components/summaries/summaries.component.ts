@@ -53,6 +53,7 @@ import { SummaryAndSuggestionsComponent } from '../summary-and-suggestions/summa
     SummaryAndSuggestionsComponent,
     DropdownModule,
     MultiSelectModule,
+    TagModule,
   ],
   templateUrl: './summaries.component.html',
   styleUrl: './summaries.component.scss',
@@ -64,6 +65,10 @@ export class SummariesComponent implements OnInit {
     const year = new Date().getFullYear() - i;
     return year;
   });
+  approvalStatus = [
+    { label: 'Not Approved', value: 0, severity: 'danger' },
+    { label: 'Approved', value: 1, severity: 'success' },
+  ];
   isLoading: boolean = true;
   visible: boolean = false;
   dialogHeader: string = '';
@@ -117,6 +122,8 @@ export class SummariesComponent implements OnInit {
     let filter = {
       any_contains: event.globalFilter,
       years: [(event.filters?.['year'] as FilterMetadata)?.value],
+      approval_status: (event.filters?.['approval_status'] as FilterMetadata)
+        ?.value,
       page_number: (event?.first || 0) / (event?.rows || 5) + 1,
       page_size: event?.rows || 5,
       sort_field: (event.sortField as string) || 'createdAt',
