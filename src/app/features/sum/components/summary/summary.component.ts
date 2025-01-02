@@ -125,7 +125,6 @@ export class SummaryComponent implements OnChanges, OnInit {
             return acc + curr.final_score;
           }, this.summary.score) || this.summary.score;
         this.isLoading = false;
-        console.log(this.summary);
       },
       error: (err) => {
         this.isLoading = false;
@@ -316,8 +315,6 @@ export class SummaryComponent implements OnChanges, OnInit {
       }
     });
 
-    console.log(attitudeSkillsData);
-
     (doc as any).autoTable({
       head: [['Aspect', 'Score', 'Weight', 'Final Score']],
       body: attitudeSkillsData,
@@ -377,8 +374,6 @@ export class SummaryComponent implements OnChanges, OnInit {
         });
       }
     });
-
-    console.log(achievementsData);
 
     (doc as any).autoTable({
       head: [['Aspect', 'Score', 'Weight', 'Final Score']],

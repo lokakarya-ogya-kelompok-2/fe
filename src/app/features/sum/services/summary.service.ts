@@ -28,7 +28,7 @@ export class SummaryService {
   }
 
   approve(id: string): Observable<Response<Summary>> {
-    return this.httpClient.put<Response<Summary>>(
+    return this.httpClient.patch<Response<Summary>>(
       `${this.Api}/${id}/approve`,
       null
     );

@@ -15,17 +15,26 @@ import {
 })
 export class EmpSuggestionService {
   private Api = `${environment.baseApiURL}/emp-suggestions`;
-  constructor(private http: HttpClient) {}
+  constructor(private httpClient: HttpClient) {}
   list(param: EmpSuggestionQueryParam): Observable<Response<EmpSuggestion[]>> {
     const params = toHttpParam(param);
-    return this.http.get<Response<EmpSuggestion[]>>(this.Api, { params });
+    return this.httpClient.get<Response<EmpSuggestion[]>>(this.Api, { params });
   }
   createSuggestion(
     empSuggestion: EmpSuggestionRequest[]
   ): Observable<Response<EmpSuggestion[]>> {
-    return this.http.post<Response<EmpSuggestion[]>>(
+    return this.httpClient.post<Response<EmpSuggestion[]>>(
       `${this.Api}/bulk-create`,
       empSuggestion
+    );
+  }
+  delete(id: string): Observable<Response<void>> {
+    return this.httpClient.delete<Response<void>>(`${this.Api}/${id}`);
+  }
+  update(data: EmpSuggestionRequest): Observable<Response<EmpSuggestion>> {
+    return this.httpClient.put<Response<EmpSuggestion>>(
+      `${this.Api}/${data.id}`,
+      data
     );
   }
 }
