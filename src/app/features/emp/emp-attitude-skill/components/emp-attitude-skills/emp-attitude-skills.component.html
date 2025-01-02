@@ -1,4 +1,3 @@
-<!-- <app-navbar></app-navbar> -->
 <div class="card mb-4">
   <p-card>
     <div class="flex justify-content-between align-items-center">
@@ -6,7 +5,6 @@
         Employee Attitude Skills Assessment
       </h2>
       <div style="display: inline-block; width: 24px">
-        <!-- *ngIf="!empAttitudeSkills[skill.id].id" -->
         <i
           class="pi pi-info-circle text-blue-500 ml-2"
           [pTooltip]="tooltipContent"
@@ -39,7 +37,17 @@
         <ng-template pTemplate="header">
           <tr>
             <th class="custom-header" style="width: 60%">Attitude Skill</th>
-            <th class="custom-header" style="width: 40%">Score Category</th>
+            <th
+              class="custom-header"
+              [style]="{
+              width: !isApproved && isEditable[group.id] ? '20%' : '40%',
+            }"
+            >
+              Score Category
+            </th>
+            @if (!isApproved && isEditable[group.id]) {
+            <th class="custom-header" style="width: 20%">Action</th>
+            }
           </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
@@ -66,16 +74,9 @@
                     [name]="'score-' + skill.id"
                     #scoreDropdown="ngModel"
                     appendTo="body"
-                    [disabled]="empAttitudeSkills[skill.id].id != undefined"
+                    [disabled]="isApproved || !isEditing[skill.id]"
                     [style]="{ width: '230px' }"
                   />
-                  <!-- <div style="display: inline-block; width: 24px">
-                    <i
-                      *ngIf="!empAttitudeSkills[skill.id].id"
-                      class="pi pi-info-circle text-blue-500 ml-2"
-                      [pTooltip]="tooltipContent"
-                    ></i>
-                  </div> -->
                 </div>
               </div>
               <div
@@ -93,6 +94,32 @@
                 </small>
               </div>
             </td>
+            @if (!isApproved && empAttitudeSkills[skill.id].id) {
+            <td>
+              <div class="flex justify-content-center">
+                @if (!isEditing[skill.id]) {
+                <p-button
+                  icon="pi pi-pen-to-square"
+                  severity="success"
+                  (onClick)="isEditing[skill.id] = true"
+                />
+                }@else {
+                <div class="w-full flex justify-content-between px-5">
+                  <p-button
+                    icon="pi pi-save"
+                    severity="primary"
+                    (onClick)="onUpdate(empAttitudeSkills[skill.id])"
+                  />
+                  <p-button
+                    icon="pi pi-times"
+                    severity="danger"
+                    (onClick)="isEditing[skill.id] = false"
+                  />
+                </div>
+                }
+              </div>
+            </td>
+            }
           </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
@@ -111,6 +138,7 @@
     </div>
   </div>
   <p-divider />
+  @if (!isApproved) {
   <div class="flex justify-content-center mt-4">
     <p-button
       label="Submit"
@@ -118,6 +146,7 @@
       [disabled]="empAttitudeSkillForm.invalid || !submissible"
     />
   </div>
+  }
 </form>
 
 <ng-template #tooltipContent>

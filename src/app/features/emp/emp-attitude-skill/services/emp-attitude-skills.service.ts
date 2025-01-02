@@ -15,30 +15,32 @@ import {
 })
 export class EmpAttitudeSkillsService {
   private Api = `${environment.baseApiURL}/emp-attitude-skills`;
-  constructor(private http: HttpClient) {}
+  constructor(private httpClient: HttpClient) {}
 
   getEmpAttitudeSkill(
     param: EmpAttitudeSkillQueryParam = {}
   ): Observable<Response<EmpAttitudeSkill[]>> {
     const params = toHttpParam(param);
-    return this.http.get<Response<EmpAttitudeSkill[]>>(this.Api, { params });
+    return this.httpClient.get<Response<EmpAttitudeSkill[]>>(this.Api, {
+      params,
+    });
   }
 
   createEmpAttitudeSkill(
     empAttitudeSkillRequest: EmpAttitudeSkillRequest[]
   ): Observable<EmpAttitudeSkill[]> {
-    return this.http.post<EmpAttitudeSkill[]>(
+    return this.httpClient.post<EmpAttitudeSkill[]>(
       `${this.Api}/bulk-create`,
       empAttitudeSkillRequest
     );
   }
 
-  updateEmpAttitudeSkill(
-    empAttitudeSkillRequest: EmpAttitudeSkillRequest[]
-  ): Observable<EmpAttitudeSkill[]> {
-    return this.http.put<EmpAttitudeSkill[]>(
-      `${this.Api}/${empAttitudeSkillRequest[0].id}`,
-      empAttitudeSkillRequest
+  update(
+    data: EmpAttitudeSkillRequest
+  ): Observable<Response<EmpAttitudeSkill>> {
+    return this.httpClient.put<Response<EmpAttitudeSkill>>(
+      `${this.Api}/${data.id}`,
+      data
     );
   }
 }
