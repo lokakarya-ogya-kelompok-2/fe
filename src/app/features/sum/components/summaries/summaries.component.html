@@ -54,7 +54,7 @@
             <div style="height: 2.3rem"></div>
           </div>
         </th>
-        <th style="width: 25%; text-align: center" pSortableColumn="score">
+        <th style="width: 10%; text-align: center" pSortableColumn="score">
           <div
             class="flex align-items-center justify-content-center gap-2 mb-5"
           >
@@ -63,7 +63,7 @@
             <div style="height: 1.5rem"></div>
           </div>
         </th>
-        <th style="width: 25%; text-align: center">
+        <th style="width: 20%; text-align: center">
           <div class="flex flex-column align-items-center">
             <span>Position</span>
             <div style="height: 2.3rem"></div>
@@ -95,7 +95,6 @@
                     optionValue="id"
                     (onChange)="filter($event.value)"
                     placeholder="Select Division"
-                    [showClear]="true"
                     [style]="{
                       'min-width': '10rem',
                       'font-size': '14px',
@@ -128,13 +127,47 @@
                   [options]="years"
                   (onChange)="filter($event.value)"
                   placeholder="Select Year"
-                  [showClear]="true"
                   [style]="{ 'min-width': '10rem' }"
                   [panelStyle]="{ 'min-width': '12rem' }"
                   styleClass="dropdown"
                   [panelStyleClass]="'dropdown-panel'"
                   appendTo="body"
                 />
+              </ng-template>
+            </p-columnFilter>
+          </div>
+        </th>
+        <th style="width: 25%; text-align: center">
+          <div class="flex flex-column align-items-center gap-2">
+            <span>Approval</span>
+            <p-columnFilter
+              field="approval_status"
+              matchMode="equals"
+              [showMenu]="false"
+            >
+              <ng-template
+                pTemplate="filter"
+                let-value
+                let-filter="filterCallback"
+              >
+                <p-dropdown
+                  [ngModel]="value"
+                  [options]="approvalStatus"
+                  (onChange)="filter($event.value)"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select Status"
+                  [style]="{ 'min-width': '10rem' }"
+                  [panelStyle]="{ 'min-width': '12rem' }"
+                >
+                  <ng-template pTemplate="item" let-option>
+                    <p-tag
+                      [value]="option.label"
+                      [severity]="option.severity"
+                      [rounded]="true"
+                    ></p-tag>
+                  </ng-template>
+                </p-dropdown>
               </ng-template>
             </p-columnFilter>
           </div>
@@ -156,11 +189,16 @@
           {{ summary.user_id.division?.division_name ?? "Unknown" }}
         </td>
         <td style="text-align: center">{{ summary.year }}</td>
+        <td style="text-align: center">
+          <p-tag [severity]="summary.approval_status ? 'success' : 'danger'">
+            {{ summary.approval_status ? "Approved" : "Not Approved" }}
+          </p-tag>
+        </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="5" class="text-center p-4">
+        <td colspan="6" class="text-center p-4">
           <div class="flex flex-column align-items-center gap-2">
             <i class="pi pi-info-circle text-4xl text-primary"></i>
             <span class="font-semibold text-lg"

@@ -1,13 +1,13 @@
 <div class="table-container mb-4" style="max-width: 1148px; margin: 0 auto">
   <div class="table-title">{{ tableHeader }}</div>
-  <div style="display: flex; justify-content: center; padding: 20px">
+  <div style="justify-content: center; padding: 20px">
     <p-table [value]="data" [style]="{ width: '80%', minWidth: '60rem' }">
       <ng-template pTemplate="header">
         <tr>
           <th class="table-header" style="width: 40%">Aspect</th>
-          <th class="table-header" style="width: 20%">Score</th>
-          <th class="table-header" style="width: 20%">Percentage</th>
-          <th class="table-header" style="width: 20%">Final Score</th>
+          <th class="table-header" style="width: 15%">Score</th>
+          <th class="table-header" style="width: 15%">Percentage</th>
+          <th class="table-header" style="width: 15%">Final Score</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-item>
@@ -33,15 +33,42 @@
           </td>
           @if (isScoreCategorical) {
           <td style="text-align: center; color: green">
-            {{ getScoreCategory(child.score) }}
+            <p-dropdown
+              [options]="dropdownScoreCategories"
+              [(ngModel)]="child.score"
+              optionLabel="label"
+              optionValue="value"
+              (onChange)="
+                onScoreChange(child.assessment_year, child.id, $event, child)
+              "
+              [style]="{ width: '150px', 'font-size': '14px' }"
+              styleClass="p-dropdown-sm"
+              appendTo="body"
+            >
+              <!-- <ng-template pTemplate="selectedItem">
+                <span style="color: green">{{
+                  getScoreCategory(child.score)
+                }}</span>
+              </ng-template> -->
+              <ng-template pTemplate="selectedItem" let-item>
+                <span style="color: green">{{ item.label }}</span>
+              </ng-template>
+              <ng-template pTemplate="item" let-item>
+                <span>{{ item.label }}</span>
+              </ng-template>
+            </p-dropdown>
           </td>
           } @else {
           <td style="text-align: center; color: green">
             {{ child.score }}
           </td>
           }
+          <td colspan="2" style="text-align: center">
+            <p-button label="Update" (onClick)="onButtonClick.emit(child)" />
+          </td>
         </tr>
       </ng-template>
     </p-table>
+    <div class="flex justify-content-end mr-6 mt-4"></div>
   </div>
 </div>
