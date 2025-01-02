@@ -20,7 +20,7 @@
               [options]="achievementList[group.id]"
               placeholder="Select an achievement"
               [name]="group.id + '_achievements'"
-              [disabled]="isEditing[group.id]"
+              [disabled]="isEditingGroup[group.id]"
               required
               styleClass="w-full"
             />
@@ -84,11 +84,11 @@
             <td>{{ empAc.score }}</td>
             <td>
               <div class="flex gap-2">
-                @if (isEditing[group.id]) {
+                @if (isEditingChild[empAc.id]) {
                 <p-button
                   severity="danger"
                   icon="pi pi-times"
-                  (onClick)="onCancelEdit(group.id)"
+                  (onClick)="onCancelEdit(group.id, empAc.id)"
                   [rounded]="true"
                   [raised]="true"
                   [style]="{ height: '40px', width: '40px' }"
