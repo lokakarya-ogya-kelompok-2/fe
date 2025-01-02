@@ -1,39 +1,56 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
 import Swal from 'sweetalert2';
 import { TokenService } from '../../../../core/services/token.service';
 import { TokenPayload } from '../../../../shared/types';
 import { EmpSuggestionRequest } from '../../models/emp-suggestion';
 import { EmpSuggestionService } from '../../services/emp-suggestion.service';
+import { SummaryService } from '../../services/summary.service';
 @Component({
   selector: 'app-suggestion',
   standalone: true,
-  imports: [CardModule, CommonModule, FormsModule, ButtonModule],
+  imports: [CardModule, CommonModule, FormsModule, ButtonModule, TableModule],
   templateUrl: './suggestion.component.html',
   styleUrl: './suggestion.component.scss',
 })
-export class SuggestionComponent implements OnInit {
+export class SuggestionComponent implements OnInit, OnChanges {
+  @Input() userId: string | undefined;
+  @Input() year: number | undefined;
   loading: boolean = false;
-  suggestions: string[] = [''];
   currentYear: number = new Date().getFullYear();
   empSuggestionRequests: EmpSuggestionRequest[] = [];
   tokenPayload: TokenPayload = {} as TokenPayload;
   isEditing: { [key: string]: boolean } = {};
   originalValues: { [key: string]: string } = {};
+  isApproved: boolean = false;
   constructor(
     private empSuggestionService: EmpSuggestionService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private summarySvc: SummaryService
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['year'] && this.year != undefined) {
+      this.getAllEmpSuggestions();
+    }
+  }
 
   ngOnInit(): void {
     this.tokenPayload = this.tokenService.decodeToken(
       this.tokenService.getToken()!
     );
-    this.getAllEmpSuggestions();
   }
+
   addSuggestion() {
     this.empSuggestionRequests.push({} as EmpSuggestionRequest);
   }
@@ -123,8 +140,8 @@ export class SuggestionComponent implements OnInit {
     this.empSuggestionRequests = [];
     this.empSuggestionService
       .list({
-        user_ids: [this.tokenPayload.sub!],
-        years: [this.currentYear],
+        user_ids: [this.userId!],
+        years: [this.year!],
       })
       .subscribe({
         next: (data) => {

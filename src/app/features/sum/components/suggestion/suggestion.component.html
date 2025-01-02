@@ -1,3 +1,4 @@
+@if (year == currentYear) {
 <div
   class="card"
   style="width: 98.4%; margin-left: 9px"
@@ -99,3 +100,37 @@
     </form>
   </p-card>
 </div>
+} @else {
+<h1>Suggestions</h1>
+<div class="card m-3">
+  <p-table
+    #dt
+    [value]="empSuggestionRequests"
+    [rows]="10"
+    [paginator]="false"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    styleClass="p-datatable-sm p-datatable-gridlines"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} suggestions"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="text-center">Suggestion</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-suggestion>
+      <tr class="text-center">
+        <td>{{ suggestion.suggestion }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="1" class="text-center p-4">No suggestions found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+}

@@ -90,6 +90,11 @@ export class EmpAttitudeSkillsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.groupAttitudeSkills = data.content;
+          this.groupAttitudeSkills.forEach((group) => {
+            group.attitude_skills?.forEach((as) => {
+              this.empAttitudeSkills[as.id] = {} as EmpAttitudeSkillRequest;
+            });
+          });
         },
         error: (err) => {
           console.error('Failed to fetch group attitude skills: ', err);

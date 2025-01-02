@@ -25,7 +25,6 @@
   [year]="selectedYear"
   (assSumAvailable)="assSumAvail($event)"
 />
-@if (hasAccessToSuggestion && currentYear == selectedYear &&
-assessmentSummaryAvailable) {
-<app-suggestion />
+@if (hasAccessToSuggestion) {
+<app-suggestion [year]="selectedYear" [userId]="userId" />
 }
