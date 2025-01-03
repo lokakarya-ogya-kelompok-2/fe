@@ -91,8 +91,12 @@
           {{ data.attitude_skill }}
         </td>
         <td [style]="{ padding: '0.5rem', 'text-align': 'center' }">
-          <p-tag [severity]="data.enabled === true ? 'success' : 'danger'">
-            {{ data.enabled === true ? "Enabled" : "Disabled" }}
+          <p-tag
+            [severity]="
+              data.enabled && data.group_id.enabled ? 'success' : 'danger'
+            "
+          >
+            {{ data.enabled && data.group_id.enabled ? "Enabled" : "Disabled" }}
           </p-tag>
         </td>
         <td
