@@ -1,4 +1,11 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { EmpSuggestion } from '../../models/emp-suggestion';
 import { EmpSuggestionService } from '../../services/emp-suggestion.service';
@@ -15,6 +22,7 @@ export class SummaryAndSuggestionsComponent implements OnChanges {
   @Input() userId: string | undefined = '';
   @Input() editableAndAllowApprove: boolean = false;
   @Input() year: number | undefined = 0;
+  @Output() onAfterApprove = new EventEmitter<void>();
 
   suggestions: EmpSuggestion[] = [];
   isLoading: boolean = false;
