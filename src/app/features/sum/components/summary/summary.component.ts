@@ -425,7 +425,7 @@ export class SummaryComponent implements OnChanges, OnInit {
 
   onApprove(id: string) {
     Swal.fire({
-      icon: 'question',
+      icon: 'warning',
       title:
         'Are you sure you want to approve this assessment? This action cannot be undone.',
       customClass: {
@@ -434,6 +434,8 @@ export class SummaryComponent implements OnChanges, OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
     }).then((res) => {
       if (res.isConfirmed) {
         this.summarySvc.approve(id).subscribe({
