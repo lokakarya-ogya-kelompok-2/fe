@@ -59,6 +59,7 @@ export class SummaryComponent implements OnChanges, OnInit {
   @Input() userId: string = '';
   @Input() year = new Date().getFullYear();
   @Output() assSumAvailable = new EventEmitter<boolean>(false);
+  @Output() onAfterApprove = new EventEmitter<void>();
   groupAttitudeSkills: GroupAttitudeSkill[] = [];
   groupAchievements: GroupAchievement[] = [];
   currentUserAttitudeSkillsGroupedByGroupId: {
@@ -451,6 +452,7 @@ export class SummaryComponent implements OnChanges, OnInit {
             }).then((res) => {
               if (res.isConfirmed) {
                 this.fetchAssessmentSummary();
+                this.onAfterApprove.emit();
               }
             });
           },
