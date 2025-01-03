@@ -225,6 +225,7 @@
     [editableAndAllowApprove]="
       selectedUser.division?.id == currentUser.division?.id && isSPV
     "
+    (onAfterApprove)="summariesTable.reset()"
   />
   }
 </p-dialog>
