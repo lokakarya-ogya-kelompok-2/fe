@@ -139,6 +139,8 @@ export class UserFormComponent implements OnInit, OnChanges {
           Swal.fire({
             title: 'User Updated!',
             icon: 'success',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
           }).then((res) => {
             if (res.isConfirmed && this.userData.id === this.currentUserId) {
               this.reload();
