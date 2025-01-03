@@ -13,6 +13,7 @@ import { SummaryComponent } from '../summary/summary.component';
 })
 export class SummaryAndSuggestionsComponent implements OnChanges {
   @Input() userId: string | undefined = '';
+  @Input() editableAndAllowApprove: boolean = false;
   @Input() year: number | undefined = 0;
 
   suggestions: EmpSuggestion[] = [];

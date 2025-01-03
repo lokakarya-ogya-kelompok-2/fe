@@ -55,6 +55,7 @@ import { TableComponent } from '../table/table.component';
   styleUrl: './summary.component.scss',
 })
 export class SummaryComponent implements OnChanges, OnInit {
+  @Input() editableAndAllowApprove: boolean = false;
   @Input() userId: string = '';
   @Input() year = new Date().getFullYear();
   @Output() assSumAvailable = new EventEmitter<boolean>(false);

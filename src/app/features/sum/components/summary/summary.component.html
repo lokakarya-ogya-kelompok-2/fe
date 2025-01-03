@@ -6,7 +6,7 @@
     animationDuration=".5s"
   />
 </div>
-} @else { @if (assessmentSummaryAvailable) {
+} @else { @if (assessmentSummaryAvailable && editableAndAllowApprove) {
 <div class="flex justify-content-center">
   @if(summary.approval_status == 1) {
   <div class="card justify-content-center">
@@ -30,7 +30,8 @@
 </div>
 }
 <div class="button-export">
-  @if (showApproveButton && assessmentSummaryAvailable) {
+  @if (editableAndAllowApprove && showApproveButton &&
+  assessmentSummaryAvailable) {
   <p-button
     icon="pi pi-check-circle"
     label="Approve"
@@ -61,6 +62,7 @@
   updateFunction="updateAttitudeSkill"
   (onButtonClick)="attitudeSkill($event)"
   [summaryData]="summary"
+  [editable]="editableAndAllowApprove"
 />
 <app-table
   [data]="summary.achievements!"
@@ -68,6 +70,7 @@
   updateFunction="updateAchievement"
   (onButtonClick)="achievement($event)"
   [summaryData]="summary"
+  [editable]="editableAndAllowApprove"
 />
 
 <div class="card flex justify-content-center">
