@@ -64,6 +64,8 @@ export class SuggestionComponent implements OnInit, OnChanges {
         showCancelButton: true,
         cancelButtonText: 'No',
         confirmButtonText: 'Yes',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
         customClass: {
           container: 'z-9999',
         },

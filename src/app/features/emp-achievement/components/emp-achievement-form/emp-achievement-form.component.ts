@@ -148,6 +148,8 @@ export class EmpAchievementFormComponent implements OnInit, OnChanges {
         Swal.fire({
           title: 'Emp achievement created!',
           icon: 'success',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
           customClass: {
             container: 'z-9999',
           },

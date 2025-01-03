@@ -119,6 +119,8 @@ export class IndexPageComponent implements OnInit {
           icon: 'success',
           title: 'Success',
           text: 'Password changed successfully!',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         }).then((res) => {
           if (res.isConfirmed) {
             this.router.navigate([this.router.url]);

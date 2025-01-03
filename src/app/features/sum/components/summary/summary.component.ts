@@ -438,6 +438,8 @@ export class SummaryComponent implements OnChanges, OnInit {
       cancelButtonText: 'No',
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((res) => {
       if (res.isConfirmed) {
         this.summarySvc.approve(id).subscribe({

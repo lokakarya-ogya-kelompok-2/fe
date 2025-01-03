@@ -154,6 +154,8 @@ export class EmpTechnicalSkillComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
         let empTechnicalSkillsReq: EmpTechnicalSkillReq[] =

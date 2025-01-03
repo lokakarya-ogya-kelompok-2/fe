@@ -134,6 +134,8 @@ export class RoleMenuComponent implements OnInit {
         Swal.fire({
           title: 'Role Menu updated sucessfuly!',
           icon: 'success',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         }).then((res) => {
           if (res.isConfirmed) {
             this.reload();

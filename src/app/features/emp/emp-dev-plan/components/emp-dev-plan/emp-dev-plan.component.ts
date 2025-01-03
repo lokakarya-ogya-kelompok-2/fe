@@ -122,9 +122,10 @@ export class EmpDevPlanComponent implements OnInit {
       cancelButtonColor: '#d33',
       cancelButtonText: 'No',
       confirmButtonText: 'Yes',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
-
         const empDevPlanRequest: EmpDevPlanRequest[] = this.empDevPlans[key]
           .filter((empDevPlan) => !empDevPlan.dev_plan_id)
           .map((empDevPlan) => {
