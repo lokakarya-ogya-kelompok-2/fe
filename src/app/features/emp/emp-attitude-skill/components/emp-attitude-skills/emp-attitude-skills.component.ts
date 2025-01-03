@@ -57,6 +57,7 @@ export class EmpAttitudeSkillsComponent implements OnInit {
   isEditing: { [key: string]: boolean } = {};
   submissible: boolean = false;
   isApproved: boolean = false;
+  originalValues: { [key: string]: number } = {};
 
   constructor(
     private tokenService: TokenService,
@@ -92,7 +93,10 @@ export class EmpAttitudeSkillsComponent implements OnInit {
           this.groupAttitudeSkills = data.content;
           this.groupAttitudeSkills.forEach((group) => {
             group.attitude_skills?.forEach((as) => {
-              this.empAttitudeSkills[as.id] = {} as EmpAttitudeSkillRequest;
+              this.empAttitudeSkills[as.id] = {
+                attitude_skill_id: as.id,
+                assessment_year: this.currentYear,
+              } as EmpAttitudeSkillRequest;
             });
           });
         },
@@ -152,7 +156,7 @@ export class EmpAttitudeSkillsComponent implements OnInit {
               }
               this.isEditable[group.id] = Object.values(
                 this.empAttitudeSkills
-              ).some((empAs) => empAs.attitude_skill_id == attitudeSkill.id);
+              ).some((empAs) => empAs.id);
             });
             this.submissible = Object.values(this.empAttitudeSkills).some(
               (empAs) => empAs.id === undefined
@@ -249,6 +253,8 @@ export class EmpAttitudeSkillsComponent implements OnInit {
           title: 'Update failed!',
           text: err.error.message,
         });
+        this.empAttitudeSkills[data.attitude_skill_id].score =
+          this.originalValues[data.attitude_skill_id];
         this.isEditing[data.attitude_skill_id] = false;
       },
     });
@@ -256,5 +262,15 @@ export class EmpAttitudeSkillsComponent implements OnInit {
 
   stringify(obj: object) {
     return JSON.stringify(obj);
+  }
+
+  onStartEdit(key: string) {
+    this.isEditing[key] = true;
+    this.originalValues[key] = this.empAttitudeSkills[key].score;
+  }
+
+  onCancelEdit(key: string) {
+    this.empAttitudeSkills[key].score = this.originalValues[key];
+    this.isEditing[key] = false;
   }
 }
