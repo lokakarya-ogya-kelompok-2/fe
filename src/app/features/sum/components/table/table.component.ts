@@ -23,6 +23,7 @@ import { Summary, SummaryItem } from '../../models/summary';
 })
 export class TableComponent {
   [key: string]: any;
+  @Input() editable: boolean = false;
   @Input() isScoreCategorical: boolean = false;
   @Input() data: SummaryItem[] = [];
   expandedRows: { [key: string]: boolean } = {};
