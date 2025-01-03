@@ -74,7 +74,11 @@
                     [name]="'score-' + skill.id"
                     #scoreDropdown="ngModel"
                     appendTo="body"
-                    [disabled]="isApproved || !isEditing[skill.id]"
+                    [disabled]="
+                      isApproved ||
+                      (empAttitudeSkills[skill.id].id != undefined &&
+                        !isEditing[skill.id])
+                    "
                     [style]="{ width: '230px' }"
                   />
                 </div>
@@ -101,7 +105,7 @@
                 <p-button
                   icon="pi pi-pen-to-square"
                   severity="success"
-                  (onClick)="isEditing[skill.id] = true"
+                  (onClick)="onStartEdit(skill.id)"
                 />
                 }@else {
                 <div class="w-full flex justify-content-between px-5">
@@ -113,7 +117,7 @@
                   <p-button
                     icon="pi pi-times"
                     severity="danger"
-                    (onClick)="isEditing[skill.id] = false"
+                    (onClick)="onCancelEdit(skill.id)"
                   />
                 </div>
                 }
