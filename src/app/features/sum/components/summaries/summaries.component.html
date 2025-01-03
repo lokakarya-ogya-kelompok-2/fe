@@ -223,7 +223,9 @@
     [userId]="selectedUser.id"
     [year]="selectedYear"
     [editableAndAllowApprove]="
-      selectedUser.division?.id == currentUser.division?.id && isSPV
+      selectedUser.division?.id == currentUser.division?.id &&
+      isSPV &&
+      this.selectedYear == this.currentYear
     "
     (onAfterApprove)="summariesTable.reset()"
   />
