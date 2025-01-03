@@ -80,6 +80,7 @@ export class SummariesComponent implements OnInit {
   first = 0;
   rows = 5;
   searchQuery = '';
+  isSPV: boolean = false;
 
   isHR: boolean = false;
 
@@ -102,6 +103,9 @@ export class SummariesComponent implements OnInit {
       this.currentUser = data.content;
       this.isHR = this.currentUser.roles.some(
         (role) => role.role_name.toLowerCase() == 'hr'
+      );
+      this.isSPV = this.currentUser.roles.some(
+        (role) => role.role_name.toLowerCase() == 'svp'
       );
     } catch (err) {
       console.error('Failed to get current user: ', err);

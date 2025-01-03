@@ -33,7 +33,7 @@
           </td>
           @if (isScoreCategorical) {
           <td style="text-align: center; color: green">
-            @if(summaryData.approval_status == 1) {
+            @if(summaryData.approval_status == 1 || !editable) {
             <span style="color: green">{{
               getScoreCategory(child.score)
             }}</span>
@@ -63,7 +63,7 @@
           <td style="text-align: center; color: green">
             {{ child.score }}
           </td>
-          }
+          } @if (editable) {
           <td colspan="2" style="text-align: center">
             <p-button
               label="Update"
@@ -71,6 +71,7 @@
               [disabled]="summaryData.approval_status == 1"
             />
           </td>
+          }
         </tr>
       </ng-template>
     </p-table>
