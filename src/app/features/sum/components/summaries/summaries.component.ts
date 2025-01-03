@@ -81,6 +81,7 @@ export class SummariesComponent implements OnInit {
   rows = 5;
   searchQuery = '';
   isSPV: boolean = false;
+  currentYear: number = new Date().getFullYear();
 
   isHR: boolean = false;
 
