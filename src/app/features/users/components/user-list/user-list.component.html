@@ -160,6 +160,7 @@
   [(visible)]="visible"
   [maximizable]="true"
   class="absolute z-3"
+  draggable="false"
 >
   @if (currentDialogType === dialogType.DETAIL) {
   <app-user-detail [userData]="selectedUser" />

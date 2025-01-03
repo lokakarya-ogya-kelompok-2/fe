@@ -122,6 +122,7 @@
     header="Add Dev Plan"
     [(visible)]="visible"
     [style]="{ width: '30rem' }"
+    draggable="false"
   >
     <form #devPlanForm="ngForm" (submit)="createDevPlan()">
       <div class="flex align-items-center gap-4 mb-4">
