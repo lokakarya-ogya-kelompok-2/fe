@@ -129,7 +129,7 @@ export class ManageGroupAttitudeSkillComponent {
     this.groupAttitudeSkillService
       .createGroupAttitudeSkills(this.newGroupAttitudeSkill)
       .subscribe({
-        next: (data) => {
+        next: () => {
           this.isButtonLoading = false;
           this.table?.reset();
           Swal.fire({

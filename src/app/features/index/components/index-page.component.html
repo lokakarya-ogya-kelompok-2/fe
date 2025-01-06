@@ -10,7 +10,6 @@
   <div class="container mx-auto relative w-30rem">
     <div class="surface-card p-4 shadow-2 border-round-2xl backdrop-blur-sm">
       <div class="flex flex-column align-items-center gap-3">
-        <!-- Avatar Section -->
         <div>
           <p-avatar
             [label]="this.userInitial"
@@ -20,8 +19,6 @@
             shape="circle"
           />
         </div>
-
-        <!-- Welcome Text -->
         <h1 class="text-4xl font-bold text-900">
           Welcome, {{ currentUser.full_name }}
         </h1>
@@ -32,8 +29,6 @@
           severity="error"
         />
         }
-
-        <!-- Role Chips -->
         <div
           class="flex gap-2 flex-wrap justify-content-center animate-scale-in animation-delay-300"
         >

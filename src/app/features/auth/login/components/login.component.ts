@@ -32,7 +32,6 @@ import { PhotoService } from '../services/photoService';
 })
 export class LoginComponent {
   loginData: LoginRequest = {} as LoginRequest;
-  // hidePassword: boolean = true;
   private router = inject(Router);
   value!: string;
   constructor(
@@ -71,8 +70,4 @@ export class LoginComponent {
       },
     });
   }
-
-  // togglePassword() {
-  //   this.hidePassword = !this.hidePassword;
-  // }
 }
