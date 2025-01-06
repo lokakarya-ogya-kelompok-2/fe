@@ -24,7 +24,7 @@
         </h1>
         @if (currentUser.password_recently_reset) {
         <p-message
-          title="SEXXX"
+          title="Password Reset Successful"
           text="Your password was recently reset. For security reasons, please change your password before continuing."
           severity="error"
         />
@@ -43,8 +43,6 @@
           />
           }
         </div>
-
-        <!-- Menu Section -->
         <div class="w-full">
           <p-megaMenu
             [model]="items"
