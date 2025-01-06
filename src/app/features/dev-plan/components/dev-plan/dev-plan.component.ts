@@ -118,7 +118,7 @@ export class DevPlanComponent {
   createDevPlan(): void {
     this.isButtonLoading = true;
     this.devPlanService.createDevPlan(this.newDevPlan).subscribe({
-      next: (data) => {
+      next: () => {
         this.isButtonLoading = false;
         this.table?.reset();
         Swal.fire({

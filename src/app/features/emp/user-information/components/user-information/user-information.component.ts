@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { MenubarModule } from 'primeng/menubar';
-import { AuthService } from '../../../../../core/services/auth.service';
 import { TokenService } from '../../../../../core/services/token.service';
 import { User } from '../../../../users/models/user';
 import { UserService } from '../../../../users/services/user.service';
@@ -19,7 +18,6 @@ export class UserInformationComponent implements OnInit {
 
   constructor(
     private tokenService: TokenService,
-    private authService: AuthService,
     private userService: UserService
   ) {}
 
