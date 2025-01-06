@@ -39,7 +39,6 @@ export class TableComponent {
         this.expandedRows[item.aspect] = false;
       });
     }
-    console.log(this.summaryData, 'asddddddddddddddddddddd');
   }
 
   getScoreCategory(score: number): string {
@@ -64,8 +63,5 @@ export class TableComponent {
     child.score = event.value;
     child.id = id;
     child.assessment_year = year;
-    console.log(child.score, 'ini scoreeeeeeeeee');
-    console.log(child.id, 'ini id');
-    console.log(child.assessment_year, 'ini year');
   }
 }
