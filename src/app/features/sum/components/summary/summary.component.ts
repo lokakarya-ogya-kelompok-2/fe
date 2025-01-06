@@ -254,7 +254,10 @@ export class SummaryComponent implements OnChanges, OnInit {
       cell.border = borderStyle;
     });
 
-    const totalWeightRow = worksheet.addRow(['Total Weight:', this.percentage]);
+    const totalWeightRow = worksheet.addRow([
+      'Total Weight:',
+      Math.round(this.percentage),
+    ]);
     totalWeightRow.eachCell((cell) => {
       cell.border = borderStyle;
     });
@@ -407,7 +410,7 @@ export class SummaryComponent implements OnChanges, OnInit {
 
     const totalData = [
       ['Total Score:', `${parseFloat(this.summary.score.toFixed(2))}%`],
-      ['Total Weight:', `${this.percentage}%`],
+      ['Total Weight:', `${Math.round(this.percentage)}%`],
     ];
 
     (doc as any).autoTable({
