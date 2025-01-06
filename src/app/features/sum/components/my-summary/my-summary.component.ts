@@ -71,7 +71,6 @@ export class MySummaryComponent implements OnInit {
     this.summarySvc.calculateSummary(this.userId, this.selectedYear).subscribe({
       next: (data) => {
         this.summary = data.content;
-        console.log(this.summary);
       },
       error: (err) => {
         this.isLoading = false;

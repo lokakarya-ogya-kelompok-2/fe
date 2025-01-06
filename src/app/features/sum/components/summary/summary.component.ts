@@ -475,7 +475,6 @@ export class SummaryComponent implements OnChanges, OnInit {
   }
 
   attitudeSkill(data: EmpAttitudeSkill) {
-    console.log('attitude skill INI: ', data);
     const editData: EmpAttitudeSkillRequest = {
       id: data.id,
       attitude_skill_id: data.attitude_skill.id,
@@ -513,15 +512,10 @@ export class SummaryComponent implements OnChanges, OnInit {
     this.empAchievementEditData = data;
     this.formData.score = data.score;
     this.formData.notes = data.notes;
-    console.log('achievement INI: ', data);
     this.visible = true;
-    console.log(this.formData);
   }
 
   empAchievementEdit() {
-    console.log('tessssssssssssssss');
-    console.log(this.formData);
-
     const editData: EmpAchievementRequest = {
       id: this.empAchievementEditData.id,
       user_id: this.empAchievementEditData.user_id.id,
@@ -530,8 +524,6 @@ export class SummaryComponent implements OnChanges, OnInit {
       score: this.formData.score,
       assessment_year: this.empAchievementEditData.assessment_year,
     };
-
-    console.log(editData, 'editttttttttttttttttttttt');
 
     this.empAchievementSvc.updateEmpAchievement(editData).subscribe({
       next: () => {
